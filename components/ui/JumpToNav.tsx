@@ -168,67 +168,70 @@ export default function JumpToNav() {
     <>
       {/* ═══════════════════════════════════════════════════════
           DESKTOP — fixed left sidebar, vertically centred
-          Visible at xl (≥1280px)
+          Outer div owns the breakpoint; motion.nav owns the animation.
           ═══════════════════════════════════════════════════════ */}
-      <AnimatePresence>
-        {isVisible && (
-          <motion.nav
-            aria-label="Jump to section"
-            initial={{ opacity: 0, x: -6 }}
-            animate={{ opacity: 1, x: 0 }}
-            exit={{ opacity: 0, x: -6 }}
-            transition={transition}
-            className="hidden xl:block fixed left-8 z-40 top-1/2 -translate-y-1/2"
-          >
-            <ul className="flex flex-col gap-3 w-[140px]" role="listbox" aria-label="Page sections">
-              {SECTIONS.map(({ label }) => {
-                const isActive = toSectionId(label) === activeId;
-                return (
-                  <li key={label} className="flex items-center gap-2" role="presentation">
-                    {/* 2px left accent bar */}
-                    <span
-                      className={[
-                        "w-[2px] h-3 rounded-full shrink-0 transition-all duration-200",
-                        isActive ? "bg-[#C07B50]" : "bg-transparent",
-                      ].join(" ")}
-                      aria-hidden="true"
-                    />
-                    <button
-                      role="option"
-                      aria-selected={isActive}
-                      onClick={() => scrollTo(label)}
-                      className={[
-                        "text-left text-[11px] tracking-[0.08em] uppercase leading-snug",
-                        "transition-colors duration-200 focus-visible:outline-none",
-                        isActive
-                          ? "text-[#18171A] font-medium"
-                          : "text-[#9C9A95] hover:text-[#6A6764]",
-                      ].join(" ")}
-                    >
-                      {label}
-                    </button>
-                  </li>
-                );
-              })}
-            </ul>
-          </motion.nav>
-        )}
-      </AnimatePresence>
+      <div className="hidden xl:block">
+        <AnimatePresence>
+          {isVisible && (
+            <motion.nav
+              aria-label="Jump to section"
+              initial={{ opacity: 0, x: -6 }}
+              animate={{ opacity: 1, x: 0 }}
+              exit={{ opacity: 0, x: -6 }}
+              transition={transition}
+              className="fixed left-8 z-40 top-1/2 -translate-y-1/2"
+            >
+              <ul className="flex flex-col gap-3 w-[140px]" role="listbox" aria-label="Page sections">
+                {SECTIONS.map(({ label }) => {
+                  const isActive = toSectionId(label) === activeId;
+                  return (
+                    <li key={label} className="flex items-center gap-2" role="presentation">
+                      {/* 2px left accent bar */}
+                      <span
+                        className={[
+                          "w-[2px] h-3 rounded-full shrink-0 transition-all duration-200",
+                          isActive ? "bg-[#C07B50]" : "bg-transparent",
+                        ].join(" ")}
+                        aria-hidden="true"
+                      />
+                      <button
+                        role="option"
+                        aria-selected={isActive}
+                        onClick={() => scrollTo(label)}
+                        className={[
+                          "text-left text-[11px] tracking-[0.08em] uppercase leading-snug",
+                          "transition-colors duration-200 focus-visible:outline-none",
+                          isActive
+                            ? "text-[#18171A] font-medium"
+                            : "text-[#9C9A95] hover:text-[#6A6764]",
+                        ].join(" ")}
+                      >
+                        {label}
+                      </button>
+                    </li>
+                  );
+                })}
+              </ul>
+            </motion.nav>
+          )}
+        </AnimatePresence>
+      </div>
 
       {/* ═══════════════════════════════════════════════════════
           TABLET + MOBILE — fixed bottom bar with slide-up drawer
-          Visible below xl (<1280px)
+          Outer div owns the breakpoint; motion.div owns the animation.
           ═══════════════════════════════════════════════════════ */}
-      <AnimatePresence>
-        {isVisible && (
-          <motion.div
-            ref={bottomBarRef}
-            initial={{ opacity: 0, y: 8 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: 8 }}
-            transition={transition}
-            className="xl:hidden fixed bottom-0 inset-x-0 z-40"
-          >
+      <div className="xl:hidden">
+        <AnimatePresence>
+          {isVisible && (
+            <motion.div
+              ref={bottomBarRef}
+              initial={{ opacity: 0, y: 8 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: 8 }}
+              transition={transition}
+              className="fixed bottom-0 inset-x-0 z-40"
+            >
             {/* ── Slide-up drawer ─────────────────────────────── */}
             <AnimatePresence>
               {isOpen && (
