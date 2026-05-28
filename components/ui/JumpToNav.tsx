@@ -283,6 +283,7 @@ export default function JumpToNav() {
           </motion.div>
         )}
       </AnimatePresence>
+      </div>
 
     </>
   );
