@@ -80,6 +80,7 @@ export default function JumpToNav() {
   const [isOpen, setIsOpen] = useState(false);
   const [activeId, setActiveId] = useState(toSectionId("Overview"));
   const [isVisible, setIsVisible] = useState(false);
+  const [isNearBottom, setIsNearBottom] = useState(false);
 
   const bottomBarRef = useRef<HTMLDivElement>(null);
 
@@ -95,6 +96,19 @@ export default function JumpToNav() {
       { threshold: 0, rootMargin: "-64px 0px 0px 0px" }
     );
     obs.observe(hero);
+    return () => obs.disconnect();
+  }, []);
+
+  // ── Hide desktop sidebar when footer enters the viewport ─────
+  useEffect(() => {
+    const footer = document.querySelector<HTMLElement>("footer");
+    if (!footer) return;
+
+    const obs = new IntersectionObserver(
+      ([entry]) => setIsNearBottom(entry.isIntersecting),
+      { threshold: 0 }
+    );
+    obs.observe(footer);
     return () => obs.disconnect();
   }, []);
 
@@ -172,7 +186,7 @@ export default function JumpToNav() {
           ═══════════════════════════════════════════════════════ */}
       <div className="hidden lg:block">
         <AnimatePresence>
-          {isVisible && (
+          {isVisible && !isNearBottom && (
             <motion.nav
               aria-label="Jump to section"
               initial={{ opacity: 0, x: -6 }}
