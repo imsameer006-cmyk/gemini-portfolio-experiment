@@ -385,6 +385,124 @@ function Decisions({
   );
 }
 
+// ── BACard ─────────────────────────────────────────────────────
+// Before = red glow contracts inward  |  After = green glow expands outward
+function BACard({
+  variant,
+  heading,
+  items,
+  slideDir,
+}: {
+  variant: "before" | "after";
+  heading: string;
+  items: string[];
+  slideDir: number;
+}) {
+  const prefersReduced = useReducedMotion();
+  const glowControls  = useAnimation();
+
+  const [canHover, setCanHover] = useState(false);
+  useEffect(() => {
+    setCanHover(window.matchMedia("(hover: hover) and (pointer: fine)").matches);
+  }, []);
+
+  const isAfter = variant === "after";
+
+  const hoverShadow = isAfter
+    ? "0 4px 20px rgba(0,0,0,0.06), inset 0 0 0 1px rgba(72,110,75,0.22)"
+    : "0 4px 20px rgba(0,0,0,0.06), inset 0 0 0 1px rgba(180,60,60,0.22)";
+
+  const handleHoverStart = () => {
+    if (!canHover || prefersReduced) return;
+    if (isAfter) {
+      glowControls.start({
+        scale:   [0.02, 0.55, 1.5],
+        opacity: [0,    1.0,  0.85],
+        transition: { duration: 2.5, times: [0, 0.25, 1], ease: ["easeIn", [0.22, 1, 0.36, 1]] },
+      });
+    } else {
+      glowControls.start({
+        scale:   [2.5,  1.1,  1.0],
+        opacity: [0,    1.0,  0.88],
+        transition: { duration: 2.5, times: [0, 0.75, 1], ease: [0.22, 1, 0.36, 1] },
+      });
+    }
+  };
+
+  const handleHoverEnd = () => {
+    if (!canHover || prefersReduced) return;
+    glowControls.start({
+      opacity: 0,
+      transition: { duration: 0.5, ease: "easeOut" },
+    });
+  };
+
+  return (
+    <motion.div
+      className={[
+        "rounded-xl p-5 relative overflow-hidden",
+        isAfter
+          ? "bg-[#F0F6F2] border border-[#BCDBC7]"
+          : "bg-[#FEF3EE] border border-[#F2C4A8]",
+      ].join(" ")}
+      initial={{ opacity: 0, x: slideDir }}
+      whileInView={{ opacity: 1, x: 0 }}
+      viewport={{ once: true, amount: 0.15 }}
+      style={{ boxShadow: "0 2px 8px rgba(0,0,0,0.05)" }}
+      whileHover={canHover ? {
+        y: -2,
+        boxShadow: hoverShadow,
+        transition: {
+          y:         { duration: 0.18, ease: "easeOut" },
+          boxShadow: { duration: 0.4,  ease: [0.22, 1, 0.36, 1] },
+        },
+      } : undefined}
+      onHoverStart={handleHoverStart}
+      onHoverEnd={handleHoverEnd}
+      transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
+    >
+      {/* Glow layer — desktop only */}
+      {!prefersReduced && canHover && (
+        <motion.div
+          aria-hidden="true"
+          className="absolute pointer-events-none"
+          initial={{ scale: isAfter ? 0.02 : 2.5, opacity: 0 }}
+          animate={glowControls}
+          style={{
+            top: "50%", left: "50%",
+            x: "-50%",  y: "-50%",
+            width: "400px", height: "400px",
+            borderRadius: "50%",
+            background: isAfter
+              ? "radial-gradient(circle, rgba(72,110,75,0.16) 0%, rgba(72,110,75,0.08) 40%, rgba(72,110,75,0) 70%)"
+              : "radial-gradient(circle, rgba(180,60,60,0.16) 0%, rgba(180,60,60,0.08) 40%, rgba(180,60,60,0) 70%)",
+          }}
+        />
+      )}
+
+      {/* Content */}
+      <div className="relative" style={{ zIndex: 1 }}>
+        <p className={[
+          "text-xs font-semibold tracking-widest uppercase mb-3",
+          isAfter ? "text-[#2E7D52]" : "text-[#C07B50]",
+        ].join(" ")}>
+          {heading}
+        </p>
+        <ul className="space-y-2">
+          {items.map((item, i) => (
+            <li key={i} className="text-sm text-[#3A3836] leading-relaxed flex gap-2">
+              <span className={`mt-0.5 ${isAfter ? "text-[#2E7D52]" : "text-[#C07B50]"}`}>
+                {isAfter ? "✓" : "—"}
+              </span>
+              {item}
+            </li>
+          ))}
+        </ul>
+      </div>
+    </motion.div>
+  );
+}
+
 function BeforeAfter({
   before,
   after,
@@ -394,46 +512,8 @@ function BeforeAfter({
 }) {
   return (
     <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-      <motion.div
-        className="bg-[#FEF3EE] border border-[#F2C4A8] rounded-xl p-5"
-        initial={{ opacity: 0, x: -12 }}
-        whileInView={{ opacity: 1, x: 0 }}
-        viewport={{ once: true, amount: 0.15 }}
-        transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
-        whileHover={{ y: -2, boxShadow: "0 4px 16px rgba(0,0,0,0.08)", transition: { duration: 0.18, ease: "easeOut" } }}
-      >
-        <p className="text-xs font-semibold text-[#C07B50] tracking-widest uppercase mb-3">
-          {before.heading}
-        </p>
-        <ul className="space-y-2">
-          {before.items.map((item, i) => (
-            <li key={i} className="text-sm text-[#3A3836] leading-relaxed flex gap-2">
-              <span className="text-[#C07B50] mt-0.5">—</span>
-              {item}
-            </li>
-          ))}
-        </ul>
-      </motion.div>
-      <motion.div
-        className="bg-[#F0F6F2] border border-[#BCDBC7] rounded-xl p-5"
-        initial={{ opacity: 0, x: 12 }}
-        whileInView={{ opacity: 1, x: 0 }}
-        viewport={{ once: true, amount: 0.15 }}
-        transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
-        whileHover={{ y: -2, boxShadow: "0 4px 16px rgba(0,0,0,0.08)", transition: { duration: 0.18, ease: "easeOut" } }}
-      >
-        <p className="text-xs font-semibold text-[#2E7D52] tracking-widest uppercase mb-3">
-          {after.heading}
-        </p>
-        <ul className="space-y-2">
-          {after.items.map((item, i) => (
-            <li key={i} className="text-sm text-[#3A3836] leading-relaxed flex gap-2">
-              <span className="text-[#2E7D52] mt-0.5">✓</span>
-              {item}
-            </li>
-          ))}
-        </ul>
-      </motion.div>
+      <BACard variant="before" heading={before.heading} items={before.items} slideDir={-12} />
+      <BACard variant="after"  heading={after.heading}  items={after.items}  slideDir={12}  />
     </div>
   );
 }
