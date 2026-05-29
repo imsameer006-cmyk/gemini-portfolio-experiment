@@ -160,3 +160,113 @@ body {
 ::-webkit-scrollbar-thumb:hover {
   background: var(--color-text-muted);
 }
+
+/* ── Card hover — bloom + shimmer ───────────────────────────── */
+
+/* ::before bloom layer */
+.card-green::before,
+.card-red::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  opacity: 0;
+  pointer-events: none;
+  z-index: 1;
+  transition: opacity 1.4s ease;
+}
+
+.card-green::before {
+  background: radial-gradient(circle at center,
+    rgba(74, 147, 99, 0.16) 0%,
+    rgba(74, 147, 99, 0.08) 50%,
+    transparent 80%
+  );
+}
+
+.card-red::before {
+  background: radial-gradient(circle at center,
+    rgba(185, 90, 72, 0.16) 0%,
+    rgba(185, 90, 72, 0.08) 50%,
+    transparent 80%
+  );
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .card-green:hover::before,
+  .card-red:hover::before {
+    opacity: 1;
+  }
+}
+
+/* Shimmer keyframes */
+@keyframes expand-out {
+  0%   { transform: translate(-50%, -50%) scale(0);  opacity: 0; }
+  8%   { opacity: 1; }
+  100% { transform: translate(-50%, -50%) scale(14); opacity: 0; }
+}
+
+@keyframes contract-in {
+  0%   { transform: translate(-50%, -50%) scale(14); opacity: 0; }
+  8%   { opacity: 1; }
+  100% { transform: translate(-50%, -50%) scale(0);  opacity: 0; }
+}
+
+/* Shimmer elements */
+.shimmer-green,
+.shimmer-red {
+  position: absolute;
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  top: 50%;
+  left: 50%;
+  z-index: 2;
+  pointer-events: none;
+  opacity: 0;
+  filter: blur(8px);
+}
+
+.shimmer-green {
+  transform: translate(-50%, -50%) scale(0);
+  background: radial-gradient(circle,
+    transparent 0%, transparent 18%,
+    rgba(74, 147, 99, 0.28) 35%,
+    rgba(74, 147, 99, 0.16) 52%,
+    rgba(74, 147, 99, 0.05) 68%,
+    transparent 100%
+  );
+}
+
+.shimmer-red {
+  transform: translate(-50%, -50%) scale(14);
+  background: radial-gradient(circle,
+    transparent 0%, transparent 18%,
+    rgba(185, 90, 72, 0.26) 35%,
+    rgba(185, 90, 72, 0.15) 52%,
+    rgba(185, 90, 72, 0.05) 68%,
+    transparent 100%
+  );
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .card-green:hover .shimmer-green {
+    animation: expand-out 2.2s cubic-bezier(0.2, 0.6, 0.4, 1) 1 forwards;
+    animation-delay: 0.3s;
+  }
+
+  .card-red:hover .shimmer-red {
+    animation: contract-in 2.2s cubic-bezier(0.2, 0.6, 0.4, 1) 1 forwards;
+    animation-delay: 0.3s;
+  }
+}
+
+/* Reduced motion: suppress bloom and shimmer entirely */
+@media (prefers-reduced-motion: reduce) {
+  .card-green::before,
+  .card-red::before,
+  .shimmer-green,
+  .shimmer-red {
+    display: none;
+  }
+}

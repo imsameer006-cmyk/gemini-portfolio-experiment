@@ -1,7 +1,7 @@
 "use client";
 
 import { useRef, useState, useEffect, useMemo } from "react";
-import { motion, MotionConfig, useReducedMotion, useAnimation } from "framer-motion";
+import { motion, MotionConfig } from "framer-motion";
 import { CheckCircle, MinusCircle } from "@phosphor-icons/react";
 import Link from "next/link";
 import type { Project, Block, CaseStudySection, CaseStudyData } from "@/lib/types";
@@ -84,105 +84,39 @@ function ColCard({
 }: {
   col: { heading: string; items: ColItem[]; variant?: string };
 }) {
-  const prefersReduced = useReducedMotion();
   const v = col.variant ?? "neutral";
-  const glowControls = useAnimation();
-
-  // True only on devices that support real hover (mouse/trackpad).
-  // Phones and tablets report (hover: none) so they get the static path.
-  const [canHover, setCanHover] = useState(false);
-  useEffect(() => {
-    setCanHover(window.matchMedia("(hover: hover) and (pointer: fine)").matches);
-  }, []);
+  const isGreen = v === "positive";
+  const isRed   = v === "warning";
 
   const Icon =
-    v === "positive"
-      ? <CheckCircle size={14} weight="light" aria-hidden />
-      : v === "warning"
-      ? <MinusCircle size={14} weight="light" aria-hidden />
-      : null;
+    isGreen ? <CheckCircle size={14} weight="light" aria-hidden />
+    : isRed  ? <MinusCircle size={14} weight="light" aria-hidden />
+    : null;
 
-  const labelColor = v === "positive" ? "text-[#C07B50]" : "text-[#6A6764]";
-
-  const hoverShadow =
-    v === "positive"
-      ? "0 4px 20px rgba(0,0,0,0.06), inset 0 0 0 1px rgba(72,110,75,0.22)"
-      : v === "warning"
-      ? "0 4px 20px rgba(0,0,0,0.06), inset 0 0 0 1px rgba(180,60,60,0.22)"
-      : "0 4px 20px rgba(0,0,0,0.06)";
-
-  // Hover-in: full directional animation (desktop only)
-  const handleHoverStart = () => {
-    if (!canHover || prefersReduced || v === "neutral") return;
-    if (v === "positive") {
-      glowControls.start({
-        scale:   [0.02, 0.55, 1.5],
-        opacity: [0,    1.0,  0.85],
-        transition: { duration: 2.5, times: [0, 0.25, 1], ease: ["easeIn", [0.22, 1, 0.36, 1]] },
-      });
-    } else {
-      glowControls.start({
-        scale:   [2.5,  1.1,  1.0],
-        opacity: [0,    1.0,  0.88],
-        transition: { duration: 2.5, times: [0, 0.75, 1], ease: [0.22, 1, 0.36, 1] },
-      });
-    }
-  };
-
-  // Hover-out: fade opacity only — glow dissolves in place, no movement
-  const handleHoverEnd = () => {
-    if (!canHover || prefersReduced || v === "neutral") return;
-    glowControls.start({
-      opacity: 0,
-      transition: { duration: 0.5, ease: "easeOut" },
-    });
-  };
+  const labelColor =
+    isGreen ? "text-[#3a7a54]"
+    : isRed  ? "text-[#B85A48]"
+    : "text-[#6A6764]";
 
   return (
     <motion.div
-      className="rounded-xl bg-[#F2F0EB] border border-[#E6E3DD] flex flex-col relative overflow-hidden"
-      style={{
-        padding: "28px",
-        // Ambient shadow always visible — gives cards depth on touch devices
-        // where hover never fires. On desktop it's replaced by hoverShadow.
-        boxShadow: "0 2px 8px rgba(0,0,0,0.05)",
-      }}
-      whileHover={canHover ? { y: -2, boxShadow: hoverShadow } : undefined}
-      onHoverStart={handleHoverStart}
-      onHoverEnd={handleHoverEnd}
-      transition={{
-        y:         { duration: 0.18, ease: "easeOut" },
-        boxShadow: { duration: 0.4,  ease: [0.22, 1, 0.36, 1] },
-      }}
+      className={[
+        "rounded-xl bg-white border border-[#E6E3DD] flex flex-col relative overflow-hidden",
+        isGreen ? "card-green" : isRed ? "card-red" : "",
+      ].join(" ").trim()}
+      style={{ padding: "28px", boxShadow: "0 2px 8px rgba(0,0,0,0.05)" }}
+      whileHover={v !== "neutral" ? {
+        y: -2,
+        boxShadow: "0 6px 24px rgba(0,0,0,0.07)",
+        transition: { duration: 0.25, ease: "easeOut" },
+      } : undefined}
     >
-      {/* Glow — only rendered when hover is supported */}
-      {!prefersReduced && canHover && v !== "neutral" && (
-        <motion.div
-          aria-hidden="true"
-          className="absolute pointer-events-none"
-          initial={{ scale: v === "positive" ? 0.02 : 2.5, opacity: 0 }}
-          animate={glowControls}
-          style={{
-            top: "50%",
-            left: "50%",
-            x: "-50%",
-            y: "-50%",
-            width: "400px",
-            height: "400px",
-            borderRadius: "50%",
-            // Card 1: bright centre fading out — expansion reads clearly.
-            // Card 2: ring gradient (transparent core, colour at ~64% radius)
-            // so the ring is trackable as it sweeps from outside → card edges.
-            background:
-              v === "positive"
-                ? "radial-gradient(circle, rgba(72,110,75,0.16) 0%, rgba(72,110,75,0.08) 40%, rgba(72,110,75,0) 70%)"
-                : "radial-gradient(circle, rgba(180,60,60,0.16) 0%, rgba(180,60,60,0.08) 40%, rgba(180,60,60,0) 70%)",
-          }}
-        />
-      )}
+      {/* Shimmer — z-2, clipped by overflow-hidden */}
+      {isGreen && <div className="shimmer-green" aria-hidden="true" />}
+      {isRed   && <div className="shimmer-red"   aria-hidden="true" />}
 
-      {/* Content sits above glow layer */}
-      <div className="relative flex flex-col" style={{ zIndex: 1 }}>
+      {/* Content — sits above bloom (z-1) and shimmer (z-2) */}
+      <div className="relative flex flex-col" style={{ zIndex: 3 }}>
         {/* Header zone */}
         <div className={`flex items-center gap-2 ${labelColor}`}>
           {Icon}
@@ -415,89 +349,37 @@ function BACard({
   items: BAItem[];
   slideDir: number;
 }) {
-  const prefersReduced = useReducedMotion();
-  const glowControls  = useAnimation();
-
-  const [canHover, setCanHover] = useState(false);
-  useEffect(() => {
-    setCanHover(window.matchMedia("(hover: hover) and (pointer: fine)").matches);
-  }, []);
-
   const isAfter = variant === "after";
-
-  const hoverShadow = isAfter
-    ? "0 4px 20px rgba(0,0,0,0.06), inset 0 0 0 1px rgba(72,110,75,0.22)"
-    : "0 4px 20px rgba(0,0,0,0.06), inset 0 0 0 1px rgba(180,60,60,0.22)";
-
-  const handleHoverStart = () => {
-    if (!canHover || prefersReduced) return;
-    if (isAfter) {
-      glowControls.start({
-        scale:   [0.02, 0.55, 1.5],
-        opacity: [0,    1.0,  0.85],
-        transition: { duration: 2.5, times: [0, 0.25, 1], ease: ["easeIn", [0.22, 1, 0.36, 1]] },
-      });
-    } else {
-      glowControls.start({
-        scale:   [2.5,  1.1,  1.0],
-        opacity: [0,    1.0,  0.88],
-        transition: { duration: 2.5, times: [0, 0.75, 1], ease: [0.22, 1, 0.36, 1] },
-      });
-    }
-  };
-
-  const handleHoverEnd = () => {
-    if (!canHover || prefersReduced) return;
-    glowControls.start({
-      opacity: 0,
-      transition: { duration: 0.5, ease: "easeOut" },
-    });
-  };
 
   return (
     <motion.div
-      className="rounded-xl relative overflow-hidden bg-[#F2F0EB] border border-[#E6E3DD]"
+      className={[
+        "rounded-xl relative overflow-hidden bg-white border border-[#E6E3DD]",
+        isAfter ? "card-green" : "card-red",
+      ].join(" ")}
       style={{ padding: "28px", boxShadow: "0 2px 8px rgba(0,0,0,0.05)" }}
       initial={{ opacity: 0, x: slideDir }}
       whileInView={{ opacity: 1, x: 0 }}
       viewport={{ once: true, amount: 0.15 }}
-      whileHover={canHover ? {
+      whileHover={{
         y: -2,
-        boxShadow: hoverShadow,
-        transition: {
-          y:         { duration: 0.18, ease: "easeOut" },
-          boxShadow: { duration: 0.4,  ease: [0.22, 1, 0.36, 1] },
-        },
-      } : undefined}
-      onHoverStart={handleHoverStart}
-      onHoverEnd={handleHoverEnd}
+        boxShadow: "0 6px 24px rgba(0,0,0,0.07)",
+        transition: { duration: 0.25, ease: "easeOut" },
+      }}
       transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
     >
-      {/* Glow layer — desktop only */}
-      {!prefersReduced && canHover && (
-        <motion.div
-          aria-hidden="true"
-          className="absolute pointer-events-none"
-          initial={{ scale: isAfter ? 0.02 : 2.5, opacity: 0 }}
-          animate={glowControls}
-          style={{
-            top: "50%", left: "50%",
-            x: "-50%",  y: "-50%",
-            width: "400px", height: "400px",
-            borderRadius: "50%",
-            background: isAfter
-              ? "radial-gradient(circle, rgba(72,110,75,0.16) 0%, rgba(72,110,75,0.08) 40%, rgba(72,110,75,0) 70%)"
-              : "radial-gradient(circle, rgba(180,60,60,0.16) 0%, rgba(180,60,60,0.08) 40%, rgba(180,60,60,0) 70%)",
-          }}
-        />
-      )}
+      {/* Shimmer — z-2, clipped by overflow-hidden */}
+      {isAfter
+        ? <div className="shimmer-green" aria-hidden="true" />
+        : <div className="shimmer-red"   aria-hidden="true" />
+      }
 
-      {/* Content */}
-      <div className="relative flex flex-col" style={{ zIndex: 1 }}>
-        {/* Header zone — Before mirrors warning (gray), After mirrors positive (orange) */}
+      {/* Content — sits above bloom (z-1) and shimmer (z-2) */}
+      <div className="relative flex flex-col" style={{ zIndex: 3 }}>
+        {/* Header zone — After=green, Before=red */}
         <p className={[
           "text-[10px] font-semibold tracking-widest uppercase",
-          isAfter ? "text-[#C07B50]" : "text-[#6A6764]",
+          isAfter ? "text-[#3a7a54]" : "text-[#B85A48]",
         ].join(" ")}>
           {heading}
         </p>
