@@ -396,8 +396,10 @@ function Stages({ items }: { items: string[] }) {
 
 function Decisions({
   items,
+  startIndex = 0,
 }: {
   items: { heading: string; body: string; bullets?: string[] }[];
+  startIndex?: number;
 }) {
   return (
     <div className="space-y-10">
@@ -411,7 +413,7 @@ function Decisions({
           transition={{ duration: 0.5, delay: i * 0.1, ease: [0.16, 1, 0.3, 1] }}
         >
           <span className="font-[family-name:var(--font-instrument-serif)] italic text-2xl text-[#C07B50]/50 leading-none pt-0.5">
-            {String(i + 1).padStart(2, "0")}
+            {String(startIndex + i + 1).padStart(2, "0")}
           </span>
           <div className="space-y-3">
             <h4 className="font-medium text-[#18171A] text-base">{decision.heading}</h4>
@@ -719,7 +721,7 @@ function renderBlock(block: Block, i: number): React.ReactNode {
     case "role-list":        return <RoleList key={i} items={block.items} />;
     case "exploration-cards":return <ExplorationCards key={i} items={block.items} />;
     case "stages":           return <Stages key={i} items={block.items} />;
-    case "decisions":        return <Decisions key={i} items={block.items} />;
+    case "decisions":        return <Decisions key={i} items={block.items} startIndex={block.startIndex ?? 0} />;
     case "before-after":     return <BeforeAfter key={i} before={block.before} after={block.after} />;
     case "image-placeholder":return <ImagePlaceholder key={i} caption={block.caption} tall={block.tall} />;
     case "case-study-image": return <CaseStudyImage key={i} src={block.src} caption={block.caption} alt={block.alt} />;

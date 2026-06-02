@@ -48,6 +48,7 @@ export type Block =
   | {
       type: "decisions";
       items: { heading: string; body: string; bullets?: string[] }[];
+      startIndex?: number;
     }
   | {
       type: "before-after";

@@ -215,50 +215,69 @@ export const geminiDigitalTwin: CaseStudyData = {
       heading: "Key Interaction Decisions",
       blocks: [
         {
-          type: "decisions",
+          type: “decisions”,
+          startIndex: 0,
           items: [
             {
-              heading: "Role-Based Self-Assignment",
-              body: "During Pre-check and Feasibility, progress depended on input from both PAE and PMG. When roles were not assigned, ownership became unclear and modules stalled. To reduce this ambiguity, we introduced self-assignment inside Short Flow.",
+              heading: “Role-Based Self-Assignment”,
+              body: “During Pre-check and Feasibility, progress depended on input from both PAE and PMG. When roles were not assigned, ownership became unclear and modules stalled. To reduce this ambiguity, we introduced self-assignment inside Short Flow.”,
               bullets: [
-                "If no assignee exists, the primary CTA is “Assign to me”",
-                "Once assigned, the module state updates to Assigned",
-                "Approval, rejection, and comments are enabled only for assigned users",
-              ],
-            },
-            {
-              heading: "Designing State Clarity",
-              body: "To make module progress scannable, each module displayed a persistent status badge combining color, icon, and text label. This made the state understandable without relying only on color, and kept status indicators consistent across module pages, project overview tables, and workflow notifications.",
-            },
-            {
-              heading: "Visualizing Ownership and Editability",
-              body: "During review, editing needed to be restricted to prevent version conflicts. Instead of silently disabling controls, the interface explained why the module was read-only and who currently owned the next action.",
-              bullets: [
-                "Editing became read-only",
-                "A lock icon appeared in the interface",
-                "The responsible stakeholder was shown",
-                "The UI explained why editing was disabled",
-              ],
-            },
-            {
-              heading: "Structured Rejection Feedback",
-              body: "Previously, rejection feedback arrived through email conversations, forcing FAEs to interpret comments and track required changes manually. In Gemini, rejection was integrated directly into the module workflow.",
-              bullets: [
-                "The module state changed to Rejected",
-                "Feedback appeared inside the module view",
-                "Users were guided toward Revise & Resubmit",
+                “If no assignee exists, the primary CTA is “Assign to me””,
+                “Once assigned, the module state updates to Assigned”,
+                “Approval, rejection, and comments are enabled only for assigned users”,
               ],
             },
           ],
         },
         {
-          type: "case-study-video",
-          src: "/case-studies/gemini/self-assignment.mp4",
-          caption: "Self-assignment made ownership explicit before review actions became available.",
+          type: “case-study-video”,
+          src: “/case-studies/gemini/self-assignment.mp4”,
+          caption: “Self-assignment made ownership explicit before review actions became available.”,
         },
         {
-          type: "callout",
-          text: "Together, these decisions turned Short Flow into an actionable workflow layer — making state, ownership, editability, and rejection feedback visible inside the module interface.",
+          type: “decisions”,
+          startIndex: 1,
+          items: [
+            {
+              heading: “Designing State Clarity”,
+              body: “To make module progress scannable, each module displayed a persistent status badge combining color, icon, and text label. This made the state understandable without relying only on color, and kept status indicators consistent across module pages, project overview tables, and workflow notifications.”,
+            },
+          ],
+        },
+        {
+          type: “case-study-image”,
+          src: “/case-studies/gemini/state-clarity.png”,
+          caption: “State indicators combined icon, color, and text labels to make module progress understandable at a glance.”,
+          alt: “Short Flow Approval timeline panel showing Completed, Rejected, and Reopened states with annotated callouts”,
+        },
+        {
+          type: “decisions”,
+          startIndex: 2,
+          items: [
+            {
+              heading: “Visualizing Ownership and Editability”,
+              body: “During review, editing needed to be restricted to prevent version conflicts. Instead of silently disabling controls, the interface explained why the module was read-only and who currently owned the next action.”,
+              bullets: [
+                “Editing became read-only”,
+                “A lock icon appeared in the interface”,
+                “The responsible stakeholder was shown”,
+                “The UI explained why editing was disabled”,
+              ],
+            },
+            {
+              heading: “Structured Rejection Feedback”,
+              body: “Previously, rejection feedback arrived through email conversations, forcing FAEs to interpret comments and track required changes manually. In Gemini, rejection was integrated directly into the module workflow.”,
+              bullets: [
+                “The module state changed to Rejected”,
+                “Feedback appeared inside the module view”,
+                “Users were guided toward Revise & Resubmit”,
+              ],
+            },
+          ],
+        },
+        {
+          type: “callout”,
+          text: “Together, these decisions turned Short Flow into an actionable workflow layer — making state, ownership, editability, and rejection feedback visible inside the module interface.”,
         },
       ],
     },
