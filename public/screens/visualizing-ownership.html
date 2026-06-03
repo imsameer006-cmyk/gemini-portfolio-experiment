@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Gemini — Ownership and Editability States</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+<script src="https://unpkg.com/lucide@latest"></script>
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+html,body{width:100%;min-height:100%;font-family:"Inter",system-ui,sans-serif;-webkit-font-smoothing:antialiased;background:#F9F8F5;}
+body{display:flex;align-items:center;justify-content:center;padding:40px;min-height:100vh;}
+.master{width:1550px;display:flex;flex-direction:column;align-items:flex-start;background:#F9F8F5;border:1px solid #E6E3DD;border-radius:16px;padding:48px 40px 40px;}
+.header-block{padding-left:220px;margin-bottom:20px;display:flex;flex-direction:column;gap:8px;}
+.caption-wrap{padding-left:220px;width:calc(220px + 1150px);margin-top:14px;}
+.s-label{font-size:12px;font-weight:500;letter-spacing:1.2px;text-transform:uppercase;color:#8C8B84;}
+.ui-title{font-family:"Instrument Serif",Georgia,serif;font-size:22px;font-weight:400;font-style:italic;color:#18171A;line-height:1.2;}
+.content-row{display:flex;flex-direction:row;align-items:flex-start;gap:0;width:100%;position:relative;}
+
+/* ── ANNOTATION ── */
+.anns{width:220px;flex-shrink:0;height:660px;position:relative;}
+.ann-svg{position:absolute;top:0;left:0;width:220px;height:660px;pointer-events:none;z-index:25;overflow:visible;}
+.ann{position:absolute;width:155px;left:0;display:flex;flex-direction:column;gap:5px;z-index:26;}
+.ann-t{font-size:12.5px;font-weight:600;color:#18171A;line-height:1.3;letter-spacing:-0.01em;}
+.ann-d{font-size:11.5px;font-weight:400;color:rgba(24,23,26,0.5);line-height:1.5;}
+
+/* ── SHELL ── */
+.shell{width:1150px;height:660px;flex-shrink:0;background:#ffffff;border:1px solid #d5dee2;border-radius:20px;overflow:hidden;box-shadow:0 12px 40px rgba(10,20,35,.10),0 2px 8px rgba(10,20,35,.06);display:grid;grid-template-rows:52px 1fr 40px;color:#141e2b;position:relative;z-index:5;}
+.right-bal{width:180px;flex-shrink:0;}
+.caption{width:1150px;text-align:center;font-size:12px;font-weight:500;color:rgba(24,23,26,0.45);line-height:1.5;letter-spacing:0.01em;}
+
+/* ── TOPBAR ── */
+.topbar{display:flex;align-items:center;justify-content:space-between;padding:0 20px;border-bottom:1px solid #e3eaed;background:rgba(255,255,255,.98);}
+.tb-l{display:flex;align-items:center;}
+.brand{display:flex;align-items:center;gap:7px;padding-right:16px;border-right:1px solid #e3eaed;margin-right:14px;}
+.b-icon{width:24px;height:24px;border-radius:7px;background:linear-gradient(145deg,#e0f2ef,#c8e8e2);border:1px solid #b2d9d2;display:grid;place-items:center;color:#007a6b;}
+.b-name{font-size:13px;font-weight:700;color:#141e2b;letter-spacing:-.02em;}
+.bc{display:flex;align-items:center;gap:6px;font-size:12px;color:#7d8c9a;}
+.bc a{color:#4a5665;font-weight:600;text-decoration:none;}
+.bc-sep{color:#d5dee2;font-weight:700;}
+.bc-cur{color:#141e2b;font-weight:700;}
+.bc-ts{color:#7d8c9a;font-size:11px;margin-left:8px;padding-left:10px;border-left:1px solid #e3eaed;}
+.tb-r{display:flex;align-items:center;gap:6px;}
+.ibt{width:30px;height:30px;padding:0;border:0;border-radius:8px;background:transparent;color:#4a5665;display:grid;place-items:center;cursor:pointer;}
+.av{width:30px;height:30px;border-radius:50%;background:linear-gradient(135deg,#006558,#2b9080);display:grid;place-items:center;color:#fff;font-size:10.5px;font-weight:700;margin-left:2px;}
+
+/* ── BODY ── */
+.body{display:grid;grid-template-columns:320px 1fr;min-height:0;overflow:hidden;position:relative;}
+
+/* ── SIDEBAR ── */
+.sb{display:grid;grid-template-rows:48px 1fr 118px;border-right:1px solid #e3eaed;background:#fff;min-height:0;}
+.ph{display:flex;align-items:center;gap:10px;padding:0 18px;border-bottom:1px solid #e3eaed;}
+.ph-t{font-size:12.5px;font-weight:700;color:#141e2b;flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+.hl{display:flex;align-items:center;gap:6px;color:#7d8c9a;font-size:11px;font-weight:600;white-space:nowrap;}
+.chk{width:14px;height:14px;border:1.2px solid #a8b4bc;border-radius:4px;background:#fff;flex-shrink:0;}
+.col-btn{width:28px;height:28px;border:1px solid #e3eaed;border-radius:8px;background:#fff;color:#4a5665;display:grid;place-items:center;cursor:pointer;}
+.navlist{padding:6px 18px 0;overflow:hidden;}
+.nr{height:50px;display:grid;grid-template-columns:20px 1fr auto 22px;align-items:center;gap:11px;border-bottom:1px solid #e3eaed;cursor:pointer;}
+.ni{display:grid;place-items:center;color:#007a6b;opacity:.86;}
+.nl{font-size:13px;font-weight:600;color:#141e2b;letter-spacing:-.012em;}
+.nc{font-size:11.5px;color:#7d8c9a;font-weight:600;}
+.np{width:22px;height:22px;border-radius:7px;display:grid;place-items:center;color:#007a6b;font-size:16px;font-weight:400;line-height:1;}
+.sf{background:linear-gradient(90deg,rgba(0,122,107,.06),transparent 72%);}
+.sf .nl{color:#007a6b;font-weight:700;}
+.sf.clicked{background:linear-gradient(90deg,rgba(0,122,107,.15),transparent 72%);}
+.sb-bot{padding:16px 18px 14px;background:linear-gradient(180deg,rgba(250,251,252,0) 0%,#fafbfc 100%),#fff;display:flex;flex-direction:column;gap:14px;}
+.att{width:100%;height:38px;border:0;border-radius:8px;background:linear-gradient(180deg,#0d8879,#00736a);color:#fff;display:flex;align-items:center;justify-content:center;gap:8px;font-size:12px;font-weight:700;box-shadow:0 7px 16px rgba(0,122,107,.20);font-family:inherit;}
+.met{display:grid;grid-template-columns:1fr auto auto auto;align-items:center;gap:8px;}
+.met-l{font-size:12.5px;font-weight:700;color:#141e2b;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+.met-v{font-size:12.5px;font-weight:700;color:#1e9268;}
+.badge{height:24px;padding:0 9px;border-radius:7px;background:#e7f6ef;color:#1e9268;font-size:11px;font-weight:700;display:grid;place-items:center;}
+
+/* ── WORKSPACE ── */
+.ws{display:grid;grid-template-rows:48px 1fr;min-height:0;}
+.wtb{display:flex;align-items:center;padding:0 20px;border-bottom:1px solid #e3eaed;background:rgba(255,255,255,.98);}
+.wtb-l{display:flex;align-items:center;gap:4px;padding-right:16px;border-right:1px solid #e3eaed;margin-right:18px;}
+.wtb-m{display:flex;align-items:center;gap:14px;flex:1;}
+.tsep{width:1px;height:20px;background:#e3eaed;margin:0 2px;}
+.wtb-r{display:flex;align-items:center;gap:8px;padding-left:16px;border-left:1px solid #e3eaed;margin-left:auto;}
+.msel,.lid,.zoom{min-height:30px;display:flex;align-items:center;gap:7px;font-size:12px;font-weight:600;color:#141e2b;padding:5px 10px;border-radius:8px;}
+.lid-chk{width:16px;height:16px;border-radius:5px;background:#007a6b;display:grid;place-items:center;color:#fff;flex-shrink:0;}
+.vtog{display:flex;align-items:center;padding:3px;border:1px solid #d4dde2;border-radius:999px;background:#fff;height:32px;}
+.vopt{height:24px;min-width:44px;padding:0 10px;border-radius:999px;display:flex;align-items:center;justify-content:center;gap:5px;font-size:11.5px;font-weight:700;color:#7a8997;}
+.vopt.on{background:#e8f5f2;color:#007a6b;box-shadow:inset 0 0 0 1px rgba(0,122,107,.14);}
+.scene{position:relative;overflow:hidden;min-height:0;filter:blur(3.5px);opacity:0.6;}
+
+/* ── FOOTER ── */
+.footer{display:flex;align-items:center;justify-content:space-between;padding:0 20px;border-top:1px solid #e3eaed;background:#fff;}
+.foot-l{font-size:11px;color:#7a8997;}
+.foot-r{display:flex;align-items:center;gap:24px;font-size:11px;color:#7a8997;}
+
+/* ── BACKDROP ── */
+.backdrop{position:absolute;inset:0;z-index:15;background:rgba(10,18,26,0.38);backdrop-filter:blur(0.5px);}
+
+/* ── OWNERSHIP CARD ── */
+/*
+  Card top:240px in .body → shell_y = 52(topbar) + 240 = 292
+  padding-top:24px → inner content starts at shell_y = 316
+  Title+lock row center: shell_y ≈ 331  → Node 1 target
+  Owner row center:      shell_y ≈ 383  → Node 2 target
+  Node gap = 52px — no collision
+*/
+.own-card{
+  position:absolute;
+  top:240px;
+  left:10px;
+  width:355px;
+  background:#ffffff;
+  border:1px solid #dde6ea;
+  border-radius:14px;
+  padding:24px 20px 24px;
+  z-index:20;
+  box-shadow:0 16px 48px rgba(10,20,35,.16),0 2px 8px rgba(10,20,35,.07);
+}
+.own-inner{display:flex;gap:14px;align-items:flex-start;}
+.own-step-dot{width:24px;height:24px;border-radius:50%;border:2.5px solid #007a6b;flex-shrink:0;margin-top:3px;}
+.own-body{flex:1;min-width:0;}
+
+/* Title row — lock stays RIGHT side of title row (original position) */
+.own-title-row{display:flex;align-items:center;gap:8px;margin-bottom:10px;}
+.own-title{font-size:13.5px;font-weight:700;color:#141e2b;letter-spacing:-0.015em;line-height:1.3;flex:1;min-width:0;}
+/*
+  Lock button center:
+    x: card(10)+pad(20)+dot(24)+gap(14)+body_width(277)-lock(28) = shell_x 317, center 331  → SVG_x=551
+    y: card_top(292)+pad_top(24)+half_title_row(14) = shell_y 330  → SVG_y=330
+  Connector 1 routes ABOVE the card (y=282) then drops to (551,330) — zero collision with step-dot or title text.
+*/
+.own-lock{
+  width:28px;
+  height:28px;
+  border-radius:8px;
+  border:1px solid #c8dfe8;
+  background:#f0f8f6;
+  display:grid;
+  place-items:center;
+  flex-shrink:0;
+}
+
+/* Action required */
+.own-action{
+  font-size:12px;
+  font-weight:700;
+  color:#007a6b;
+  margin-bottom:8px;
+}
+
+/* Owner row — shell_y center ≈ 383  → Node 2 */
+.own-owner-row{
+  display:flex;
+  align-items:center;
+  gap:7px;
+}
+.own-owner-dot{
+  width:9px;
+  height:9px;
+  border-radius:50%;
+  background:#007a6b;
+  flex-shrink:0;
+}
+.own-owner-name{
+  font-size:12.5px;
+  font-weight:600;
+  color:#141e2b;
+}
+
+/* Status indicator dot at top-right of card */
+.own-status{
+  position:absolute;
+  top:18px;
+  right:18px;
+  width:9px;
+  height:9px;
+  border-radius:50%;
+  background:#007a6b;
+  box-shadow:0 0 0 3px rgba(0,122,107,0.15);
+}
+</style>
+</head>
+<body>
+<div class="master">
+
+  <div class="header-block">
+    <span class="s-label">Design Decisions</span>
+    <h2 class="ui-title">Ownership and Editability States</h2>
+  </div>
+
+  <div class="content-row">
+
+    <!-- ANNOTATIONS -->
+    <div class="anns">
+      <svg class="ann-svg" viewBox="0 0 220 660" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <linearGradient id="spineGrad" x1="0" y1="0" x2="0" y2="660" gradientUnits="userSpaceOnUse">
+            <stop offset="0%"   stop-color="#D4C9BE" stop-opacity="0"/>
+            <stop offset="8%"   stop-color="#D4C9BE" stop-opacity="0.8"/>
+            <stop offset="92%"  stop-color="#D4C9BE" stop-opacity="0.8"/>
+            <stop offset="100%" stop-color="#D4C9BE" stop-opacity="0"/>
+          </linearGradient>
+        </defs>
+        <line x1="210" y1="0" x2="210" y2="660" stroke="url(#spineGrad)" stroke-width="1"/>
+
+        <!--
+          Connector 1 → Lock button
+          (157,282)→(210,282): exit annotation to spine
+          (210,282)→(210,310): drop on spine — y=310 is inside card top padding (card top=292, content=316)
+          (210,310)→(551,310): long horizontal INSIDE the white card — visible in white box, clears step dot (starts y=319) ✓
+          (551,310)→(551,318): short 8px drop to node, sitting above lock center (y=330) with gap
+          Node at (551,318)
+        -->
+        <line x1="157" y1="282" x2="210" y2="282" stroke="#C07B50" stroke-width="1" stroke-opacity="0.5"/>
+        <line x1="210" y1="282" x2="210" y2="310" stroke="#C07B50" stroke-width="1" stroke-opacity="0.5"/>
+        <line x1="210" y1="310" x2="551" y2="310" stroke="#C07B50" stroke-width="1" stroke-opacity="0.5"/>
+        <line x1="551" y1="310" x2="551" y2="318" stroke="#C07B50" stroke-width="1" stroke-opacity="0.5"/>
+        <circle cx="551" cy="318" r="4" fill="#C07B50"/>
+        <circle cx="551" cy="318" r="7" fill="#C07B50" fill-opacity="0.15"/>
+
+        <!--
+          Connector 2 → Owner name
+          Node moved from x=242 to x=284 — just before green owner dot (SVG_x≈288, shell_x=68)
+          At y=383, x=230→284 passes through empty card padding + below step-dot area ✓
+        -->
+        <line x1="157" y1="389" x2="284" y2="389" stroke="#C07B50" stroke-width="1" stroke-opacity="0.5"/>
+        <circle cx="284" cy="389" r="4" fill="#C07B50"/>
+        <circle cx="284" cy="389" r="7" fill="#C07B50" fill-opacity="0.15"/>
+      </svg>
+
+      <div class="ann" style="top:274px;">
+        <div class="ann-t">Unlocked for edit</div>
+        <div class="ann-d">Open lock showed the stage was available for revision.</div>
+      </div>
+
+      <div class="ann" style="top:381px;">
+        <div class="ann-t">Responsible owner</div>
+        <div class="ann-d">The current stakeholder was shown directly in the workflow state.</div>
+      </div>
+    </div>
+
+    <!-- SHELL -->
+    <div class="shell">
+
+      <header class="topbar">
+        <div class="tb-l">
+          <div class="brand">
+            <div class="b-icon"><i data-lucide="box" style="width:14px;height:14px;stroke-width:2"></i></div>
+            <span class="b-name">Gemini</span>
+          </div>
+          <div class="bc">
+            <a href="#">Home</a><span class="bc-sep">/</span>
+            <span class="bc-cur">2510-CUR-01078</span>
+            <span class="bc-ts">Last Edited March 04, 10:46</span>
+          </div>
+        </div>
+        <div class="tb-r">
+          <button class="ibt"><i data-lucide="message-square" style="width:15px;height:15px;stroke-width:1.8"></i></button>
+          <button class="ibt"><i data-lucide="download" style="width:15px;height:15px;stroke-width:1.8"></i></button>
+          <button class="ibt"><i data-lucide="link" style="width:15px;height:15px;stroke-width:1.8"></i></button>
+          <button class="ibt"><i data-lucide="scan" style="width:15px;height:15px;stroke-width:1.8"></i></button>
+          <div class="av">GA</div>
+        </div>
+      </header>
+
+      <div class="body">
+
+        <!-- SIDEBAR -->
+        <aside class="sb">
+          <div class="ph">
+            <div class="ph-t">2510-CUR-01078 Properties</div>
+            <label class="hl"><span class="chk"></span> Highlight</label>
+            <button class="col-btn"><i data-lucide="chevrons-left" style="width:13px;height:13px;stroke-width:2"></i></button>
+          </div>
+          <nav class="navlist">
+            <div class="nr"><div class="ni"><i data-lucide="zap" style="width:15px;height:15px;stroke-width:1.9"></i></div><div class="nl">Terminals</div><div class="nc">24</div><div class="np">+</div></div>
+            <div class="nr"><div class="ni"><i data-lucide="cpu" style="width:15px;height:15px;stroke-width:1.9"></i></div><div class="nl">BOM</div><div class="nc">8</div><div class="np">+</div></div>
+            <div class="nr"><div class="ni"><i data-lucide="settings-2" style="width:15px;height:15px;stroke-width:1.9"></i></div><div class="nl">Module Options</div><div class="nc"></div><div class="np">+</div></div>
+            <div class="nr"><div class="ni"><i data-lucide="clipboard-list" style="width:15px;height:15px;stroke-width:1.9"></i></div><div class="nl">Commercial Data</div><div class="nc"></div><div class="np">+</div></div>
+            <div class="nr sf clicked">
+              <div class="ni"><i data-lucide="check-circle-2" style="width:15px;height:15px;stroke-width:1.9"></i></div>
+              <div class="nl">Short Flow Approval</div>
+              <div class="nc"></div>
+              <div class="np">−</div>
+            </div>
+          </nav>
+          <div class="sb-bot">
+            <button class="att"><i data-lucide="link-2" style="width:14px;height:14px;stroke-width:2"></i>Attach module to project</button>
+            <div class="met">
+              <div class="met-l">Fill Ratio Capacity</div>
+              <i data-lucide="info" style="width:14px;height:14px;color:#7a8997;stroke-width:1.8"></i>
+              <div class="met-v">22%</div>
+              <div class="badge">Success</div>
+            </div>
+          </div>
+        </aside>
+
+        <!-- WORKSPACE -->
+        <section class="ws">
+          <div class="wtb">
+            <div class="wtb-l">
+              <button class="ibt"><i data-lucide="undo-2" style="width:14px;height:14px;stroke-width:1.8"></i></button>
+              <button class="ibt"><i data-lucide="redo-2" style="width:14px;height:14px;stroke-width:1.8"></i></button>
+            </div>
+            <div class="wtb-m">
+              <div class="msel"><i data-lucide="globe-2" style="width:14px;height:14px;stroke-width:1.8;color:#007a6b"></i>Customized Module<i data-lucide="chevron-down" style="width:12px;height:12px;color:#007a6b;stroke-width:2.2"></i></div>
+              <div class="tsep"></div>
+              <div class="lid"><span class="lid-chk"><i data-lucide="check" style="width:10px;height:10px;stroke-width:2.5"></i></span>Show lid</div>
+              <div class="tsep"></div>
+              <div class="vtog"><div class="vopt on"><i data-lucide="box" style="width:12px;height:12px;stroke-width:2"></i> 3D</div><div class="vopt">2D</div></div>
+            </div>
+            <div class="wtb-r">
+              <div class="zoom">83% <i data-lucide="chevron-down" style="width:12px;height:12px;color:#007a6b;stroke-width:2.2"></i></div>
+              <button class="ibt"><i data-lucide="rotate-ccw" style="width:14px;height:14px;stroke-width:1.8"></i></button>
+            </div>
+          </div>
+          <div class="scene">
+            <img src="/case-studies/gemini/model-scene-bg.png"
+                 style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block;" alt=""/>
+          </div>
+        </section>
+
+        <!-- BACKDROP -->
+        <div class="backdrop"></div>
+
+        <!-- OWNERSHIP CARD -->
+        <!--
+          Node 1 → lock icon right side of title row: SVG(551,330)
+          Connector routes above card (y=282) then drops to lock — zero collision
+          Node 2 → owner name left edge: SVG(242,383)
+        -->
+        <div class="own-card">
+          <div class="own-status"></div>
+          <div class="own-inner">
+            <div class="own-step-dot"></div>
+            <div class="own-body">
+
+              <!-- Title row: lock stays on RIGHT (original position) — Node 1 target SVG(551,330) -->
+              <div class="own-title-row">
+                <span class="own-title">Update: Requirements Gathering</span>
+                <!-- Inline SVG guarantees open/unlocked padlock state (shackle open) -->
+                <div class="own-lock">
+                  <!-- Open/unlocked padlock: shackle goes up-left and arcs right but does NOT close back down -->
+                  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#007a6b" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round">
+                    <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/>
+                    <path d="M7 11V7a5 5 0 0 1 9.9-1"/>
+                  </svg>
+                </div>
+              </div>
+
+              <div class="own-action">Action required — FAE</div>
+
+              <!-- Owner row — Node 2 target SVG(242,383) -->
+              <div class="own-owner-row">
+                <div class="own-owner-dot"></div>
+                <span class="own-owner-name">FAE: Sameer Gautam</span>
+              </div>
+
+            </div>
+          </div>
+        </div>
+
+      </div><!-- /body -->
+
+      <footer class="footer">
+        <div class="foot-l">© 2022–2026 Infineon Technologies</div>
+        <div class="foot-r"><span>Privacy Policy</span><span>Version 0.633.0</span></div>
+      </footer>
+    </div><!-- /shell -->
+
+    <div class="right-bal"></div>
+  </div>
+
+  <div class="caption-wrap">
+    <p class="caption">Lock state and owner identity were embedded directly in each timeline row, making editability and responsibility visible at the point of action.</p>
+  </div>
+
+</div>
+<script>lucide.createIcons();</script>
+</body>
+</html>

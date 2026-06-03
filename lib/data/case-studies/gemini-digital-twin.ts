@@ -264,6 +264,18 @@ export const geminiDigitalTwin: CaseStudyData = {
                 "The UI explained why editing was disabled",
               ],
             },
+          ],
+        },
+        {
+          type: "case-study-image",
+          src: "/case-studies/gemini/visualizing-ownership.png",
+          caption: "Lock state and owner identity were embedded directly in each timeline row, making editability and responsibility visible at the point of action.",
+          alt: "Gemini UI showing the Update: Requirements Gathering card with an open lock icon and owner name visible in the workflow state",
+        },
+        {
+          type: "decisions",
+          startIndex: 3,
+          items: [
             {
               heading: "Structured Rejection Feedback",
               body: "Previously, rejection feedback arrived through email conversations, forcing FAEs to interpret comments and track required changes manually. In Gemini, rejection was integrated directly into the module workflow.",
@@ -274,6 +286,12 @@ export const geminiDigitalTwin: CaseStudyData = {
               ],
             },
           ],
+        },
+        {
+          type: "case-study-image",
+          src: "/case-studies/gemini/rejection-feedback.png",
+          caption: "Rejection feedback became a structured workflow state instead of a separate email thread.",
+          alt: "Short Flow Approval panel showing Precheck: Rejected state with inline reviewer comments from Thandiwe Mangana and Gianfranco Mauro, and a Revise & Resubmit CTA",
         },
         {
           type: "callout",
