@@ -101,6 +101,28 @@ export const geminiDigitalTwin: CaseStudyData = {
             { abbr: "PJM", fullName: "Project Manager",              description: "manages design specification and production integration" },
           ],
         },
+        { type: "subheading", text: "Ownership and permission model" },
+        {
+          type: "two-col-list",
+          left: {
+            heading: "FAE / requester",
+            variant: "neutral",
+            items: [
+              { label: "Owns the module draft", detail: "Captures requirements and edits the module before submission" },
+              { label: "Receives rejected modules", detail: "A negative review returns ownership and unlocks the module for revision" },
+              { label: "Acts on visible feedback", detail: "Reviewer comments and the next action remain attached to the module" },
+            ],
+          },
+          right: {
+            heading: "Review roles",
+            variant: "neutral",
+            items: [
+              { label: "Self-assign before acting", detail: "PAE and PMG make responsibility explicit before review actions are enabled" },
+              { label: "Review a locked module", detail: "The module becomes read-only during review to prevent conflicting edits" },
+              { label: "Expose the current owner", detail: "The responsible role or person is shown alongside the workflow state" },
+            ],
+          },
+        },
         {
           type: "case-study-image",
           src: "/case-studies/gemini/context-governance.png",
@@ -203,6 +225,10 @@ export const geminiDigitalTwin: CaseStudyData = {
           text: "Each state mapped to a specific review stage and appeared directly in the module interface, helping users understand progress without relying on email or manual follow-ups.",
         },
         {
+          type: "callout",
+          text: "Short Flow was not just a UI tab. It was a role-based workflow model that made ownership, review state, editability, permissions, and next actions visible at module level.",
+        },
+        {
           type: "case-study-video",
           src: "/case-studies/gemini/solution-short-flow.mp4",
           caption: "Expanded Short Flow view showing how approval stages were surfaced inside the module interface.",
@@ -217,6 +243,23 @@ export const geminiDigitalTwin: CaseStudyData = {
         {
           type: "decisions",
           startIndex: 0,
+          items: [
+            {
+              heading: "Designing the Workflow Grammar",
+              body: "We treated workflow visibility as a connected system rather than a single status label. Each module needed to communicate five separate pieces of information that changed together as work progressed.",
+              bullets: [
+                "Stage showed where the module was in the Short Flow lifecycle",
+                "Status showed the current review outcome or condition",
+                "Owner showed who was responsible for moving the module forward",
+                "Permission showed whether the module could be edited or reviewed",
+                "Next action translated the current state into a clear task",
+              ],
+            },
+          ],
+        },
+        {
+          type: "decisions",
+          startIndex: 1,
           items: [
             {
               heading: "Role-Based Self-Assignment",
@@ -236,7 +279,24 @@ export const geminiDigitalTwin: CaseStudyData = {
         },
         {
           type: "decisions",
-          startIndex: 1,
+          startIndex: 2,
+          items: [
+            {
+              heading: "Parallel Pre-check Decision Rule",
+              body: "Pre-check required both technical input from PAE and commercial input from PMG. The workflow made their parallel decisions visible and converted the combined result into one clear module-level outcome.",
+              bullets: [
+                "PAE and PMG reviewed the module in parallel",
+                "Two positive results allowed the module to progress",
+                "Any negative result returned the module to the FAE",
+                "The module unlocked for revision and the requester was notified",
+                "Reviewer feedback remained visible and actionable inside the module",
+              ],
+            },
+          ],
+        },
+        {
+          type: "decisions",
+          startIndex: 3,
           items: [
             {
               heading: "Designing State Clarity",
@@ -252,7 +312,7 @@ export const geminiDigitalTwin: CaseStudyData = {
         },
         {
           type: "decisions",
-          startIndex: 2,
+          startIndex: 4,
           items: [
             {
               heading: "Visualizing Ownership and Editability",
@@ -274,7 +334,7 @@ export const geminiDigitalTwin: CaseStudyData = {
         },
         {
           type: "decisions",
-          startIndex: 3,
+          startIndex: 5,
           items: [
             {
               heading: "Structured Rejection Feedback",
@@ -291,7 +351,7 @@ export const geminiDigitalTwin: CaseStudyData = {
           type: "case-study-image",
           src: "/case-studies/gemini/rejection-feedback.png",
           caption: "Rejection feedback became a structured workflow state instead of a separate email thread.",
-          alt: "Short Flow Approval panel showing Precheck: Rejected state with inline reviewer comments from Thandiwe Mangana and Gianfranco Mauro, and a Revise & Resubmit CTA",
+          alt: "Short Flow Approval panel showing Pre-check: Rejected state with inline reviewer comments from Thandiwe Mangana and Gianfranco Mauro, and a Revise & Resubmit CTA",
         },
         {
           type: "callout",
@@ -331,7 +391,7 @@ export const geminiDigitalTwin: CaseStudyData = {
         },
         {
           type: "paragraph",
-          text: "Once submitted, modules entered Pre-check as read-only items. PAE and PMG reviewed each module in parallel, after which the system either moved the module forward or reopened it with structured feedback.",
+          text: "Once submitted, modules entered Pre-check as read-only items. PAE and PMG reviewed each module in parallel. Two positive results allowed progression; any negative result returned the module to the FAE, unlocked it for revision, notified the requester, and surfaced the feedback as the next actionable step.",
         },
         {
           type: "case-study-image",
