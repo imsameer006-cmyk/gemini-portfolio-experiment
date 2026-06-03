@@ -56,8 +56,8 @@ export type Block =
       after: { heading: string; items: (string | { label: string; detail: string })[] };
     }
   | { type: "image-placeholder"; caption: string; tall?: boolean }
-  | { type: "case-study-image"; src: string; caption: string; alt?: string }
-  | { type: "case-study-video"; src: string; caption: string; poster?: string };
+  | { type: "case-study-image"; src: string; caption: string; alt?: string; mobileDetail?: boolean }
+  | { type: "case-study-video"; src: string; caption: string; poster?: string; mobileDetail?: boolean; controls?: boolean };
 
 export interface CaseStudySection {
   label: string;

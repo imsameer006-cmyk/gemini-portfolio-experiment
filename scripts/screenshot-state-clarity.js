@@ -2,7 +2,7 @@ const { chromium } = require('playwright');
 const path = require('path');
 const fs = require('fs');
 
-const PAGE_URL = 'http://localhost:3000/screens/state-clarity.html';
+const PAGE_URL = 'http://localhost:3001/screens/state-clarity.html';
 const OUT_DIR  = path.join(__dirname, '..', 'public', 'case-studies', 'gemini');
 const OUT_FILE = path.join(OUT_DIR, 'state-clarity.png');
 

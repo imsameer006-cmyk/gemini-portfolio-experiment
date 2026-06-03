@@ -1,7 +1,7 @@
 const { chromium } = require('playwright');
 const path = require('path');
 
-const PAGE_URL = 'http://localhost:3000/screens/challenge-poc.html';
+const PAGE_URL = 'http://localhost:3001/screens/challenge-poc.html';
 const OUT_PATH = path.join(__dirname, '../public/case-studies/gemini/challenge-poc.png');
 
 (async () => {

@@ -8,7 +8,7 @@ const path = require('path');
     deviceScaleFactor: 2,
   });
 
-  await page.goto('http://localhost:3000/screens/interaction-flow.html', {
+  await page.goto('http://localhost:3001/screens/interaction-flow.html', {
     waitUntil: 'networkidle',
   });
 

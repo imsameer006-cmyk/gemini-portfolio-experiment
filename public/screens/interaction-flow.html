@@ -184,15 +184,33 @@ body{display:flex;align-items:center;justify-content:center;padding:48px 40px;mi
   border:1px solid #E6E3DD;
   border-radius:12px;
   padding:18px 22px 18px;
-  display:flex;flex-direction:column;gap:16px;
+  display:flex;flex-direction:column;gap:10px;
 }
 .review-title{
   text-align:center;
   font-size:12px;font-weight:600;color:#18171A;
   letter-spacing:0.2px;
 }
+.review-arrow{text-align:center;color:#B8B5AE;font-size:16px;line-height:1;}
+.decision-node{
+  align-self:center;min-width:132px;border:1.5px solid #D7D3CB;border-radius:10px;
+  padding:9px 18px;background:#F9F8F5;color:#18171A;font-size:12px;font-weight:700;text-align:center;
+}
+.branch-grid{
+  position:relative;display:grid;grid-template-columns:1fr 1fr;gap:48px;padding:22px 72px 0;
+}
+.branch-grid::before{
+  content:"";position:absolute;top:0;left:25%;right:25%;height:16px;
+  border-top:1.5px solid #B8B5AE;border-left:1.5px solid #B8B5AE;border-right:1.5px solid #B8B5AE;
+  border-radius:8px 8px 0 0;
+}
+.branch-col{display:flex;flex-direction:column;align-items:center;gap:7px;}
+.branch-label{font-size:11px;font-weight:700;letter-spacing:0.04em;text-transform:uppercase;}
+.branch-label.approve{color:#1e9268;}
+.branch-label.reject{color:#e53935;}
+.branch-arrow{color:#B8B5AE;font-size:15px;line-height:1;}
 .decision-box{
-  flex:1;
+  width:100%;
   border:1.5px solid #E6E3DD;
   border-radius:12px;
   padding:16px 16px 14px;
@@ -376,48 +394,42 @@ body{display:flex;align-items:center;justify-content:center;padding:48px 40px;mi
       <div class="review-outer">
 
         <div class="review-section">
-          <div class="review-title">Review &amp; Decision Cycle at Each Stage</div>
-          <div style="display:flex;align-items:stretch;justify-content:center;gap:0;">
-
-            <div class="decision-box approved">
-              <div class="decision-header">
-                <div class="decision-icon di-green">✓</div>
-                <span class="decision-label dl-green">Approved</span>
+          <div class="review-title">PAE + PMG Review</div>
+          <div class="review-arrow">↓</div>
+          <div class="decision-node">Decision</div>
+          <div class="branch-grid">
+            <div class="branch-col">
+              <div class="branch-label approve">Approve</div>
+              <div class="branch-arrow">↓</div>
+              <div class="decision-box approved">
+                <div class="decision-header">
+                  <div class="decision-icon di-green">✓</div>
+                  <span class="decision-label dl-green">Continue</span>
+                </div>
+                <div class="decision-desc">Both reviews are positive</div>
               </div>
-              <div class="decision-desc">Move to next stage</div>
             </div>
 
-            <div class="dec-arrow green" style="align-self:center;">→</div>
-
-            <div class="decision-box rejected">
-              <div class="decision-header">
-                <div class="decision-icon di-red">✕</div>
-                <span class="decision-label dl-red">Rejected</span>
+            <div class="branch-col">
+              <div class="branch-label reject">Reject</div>
+              <div class="branch-arrow">↓</div>
+              <div class="decision-box rejected">
+                <div class="decision-header">
+                  <div class="decision-icon di-red">✕</div>
+                  <span class="decision-label dl-red">Return to FAE</span>
+                </div>
+                <div class="decision-desc">Any negative review unlocks the module</div>
               </div>
-              <div class="decision-desc">Unlock module and provide feedback</div>
-            </div>
-
-            <div class="dec-arrow red" style="align-self:center;">→</div>
-
-            <div class="decision-box revise">
-              <div class="decision-header">
-                <div class="decision-icon di-blue">✎</div>
-                <span class="decision-label dl-blue">Revise &amp; Resubmit</span>
+              <div class="branch-arrow">↓</div>
+              <div class="decision-box revise">
+                <div class="decision-header">
+                  <div class="decision-icon di-blue">✎</div>
+                  <span class="decision-label dl-blue">Revise &amp; Resubmit</span>
+                </div>
+                <div class="decision-desc">Feedback becomes the next action</div>
               </div>
-              <div class="decision-desc">Update module based on feedback and resubmit</div>
             </div>
-
           </div>
-        </div>
-
-        <!-- RETURN ARROW: L-shaped, exits review section, goes up to pipeline -->
-        <div id="returnArrowWrap" style="width:52px;flex-shrink:0;position:relative;">
-          <svg id="returnArrowSvg" width="52" style="position:absolute;top:0;left:0;overflow:visible;" viewBox="0 0 52 200" preserveAspectRatio="none">
-            <polyline id="returnPath"
-              points="4,180 44,180 44,10"
-              fill="none" stroke="#1565c0" stroke-width="1.5" stroke-linejoin="round" stroke-linecap="round"/>
-            <polygon id="returnHead" points="39,14 44,4 49,14" fill="#1565c0"/>
-          </svg>
         </div>
 
       </div><!-- /review-outer -->
@@ -442,36 +454,6 @@ body{display:flex;align-items:center;justify-content:center;padding:48px 40px;mi
   </div>
 
 </div>
-
-<script>
-window.addEventListener('load', () => {
-  const wrap      = document.getElementById('returnArrowWrap');
-  const svg       = document.getElementById('returnArrowSvg');
-  const path      = document.getElementById('returnPath');
-  const arrowHead = document.getElementById('returnHead');
-
-  const reviewOuter = document.querySelector('.review-outer');
-  const moduleInner = document.querySelector('.module-inner');
-
-  const reviewRect = reviewOuter.getBoundingClientRect();
-  const moduleRect = moduleInner.getBoundingClientRect();
-
-  const distUp   = reviewRect.top - moduleRect.bottom;
-  const fullSpan = reviewRect.height + distUp + (moduleRect.height / 2);
-  const H        = Math.max(fullSpan + 24, 80);
-
-  svg.setAttribute('height', H);
-  svg.setAttribute('viewBox', `0 0 52 ${H}`);
-
-  const midY = reviewRect.height / 2;
-  const topY = 8;
-
-  path.setAttribute('points', `4,${midY} 44,${midY} 44,${topY}`);
-  arrowHead.setAttribute('points', `39,${topY+10} 44,${topY} 49,${topY+10}`);
-
-  wrap.style.height = H + 'px';
-});
-</script>
 
 </body>
 </html>

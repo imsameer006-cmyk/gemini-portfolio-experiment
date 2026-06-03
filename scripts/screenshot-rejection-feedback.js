@@ -8,7 +8,7 @@ const path = require('path');
     deviceScaleFactor: 2,
   });
 
-  await page.goto('http://localhost:3000/screens/rejection-feedback.html', {
+  await page.goto('http://localhost:3001/screens/rejection-feedback.html', {
     waitUntil: 'networkidle',
   });
 

@@ -527,7 +527,7 @@ function BeforeAfter({
   );
 }
 
-function Lightbox({ type = "image", src, alt, caption, onClose }: { type?: "image" | "video"; src: string; alt?: string; caption: string; onClose: () => void }) {
+function Lightbox({ type = "image", src, alt, caption, controls = false, mobileDetail = false, onClose }: { type?: "image" | "video"; src: string; alt?: string; caption: string; controls?: boolean; mobileDetail?: boolean; onClose: () => void }) {
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => { if (e.key === "Escape") onClose(); };
     document.addEventListener("keydown", onKey);
@@ -563,7 +563,7 @@ function Lightbox({ type = "image", src, alt, caption, onClose }: { type?: "imag
 
       {/* Image — stop click from bubbling to overlay */}
       <motion.div
-        className="relative z-10 flex flex-col items-center gap-4 px-6"
+        className={`relative z-10 flex flex-col gap-4 px-6 ${mobileDetail && type === "image" ? "items-start overflow-auto max-h-[82vh] sm:items-center sm:overflow-visible sm:max-h-none" : "items-center"}`}
         style={{ maxWidth: "min(1400px, 92vw)" }}
         initial={{ scale: 0.96, opacity: 0 }}
         animate={{ scale: 1, opacity: 1 }}
@@ -578,6 +578,7 @@ function Lightbox({ type = "image", src, alt, caption, onClose }: { type?: "imag
             loop
             muted
             playsInline
+            controls={controls}
             className="w-full h-auto rounded-xl"
             style={{ maxHeight: "82vh", objectFit: "contain", boxShadow: "0 24px 80px rgba(0,0,0,0.5)" }}
           />
@@ -585,8 +586,8 @@ function Lightbox({ type = "image", src, alt, caption, onClose }: { type?: "imag
           <img
             src={src}
             alt={alt}
-            className="w-full h-auto rounded-xl"
-            style={{ maxHeight: "82vh", objectFit: "contain", boxShadow: "0 24px 80px rgba(0,0,0,0.5)" }}
+            className={mobileDetail ? "w-[220vw] max-w-none h-auto rounded-xl sm:w-full sm:max-w-full sm:max-h-[82vh]" : "w-full h-auto rounded-xl"}
+            style={{ maxHeight: mobileDetail ? undefined : "82vh", objectFit: "contain", boxShadow: "0 24px 80px rgba(0,0,0,0.5)" }}
           />
         )}
         {caption && (
@@ -599,7 +600,7 @@ function Lightbox({ type = "image", src, alt, caption, onClose }: { type?: "imag
 
 import { AnimatePresence } from "framer-motion";
 
-function CaseStudyImage({ src, caption, alt }: { src: string; caption: string; alt?: string }) {
+function CaseStudyImage({ src, caption, alt, mobileDetail = false }: { src: string; caption: string; alt?: string; mobileDetail?: boolean }) {
   const [open, setOpen] = useState(false);
   return (
     <>
@@ -621,6 +622,15 @@ function CaseStudyImage({ src, caption, alt }: { src: string; caption: string; a
           />
         </div>
         <figcaption className="text-xs text-[#9C9A95] text-center leading-snug px-4">{caption}</figcaption>
+        {mobileDetail && (
+          <button
+            type="button"
+            onClick={() => setOpen(true)}
+            className="sm:hidden self-center text-xs font-medium text-[#6A6764] underline underline-offset-4"
+          >
+            Inspect full-size visual
+          </button>
+        )}
       </figure>
 
       <AnimatePresence>
@@ -629,6 +639,7 @@ function CaseStudyImage({ src, caption, alt }: { src: string; caption: string; a
             src={src}
             alt={alt ?? caption}
             caption={caption}
+            mobileDetail={mobileDetail}
             onClose={() => setOpen(false)}
           />
         )}
@@ -637,7 +648,7 @@ function CaseStudyImage({ src, caption, alt }: { src: string; caption: string; a
   );
 }
 
-function CaseStudyVideo({ src, caption, poster }: { src: string; caption: string; poster?: string }) {
+function CaseStudyVideo({ src, caption, poster, mobileDetail = false, controls = false }: { src: string; caption: string; poster?: string; mobileDetail?: boolean; controls?: boolean }) {
   const [open, setOpen] = useState(false);
   const videoRef = useRef<HTMLVideoElement>(null);
 
@@ -674,11 +685,22 @@ function CaseStudyVideo({ src, caption, poster }: { src: string; caption: string
             loop
             muted
             playsInline
+            controls={controls}
             preload="auto"
             className="w-full h-auto block"
+            onClick={(e) => controls && e.stopPropagation()}
           />
         </div>
         <figcaption className="text-xs text-[#9C9A95] text-center leading-snug px-4">{caption}</figcaption>
+        {mobileDetail && (
+          <button
+            type="button"
+            onClick={() => setOpen(true)}
+            className="sm:hidden self-center text-xs font-medium text-[#6A6764] underline underline-offset-4"
+          >
+            Inspect video full-screen
+          </button>
+        )}
       </figure>
 
       <AnimatePresence>
@@ -687,6 +709,7 @@ function CaseStudyVideo({ src, caption, poster }: { src: string; caption: string
             type="video"
             src={src}
             caption={caption}
+            controls={controls}
             onClose={() => setOpen(false)}
           />
         )}
@@ -725,8 +748,8 @@ function renderBlock(block: Block, i: number): React.ReactNode {
     case "decisions":        return <Decisions key={i} items={block.items} startIndex={block.startIndex ?? 0} />;
     case "before-after":     return <BeforeAfter key={i} before={block.before} after={block.after} />;
     case "image-placeholder":return <ImagePlaceholder key={i} caption={block.caption} tall={block.tall} />;
-    case "case-study-image": return <CaseStudyImage key={i} src={block.src} caption={block.caption} alt={block.alt} />;
-    case "case-study-video": return <CaseStudyVideo key={i} src={block.src} caption={block.caption} poster={block.poster} />;
+    case "case-study-image": return <CaseStudyImage key={i} src={block.src} caption={block.caption} alt={block.alt} mobileDetail={block.mobileDetail} />;
+    case "case-study-video": return <CaseStudyVideo key={i} src={block.src} caption={block.caption} poster={block.poster} mobileDetail={block.mobileDetail} controls={block.controls} />;
     default:                 return null;
   }
 }

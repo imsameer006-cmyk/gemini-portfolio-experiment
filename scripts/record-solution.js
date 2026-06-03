@@ -5,7 +5,7 @@ const ffmpegPath = require('ffmpeg-static');
 const { execSync } = require('child_process');
 
 // ?rec=1 applies layout CSS before first render — no layout shift
-const PAGE_URL  = 'http://localhost:3000/screens/solution-short-flow.html?rec=1';
+const PAGE_URL  = 'http://localhost:3001/screens/solution-short-flow.html?rec=1';
 const OUT_DIR   = path.join(__dirname, '..', 'public', 'case-studies', 'gemini');
 const OUT_MP4   = path.join(OUT_DIR, 'solution-short-flow.mp4');
 const TEMP_DIR  = path.join(__dirname, '..', '.playwright-videos');
@@ -49,7 +49,9 @@ const TRIM_START = 0.3;   // seconds: trim to cut any leading blank frames
   await page.waitForTimeout(SETTLE_MS);
 
   // Trigger animation
-  await page.evaluate(() => window.__startAnimation());
+  await page.evaluate(() => {
+    window.__startAnimation();
+  });
   console.log(`Recording ${(ANIM_MS / 1000).toFixed(1)}s of animation…`);
   await page.waitForTimeout(ANIM_MS);
 

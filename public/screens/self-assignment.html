@@ -92,7 +92,7 @@ body{display:flex;align-items:center;justify-content:center;padding:40px;min-hei
 .vtog{display:flex;align-items:center;padding:3px;border:1px solid #d4dde2;border-radius:999px;background:#fff;height:32px;}
 .vopt{height:24px;min-width:44px;padding:0 10px;border-radius:999px;display:flex;align-items:center;justify-content:center;gap:5px;font-size:11.5px;font-weight:700;color:#7a8997;}
 .vopt.on{background:#e8f5f2;color:#007a6b;box-shadow:inset 0 0 0 1px rgba(0,122,107,.14);}
-.scene{position:relative;overflow:hidden;min-height:0;filter:blur(3.5px);opacity:0.6;}
+.scene{position:relative;overflow:hidden;min-height:0;}
 
 /* ── FOOTER ── */
 .footer{display:flex;align-items:center;justify-content:space-between;padding:0 20px;border-top:1px solid #e3eaed;background:#fff;}
@@ -148,6 +148,15 @@ body{display:flex;align-items:center;justify-content:center;padding:40px;min-hei
 .btn-reject{flex:1;height:34px;border:1px solid #e3eaed;border-radius:8px;background:#fff;color:#4a5665;font-size:12px;font-weight:600;font-family:inherit;cursor:pointer;}
 .btn-approve{flex:1;height:34px;border:0;border-radius:8px;background:#dce5e7;color:#a0b0b8;font-size:12px;font-weight:700;font-family:inherit;cursor:pointer;transition:background 0.45s ease,color 0.45s ease,box-shadow 0.45s ease,filter 0.15s ease,transform 0.15s ease;}
 .btn-approve.active{background:linear-gradient(180deg,#0d8879,#00736a);color:#fff;box-shadow:0 4px 14px rgba(0,122,107,.24);}
+.btn-reject:disabled,.btn-approve:disabled{cursor:not-allowed;opacity:.55;}
+.btn-approve.active:disabled{opacity:1;cursor:default;}
+
+.approval-result{display:none;border:1px solid #b2d9d2;border-radius:8px;background:#f2faf8;padding:10px 11px;margin-bottom:12px;}
+.approval-result.visible{display:block;}
+.result-confirmation{font-size:11.5px;font-weight:700;color:#007a6b;margin-bottom:8px;}
+.result-grid{display:grid;grid-template-columns:68px 1fr;gap:4px 8px;font-size:10.5px;line-height:1.35;}
+.result-label{color:#7d8c9a;}
+.result-value{color:#141e2b;font-weight:600;}
 
 /* mini timeline */
 .tl-divider{height:1px;background:#e3eaed;margin-bottom:10px;}
@@ -296,7 +305,7 @@ body{display:flex;align-items:center;justify-content:center;padding:40px;min-hei
             <div class="sfp-min">−</div>
           </div>
 
-          <div class="f-heading">Precheck Approval</div>
+          <div class="f-heading">Pre-check Approval</div>
           <div class="f-desc">Approve technical validity based on package, chips and technology.</div>
 
           <label class="f-label">Assigned PMG</label>
@@ -314,8 +323,17 @@ body{display:flex;align-items:center;justify-content:center;padding:40px;min-hei
           <textarea class="comment-area" id="commentArea" placeholder="Editable by assigned users" disabled></textarea>
 
           <div class="action-row">
-            <button class="btn-reject">Reject</button>
-            <button class="btn-approve" id="approveBtn">Approve</button>
+            <button class="btn-reject" id="rejectBtn" disabled>Reject</button>
+            <button class="btn-approve" id="approveBtn" disabled>Approve</button>
+          </div>
+
+          <div class="approval-result" id="approvalResult" aria-live="polite">
+            <div class="result-confirmation">PAE decision recorded. Waiting for PMG review.</div>
+            <div class="result-grid">
+              <span class="result-label">Stage</span><span class="result-value">Pre-check</span>
+              <span class="result-label">Status</span><span class="result-value">PAE approved · PMG pending</span>
+              <span class="result-label">Owner</span><span class="result-value">PAE · Sameer Gautam</span>
+            </div>
           </div>
 
           <div class="tl-divider"></div>
@@ -356,10 +374,35 @@ body{display:flex;align-items:center;justify-content:center;padding:40px;min-hei
   const assignBtn      = document.getElementById('assignBtn');
   const commentArea    = document.getElementById('commentArea');
   const approveBtn     = document.getElementById('approveBtn');
+  const rejectBtn      = document.getElementById('rejectBtn');
+  const approvalResult = document.getElementById('approvalResult');
   const annText        = document.getElementById('annText');
   const connectorGroup = document.getElementById('connectorGroup');
 
   function wait(ms){ return new Promise(r => setTimeout(r, ms)); }
+
+  function applyAssignment(){
+    paeText.textContent = 'Sameer Gautam';
+    paeField.classList.add('assigned');
+    assignBtn.classList.add('gone');
+    commentArea.disabled = false;
+    commentArea.classList.add('active');
+    approveBtn.disabled = false;
+    rejectBtn.disabled = false;
+    approveBtn.classList.add('active');
+  }
+
+  function applyApproval(){
+    if(approveBtn.disabled) return;
+    approveBtn.textContent = 'Approved';
+    approveBtn.disabled = true;
+    rejectBtn.disabled = true;
+    commentArea.disabled = true;
+    approvalResult.classList.add('visible');
+  }
+
+  assignBtn.addEventListener('click', applyAssignment);
+  approveBtn.addEventListener('click', applyApproval);
 
   function moveTo(x, y, ms){
     ms = ms || 600;
@@ -421,15 +464,7 @@ body{display:flex;align-items:center;justify-content:center;padding:40px;min-hei
     await click();
 
     // PAE field fills with name
-    paeText.textContent = 'Sameer Gautam';
-    paeField.classList.add('assigned');
-    assignBtn.classList.add('gone');
-
-    // Staggered unlock of remaining actions
-    await wait(300);
-    commentArea.classList.add('active');
-    await wait(200);
-    approveBtn.classList.add('active');
+    applyAssignment();
 
     // Brief hold — viewer sees the fully unlocked form
     await wait(1400);
@@ -448,12 +483,15 @@ body{display:flex;align-items:center;justify-content:center;padding:40px;min-hei
     approveBtn.style.transform = '';
 
     // ── STEP 7: close panel + backdrop ──
-    await wait(120);
+    applyApproval();
+    await wait(2400);
     panel.classList.remove('visible');
     backdrop.classList.remove('visible');
-
-    // Hold on the clean interface so viewer sees the outcome
-    await wait(1400);
+    annText.classList.remove('show');
+    connectorGroup.classList.remove('show');
+    sfTab.classList.remove('clicked');
+    sfToggle.textContent = '+';
+    await wait(1800);
   };
 })();
 </script>

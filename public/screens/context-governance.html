@@ -38,14 +38,13 @@ body{
   display:flex;
   flex-direction:row;
   align-items:flex-start;
+  justify-content:center;
   width:100%;
 }
 
-.left-space{ width:220px; flex-shrink:0; }
-.right-bal{ width:180px; flex-shrink:0; }
-
 .header-block{
-  padding-left:220px;
+  width:1150px;
+  align-self:center;
   margin-bottom:20px;
   display:flex;
   flex-direction:column;
@@ -91,8 +90,6 @@ body{
   </div>
 
   <div class="content-row">
-    <div class="left-space"></div>
-
     <div class="diagram-canvas">
     <svg width="1150" height="660" viewBox="0 0 1150 660" xmlns="http://www.w3.org/2000/svg">
       <defs>
@@ -100,6 +97,7 @@ body{
           <path d="M2 2L8 5L2 8" fill="none" stroke="#C4CDD2" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
         </marker>
       </defs>
+      <g transform="translate(-20 0)">
 
       <!-- ── PROJECT ALPHA CARD ── -->
       <rect x="450" y="44" width="290" height="68" rx="12" fill="#fff" stroke="#E3EAED" stroke-width="1"/>
@@ -257,10 +255,9 @@ body{
       <text x="897" y="585" font-family="Inter,sans-serif" font-size="12" font-weight="600" fill="#141e2b" letter-spacing="-0.012em">PJM</text>
       <text x="897" y="600" font-family="Inter,sans-serif" font-size="11" font-weight="400" fill="#7d8c9a">Design spec &amp; integration</text>
 
+      </g>
     </svg>
     </div>
-
-    <div class="right-bal"></div>
   </div>
 
 </div>

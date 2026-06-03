@@ -17,9 +17,9 @@ export const geminiDigitalTwin: CaseStudyData = {
         {
           type: "meta-grid",
           fields: [
-            { label: "Year", value: "2024" },
+            { label: "Year", value: "2025-26" },
             { label: "Role", value: "UX Designer (co-lead)" },
-            { label: "Product", value: "Pre-check · Digital Twin" },
+            { label: "Product", value: "Gemini - Digital Twin" },
             { label: "Domain", value: "B2B" },
             { label: "Users", value: "FAE, PAE, PMG, PJM" },
             { label: "Scope", value: "MVP" },
@@ -74,6 +74,7 @@ export const geminiDigitalTwin: CaseStudyData = {
         {
           type: "case-study-image",
           src: "/case-studies/gemini/challenge-poc.png",
+          mobileDetail: true,
           caption: "Existing interface (PoC) — Module customization before workflow integration",
           alt: "Gemini existing interface showing the module customization PoC with annotated pain points",
         },
@@ -126,6 +127,7 @@ export const geminiDigitalTwin: CaseStudyData = {
         {
           type: "case-study-image",
           src: "/case-studies/gemini/context-governance.png",
+          mobileDetail: true,
           caption: "Project-Level View of Module Governance — A single project with multiple modules, each moving through different approval stages with different role ownership",
           alt: "Diagram showing Project Alpha containing three modules at different approval stages, each connected to siloed external tools",
         },
@@ -231,6 +233,8 @@ export const geminiDigitalTwin: CaseStudyData = {
         {
           type: "case-study-video",
           src: "/case-studies/gemini/solution-short-flow.mp4",
+          mobileDetail: true,
+          controls: true,
           caption: "Expanded Short Flow view showing how approval stages were surfaced inside the module interface.",
         },
       ],
@@ -275,6 +279,8 @@ export const geminiDigitalTwin: CaseStudyData = {
         {
           type: "case-study-video",
           src: "/case-studies/gemini/self-assignment.mp4",
+          mobileDetail: true,
+          controls: true,
           caption: "Self-assignment made ownership explicit before review actions became available.",
         },
         {
@@ -307,6 +313,7 @@ export const geminiDigitalTwin: CaseStudyData = {
         {
           type: "case-study-image",
           src: "/case-studies/gemini/state-clarity.png",
+          mobileDetail: true,
           caption: "State indicators combined icon, color, and text labels to make module progress understandable at a glance.",
           alt: "Short Flow Approval timeline panel showing Completed, Rejected, and Reopened states with annotated callouts",
         },
@@ -329,6 +336,7 @@ export const geminiDigitalTwin: CaseStudyData = {
         {
           type: "case-study-image",
           src: "/case-studies/gemini/visualizing-ownership.png",
+          mobileDetail: true,
           caption: "Lock state and owner identity were embedded directly in each timeline row, making editability and responsibility visible at the point of action.",
           alt: "Gemini UI showing the Update: Requirements Gathering card with an open lock icon and owner name visible in the workflow state",
         },
@@ -350,6 +358,7 @@ export const geminiDigitalTwin: CaseStudyData = {
         {
           type: "case-study-image",
           src: "/case-studies/gemini/rejection-feedback.png",
+          mobileDetail: true,
           caption: "Rejection feedback became a structured workflow state instead of a separate email thread.",
           alt: "Short Flow Approval panel showing Pre-check: Rejected state with inline reviewer comments from Thandiwe Mangana and Gianfranco Mauro, and a Revise & Resubmit CTA",
         },
@@ -375,6 +384,7 @@ export const geminiDigitalTwin: CaseStudyData = {
         {
           type: "case-study-image",
           src: "/case-studies/gemini/architecture-module-workflow.png",
+          mobileDetail: true,
           caption: "Module-Level Workflow Architecture — Each module maintained its own workflow state, owner, editability, and feedback, allowing approvals to progress independently within the same project",
           alt: "Diagram showing Project Alpha containing three modules at different approval stages — Module A Approved, Module B Rejected at Pre-check, Module C In Progress at RS Generation — each with independent state, owner, editability, and feedback properties",
         },
@@ -396,8 +406,9 @@ export const geminiDigitalTwin: CaseStudyData = {
         {
           type: "case-study-image",
           src: "/case-studies/gemini/interaction-flow.png",
-          caption: "Project-to-Module Interaction Flow — A project-level submission triggered module-level progression through the full Short Flow lifecycle",
-          alt: "Diagram showing a project-level submission triggering module-level progression through the Short Flow lifecycle, with a Review and Decision Cycle showing Approved, Rejected, and Revise and Resubmit states",
+          mobileDetail: true,
+          caption: "Project-to-Module Interaction Flow — PAE and PMG review in parallel, then the combined decision either continues the module or returns it to FAE for revision",
+          alt: "Diagram showing project-level submission and a conditional PAE and PMG review decision: approve continues the module, while reject returns it to FAE for revision and resubmission",
         },
       ],
     },
