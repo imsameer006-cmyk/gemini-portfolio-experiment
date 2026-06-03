@@ -1,0 +1,479 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Gemini — Project-to-Module Interaction Flow</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700&family=Instrument+Serif:ital@1&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+html,body{
+  width:100%;min-height:100%;
+  font-family:"Inter",system-ui,sans-serif;
+  -webkit-font-smoothing:antialiased;
+  background:#EDEAE4; /* warmer/darker beige matching website */
+}
+body{display:flex;align-items:center;justify-content:center;padding:48px 40px;min-height:100vh;}
+
+.master{
+  width:1100px;
+  background:#EDEAE4;
+  border-radius:16px;
+  padding:40px 40px 36px;
+  display:flex;flex-direction:column;gap:0;
+}
+
+/* Label + Title */
+.s-label{
+  font-size:11px;font-weight:500;letter-spacing:1.4px;
+  text-transform:uppercase;color:#8C8B84;margin-bottom:10px;
+}
+.s-title{
+  font-family:"Instrument Serif",Georgia,serif;
+  font-size:27px;font-style:italic;font-weight:400;
+  color:#18171A;margin-bottom:32px;
+}
+
+/* WHITE CARD — with shadow for elevation */
+.card{
+  background:#fff;
+  border:1px solid #E6E3DD;
+  border-radius:18px;
+  padding:36px 32px 28px;
+  display:flex;flex-direction:column;gap:24px;
+  box-shadow:0 2px 12px rgba(0,0,0,0.06), 0 1px 3px rgba(0,0,0,0.04);
+}
+
+/* ── TOP ROW ── */
+.top-row{display:flex;align-items:stretch;gap:0;}
+
+/* PROJECT LEVEL */
+.project-section{
+  display:flex;flex-direction:column;gap:0;
+  flex-shrink:0;
+}
+.level-badge{
+  display:inline-flex;align-items:center;
+  border:1px solid #E6E3DD;border-radius:6px;
+  padding:3px 10px;
+  font-size:11px;font-weight:600;color:#18171A;
+  background:#fff;margin-bottom:14px;
+  align-self:flex-start;
+}
+.proj-steps{display:flex;align-items:center;gap:0;}
+.proj-step{
+  width:152px;
+  border:1.5px solid #E6E3DD;
+  border-radius:12px;
+  padding:18px 14px;
+  display:flex;flex-direction:column;align-items:center;gap:10px;
+  text-align:center;
+  background:#fff;
+}
+.proj-step.active{border-color:#1565c0;}
+.step-icon{
+  width:36px;height:36px;border-radius:8px;
+  display:grid;place-items:center;
+}
+.step-icon.green{background:#eaf6f3;color:#1e9268;}
+.step-icon.blue{background:#e3f2fd;color:#1565c0;}
+.step-num{font-size:12px;font-weight:700;color:#18171A;}
+.step-desc{font-size:11px;color:#9B9A93;line-height:1.45;}
+
+.proj-arrow{
+  display:flex;align-items:center;
+  padding:0 10px;
+  color:#C4C2BB;font-size:16px;
+  align-self:center;
+  margin-top:22px;
+}
+
+/* MODULE LEVEL */
+.module-section{
+  flex:1;
+  display:flex;flex-direction:column;gap:0;
+  margin-left:10px;
+}
+.module-level-badge{
+  display:inline-flex;align-items:center;
+  border:1.5px dashed #1565c0;border-radius:6px;
+  padding:3px 12px;
+  font-size:11px;font-weight:600;color:#1565c0;
+  background:#fff;margin-bottom:14px;
+  align-self:flex-end;
+}
+.module-inner{
+  border:1.5px dashed #c5d8f0;
+  border-radius:12px;
+  padding:22px 18px 16px;
+  display:flex;flex-direction:column;gap:16px;
+  flex:1;
+}
+
+/* ── STAGE CIRCLES — outlined with numbers, matching website style ── */
+.stages-row{
+  display:flex;align-items:flex-start;justify-content:space-between;
+  gap:0;
+}
+.stage-item{
+  display:flex;flex-direction:column;align-items:center;gap:8px;
+  flex:1;
+}
+.stage-circle{
+  width:36px;height:36px;border-radius:50%;
+  display:grid;place-items:center;
+  flex-shrink:0;
+  font-size:13px;font-weight:600;
+  background:#fff;
+}
+/* Outlined style: border only, number inside, color per stage */
+.sc-green  {border:2px solid #1e9268; color:#1e9268;}
+.sc-blue   {border:2px solid #1565c0; color:#1565c0;}
+.sc-orange {border:2px solid #e65100; color:#e65100;}
+.sc-purple {border:2px solid #7b1fa2; color:#7b1fa2;}
+
+.stage-arrow{
+  color:#D4D2CB;font-size:13px;flex-shrink:0;
+  margin-top:10px;
+}
+.stage-label{
+  font-size:10px;font-weight:500;color:#4a4744;
+  text-align:center;white-space:nowrap;line-height:1.3;
+}
+.stage-label.highlight{color:#1565c0;font-weight:700;}
+
+/* ── PROGRESS TRACK — continuous line with dots, matching website ── */
+.progress-track{
+  position:relative;
+  display:flex;align-items:center;
+  padding:0 8px;
+  height:14px;
+}
+.progress-line-bg{
+  position:absolute;left:8px;right:8px;
+  height:1.5px;background:#E6E3DD;
+  top:50%;transform:translateY(-50%);
+}
+.progress-dots{
+  position:relative;z-index:1;
+  display:flex;align-items:center;justify-content:space-between;
+  width:100%;
+}
+.pdot{
+  width:8px;height:8px;border-radius:50%;
+  background:#D4D2CB;flex-shrink:0;
+}
+
+/* down arrow */
+.down-arrow-wrap{
+  display:flex;justify-content:center;
+  padding:4px 0;
+}
+
+/* ── REVIEW & DECISION CYCLE ── */
+.review-outer{
+  display:flex;
+  align-items:stretch;
+  gap:0;
+  position:relative;
+}
+.review-section{
+  flex:1;
+  border:1px solid #E6E3DD;
+  border-radius:12px;
+  padding:18px 22px 18px;
+  display:flex;flex-direction:column;gap:16px;
+}
+.review-title{
+  text-align:center;
+  font-size:12px;font-weight:600;color:#18171A;
+  letter-spacing:0.2px;
+}
+.decision-box{
+  flex:1;
+  border:1.5px solid #E6E3DD;
+  border-radius:12px;
+  padding:16px 16px 14px;
+  display:flex;flex-direction:column;gap:7px;
+  background:#fff;
+}
+.decision-box.approved{border-color:#c8e6c9;}
+.decision-box.rejected{border-color:#ffcdd2;}
+.decision-box.revise  {border-color:#bbdefb;}
+
+.decision-header{display:flex;align-items:center;gap:8px;}
+.decision-icon{
+  width:24px;height:24px;border-radius:50%;
+  display:grid;place-items:center;
+  font-size:12px;color:#fff;flex-shrink:0;
+}
+.di-green{background:#1e9268;}
+.di-red  {background:#e53935;}
+.di-blue {background:#1565c0;}
+.decision-label{font-size:13px;font-weight:700;}
+.dl-green{color:#1e9268;}
+.dl-red  {color:#e53935;}
+.dl-blue {color:#1565c0;}
+.decision-desc{font-size:11px;color:#9B9A93;line-height:1.45;padding-left:32px;}
+
+.dec-arrow{
+  display:flex;align-items:center;
+  padding:0 12px;font-size:15px;
+  flex-shrink:0;
+}
+.dec-arrow.green{color:#1e9268;}
+.dec-arrow.red  {color:#e53935;}
+
+/* ── CORE PRINCIPLE ── */
+.principle-bar{
+  background:#F9F8F5;
+  border:1px solid #E6E3DD;
+  border-radius:12px;
+  padding:18px 22px;
+  display:flex;align-items:flex-start;gap:16px;
+}
+.principle-icon{
+  width:38px;height:38px;border-radius:50%;
+  background:#FBF5EF;border:1.5px solid #EDD9C8;
+  display:grid;place-items:center;
+  color:#C07B50;flex-shrink:0;
+}
+.principle-label{font-size:13px;font-weight:700;color:#C07B50;margin-bottom:5px;}
+.principle-text{font-size:12px;color:#4a4744;line-height:1.65;}
+
+/* caption */
+.caption{
+  margin-top:18px;text-align:center;
+  font-size:11.5px;font-weight:500;
+  color:rgba(24,23,26,0.4);line-height:1.6;
+}
+
+.flow-wrapper{
+  display:flex;flex-direction:column;gap:0;position:relative;
+}
+</style>
+</head>
+<body>
+<div class="master">
+
+  <div class="s-label">Interaction Flow</div>
+  <div class="s-title">Project-to-Module Interaction Flow</div>
+
+  <div class="card">
+    <div class="flow-wrapper">
+
+      <!-- TOP ROW -->
+      <div class="top-row">
+
+        <!-- PROJECT LEVEL -->
+        <div class="project-section">
+          <div class="level-badge">Project Level</div>
+          <div class="proj-steps">
+            <div class="proj-step">
+              <div class="step-icon green">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/>
+                  <polyline points="14 2 14 8 20 8"/>
+                  <polyline points="9 15 11 17 15 13"/>
+                </svg>
+              </div>
+              <div class="step-num">1. Submit Project</div>
+              <div class="step-desc">Project submission triggers the workflow</div>
+            </div>
+            <div class="proj-arrow">→</div>
+            <div class="proj-step active">
+              <div class="step-icon blue">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M22 19a2 2 0 01-2 2H4a2 2 0 01-2-2V5a2 2 0 012-2h5l2 3h9a2 2 0 012 2z"/>
+                </svg>
+              </div>
+              <div class="step-num">2. Modules Enter Short Flow</div>
+              <div class="step-desc">Modules are locked and enter the workflow</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="proj-arrow" style="margin-top:24px;">→</div>
+
+        <!-- MODULE LEVEL -->
+        <div class="module-section">
+          <div style="display:flex;justify-content:flex-end;">
+            <div class="module-level-badge">Module Level</div>
+          </div>
+          <div class="module-inner">
+            <div class="stages-row">
+              <div class="stage-item">
+                <div class="stage-circle sc-green">1</div>
+                <div class="stage-label">Draft</div>
+              </div>
+              <div class="stage-arrow">→</div>
+              <div class="stage-item">
+                <div class="stage-circle sc-blue">2</div>
+                <div class="stage-label highlight">Pre-check</div>
+              </div>
+              <div class="stage-arrow">→</div>
+              <div class="stage-item">
+                <div class="stage-circle sc-orange">3</div>
+                <div class="stage-label">Feasibility</div>
+              </div>
+              <div class="stage-arrow">→</div>
+              <div class="stage-item">
+                <div class="stage-circle sc-purple">4</div>
+                <div class="stage-label">RS Generation</div>
+              </div>
+              <div class="stage-arrow">→</div>
+              <div class="stage-item">
+                <div class="stage-circle sc-purple">5</div>
+                <div class="stage-label">RS Acceptance</div>
+              </div>
+              <div class="stage-arrow">→</div>
+              <div class="stage-item">
+                <div class="stage-circle sc-orange">6</div>
+                <div class="stage-label">DS Generation</div>
+              </div>
+              <div class="stage-arrow">→</div>
+              <div class="stage-item">
+                <div class="stage-circle sc-orange">7</div>
+                <div class="stage-label">DS Acceptance</div>
+              </div>
+              <div class="stage-arrow">→</div>
+              <div class="stage-item">
+                <div class="stage-circle sc-green">8</div>
+                <div class="stage-label">Production</div>
+              </div>
+            </div>
+
+            <!-- Continuous progress track -->
+            <div class="progress-track">
+              <div class="progress-line-bg"></div>
+              <div class="progress-dots">
+                <div class="pdot"></div>
+                <div class="pdot"></div>
+                <div class="pdot"></div>
+                <div class="pdot"></div>
+                <div class="pdot"></div>
+                <div class="pdot"></div>
+                <div class="pdot"></div>
+                <div class="pdot"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div><!-- /top-row -->
+
+      <!-- DOWN ARROW -->
+      <div class="down-arrow-wrap">
+        <svg width="14" height="28" viewBox="0 0 14 28">
+          <line x1="7" y1="0" x2="7" y2="22" stroke="#B8B5AE" stroke-width="1.5"/>
+          <polygon points="3,19 7,27 11,19" fill="#B8B5AE"/>
+        </svg>
+      </div>
+
+      <!-- REVIEW OUTER -->
+      <div class="review-outer">
+
+        <div class="review-section">
+          <div class="review-title">Review &amp; Decision Cycle at Each Stage</div>
+          <div style="display:flex;align-items:stretch;justify-content:center;gap:0;">
+
+            <div class="decision-box approved">
+              <div class="decision-header">
+                <div class="decision-icon di-green">✓</div>
+                <span class="decision-label dl-green">Approved</span>
+              </div>
+              <div class="decision-desc">Move to next stage</div>
+            </div>
+
+            <div class="dec-arrow green" style="align-self:center;">→</div>
+
+            <div class="decision-box rejected">
+              <div class="decision-header">
+                <div class="decision-icon di-red">✕</div>
+                <span class="decision-label dl-red">Rejected</span>
+              </div>
+              <div class="decision-desc">Unlock module and provide feedback</div>
+            </div>
+
+            <div class="dec-arrow red" style="align-self:center;">→</div>
+
+            <div class="decision-box revise">
+              <div class="decision-header">
+                <div class="decision-icon di-blue">✎</div>
+                <span class="decision-label dl-blue">Revise &amp; Resubmit</span>
+              </div>
+              <div class="decision-desc">Update module based on feedback and resubmit</div>
+            </div>
+
+          </div>
+        </div>
+
+        <!-- RETURN ARROW: L-shaped, exits review section, goes up to pipeline -->
+        <div id="returnArrowWrap" style="width:52px;flex-shrink:0;position:relative;">
+          <svg id="returnArrowSvg" width="52" style="position:absolute;top:0;left:0;overflow:visible;" viewBox="0 0 52 200" preserveAspectRatio="none">
+            <polyline id="returnPath"
+              points="4,180 44,180 44,10"
+              fill="none" stroke="#1565c0" stroke-width="1.5" stroke-linejoin="round" stroke-linecap="round"/>
+            <polygon id="returnHead" points="39,14 44,4 49,14" fill="#1565c0"/>
+          </svg>
+        </div>
+
+      </div><!-- /review-outer -->
+
+    </div><!-- /flow-wrapper -->
+
+    <!-- CORE PRINCIPLE -->
+    <div class="principle-bar">
+      <div class="principle-icon">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#C07B50" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="12" cy="12" r="10"/>
+          <circle cx="12" cy="12" r="6"/>
+          <circle cx="12" cy="12" r="2"/>
+        </svg>
+      </div>
+      <div>
+        <div class="principle-label">Core Principle</div>
+        <div class="principle-text">Each module moves forward when approved, or returns to the same stage for revision when rejected.<br>This ensures independent progress without blocking the entire project.</div>
+      </div>
+    </div>
+
+  </div>
+
+  <p class="caption">A project-level submission triggered module-level progression through the full Short Flow lifecycle.</p>
+
+</div>
+
+<script>
+window.addEventListener('load', () => {
+  const wrap      = document.getElementById('returnArrowWrap');
+  const svg       = document.getElementById('returnArrowSvg');
+  const path      = document.getElementById('returnPath');
+  const arrowHead = document.getElementById('returnHead');
+
+  const reviewOuter = document.querySelector('.review-outer');
+  const moduleInner = document.querySelector('.module-inner');
+
+  const reviewRect = reviewOuter.getBoundingClientRect();
+  const moduleRect = moduleInner.getBoundingClientRect();
+
+  const distUp   = reviewRect.top - moduleRect.bottom;
+  const fullSpan = reviewRect.height + distUp + (moduleRect.height / 2);
+  const H        = Math.max(fullSpan + 24, 80);
+
+  svg.setAttribute('height', H);
+  svg.setAttribute('viewBox', `0 0 52 ${H}`);
+
+  const midY = reviewRect.height / 2;
+  const topY = 8;
+
+  path.setAttribute('points', `4,${midY} 44,${midY} 44,${topY}`);
+  arrowHead.setAttribute('points', `39,${topY+10} 44,${topY} 49,${topY+10}`);
+
+  wrap.style.height = H + 'px';
+});
+</script>
+
+</body>
+</html>

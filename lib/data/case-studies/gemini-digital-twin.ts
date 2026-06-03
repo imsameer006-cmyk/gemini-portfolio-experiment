@@ -334,9 +334,10 @@ export const geminiDigitalTwin: CaseStudyData = {
           text: "Once submitted, modules entered Pre-check as read-only items. PAE and PMG reviewed each module in parallel, after which the system either moved the module forward or reopened it with structured feedback.",
         },
         {
-          type: "image-placeholder",
+          type: "case-study-image",
+          src: "/case-studies/gemini/interaction-flow.png",
           caption: "Project-to-Module Interaction Flow — A project-level submission triggered module-level progression through the full Short Flow lifecycle",
-          tall: true,
+          alt: "Diagram showing a project-level submission triggering module-level progression through the Short Flow lifecycle, with a Review and Decision Cycle showing Approved, Rejected, and Revise and Resubmit states",
         },
       ],
     },
