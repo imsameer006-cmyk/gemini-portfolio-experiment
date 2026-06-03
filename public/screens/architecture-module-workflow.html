@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Gemini — Module-Level Workflow Architecture</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+<script src="https://unpkg.com/lucide@latest"></script>
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+html,body{
+  width:100%;min-height:100%;
+  font-family:"Inter",system-ui,sans-serif;
+  -webkit-font-smoothing:antialiased;
+  background:#F9F8F5;
+}
+body{display:flex;align-items:center;justify-content:center;padding:40px;min-height:100vh;}
+.master{
+  width:1550px;display:flex;flex-direction:column;align-items:flex-start;
+  background:#F9F8F5;border:1px solid #E6E3DD;border-radius:16px;padding:48px 40px 40px;
+}
+.content-row{display:flex;flex-direction:row;align-items:flex-start;width:100%;}
+.left-space{width:220px;flex-shrink:0;}
+.right-bal{width:180px;flex-shrink:0;}
+.header-block{padding-left:220px;margin-bottom:20px;display:flex;flex-direction:column;gap:8px;}
+.s-label{font-size:12px;font-weight:500;letter-spacing:1.2px;text-transform:uppercase;color:#8C8B84;}
+.ui-title{font-family:"Instrument Serif",Georgia,serif;font-size:22px;font-weight:400;font-style:italic;color:#18171A;line-height:1.2;}
+.caption-wrap{padding-left:220px;width:calc(220px + 1150px);margin-top:14px;}
+.caption{width:1150px;text-align:center;font-size:12px;font-weight:500;color:rgba(24,23,26,0.45);line-height:1.5;letter-spacing:0.01em;}
+
+/* ── CANVAS ── */
+.diagram-canvas{
+  width:1150px;height:660px;flex-shrink:0;
+  background:linear-gradient(150deg,#0d6b5e 0%,#0a5449 100%);
+  border:1px solid #d5dee2;border-radius:20px;overflow:hidden;
+  box-shadow:0 12px 40px rgba(10,20,35,.10),0 2px 8px rgba(10,20,35,.06);
+  position:relative;z-index:5;
+}
+
+/* ── ARCH PANEL ── */
+.arch-panel{
+  position:absolute;inset:26px;
+  background:#fff;border-radius:14px;
+  box-shadow:0 8px 32px rgba(10,20,35,.14),0 1px 6px rgba(10,20,35,.07);
+  padding:24px 26px 18px;
+  display:flex;flex-direction:column;
+}
+
+/* ── PROJECT ALPHA ── */
+.pa-wrap{display:flex;justify-content:center;margin-bottom:0;}
+.pa-node{
+  display:inline-flex;align-items:center;gap:10px;
+  padding:10px 20px;
+  border:1px solid #e3eaed;border-radius:12px;
+  background:#fff;box-shadow:0 2px 8px rgba(10,20,35,.06);
+}
+.pa-icon{
+  width:30px;height:30px;border-radius:8px;
+  background:linear-gradient(145deg,#e0f2ef,#c8e8e2);border:1px solid #b2d9d2;
+  display:grid;place-items:center;color:#007a6b;flex-shrink:0;
+}
+.pa-name{font-size:14px;font-weight:700;color:#141e2b;letter-spacing:-0.018em;}
+
+/* ── CONNECTOR SVG ──
+   arch-panel inner width = 1150-52(inset) - 52(pad) = 1046px
+   3 cards with gap:18 → card width = (1046-36)/3 = 336.7px
+   Card centers: 168, 523, 878
+-->
+*/
+.conn-svg{display:block;width:100%;height:40px;flex-shrink:0;}
+
+/* ── MODULE CARDS ROW ── */
+.mod-row{display:flex;gap:18px;flex:1;min-height:0;margin-top:0;}
+
+/* ── MODULE CARD ── */
+.mod-card{
+  flex:1;border-radius:12px;padding:14px 16px 14px;
+  display:flex;flex-direction:column;position:relative;overflow:hidden;
+}
+.mod-card.ap{border:1px solid #b2d9d2;background:#fff;}
+.mod-card.rj{border:1px solid #f5c4c4;background:#fff;}
+.mod-card.ip{border:1px solid #bfdbfe;background:#fff;}
+.mod-card::after{
+  content:'';position:absolute;bottom:0;left:0;right:0;
+  height:3px;border-radius:0 0 12px 12px;
+}
+.mod-card.ap::after{background:#007a6b;}
+.mod-card.rj::after{background:#dc3535;}
+.mod-card.ip::after{background:#2563eb;}
+
+/* Title row */
+.mc-title{display:flex;align-items:center;gap:8px;margin-bottom:10px;}
+.mc-icon{
+  width:28px;height:28px;border-radius:7px;
+  display:grid;place-items:center;flex-shrink:0;
+}
+.mc-icon.g{background:#e0f2ef;border:1px solid #b2d9d2;color:#007a6b;}
+.mc-icon.a{background:#fff7ed;border:1px solid #fed7aa;color:#d97706;}
+.mc-icon.b{background:#dbeafe;border:1px solid #93c5fd;color:#2563eb;}
+.mc-name{font-size:13px;font-weight:700;color:#141e2b;letter-spacing:-0.014em;flex:1;}
+.mc-badge{font-size:10px;font-weight:700;padding:3px 9px;border-radius:20px;white-space:nowrap;}
+.mc-badge.g{background:#e0f2ef;color:#007a6b;}
+.mc-badge.r{background:#fde8e8;color:#dc3535;}
+.mc-badge.b{background:#dbeafe;color:#2563eb;}
+
+/* Divider */
+.mc-div{height:1px;background:#f0f4f6;margin:0 0 10px;}
+
+/* Progress dots */
+.mc-prog{
+  position:relative;display:flex;justify-content:space-between;
+  align-items:center;margin-bottom:10px;height:14px;
+}
+.mc-prog::before{
+  content:'';position:absolute;left:6px;right:6px;top:50%;
+  height:2px;background:#e3eaed;transform:translateY(-50%);z-index:0;
+}
+.prog-fill{
+  position:absolute;left:6px;top:50%;height:2px;
+  transform:translateY(-50%);z-index:1;
+}
+.pdot{
+  width:12px;height:12px;border-radius:50%;
+  flex-shrink:0;position:relative;z-index:2;
+  display:grid;place-items:center;
+}
+.pdot.dg{background:#007a6b;}
+.pdot.dr{background:#dc3535;}
+.pdot.db{background:#2563eb;}
+.pdot.or{background:#fff;border:2.5px solid #dc3535;}
+.pdot.ob{background:#fff;border:2.5px solid #2563eb;}
+.pdot.gy{background:#d9e2e8;}
+
+/* Property rows */
+.mc-props{display:flex;flex-direction:column;flex:1;justify-content:space-evenly;}
+.mc-prop{
+  display:flex;align-items:center;gap:7px;
+  padding:5px 0;border-bottom:1px solid #f4f7f8;
+}
+.mc-prop:last-child{border-bottom:none;}
+.prop-icon{width:14px;height:14px;display:grid;place-items:center;flex-shrink:0;color:#b0bec5;}
+.prop-label{font-size:11px;font-weight:500;color:#7d8c9a;flex:1;}
+.prop-val{font-size:11.5px;font-weight:700;letter-spacing:-0.01em;}
+.prop-val.g{color:#007a6b;}
+.prop-val.r{color:#dc3535;}
+.prop-val.a{color:#d97706;}
+.prop-val.b{color:#2563eb;}
+.prop-val.n{color:#9aacb5;}
+
+/* ── STAGES LEGEND ── */
+.stages-row{
+  display:flex;align-items:center;
+  background:#f8fafb;border-radius:10px;border:1px solid #e8edf0;
+  padding:10px 16px;margin-top:12px;flex-shrink:0;
+}
+.stages-label{
+  font-size:11px;font-weight:700;color:#4a5665;letter-spacing:-0.01em;
+  white-space:nowrap;padding-right:18px;border-right:1px solid #e3eaed;
+}
+.stages-items{display:flex;flex:1;justify-content:space-around;align-items:center;}
+.stage-item{display:flex;flex-direction:column;align-items:center;gap:4px;}
+.stage-num{
+  width:22px;height:22px;border-radius:50%;border:1.5px solid #c4cdd5;
+  display:grid;place-items:center;font-size:10px;font-weight:700;
+  color:#4a5665;background:#fff;
+}
+.stage-name{font-size:9px;font-weight:500;color:#9aacb5;text-align:center;white-space:nowrap;}
+</style>
+</head>
+<body>
+<div class="master">
+
+  <div class="header-block">
+    <span class="s-label">Architecture</span>
+    <h2 class="ui-title">Module-Level Workflow Architecture</h2>
+  </div>
+
+  <div class="content-row">
+    <div class="left-space"></div>
+
+    <div class="diagram-canvas">
+      <div class="arch-panel">
+
+        <!-- PROJECT ALPHA -->
+        <div class="pa-wrap">
+          <div class="pa-node">
+            <div class="pa-icon">
+              <i data-lucide="box" style="width:15px;height:15px;stroke-width:1.9"></i>
+            </div>
+            <span class="pa-name">Project Alpha</span>
+          </div>
+        </div>
+
+        <!-- TREE CONNECTOR
+             inner width ~1046px, card centers at x=168, 523, 878 -->
+        <svg class="conn-svg" viewBox="0 0 1046 40" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <marker id="arr" viewBox="0 0 10 10" refX="7" refY="5"
+                    markerWidth="5" markerHeight="5" orient="auto">
+              <path d="M2 2L7 5L2 8" fill="none" stroke="#c4cdd5"
+                    stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+            </marker>
+          </defs>
+          <!-- Drop from pa-node -->
+          <line x1="523" y1="0" x2="523" y2="20" stroke="#c4cdd5" stroke-width="1.2"/>
+          <!-- Horizontal bar -->
+          <line x1="168" y1="20" x2="878" y2="20" stroke="#c4cdd5" stroke-width="1.2"/>
+          <!-- Drops to cards -->
+          <line x1="168" y1="20" x2="168" y2="38" stroke="#c4cdd5" stroke-width="1.2" marker-end="url(#arr)"/>
+          <line x1="523" y1="20" x2="523" y2="38" stroke="#c4cdd5" stroke-width="1.2" marker-end="url(#arr)"/>
+          <line x1="878" y1="20" x2="878" y2="38" stroke="#c4cdd5" stroke-width="1.2" marker-end="url(#arr)"/>
+        </svg>
+
+        <!-- MODULE CARDS -->
+        <div class="mod-row">
+
+          <!-- MODULE A — Approved (all 8 stages complete) -->
+          <div class="mod-card ap">
+            <div class="mc-title">
+              <div class="mc-icon g">
+                <i data-lucide="box" style="width:13px;height:13px;stroke-width:1.9"></i>
+              </div>
+              <span class="mc-name">Module A</span>
+              <span class="mc-badge g">Approved</span>
+            </div>
+            <div class="mc-div"></div>
+            <div class="mc-prog">
+              <span class="prog-fill" style="width:calc(100% - 12px);background:#007a6b;"></span>
+              <span class="pdot dg"></span>
+              <span class="pdot dg"></span>
+              <span class="pdot dg"></span>
+              <span class="pdot dg"></span>
+              <span class="pdot dg"></span>
+              <span class="pdot dg"></span>
+              <span class="pdot dg"></span>
+              <!-- Last dot with check -->
+              <span class="pdot dg">
+                <svg width="7" height="7" viewBox="0 0 10 10" fill="none" stroke="white" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="1.5,5.5 4,8.5 8.5,2"/></svg>
+              </span>
+            </div>
+            <div class="mc-div"></div>
+            <div class="mc-props">
+              <div class="mc-prop">
+                <span class="prop-icon"><i data-lucide="list" style="width:12px;height:12px;stroke-width:1.8"></i></span>
+                <span class="prop-label">Current Stage</span>
+                <span class="prop-val g">Production</span>
+              </div>
+              <div class="mc-prop">
+                <span class="prop-icon"><i data-lucide="user" style="width:12px;height:12px;stroke-width:1.8"></i></span>
+                <span class="prop-label">Current Owner</span>
+                <span class="prop-val n">—</span>
+              </div>
+              <div class="mc-prop">
+                <span class="prop-icon"><i data-lucide="lock" style="width:12px;height:12px;stroke-width:1.8"></i></span>
+                <span class="prop-label">Editability</span>
+                <span class="prop-val g">Locked</span>
+              </div>
+              <div class="mc-prop">
+                <span class="prop-icon"><i data-lucide="message-circle" style="width:12px;height:12px;stroke-width:1.8"></i></span>
+                <span class="prop-label">Feedback</span>
+                <span class="prop-val n">None</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- MODULE B — Rejected (stage 2 Pre-check, dot 2 open) -->
+          <div class="mod-card rj">
+            <div class="mc-title">
+              <div class="mc-icon a">
+                <i data-lucide="box" style="width:13px;height:13px;stroke-width:1.9"></i>
+              </div>
+              <span class="mc-name">Module B</span>
+              <span class="mc-badge r">Rejected</span>
+            </div>
+            <div class="mc-div"></div>
+            <div class="mc-prog">
+              <span class="prog-fill" style="width:calc((100% - 12px) / 7);background:#dc3535;"></span>
+              <span class="pdot dr"></span>
+              <span class="pdot or"></span>
+              <span class="pdot gy"></span>
+              <span class="pdot gy"></span>
+              <span class="pdot gy"></span>
+              <span class="pdot gy"></span>
+              <span class="pdot gy"></span>
+              <span class="pdot gy"></span>
+            </div>
+            <div class="mc-div"></div>
+            <div class="mc-props">
+              <div class="mc-prop">
+                <span class="prop-icon"><i data-lucide="list" style="width:12px;height:12px;stroke-width:1.8"></i></span>
+                <span class="prop-label">Current Stage</span>
+                <span class="prop-val r">Pre-check</span>
+              </div>
+              <div class="mc-prop">
+                <span class="prop-icon"><i data-lucide="user" style="width:12px;height:12px;stroke-width:1.8"></i></span>
+                <span class="prop-label">Current Owner</span>
+                <span class="prop-val a">FAE</span>
+              </div>
+              <div class="mc-prop">
+                <span class="prop-icon"><i data-lucide="lock-open" style="width:12px;height:12px;stroke-width:1.8"></i></span>
+                <span class="prop-label">Editability</span>
+                <span class="prop-val a">Unlocked</span>
+              </div>
+              <div class="mc-prop">
+                <span class="prop-icon"><i data-lucide="message-circle" style="width:12px;height:12px;stroke-width:1.8"></i></span>
+                <span class="prop-label">Feedback</span>
+                <span class="prop-val r">Required</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- MODULE C — In Progress (stage 4 RS Generation, dot 4 open) -->
+          <div class="mod-card ip">
+            <div class="mc-title">
+              <div class="mc-icon b">
+                <i data-lucide="box" style="width:13px;height:13px;stroke-width:1.9"></i>
+              </div>
+              <span class="mc-name">Module C</span>
+              <span class="mc-badge b">In Progress</span>
+            </div>
+            <div class="mc-div"></div>
+            <div class="mc-prog">
+              <span class="prog-fill" style="width:calc((100% - 12px) * 3 / 7);background:#2563eb;"></span>
+              <span class="pdot db"></span>
+              <span class="pdot db"></span>
+              <span class="pdot db"></span>
+              <span class="pdot ob"></span>
+              <span class="pdot gy"></span>
+              <span class="pdot gy"></span>
+              <span class="pdot gy"></span>
+              <span class="pdot gy"></span>
+            </div>
+            <div class="mc-div"></div>
+            <div class="mc-props">
+              <div class="mc-prop">
+                <span class="prop-icon"><i data-lucide="list" style="width:12px;height:12px;stroke-width:1.8"></i></span>
+                <span class="prop-label">Current Stage</span>
+                <span class="prop-val b">RS Generation</span>
+              </div>
+              <div class="mc-prop">
+                <span class="prop-icon"><i data-lucide="user" style="width:12px;height:12px;stroke-width:1.8"></i></span>
+                <span class="prop-label">Current Owner</span>
+                <span class="prop-val b">PAE</span>
+              </div>
+              <div class="mc-prop">
+                <span class="prop-icon"><i data-lucide="lock" style="width:12px;height:12px;stroke-width:1.8"></i></span>
+                <span class="prop-label">Editability</span>
+                <span class="prop-val b">Locked</span>
+              </div>
+              <div class="mc-prop">
+                <span class="prop-icon"><i data-lucide="message-circle" style="width:12px;height:12px;stroke-width:1.8"></i></span>
+                <span class="prop-label">Feedback</span>
+                <span class="prop-val n">None</span>
+              </div>
+            </div>
+          </div>
+
+        </div><!-- /mod-row -->
+
+        <!-- WORKFLOW STAGES LEGEND -->
+        <div class="stages-row">
+          <span class="stages-label">Workflow Stages</span>
+          <div class="stages-items">
+            <div class="stage-item"><div class="stage-num">1</div><span class="stage-name">Draft</span></div>
+            <div class="stage-item"><div class="stage-num">2</div><span class="stage-name">Pre-check</span></div>
+            <div class="stage-item"><div class="stage-num">3</div><span class="stage-name">Feasibility</span></div>
+            <div class="stage-item"><div class="stage-num">4</div><span class="stage-name">RS Generation</span></div>
+            <div class="stage-item"><div class="stage-num">5</div><span class="stage-name">RS Acceptance</span></div>
+            <div class="stage-item"><div class="stage-num">6</div><span class="stage-name">DS Generation</span></div>
+            <div class="stage-item"><div class="stage-num">7</div><span class="stage-name">DS Acceptance</span></div>
+            <div class="stage-item"><div class="stage-num">8</div><span class="stage-name">Production</span></div>
+          </div>
+        </div>
+
+      </div><!-- /arch-panel -->
+    </div><!-- /diagram-canvas -->
+
+    <div class="right-bal"></div>
+  </div>
+
+  <div class="caption-wrap">
+    <p class="caption">Each module maintained its own workflow state, owner, editability, and feedback, allowing approvals to progress independently within the same project.</p>
+  </div>
+
+</div>
+<script>lucide.createIcons();</script>
+</body>
+</html>

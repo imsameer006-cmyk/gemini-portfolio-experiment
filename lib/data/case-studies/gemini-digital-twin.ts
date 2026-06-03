@@ -313,9 +313,10 @@ export const geminiDigitalTwin: CaseStudyData = {
           text: "Because a single project could contain multiple modules, each module needed to move through Short Flow independently — with its own status, owner, editability, and feedback state. This prevented one delayed or rejected module from blocking the entire project.",
         },
         {
-          type: "image-placeholder",
+          type: "case-study-image",
+          src: "/case-studies/gemini/architecture-module-workflow.png",
           caption: "Module-Level Workflow Architecture — Each module maintained its own workflow state, owner, editability, and feedback, allowing approvals to progress independently within the same project",
-          tall: true,
+          alt: "Diagram showing Project Alpha containing three modules at different approval stages — Module A Approved, Module B Rejected at Pre-check, Module C In Progress at RS Generation — each with independent state, owner, editability, and feedback properties",
         },
       ],
     },
