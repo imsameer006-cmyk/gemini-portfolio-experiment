@@ -669,7 +669,7 @@ function CaseStudyVideo({ src, caption, poster, mobileDetail = false, controls =
     <>
       <figure className="w-full flex flex-col gap-3">
         <div
-          className="w-full rounded-2xl overflow-hidden border border-[#E6E3DD] cursor-zoom-in"
+          className="w-full rounded-2xl overflow-hidden border border-[#E6E3DD]"
           style={{ boxShadow: "0 4px 24px rgba(0,0,0,0.07)" }}
           onClick={() => setOpen(true)}
           role="button"
@@ -817,11 +817,116 @@ function GenericBody({ project }: { project: Project }) {
 
 const MotionLink = motion(Link);
 
+function GeminiHeroNetwork() {
+  const routeTransition = {
+    duration: 4.8,
+    repeat: Infinity,
+    ease: "linear" as const,
+  };
+
+  return (
+    <motion.div
+      initial={{ opacity: 0, scale: 0.98 }}
+      animate={{ opacity: 1, scale: 1 }}
+      transition={{ duration: 0.7, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
+      className="relative w-full max-w-[560px] mx-auto lg:ml-auto"
+      aria-label="Abstract module governance network"
+      role="img"
+    >
+      <div className="absolute inset-[12%] rounded-full bg-white/25 blur-3xl" aria-hidden="true" />
+      <svg
+        viewBox="0 0 560 430"
+        className="relative w-full h-auto overflow-visible"
+        fill="none"
+        aria-hidden="true"
+      >
+        <defs>
+          <linearGradient id="gemini-route-a" x1="90" y1="208" x2="474" y2="116" gradientUnits="userSpaceOnUse">
+            <stop stopColor="#317E72" stopOpacity="0" />
+            <stop offset="0.48" stopColor="#317E72" />
+            <stop offset="1" stopColor="#C07B50" stopOpacity="0" />
+          </linearGradient>
+          <linearGradient id="gemini-route-b" x1="196" y1="214" x2="470" y2="326" gradientUnits="userSpaceOnUse">
+            <stop stopColor="#C07B50" stopOpacity="0" />
+            <stop offset="0.5" stopColor="#C07B50" />
+            <stop offset="1" stopColor="#317E72" stopOpacity="0" />
+          </linearGradient>
+          <filter id="gemini-node-glow" x="-80%" y="-80%" width="260%" height="260%">
+            <feGaussianBlur stdDeviation="7" />
+          </filter>
+        </defs>
+
+        <g stroke="#55756F" strokeOpacity="0.22" strokeWidth="1.25">
+          <path d="M82 216C142 216 155 216 214 216" />
+          <path d="M242 202C294 165 323 128 386 118" />
+          <path d="M242 230C294 267 323 304 386 314" />
+          <path d="M414 118C457 135 473 164 478 203" />
+          <path d="M414 314C457 297 473 268 478 229" />
+        </g>
+
+        <motion.path
+          d="M82 216C142 216 155 216 214 216C278 216 319 126 386 118C443 111 474 158 478 203"
+          stroke="url(#gemini-route-a)"
+          strokeWidth="2"
+          strokeLinecap="round"
+          strokeDasharray="42 210"
+          animate={{ strokeDashoffset: [252, 0] }}
+          transition={routeTransition}
+        />
+        <motion.path
+          d="M214 216C278 216 319 306 386 314C443 321 474 274 478 229"
+          stroke="url(#gemini-route-b)"
+          strokeWidth="2"
+          strokeLinecap="round"
+          strokeDasharray="36 190"
+          animate={{ strokeDashoffset: [226, 0] }}
+          transition={{ ...routeTransition, delay: 1.25 }}
+        />
+
+        {[
+          { x: 82, y: 216, r: 7, fill: "#317E72" },
+          { x: 228, y: 216, r: 11, fill: "#FFFFFF" },
+          { x: 400, y: 116, r: 7, fill: "#317E72" },
+          { x: 400, y: 316, r: 7, fill: "#C07B50" },
+          { x: 480, y: 216, r: 11, fill: "#FFFFFF" },
+        ].map((node, index) => (
+          <g key={`${node.x}-${node.y}`}>
+            <motion.circle
+              cx={node.x}
+              cy={node.y}
+              r={node.r + 8}
+              fill={node.fill}
+              opacity="0.13"
+              filter="url(#gemini-node-glow)"
+              animate={{ opacity: [0.08, 0.2, 0.08], scale: [0.92, 1.08, 0.92] }}
+              transition={{ duration: 3.8, delay: index * 0.45, repeat: Infinity, ease: "easeInOut" }}
+              style={{ transformOrigin: `${node.x}px ${node.y}px` }}
+            />
+            <circle cx={node.x} cy={node.y} r={node.r} fill={node.fill} stroke="#55756F" strokeOpacity="0.35" />
+            {index === 1 || index === 4 ? (
+              <circle cx={node.x} cy={node.y} r="3.5" fill="#317E72" />
+            ) : null}
+          </g>
+        ))}
+
+        <g fill="#315A53" fontFamily="var(--font-geist-sans)" fontSize="10" fontWeight="600" letterSpacing="1.2">
+          <text x="58" y="245">MODULE</text>
+          <text x="205" y="252">DECISION</text>
+          <text x="380" y="91">PAE</text>
+          <text x="378" y="347">PMG</text>
+          <text x="451" y="252">NEXT STATE</text>
+        </g>
+      </svg>
+    </motion.div>
+  );
+}
+
 // ── Main Component ─────────────────────────────────────────────
 
 export default function CaseStudy({ project, content }: Props) {
   const currentIndex = projects.findIndex((p) => p.slug === project.slug);
   const next = projects[(currentIndex + 1) % projects.length];
+  const isGemini = project.slug === "gemini-digital-twin";
 
   return (
     <MotionConfig reducedMotion="user">
@@ -831,46 +936,51 @@ export default function CaseStudy({ project, content }: Props) {
         className="min-h-screen flex flex-col justify-center pt-24 pb-16"
         style={{ backgroundColor: project.coverColor }}
       >
-        <div className="max-w-[900px] mx-auto w-full px-6 md:px-10 lg:pl-[150px] xl:pl-10">
-          <motion.p
-            initial={{ opacity: 0, y: 12 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.45, ease: [0.16, 1, 0.3, 1] }}
-            className="text-xs text-[#18171A]/50 tracking-widest uppercase font-medium mb-4"
-          >
-            {project.category}
-          </motion.p>
-          <motion.h1
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.55, delay: 0.08, ease: [0.16, 1, 0.3, 1] }}
-            className="font-[family-name:var(--font-instrument-serif)] italic text-[clamp(2rem,5vw,4rem)] leading-tight text-[#18171A] max-w-[22ch] mb-5"
-          >
-            {project.title}
-          </motion.h1>
-          <motion.p
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 0.4, delay: 0.2 }}
-            className="text-base text-[#18171A]/65 max-w-[48ch] leading-relaxed mb-8"
-          >
-            {project.description}
-          </motion.p>
-          <motion.div
-            initial={{ opacity: 0, y: 8 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.4, delay: 0.3, ease: [0.16, 1, 0.3, 1] }}
-            className="flex flex-wrap gap-2"
-          >
-            <span className="text-sm font-medium text-[#18171A] bg-[#18171A]/8 px-3 py-1.5 rounded-full">
-              {project.impact}
-            </span>
-            {project.tags.map((tag) => (
-              <span key={tag} className="text-xs text-[#18171A]/50 border border-[#18171A]/15 px-3 py-1.5 rounded-full">
-                {tag}
-              </span>
-            ))}
-          </motion.div>
+        <div className={`${isGemini ? "max-w-[1280px]" : "max-w-[900px] lg:pl-[150px] xl:pl-10"} mx-auto w-full px-6 md:px-10`}>
+          <div className={isGemini ? "grid grid-cols-1 lg:grid-cols-[minmax(0,0.95fr)_minmax(440px,1.05fr)] items-center gap-10 lg:gap-16" : undefined}>
+            <div>
+              <motion.p
+                initial={{ opacity: 0, y: 12 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.45, ease: [0.16, 1, 0.3, 1] }}
+                className="text-xs text-[#18171A]/50 tracking-widest uppercase font-medium mb-4"
+              >
+                {project.category}
+              </motion.p>
+              <motion.h1
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.55, delay: 0.08, ease: [0.16, 1, 0.3, 1] }}
+                className="font-[family-name:var(--font-instrument-serif)] italic text-[clamp(2rem,5vw,4rem)] leading-tight text-[#18171A] max-w-[22ch] mb-5"
+              >
+                {project.title}
+              </motion.h1>
+              <motion.p
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ duration: 0.4, delay: 0.2 }}
+                className="text-base text-[#18171A]/65 max-w-[48ch] leading-relaxed mb-8"
+              >
+                {project.description}
+              </motion.p>
+              <motion.div
+                initial={{ opacity: 0, y: 8 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.4, delay: 0.3, ease: [0.16, 1, 0.3, 1] }}
+                className="flex flex-wrap gap-2"
+              >
+                <span className="text-sm font-medium text-[#18171A] bg-[#18171A]/8 px-3 py-1.5 rounded-full">
+                  {project.impact}
+                </span>
+                {project.tags.map((tag) => (
+                  <span key={tag} className="text-xs text-[#18171A]/50 border border-[#18171A]/15 px-3 py-1.5 rounded-full">
+                    {tag}
+                  </span>
+                ))}
+              </motion.div>
+            </div>
+            {isGemini && <GeminiHeroNetwork />}
+          </div>
         </div>
       </div>
 
