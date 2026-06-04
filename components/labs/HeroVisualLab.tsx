@@ -6,80 +6,83 @@ import { useRef, useState } from "react";
 const EASE = [0.16, 1, 0.3, 1] as const;
 
 const INTERACTIVE_NODES = [
-  { id: 0, x: 704, y: 204, shape: "circle", halo: "#317E72" },
-  { id: 1, x: 884, y: 286, shape: "square", halo: "#315A53" },
-  { id: 2, x: 1190, y: 380, shape: "square", halo: "#C07B50" },
-  { id: 3, x: 954, y: 570, shape: "circle", halo: "#8AAFA5" },
+  { id: 0, x: 700, y: 270, shape: "circle", halo: "#317E72" },
+  { id: 1, x: 860, y: 330, shape: "square", halo: "#315A53" },
+  { id: 2, x: 1045, y: 300, shape: "diamond", halo: "#C07B50" },
+  { id: 3, x: 1230, y: 350, shape: "completion", halo: "#8AAFA5" },
 ] as const;
 
 const NETWORK_PATHS = [
-  { id: "p01", owner: 0, delay: 0, d: "M610 286V254C610 222 650 204 704 204" },
-  { id: "p02", owner: 0, delay: 0.12, d: "M704 204H776C816 204 838 224 838 264V286H884" },
-  { id: "p03", owner: 0, delay: 0.2, d: "M704 204V126H752" },
-  { id: "p04", owner: 1, delay: 0, d: "M884 286H970C1010 286 1030 266 1030 226V196H1074" },
-  { id: "p05", owner: 1, delay: 0.1, d: "M884 286V380H1190" },
-  { id: "p06", owner: 1, delay: 0.18, d: "M884 286V170H922" },
-  { id: "p07", owner: 2, delay: 0, d: "M1074 196H1238" },
-  { id: "p08", owner: 2, delay: 0.08, d: "M1190 380H1328" },
-  { id: "p09", owner: 2, delay: 0.16, d: "M1190 380V444C1190 464 1176 474 1148 474H954" },
-  { id: "p10", owner: 2, delay: 0.24, d: "M1190 380V286H1300" },
-  { id: "p11", owner: 3, delay: 0, d: "M954 474V570" },
-  { id: "p12", owner: 3, delay: 0.08, d: "M954 570H786C754 570 738 596 738 642V752" },
-  { id: "p13", owner: 3, delay: 0.16, d: "M954 570H1132V730" },
-  { id: "p14", owner: 3, delay: 0.24, d: "M954 570V706" },
+  { id: "p01", owner: 0, delay: 0, d: "M620 270H700" },
+  { id: "p02", owner: 0, delay: 0.1, d: "M700 270H760C792 270 806 284 806 306V330H860" },
+  { id: "p03", owner: 0, delay: 0.18, d: "M700 270V170H766" },
+  { id: "p04", owner: 1, delay: 0, d: "M860 330H922C954 330 968 316 968 300H1045" },
+  { id: "p05", owner: 1, delay: 0.1, d: "M860 330V438H944" },
+  { id: "p06", owner: 1, delay: 0.18, d: "M860 330V220H916" },
+  { id: "p07", owner: 2, delay: 0, d: "M1045 300H1106C1138 300 1152 314 1152 336V350H1230" },
+  { id: "p08", owner: 2, delay: 0.08, d: "M1045 300V190H1118" },
+  { id: "p09", owner: 2, delay: 0.16, d: "M1045 300V430H1130" },
+  { id: "p10", owner: 2, delay: 0.24, d: "M1045 300H1100V246H1170" },
+  { id: "p11", owner: 3, delay: 0, d: "M1230 350H1360" },
+  { id: "p12", owner: 3, delay: 0.08, d: "M1230 350V470H1326" },
+  { id: "p13", owner: 3, delay: 0.16, d: "M1230 350V244H1320" },
+  { id: "p14", owner: 3, delay: 0.24, d: "M1230 350H1284V406H1372" },
 ] as const;
 
 const SECONDARY_PATHS = [
-  "M646 100V204H704",
-  "M752 126V204",
-  "M838 286V158H922",
-  "M884 286V170",
-  "M1030 226V108",
-  "M1074 196V102",
-  "M1190 380V286H1300",
-  "M1190 380V520H1262",
-  "M954 474H1036V390",
-  "M954 474H846C818 474 804 490 804 522V650H786",
-  "M954 474V548C954 582 978 600 1020 600H1132",
-  "M804 522H700V470",
-  "M786 650H900V746",
-  "M606 596H520V694",
-  "M1132 612H1308",
-  "M1074 196V102",
-  "M1030 226V108",
-  "M1190 380V520H1262V608",
-  "M884 286H774V382H694",
+  "M620 270V214H660",
+  "M700 170V112H766",
+  "M766 170H820V120",
+  "M806 330V410H748",
+  "M860 220V150H916",
+  "M916 220H954V166",
+  "M860 438V522H944",
+  "M944 438H986V486",
+  "M1045 190V118H1118",
+  "M1118 190H1164V136",
+  "M1045 430V520H1130",
+  "M1130 430H1180V486",
+  "M1170 246V194H1222",
+  "M1230 244V164H1320",
+  "M1230 470V550H1326",
+  "M1326 470H1382",
+  "M1284 406V500H1372",
+  "M1360 350V300H1400",
+  "M1360 350V394H1400",
 ] as const;
 
 const DECORATIVE_NODES = [
-  { x: 610, y: 286, r: 2 },
+  { x: 620, y: 270, r: 2 },
   { x: 520, y: 410, r: 4 },
-  { x: 620, y: 322, r: 3 },
-  { x: 646, y: 100, r: 3 },
-  { x: 752, y: 126, r: 4 },
-  { x: 838, y: 158, r: 3 },
-  { x: 922, y: 158, r: 2 },
-  { x: 884, y: 170, r: 3 },
-  { x: 1030, y: 108, r: 3 },
-  { x: 1074, y: 102, r: 2 },
-  { x: 1238, y: 196, r: 4 },
-  { x: 1300, y: 286, r: 3 },
-  { x: 1328, y: 380, r: 4 },
-  { x: 1262, y: 520, r: 3 },
-  { x: 1036, y: 390, r: 3 },
-  { x: 1020, y: 600, r: 4 },
-  { x: 1308, y: 612, r: 3 },
-  { x: 1132, y: 730, r: 3 },
+  { x: 660, y: 214, r: 3 },
+  { x: 700, y: 112, r: 3 },
+  { x: 766, y: 112, r: 4 },
+  { x: 820, y: 120, r: 3 },
+  { x: 748, y: 410, r: 3 },
+  { x: 916, y: 150, r: 3 },
+  { x: 954, y: 166, r: 2 },
+  { x: 944, y: 522, r: 4 },
+  { x: 986, y: 486, r: 3 },
+  { x: 1118, y: 118, r: 4 },
+  { x: 1164, y: 136, r: 3 },
+  { x: 1130, y: 520, r: 4 },
+  { x: 1180, y: 486, r: 3 },
+  { x: 1222, y: 194, r: 3 },
+  { x: 1320, y: 164, r: 3 },
+  { x: 1326, y: 550, r: 4 },
+  { x: 1382, y: 470, r: 3 },
+  { x: 1372, y: 500, r: 3 },
+  { x: 1400, y: 300, r: 3 },
+  { x: 1400, y: 394, r: 3 },
+  { x: 1360, y: 350, r: 4 },
+  { x: 1326, y: 470, r: 3 },
+  { x: 1320, y: 244, r: 3 },
+  { x: 1372, y: 406, r: 3 },
   { x: 900, y: 746, r: 2 },
-  { x: 954, y: 706, r: 3 },
   { x: 738, y: 752, r: 4 },
-  { x: 786, y: 650, r: 4 },
   { x: 700, y: 470, r: 3 },
   { x: 606, y: 538, r: 3 },
   { x: 520, y: 694, r: 4 },
-  { x: 774, y: 382, r: 3 },
-  { x: 694, y: 382, r: 2 },
-  { x: 1262, y: 608, r: 3 },
 ] as const;
 
 const MICRO_PATHS = [
@@ -106,6 +109,17 @@ const MICRO_PATHS = [
   "M736 328H804",
   "M1014 324H1084",
   "M1106 512H1184",
+  "M766 112V76H830V48",
+  "M748 410H686V458H626",
+  "M944 522V574H1004V618",
+  "M1118 118V82H1192V52",
+  "M1130 520V584H1206V626",
+  "M1320 164H1370V116H1418",
+  "M1326 550V616H1388V668",
+  "M1382 470H1422V522",
+  "M1372 500V568H1420",
+  "M1400 300H1432V258",
+  "M1400 394H1434V430",
 ] as const;
 
 const MICRO_NODES = [
@@ -119,6 +133,10 @@ const MICRO_NODES = [
   { x: 1036, y: 756 }, { x: 842, y: 778 }, { x: 646, y: 772 },
   { x: 552, y: 710 }, { x: 520, y: 342 }, { x: 736, y: 328 },
   { x: 1014, y: 324 }, { x: 1106, y: 512 },
+  { x: 830, y: 48 }, { x: 686, y: 458 }, { x: 626, y: 458 },
+  { x: 1004, y: 618 }, { x: 1192, y: 52 }, { x: 1206, y: 626 },
+  { x: 1418, y: 116 }, { x: 1388, y: 668 }, { x: 1422, y: 522 },
+  { x: 1420, y: 568 }, { x: 1432, y: 258 }, { x: 1434, y: 430 },
 ] as const;
 
 function InteractiveNetwork({
@@ -144,7 +162,7 @@ function InteractiveNetwork({
     <svg
       viewBox="0 0 1440 820"
       preserveAspectRatio="xMidYMid slice"
-      className="pointer-events-none absolute inset-0 h-full w-full"
+      className="pointer-events-none absolute inset-0 h-full w-full lg:pointer-events-auto"
       aria-label="Interactive abstract workflow network"
       role="group"
       style={{ opacity: complete ? 0.84 : 1, transition: "opacity 900ms ease" }}
@@ -157,9 +175,9 @@ function InteractiveNetwork({
           <stop offset="1" stopColor="#315A53" stopOpacity="0.18" />
         </linearGradient>
         <linearGradient id="base-network-fade" x1="360" y1="0" x2="1320" y2="0" gradientUnits="userSpaceOnUse">
-          <stop stopColor="#315A53" stopOpacity="0.025" />
-          <stop offset="0.3" stopColor="#315A53" stopOpacity="0.075" />
-          <stop offset="1" stopColor="#315A53" stopOpacity="0.19" />
+          <stop stopColor="#315A53" stopOpacity="0.045" />
+          <stop offset="0.3" stopColor="#315A53" stopOpacity="0.11" />
+          <stop offset="1" stopColor="#315A53" stopOpacity="0.25" />
         </linearGradient>
         <linearGradient id="active-network-route" x1="560" y1="0" x2="1320" y2="0" gradientUnits="userSpaceOnUse">
           <stop stopColor="#317E72" stopOpacity="0.28" />
@@ -278,7 +296,7 @@ function InteractiveNetwork({
 
       <g fill="#315A53">
         {DECORATIVE_NODES.map((node) => (
-          <circle key={`${node.x}-${node.y}`} cx={node.x} cy={node.y} r={node.r} opacity="0.16" />
+          <circle key={`${node.x}-${node.y}`} cx={node.x} cy={node.y} r={node.r} opacity="0.22" />
         ))}
       </g>
 
@@ -370,10 +388,52 @@ function InteractiveNetwork({
                 fill={finalComplete ? "#276B5F" : active ? "#315A53" : "#E0EDE8"}
                 stroke={finalComplete ? "#276B5F" : active ? "#315A53" : "#55756F"}
                 initial={false}
-                animate={{ opacity: highlighted ? 1 : 0.48, scale: highlighted ? 1.12 : 1 }}
+                animate={{ opacity: highlighted ? 1 : 0.66, scale: highlighted ? 1.12 : 1 }}
                 transition={{ delay: active ? 0.72 : 0, duration: 0.35, ease: EASE }}
                 style={{ transformOrigin: `${node.x}px ${node.y}px` }}
               />
+            ) : node.shape === "diamond" ? (
+              <motion.rect
+                x={node.x - 6.5}
+                y={node.y - 6.5}
+                width="13"
+                height="13"
+                rx="1"
+                fill={active ? "#315A53" : "#E0EDE8"}
+                stroke={active ? "#315A53" : "#55756F"}
+                strokeWidth="1.1"
+                initial={false}
+                animate={{
+                  opacity: highlighted ? 1 : 0.66,
+                  scale: highlighted ? 1.14 : 1,
+                  rotate: 45,
+                }}
+                transition={{ delay: active ? 0.72 : 0, duration: 0.35, ease: EASE }}
+                style={{ transformOrigin: `${node.x}px ${node.y}px` }}
+              />
+            ) : node.shape === "completion" ? (
+              <motion.g
+                initial={false}
+                animate={{ opacity: highlighted ? 1 : 0.66, scale: highlighted ? 1.12 : 1 }}
+                transition={{ delay: active ? 0.72 : 0, duration: 0.35, ease: EASE }}
+                style={{ transformOrigin: `${node.x}px ${node.y}px` }}
+              >
+                <circle
+                  cx={node.x}
+                  cy={node.y}
+                  r="8"
+                  fill={finalComplete ? "#276B5F" : active ? "#315A53" : "#E0EDE8"}
+                  stroke={finalComplete ? "#276B5F" : active ? "#315A53" : "#55756F"}
+                  strokeWidth="1.2"
+                />
+                <circle
+                  cx={node.x}
+                  cy={node.y}
+                  r="3"
+                  fill={finalComplete ? "#E0EDE8" : active ? "#E0EDE8" : "#55756F"}
+                  opacity={finalComplete || active ? 0.92 : 0.52}
+                />
+              </motion.g>
             ) : (
               <motion.circle
                 cx={node.x}
@@ -383,7 +443,7 @@ function InteractiveNetwork({
                 stroke={finalComplete ? "#276B5F" : active ? "#315A53" : "#55756F"}
                 strokeWidth="1.2"
                 initial={false}
-                animate={{ opacity: highlighted ? 1 : 0.48, scale: highlighted ? 1.18 : 1 }}
+                animate={{ opacity: highlighted ? 1 : 0.66, scale: highlighted ? 1.18 : 1 }}
                 transition={{ delay: active ? 0.72 : 0, duration: 0.35, ease: EASE }}
                 style={{ transformOrigin: `${node.x}px ${node.y}px` }}
               />
@@ -434,6 +494,15 @@ export default function HeroVisualLab() {
 
   return (
     <div className="relative isolate overflow-hidden bg-[#E0EDE8]">
+      <div
+        aria-hidden="true"
+        className="pointer-events-none absolute inset-y-0 right-0 z-[2] w-[7%]"
+        style={{
+          background:
+            "linear-gradient(90deg, rgba(224,237,232,0), rgba(224,237,232,0.72))",
+        }}
+      />
+
       <AnimatePresence>
         {completionArrived ? (
           <motion.div
@@ -478,7 +547,7 @@ export default function HeroVisualLab() {
         aria-labelledby="hero-lab-title"
         className="relative flex min-h-screen flex-col justify-center px-6 pb-16 pt-24 md:px-10"
       >
-        <div className="pointer-events-none absolute inset-0 z-[1]">
+        <div className="absolute inset-0 z-[1]">
           <InteractiveNetwork
             activated={activated}
             frozenHalos={frozenHalos}
