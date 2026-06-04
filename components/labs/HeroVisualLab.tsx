@@ -52,6 +52,7 @@ const SECONDARY_PATHS = [
 ] as const;
 
 const DECORATIVE_NODES = [
+  { x: 610, y: 286, r: 2 },
   { x: 520, y: 410, r: 4 },
   { x: 620, y: 322, r: 3 },
   { x: 646, y: 100, r: 3 },
@@ -156,9 +157,9 @@ function InteractiveNetwork({
           <stop offset="1" stopColor="#315A53" stopOpacity="0.18" />
         </linearGradient>
         <linearGradient id="base-network-fade" x1="360" y1="0" x2="1320" y2="0" gradientUnits="userSpaceOnUse">
-          <stop stopColor="#315A53" stopOpacity="0.018" />
-          <stop offset="0.3" stopColor="#315A53" stopOpacity="0.055" />
-          <stop offset="1" stopColor="#315A53" stopOpacity="0.15" />
+          <stop stopColor="#315A53" stopOpacity="0.025" />
+          <stop offset="0.3" stopColor="#315A53" stopOpacity="0.075" />
+          <stop offset="1" stopColor="#315A53" stopOpacity="0.19" />
         </linearGradient>
         <linearGradient id="active-network-route" x1="560" y1="0" x2="1320" y2="0" gradientUnits="userSpaceOnUse">
           <stop stopColor="#317E72" stopOpacity="0.28" />
@@ -277,7 +278,7 @@ function InteractiveNetwork({
 
       <g fill="#315A53">
         {DECORATIVE_NODES.map((node) => (
-          <circle key={`${node.x}-${node.y}`} cx={node.x} cy={node.y} r={node.r} opacity="0.13" />
+          <circle key={`${node.x}-${node.y}`} cx={node.x} cy={node.y} r={node.r} opacity="0.16" />
         ))}
       </g>
 
@@ -506,8 +507,8 @@ export default function HeroVisualLab() {
               Gemini — Digital Twin
             </h1>
             <p className="mb-8 max-w-[48ch] text-base leading-relaxed text-[#18171A]/65">
-              Designed a multi-role approval workflow that eliminated status uncertainty
-              across 4 engineering roles on a B2B digital twin platform.
+              Designed a visible approval workflow that clarified ownership, review
+              state, and next actions across four engineering roles.
             </p>
             <div className="flex flex-wrap gap-2">
               <span className="rounded-full bg-[#18171A]/8 px-3 py-1.5 text-sm font-medium text-[#18171A]">
@@ -538,11 +539,18 @@ export default function HeroVisualLab() {
               transition={{ duration: 0.45, delay: 1.1, ease: EASE }}
             >
               <motion.span
-                className="block h-2 w-2 rounded-full border border-[#315A53]/50 bg-[#E0EDE8]"
-                animate={{ boxShadow: ["0 0 0 0 rgba(49,90,83,0.12)", "0 0 0 7px rgba(49,90,83,0)", "0 0 0 0 rgba(49,90,83,0)"] }}
-                transition={{ duration: 2.4, repeat: Infinity, ease: "easeOut" }}
+                className="block h-2.5 w-2.5 rounded-full border border-[#315A53]/75 bg-[#F9F8F5] shadow-[0_0_0_1px_rgba(49,90,83,0.08)]"
+                animate={{
+                  boxShadow: [
+                    "0 0 0 1px rgba(49,90,83,0.18), 0 0 0 0 rgba(49,90,83,0.18)",
+                    "0 0 0 1px rgba(49,90,83,0.22), 0 0 0 8px rgba(49,90,83,0.12)",
+                    "0 0 0 1px rgba(49,90,83,0.16), 0 0 0 15px rgba(49,90,83,0)",
+                  ],
+                  scale: [1, 1.12, 1],
+                }}
+                transition={{ duration: 2.2, repeat: Infinity, ease: "easeOut" }}
               />
-              <span className="text-[10px] font-medium uppercase tracking-[0.16em] text-[#315A53]/70">
+              <span className="text-[10px] font-semibold uppercase tracking-[0.16em] text-[#315A53]/80">
                 Explore the workflow
               </span>
             </motion.div>
