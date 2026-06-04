@@ -17,7 +17,7 @@ export const geminiDigitalTwin: CaseStudyData = {
         {
           type: "meta-grid",
           fields: [
-            { label: "Year", value: "2025-26" },
+            { label: "Year", value: "2025–2026" },
             { label: "Role", value: "UX Designer (co-lead)" },
             { label: "Product", value: "Gemini - Digital Twin" },
             { label: "Domain", value: "B2B" },

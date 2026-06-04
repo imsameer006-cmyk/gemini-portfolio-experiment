@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import HeroVisualLab from "@/components/labs/HeroVisualLab";
+import GeminiProjectHeroPreview from "@/components/sections/GeminiProjectHero";
 
 export const metadata: Metadata = {
   title: "Gemini Hero Visual Lab | Sameer Gautam",
@@ -7,5 +7,5 @@ export const metadata: Metadata = {
 };
 
 export default function HeroLabPage() {
-  return <HeroVisualLab />;
+  return <GeminiProjectHeroPreview />;
 }

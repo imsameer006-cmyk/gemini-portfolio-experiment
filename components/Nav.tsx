@@ -30,7 +30,11 @@ export default function Nav() {
     setMobileOpen(false);
     if (href.startsWith("#")) {
       const el = document.querySelector(href);
-      el?.scrollIntoView({ behavior: "smooth" });
+      if (el) {
+        el.scrollIntoView({ behavior: "smooth" });
+      } else {
+        window.location.assign(`/${href}`);
+      }
     }
   };
 

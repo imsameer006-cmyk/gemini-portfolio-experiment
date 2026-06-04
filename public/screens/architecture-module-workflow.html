@@ -168,6 +168,49 @@ body{
 
 /* SVG connectors */
 .tree-svg{display:block;margin:0 auto;}
+
+/* Shared Gemini diagram language */
+.card{
+  border-radius:16px;
+  box-shadow:0 6px 24px rgba(24,23,26,.06);
+}
+.project-pill,.module-card,.stages-bar{border-radius:12px;}
+.project-icon,.module-icon{
+  color:#477C6C;
+  background:#EAF0EF;
+  border-color:#C2D4D1;
+}
+.module-icon.green,.module-icon.orange,.module-icon.blue{
+  color:#477C6C;
+  background:#EAF0EF;
+  border-color:#C2D4D1;
+}
+.module-card.approved::after{background:#3A7A54;}
+.module-card.rejected::after{background:#B85A48;}
+.module-card.inprogress::after{background:#477C6C;}
+.status-badge.approved{background:#EAF3ED;color:#3A7A54;}
+.status-badge.rejected{background:#F7ECE9;color:#B85A48;}
+.status-badge.inprogress{background:#EAF0EF;color:#477C6C;}
+.meta-val.green{color:#3A7A54;}
+.meta-val.orange{color:#C07B50;}
+.meta-val.red{color:#B85A48;}
+.meta-val.blue{color:#477C6C;}
+.meta-left,.meta-val.muted,.stage-num,.stage-name{color:#74716D;}
+.tree-svg line{stroke:#D4C9BE;}
+.tree-svg polygon{fill:#D4C9BE;}
+.module-card > svg line{stroke-width:2.5;}
+.module-card > svg circle{filter:none;}
+.module-card.approved > svg line:first-of-type{stroke:#3A7A54;}
+.module-card.approved > svg circle{fill:#3A7A54;}
+.module-card.rejected > svg line:first-of-type{stroke:#B85A48;}
+.module-card.rejected > svg circle{fill:#B85A48;}
+.module-card.inprogress > svg line:first-of-type{stroke:#477C6C;}
+.module-card.inprogress > svg circle{fill:#477C6C;}
+.module-card > svg circle[fill="white"]{fill:#fff;}
+.module-card.approved > svg circle[fill="white"]{stroke:#3A7A54;}
+.module-card.rejected > svg circle[fill="white"]{stroke:#B85A48;}
+.module-card.inprogress > svg circle[fill="white"]{stroke:#477C6C;}
+.module-card > svg circle[fill="#ddd"]{fill:#E6E3DD;}
 </style>
 </head>
 <body>
@@ -181,7 +224,11 @@ body{
     <!-- PROJECT NODE -->
     <div class="project-node">
       <div class="project-pill">
-        <div class="project-icon">⬡</div>
+        <div class="project-icon">
+          <svg width="18" height="18" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M10 2.5l6.5 3.6v7.8L10 17.5l-6.5-3.6V6.1L10 2.5z"/><path d="M3.5 6.1L10 10l6.5-3.9M10 10v7.5"/>
+          </svg>
+        </div>
         <span class="project-name">Project Alpha</span>
       </div>
     </div>
@@ -209,7 +256,11 @@ body{
       <div class="module-card approved">
         <div class="module-header">
           <div class="module-left">
-            <div class="module-icon green">⬡</div>
+            <div class="module-icon green">
+              <svg width="16" height="16" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M10 2.5l6.5 3.6v7.8L10 17.5l-6.5-3.6V6.1L10 2.5z"/><path d="M3.5 6.1L10 10l6.5-3.9M10 10v7.5"/>
+              </svg>
+            </div>
             <span class="module-name">Module A</span>
           </div>
           <span class="status-badge approved">Approved</span>
@@ -263,7 +314,11 @@ body{
       <div class="module-card rejected">
         <div class="module-header">
           <div class="module-left">
-            <div class="module-icon orange">⬡</div>
+            <div class="module-icon orange">
+              <svg width="16" height="16" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M10 2.5l6.5 3.6v7.8L10 17.5l-6.5-3.6V6.1L10 2.5z"/><path d="M3.5 6.1L10 10l6.5-3.9M10 10v7.5"/>
+              </svg>
+            </div>
             <span class="module-name">Module B</span>
           </div>
           <span class="status-badge rejected">Rejected</span>
@@ -317,7 +372,11 @@ body{
       <div class="module-card inprogress">
         <div class="module-header">
           <div class="module-left">
-            <div class="module-icon blue">⬡</div>
+            <div class="module-icon blue">
+              <svg width="16" height="16" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M10 2.5l6.5 3.6v7.8L10 17.5l-6.5-3.6V6.1L10 2.5z"/><path d="M3.5 6.1L10 10l6.5-3.9M10 10v7.5"/>
+              </svg>
+            </div>
             <span class="module-name">Module C</span>
           </div>
           <span class="status-badge inprogress">In Progress</span>

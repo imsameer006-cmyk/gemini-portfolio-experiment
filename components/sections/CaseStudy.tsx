@@ -1,12 +1,13 @@
 "use client";
 
-import { useRef, useState, useEffect, useMemo } from "react";
+import { useRef, useState, useEffect } from "react";
 import { motion, MotionConfig } from "framer-motion";
 import { CheckCircle, MinusCircle } from "@phosphor-icons/react";
 import Link from "next/link";
 import type { Project, Block, CaseStudySection, CaseStudyData } from "@/lib/types";
 import { projects } from "@/lib/data/projects";
 import JumpToNav, { toSectionId } from "@/components/ui/JumpToNav";
+import { GeminiProjectHero } from "@/components/sections/GeminiProjectHero";
 
 interface Props {
   project: Project;
@@ -68,7 +69,7 @@ function MetaGrid({ fields }: { fields: { label: string; value: string }[] }) {
           key={label}
           className="px-5 py-5 bg-white flex flex-col gap-2"
         >
-          <span className="text-[10px] text-[#8C8B84] tracking-widest uppercase font-medium">{label}</span>
+          <span className="text-[10px] text-[#74716D] tracking-widest uppercase font-medium">{label}</span>
           <span className="text-sm font-medium text-[#18171A] leading-snug">{value}</span>
         </div>
       ))}
@@ -140,7 +141,7 @@ function ColCard({
                 <span className="text-sm font-medium text-[#18171A] leading-snug">
                   {item.label}
                 </span>
-                <span className="text-xs text-[#8C8B84] leading-relaxed">
+                <span className="text-xs text-[#74716D] leading-relaxed">
                   {item.detail}
                 </span>
               </li>
@@ -308,7 +309,7 @@ function ExplorationCards({
               <p className="text-xs text-[#3A3836] leading-relaxed">{card.strength}</p>
             </div>
             <div>
-              <span className="text-[10px] font-semibold tracking-widest uppercase text-[#8C8B84] block mb-0.5">Limitation</span>
+              <span className="text-[10px] font-semibold tracking-widest uppercase text-[#74716D] block mb-0.5">Limitation</span>
               <p className="text-xs text-[#3A3836] leading-relaxed">{card.limitation}</p>
             </div>
           </div>
@@ -500,7 +501,7 @@ function BACard({
                 <span className="text-sm font-medium text-[#18171A] leading-snug">
                   {item.label}
                 </span>
-                <span className="text-xs text-[#8C8B84] leading-relaxed">
+                <span className="text-xs text-[#74716D] leading-relaxed">
                   {item.detail}
                 </span>
               </li>
@@ -621,7 +622,7 @@ function CaseStudyImage({ src, caption, alt, mobileDetail = false }: { src: stri
             loading="lazy"
           />
         </div>
-        <figcaption className="text-xs text-[#9C9A95] text-center leading-snug px-4">{caption}</figcaption>
+        <figcaption className="text-xs text-[#74716D] text-center leading-snug px-4">{caption}</figcaption>
         {mobileDetail && (
           <button
             type="button"
@@ -691,7 +692,7 @@ function CaseStudyVideo({ src, caption, poster, mobileDetail = false, controls =
             onClick={(e) => controls && e.stopPropagation()}
           />
         </div>
-        <figcaption className="text-xs text-[#9C9A95] text-center leading-snug px-4">{caption}</figcaption>
+        <figcaption className="text-xs text-[#74716D] text-center leading-snug px-4">{caption}</figcaption>
         {mobileDetail && (
           <button
             type="button"
@@ -728,7 +729,7 @@ function ImagePlaceholder({ caption, tall }: { caption: string; tall?: boolean }
       style={{ boxShadow: "inset 0 2px 8px rgba(0,0,0,0.05)" }}
     >
       <div className="p-4 border-t border-[#E6E3DD] bg-white/60 backdrop-blur-sm">
-        <figcaption className="text-xs text-[#9C9A95] leading-snug">{caption}</figcaption>
+        <figcaption className="text-xs text-[#74716D] leading-snug">{caption}</figcaption>
       </div>
     </figure>
   );
@@ -756,7 +757,7 @@ function renderBlock(block: Block, i: number): React.ReactNode {
 
 // ── Section Component ──────────────────────────────────────────
 
-function Section({ section, index }: { section: CaseStudySection; index: number }) {
+function Section({ section }: { section: CaseStudySection }) {
   return (
     <motion.section
       id={toSectionId(section.label)}
@@ -777,7 +778,7 @@ function Section({ section, index }: { section: CaseStudySection; index: number 
       />
 
       <div className="pt-12">
-        <span className="block text-[10px] text-[#8C8B84] tracking-widest uppercase font-medium mb-3">
+        <span className="block text-[10px] text-[#74716D] tracking-widest uppercase font-medium mb-3">
           {section.label}
         </span>
 
@@ -797,7 +798,7 @@ function Section({ section, index }: { section: CaseStudySection; index: number 
 
 // ── Generic Fallback Body ──────────────────────────────────────
 
-function GenericBody({ project }: { project: Project }) {
+function GenericBody() {
   return (
     <div className="max-w-[800px] mx-auto px-6 md:px-10 py-20">
       <div className="border-t border-[#E6E3DD] pt-12 space-y-6">
@@ -817,110 +818,6 @@ function GenericBody({ project }: { project: Project }) {
 
 const MotionLink = motion(Link);
 
-function GeminiHeroNetwork() {
-  const routeTransition = {
-    duration: 4.8,
-    repeat: Infinity,
-    ease: "linear" as const,
-  };
-
-  return (
-    <motion.div
-      initial={{ opacity: 0, scale: 0.98 }}
-      animate={{ opacity: 1, scale: 1 }}
-      transition={{ duration: 0.7, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
-      className="relative w-full max-w-[560px] mx-auto lg:ml-auto"
-      aria-label="Abstract module governance network"
-      role="img"
-    >
-      <div className="absolute inset-[12%] rounded-full bg-white/25 blur-3xl" aria-hidden="true" />
-      <svg
-        viewBox="0 0 560 430"
-        className="relative w-full h-auto overflow-visible"
-        fill="none"
-        aria-hidden="true"
-      >
-        <defs>
-          <linearGradient id="gemini-route-a" x1="90" y1="208" x2="474" y2="116" gradientUnits="userSpaceOnUse">
-            <stop stopColor="#317E72" stopOpacity="0" />
-            <stop offset="0.48" stopColor="#317E72" />
-            <stop offset="1" stopColor="#C07B50" stopOpacity="0" />
-          </linearGradient>
-          <linearGradient id="gemini-route-b" x1="196" y1="214" x2="470" y2="326" gradientUnits="userSpaceOnUse">
-            <stop stopColor="#C07B50" stopOpacity="0" />
-            <stop offset="0.5" stopColor="#C07B50" />
-            <stop offset="1" stopColor="#317E72" stopOpacity="0" />
-          </linearGradient>
-          <filter id="gemini-node-glow" x="-80%" y="-80%" width="260%" height="260%">
-            <feGaussianBlur stdDeviation="7" />
-          </filter>
-        </defs>
-
-        <g stroke="#55756F" strokeOpacity="0.22" strokeWidth="1.25">
-          <path d="M82 216C142 216 155 216 214 216" />
-          <path d="M242 202C294 165 323 128 386 118" />
-          <path d="M242 230C294 267 323 304 386 314" />
-          <path d="M414 118C457 135 473 164 478 203" />
-          <path d="M414 314C457 297 473 268 478 229" />
-        </g>
-
-        <motion.path
-          d="M82 216C142 216 155 216 214 216C278 216 319 126 386 118C443 111 474 158 478 203"
-          stroke="url(#gemini-route-a)"
-          strokeWidth="2"
-          strokeLinecap="round"
-          strokeDasharray="42 210"
-          animate={{ strokeDashoffset: [252, 0] }}
-          transition={routeTransition}
-        />
-        <motion.path
-          d="M214 216C278 216 319 306 386 314C443 321 474 274 478 229"
-          stroke="url(#gemini-route-b)"
-          strokeWidth="2"
-          strokeLinecap="round"
-          strokeDasharray="36 190"
-          animate={{ strokeDashoffset: [226, 0] }}
-          transition={{ ...routeTransition, delay: 1.25 }}
-        />
-
-        {[
-          { x: 82, y: 216, r: 7, fill: "#317E72" },
-          { x: 228, y: 216, r: 11, fill: "#FFFFFF" },
-          { x: 400, y: 116, r: 7, fill: "#317E72" },
-          { x: 400, y: 316, r: 7, fill: "#C07B50" },
-          { x: 480, y: 216, r: 11, fill: "#FFFFFF" },
-        ].map((node, index) => (
-          <g key={`${node.x}-${node.y}`}>
-            <motion.circle
-              cx={node.x}
-              cy={node.y}
-              r={node.r + 8}
-              fill={node.fill}
-              opacity="0.13"
-              filter="url(#gemini-node-glow)"
-              animate={{ opacity: [0.08, 0.2, 0.08], scale: [0.92, 1.08, 0.92] }}
-              transition={{ duration: 3.8, delay: index * 0.45, repeat: Infinity, ease: "easeInOut" }}
-              style={{ transformOrigin: `${node.x}px ${node.y}px` }}
-            />
-            <circle cx={node.x} cy={node.y} r={node.r} fill={node.fill} stroke="#55756F" strokeOpacity="0.35" />
-            {index === 1 || index === 4 ? (
-              <circle cx={node.x} cy={node.y} r="3.5" fill="#317E72" />
-            ) : null}
-          </g>
-        ))}
-
-        <g fill="#315A53" fontFamily="var(--font-geist-sans)" fontSize="10" fontWeight="600" letterSpacing="1.2">
-          <text x="58" y="245">MODULE</text>
-          <text x="205" y="252">DECISION</text>
-          <text x="380" y="91">PAE</text>
-          <text x="378" y="347">PMG</text>
-          <text x="451" y="252">NEXT STATE</text>
-        </g>
-      </svg>
-    </motion.div>
-  );
-}
-
 // ── Main Component ─────────────────────────────────────────────
 
 export default function CaseStudy({ project, content }: Props) {
@@ -932,12 +829,20 @@ export default function CaseStudy({ project, content }: Props) {
     <MotionConfig reducedMotion="user">
     <article>
       {/* Hero — full-bleed bg, text anchored to shared 900px grid origin */}
-      <div
-        className="min-h-screen flex flex-col justify-center pt-24 pb-16"
-        style={{ backgroundColor: project.coverColor }}
-      >
-        <div className={`${isGemini ? "max-w-[1280px]" : "max-w-[900px] lg:pl-[150px] xl:pl-10"} mx-auto w-full px-6 md:px-10`}>
-          <div className={isGemini ? "grid grid-cols-1 lg:grid-cols-[minmax(0,0.95fr)_minmax(440px,1.05fr)] items-center gap-10 lg:gap-16" : undefined}>
+      {isGemini ? (
+        <GeminiProjectHero
+          category={project.category}
+          title={project.title}
+          description={project.description}
+          impact={project.impact}
+          tags={project.tags}
+        />
+      ) : (
+        <div
+          className="min-h-screen flex flex-col justify-center pt-24 pb-16"
+          style={{ backgroundColor: project.coverColor }}
+        >
+          <div className="max-w-[900px] lg:pl-[150px] xl:pl-10 mx-auto w-full px-6 md:px-10">
             <div>
               <motion.p
                 initial={{ opacity: 0, y: 12 }}
@@ -979,10 +884,9 @@ export default function CaseStudy({ project, content }: Props) {
                 ))}
               </motion.div>
             </div>
-            {isGemini && <GeminiHeroNetwork />}
           </div>
         </div>
-      </div>
+      )}
 
       {/* Jump-to navigation — only for pages with rich content */}
       {content && <JumpToNav />}
@@ -990,19 +894,19 @@ export default function CaseStudy({ project, content }: Props) {
       {/* Case study body — pb-[80px] on mobile/tablet clears the fixed 52px bottom bar */}
       {content ? (
         <div className="max-w-[900px] mx-auto px-6 md:px-10 lg:pl-[150px] xl:pl-10 pt-16 pb-[80px] xl:pb-16 space-y-0">
-          {content.sections.map((section, i) => (
-            <Section key={section.label} section={section} index={i} />
+          {content.sections.map((section) => (
+            <Section key={section.label} section={section} />
           ))}
         </div>
       ) : (
-        <GenericBody project={project} />
+        <GenericBody />
       )}
 
       {/* Next project */}
       <div className="border-t border-[#E6E3DD] px-6 md:px-10 py-12 bg-[#F9F8F5]">
         <div className="max-w-[1280px] mx-auto flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
           <div>
-            <p className="text-xs text-[#8C8B84] tracking-widest uppercase font-medium mb-1">
+            <p className="text-xs text-[#74716D] tracking-widest uppercase font-medium mb-1">
               Next Project
             </p>
             <p className="text-[#18171A] font-medium">{next.title}</p>

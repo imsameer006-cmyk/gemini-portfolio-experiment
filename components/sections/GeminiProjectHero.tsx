@@ -6,10 +6,10 @@ import { useRef, useState } from "react";
 const EASE = [0.16, 1, 0.3, 1] as const;
 
 const INTERACTIVE_NODES = [
-  { id: 0, x: 700, y: 270, shape: "circle", halo: "#317E72" },
-  { id: 1, x: 860, y: 330, shape: "square", halo: "#315A53" },
+  { id: 0, x: 700, y: 270, shape: "circle", halo: "#477C6C" },
+  { id: 1, x: 860, y: 330, shape: "square", halo: "#405F56" },
   { id: 2, x: 1045, y: 300, shape: "diamond", halo: "#C07B50" },
-  { id: 3, x: 1230, y: 350, shape: "completion", halo: "#8AAFA5" },
+  { id: 3, x: 1230, y: 350, shape: "completion", halo: "#95ADA2" },
 ] as const;
 
 const NETWORK_PATHS = [
@@ -169,20 +169,20 @@ function InteractiveNetwork({
     >
       <defs>
         <linearGradient id="micro-network-fade" x1="320" y1="0" x2="1400" y2="0" gradientUnits="userSpaceOnUse">
-          <stop stopColor="#315A53" stopOpacity="0.018" />
-          <stop offset="0.34" stopColor="#315A53" stopOpacity="0.05" />
-          <stop offset="0.68" stopColor="#315A53" stopOpacity="0.11" />
-          <stop offset="1" stopColor="#315A53" stopOpacity="0.18" />
+          <stop stopColor="#405F56" stopOpacity="0.018" />
+          <stop offset="0.34" stopColor="#405F56" stopOpacity="0.05" />
+          <stop offset="0.68" stopColor="#405F56" stopOpacity="0.11" />
+          <stop offset="1" stopColor="#405F56" stopOpacity="0.18" />
         </linearGradient>
         <linearGradient id="base-network-fade" x1="360" y1="0" x2="1320" y2="0" gradientUnits="userSpaceOnUse">
-          <stop stopColor="#315A53" stopOpacity="0.045" />
-          <stop offset="0.3" stopColor="#315A53" stopOpacity="0.11" />
-          <stop offset="1" stopColor="#315A53" stopOpacity="0.25" />
+          <stop stopColor="#405F56" stopOpacity="0.045" />
+          <stop offset="0.3" stopColor="#405F56" stopOpacity="0.11" />
+          <stop offset="1" stopColor="#405F56" stopOpacity="0.25" />
         </linearGradient>
         <linearGradient id="active-network-route" x1="560" y1="0" x2="1320" y2="0" gradientUnits="userSpaceOnUse">
-          <stop stopColor="#317E72" stopOpacity="0.28" />
-          <stop offset="0.72" stopColor="#317E72" stopOpacity="0.85" />
-          <stop offset="1" stopColor="#315A53" stopOpacity="0.7" />
+          <stop stopColor="#477C6C" stopOpacity="0.28" />
+          <stop offset="0.72" stopColor="#477C6C" stopOpacity="0.85" />
+          <stop offset="1" stopColor="#405F56" stopOpacity="0.7" />
         </linearGradient>
         <linearGradient id="network-shimmer" x1="0" y1="0" x2="1" y2="0">
           <stop stopColor="#FFFFFF" stopOpacity="0" />
@@ -217,7 +217,7 @@ function InteractiveNetwork({
       </motion.g>
       <motion.g
         data-micro-nodes="true"
-        fill="#315A53"
+        fill="#405F56"
         initial={false}
         animate={{ opacity: complete ? 0.16 : 0.11 }}
         transition={{ duration: 1.2, ease: EASE }}
@@ -294,7 +294,7 @@ function InteractiveNetwork({
         );
       })}
 
-      <g fill="#315A53">
+      <g fill="#405F56">
         {DECORATIVE_NODES.map((node) => (
           <circle key={`${node.x}-${node.y}`} cx={node.x} cy={node.y} r={node.r} opacity="0.22" />
         ))}
@@ -373,7 +373,7 @@ function InteractiveNetwork({
               cx={node.x}
               cy={node.y}
               r="22"
-              fill={finalComplete ? "#276B5F" : node.halo}
+              fill={finalComplete ? "#39705C" : node.halo}
               filter="url(#network-node-glow)"
               initial={false}
               animate={{ opacity: active ? 0.08 : 0 }}
@@ -385,8 +385,8 @@ function InteractiveNetwork({
                 y={node.y - 7}
                 width="14"
                 height="14"
-                fill={finalComplete ? "#276B5F" : active ? "#315A53" : "#E0EDE8"}
-                stroke={finalComplete ? "#276B5F" : active ? "#315A53" : "#55756F"}
+                fill={finalComplete ? "#39705C" : active ? "#405F56" : "#E6EDE7"}
+                stroke={finalComplete ? "#39705C" : active ? "#405F56" : "#627B72"}
                 initial={false}
                 animate={{ opacity: highlighted ? 1 : 0.66, scale: highlighted ? 1.12 : 1 }}
                 transition={{ delay: active ? 0.72 : 0, duration: 0.35, ease: EASE }}
@@ -399,8 +399,8 @@ function InteractiveNetwork({
                 width="13"
                 height="13"
                 rx="1"
-                fill={active ? "#315A53" : "#E0EDE8"}
-                stroke={active ? "#315A53" : "#55756F"}
+                fill={active ? "#405F56" : "#E6EDE7"}
+                stroke={active ? "#405F56" : "#627B72"}
                 strokeWidth="1.1"
                 initial={false}
                 animate={{
@@ -422,15 +422,15 @@ function InteractiveNetwork({
                   cx={node.x}
                   cy={node.y}
                   r="8"
-                  fill={finalComplete ? "#276B5F" : active ? "#315A53" : "#E0EDE8"}
-                  stroke={finalComplete ? "#276B5F" : active ? "#315A53" : "#55756F"}
+                  fill={finalComplete ? "#39705C" : active ? "#405F56" : "#E6EDE7"}
+                  stroke={finalComplete ? "#39705C" : active ? "#405F56" : "#627B72"}
                   strokeWidth="1.2"
                 />
                 <circle
                   cx={node.x}
                   cy={node.y}
                   r="3"
-                  fill={finalComplete ? "#E0EDE8" : active ? "#E0EDE8" : "#55756F"}
+                  fill={finalComplete ? "#E6EDE7" : active ? "#E6EDE7" : "#627B72"}
                   opacity={finalComplete || active ? 0.92 : 0.52}
                 />
               </motion.g>
@@ -439,8 +439,8 @@ function InteractiveNetwork({
                 cx={node.x}
                 cy={node.y}
                 r="7"
-                fill={finalComplete ? "#276B5F" : active ? "#315A53" : "#E0EDE8"}
-                stroke={finalComplete ? "#276B5F" : active ? "#315A53" : "#55756F"}
+                fill={finalComplete ? "#39705C" : active ? "#405F56" : "#E6EDE7"}
+                stroke={finalComplete ? "#39705C" : active ? "#405F56" : "#627B72"}
                 strokeWidth="1.2"
                 initial={false}
                 animate={{ opacity: highlighted ? 1 : 0.66, scale: highlighted ? 1.18 : 1 }}
@@ -455,7 +455,21 @@ function InteractiveNetwork({
   );
 }
 
-export default function HeroVisualLab() {
+interface GeminiProjectHeroProps {
+  category?: string;
+  title?: string;
+  description?: string;
+  impact?: string;
+  tags?: string[];
+}
+
+export function GeminiProjectHero({
+  category = "Workflow Design",
+  title = "Gemini — Digital Twin",
+  description = "Designed a visible approval workflow that clarified ownership, review state, and next actions across four engineering roles.",
+  impact = "Launched to 20 FAEs in China",
+  tags = ["Workflow Design", "B2B", "UX Research", "Systems Design"],
+}: GeminiProjectHeroProps) {
   const reduceMotion = useReducedMotion();
   const [activated, setActivated] = useState<Set<number>>(() => new Set());
   const [frozenHalos, setFrozenHalos] = useState<
@@ -493,13 +507,21 @@ export default function HeroVisualLab() {
   };
 
   return (
-    <div className="relative isolate overflow-hidden bg-[#E0EDE8]">
+    <div className="relative isolate overflow-hidden bg-[#E6EDE7]">
       <div
         aria-hidden="true"
         className="pointer-events-none absolute inset-y-0 right-0 z-[2] w-[7%]"
         style={{
           background:
-            "linear-gradient(90deg, rgba(224,237,232,0), rgba(224,237,232,0.72))",
+            "linear-gradient(90deg, rgba(230,237,231,0), rgba(230,237,231,0.72))",
+        }}
+      />
+      <div
+        aria-hidden="true"
+        className="pointer-events-none absolute inset-x-0 bottom-0 z-[2] h-24"
+        style={{
+          background:
+            "linear-gradient(180deg, rgba(230,237,231,0), rgba(249,248,245,0.46))",
         }}
       />
 
@@ -511,7 +533,7 @@ export default function HeroVisualLab() {
             className="pointer-events-none absolute inset-y-0 right-0 z-0 w-[32%] blur-xl"
             style={{
               background:
-                "linear-gradient(90deg, transparent 0%, rgba(49,126,114,0.07) 30%, rgba(39,107,95,0.24) 100%)",
+                "linear-gradient(90deg, transparent 0%, rgba(71,124,108,0.07) 30%, rgba(57,112,92,0.24) 100%)",
             }}
             initial={{ opacity: 0, scaleX: 0.62, transformOrigin: "right center" }}
             animate={{ opacity: 1, scaleX: 1.08 }}
@@ -566,27 +588,26 @@ export default function HeroVisualLab() {
             transition={{ duration: reduceMotion ? 0 : 0.55, ease: EASE }}
             className="pointer-events-auto relative"
           >
-            <p className="mb-4 text-xs font-medium uppercase tracking-widest text-[#18171A]/50">
-              Workflow Design
+            <p className="mb-4 text-xs font-medium uppercase tracking-widest text-[#18171A]/65">
+              {category}
             </p>
             <h1
               id="hero-lab-title"
               className="mb-5 max-w-[22ch] font-[family-name:var(--font-instrument-serif)] text-[clamp(2rem,5vw,4rem)] italic leading-tight text-[#18171A]"
             >
-              Gemini — Digital Twin
+              {title}
             </h1>
             <p className="mb-8 max-w-[48ch] text-base leading-relaxed text-[#18171A]/65">
-              Designed a visible approval workflow that clarified ownership, review
-              state, and next actions across four engineering roles.
+              {description}
             </p>
             <div className="flex flex-wrap gap-2">
               <span className="rounded-full bg-[#18171A]/8 px-3 py-1.5 text-sm font-medium text-[#18171A]">
-                Launched to 20 FAEs in China
+                {impact}
               </span>
-              {["Workflow Design", "B2B", "UX Research", "Systems Design"].map((tag) => (
+              {tags.map((tag) => (
                 <span
                   key={tag}
-                  className="rounded-full border border-[#18171A]/15 px-3 py-1.5 text-xs text-[#18171A]/50"
+                  className="rounded-full border border-[#18171A]/20 px-3 py-1.5 text-xs text-[#18171A]/65"
                 >
                   {tag}
                 </span>
@@ -608,18 +629,18 @@ export default function HeroVisualLab() {
               transition={{ duration: 0.45, delay: 1.1, ease: EASE }}
             >
               <motion.span
-                className="block h-2.5 w-2.5 rounded-full border border-[#315A53]/75 bg-[#F9F8F5] shadow-[0_0_0_1px_rgba(49,90,83,0.08)]"
+                className="block h-2.5 w-2.5 rounded-full border border-[#405F56]/75 bg-[#F9F8F5] shadow-[0_0_0_1px_rgba(64,95,86,0.08)]"
                 animate={{
                   boxShadow: [
-                    "0 0 0 1px rgba(49,90,83,0.18), 0 0 0 0 rgba(49,90,83,0.18)",
-                    "0 0 0 1px rgba(49,90,83,0.22), 0 0 0 8px rgba(49,90,83,0.12)",
-                    "0 0 0 1px rgba(49,90,83,0.16), 0 0 0 15px rgba(49,90,83,0)",
+                    "0 0 0 1px rgba(64,95,86,0.18), 0 0 0 0 rgba(64,95,86,0.18)",
+                    "0 0 0 1px rgba(64,95,86,0.22), 0 0 0 8px rgba(64,95,86,0.12)",
+                    "0 0 0 1px rgba(64,95,86,0.16), 0 0 0 15px rgba(64,95,86,0)",
                   ],
                   scale: [1, 1.12, 1],
                 }}
                 transition={{ duration: 2.2, repeat: Infinity, ease: "easeOut" }}
               />
-              <span className="text-[10px] font-semibold uppercase tracking-[0.16em] text-[#315A53]/80">
+              <span className="text-[10px] font-semibold uppercase tracking-[0.16em] text-[#405F56]/85">
                 Explore the workflow
               </span>
             </motion.div>
@@ -628,4 +649,8 @@ export default function HeroVisualLab() {
       </section>
     </div>
   );
+}
+
+export default function GeminiProjectHeroPreview() {
+  return <GeminiProjectHero />;
 }

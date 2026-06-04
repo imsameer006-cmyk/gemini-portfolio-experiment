@@ -5,7 +5,7 @@ export const projects: Project[] = [
     slug: "gemini-digital-twin",
     title: "Gemini — Digital Twin",
     category: "Workflow Design",
-    year: "2024",
+    year: "2025–2026",
     description:
       "Designed a multi-role approval workflow that eliminated status uncertainty across 4 engineering roles on a B2B digital twin platform.",
     impact: "Launched to 20 FAEs in China",

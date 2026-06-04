@@ -271,6 +271,46 @@ body{display:flex;align-items:center;justify-content:center;padding:48px 40px;mi
 .flow-wrapper{
   display:flex;flex-direction:column;gap:0;position:relative;
 }
+
+/* Shared Gemini diagram language */
+.s-label{font-size:12px;letter-spacing:1.2px;margin-bottom:8px;}
+.s-title{font-size:22px;margin-bottom:28px;}
+.card{
+  border-radius:16px;
+  box-shadow:0 6px 24px rgba(24,23,26,.06);
+}
+.proj-step,.module-inner,.review-section,.decision-box,.principle-bar{border-radius:12px;}
+.proj-step{border-width:1px;}
+.proj-step.active{border-color:#477C6C;}
+.step-icon,.step-icon.green,.step-icon.blue{color:#477C6C;background:#EAF0EF;}
+.step-icon svg{stroke-width:1.7;}
+.module-level-badge{
+  border-width:1px;
+  border-color:#477C6C;
+  color:#405F56;
+  background:#EAF0EF;
+}
+.module-inner{border-width:1px;border-color:#C2D4D1;}
+.stage-circle{border-width:1.5px;}
+.sc-green,.sc-blue{border-color:#477C6C;color:#477C6C;}
+.sc-orange{border-color:#C07B50;color:#C07B50;}
+.sc-purple{border-color:#6B5B4E;color:#6B5B4E;}
+.stage-label.highlight{color:#477C6C;}
+.progress-line-bg{height:1px;}
+.pdot{background:#D4C9BE;}
+.review-section{border-color:#E6E3DD;}
+.decision-node,.decision-box{border-width:1px;}
+.branch-grid::before{border-width:1px;border-color:#D4C9BE;}
+.branch-label.approve,.dl-green{color:#3A7A54;}
+.branch-label.reject,.dl-red{color:#B85A48;}
+.dl-blue{color:#477C6C;}
+.di-green{background:#3A7A54;}
+.di-red{background:#B85A48;}
+.di-blue{background:#477C6C;}
+.decision-box.approved{border-color:#C9DDD1;}
+.decision-box.rejected{border-color:#E7C9C2;}
+.decision-box.revise{border-color:#C2D4D1;}
+.step-desc,.decision-desc{color:#74716D;}
 </style>
 </head>
 <body>
