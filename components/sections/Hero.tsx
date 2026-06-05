@@ -1,11 +1,52 @@
 "use client";
 
+import { ArrowDown, DownloadSimple } from "@phosphor-icons/react";
 import { motion } from "framer-motion";
 
 const FADE_UP = {
   initial: { opacity: 0, y: 20 },
   animate: { opacity: 1, y: 0 },
 };
+
+const SIGNALS = [
+  { value: "B2B", label: "Product focus" },
+  { value: "UX", label: "Research led" },
+  { value: "MVP", label: "Launch work" },
+  { value: "SYS", label: "Systems thinking" },
+];
+
+function SignalPanel() {
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 18 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.55, delay: 0.44, ease: [0.16, 1, 0.3, 1] }}
+      className="mt-7 grid max-w-[660px] grid-cols-2 border-y border-[#E6E3DD] sm:grid-cols-4 md:mt-8"
+      aria-label="Portfolio focus areas"
+      role="list"
+    >
+      {SIGNALS.map((signal, index) => (
+        <div
+          key={signal.label}
+          className={[
+            "relative px-3 py-3 text-center",
+            index === 0 || index === 1 ? "border-b border-[#CECAC2] sm:border-b-0" : "",
+            index === 0 || index === 2 ? "after:absolute after:right-0 after:top-1/2 after:h-8 after:w-px after:-translate-y-1/2 after:bg-[rgba(206,202,194,0.58)] after:content-['']" : "",
+            index === 1 ? "sm:after:absolute sm:after:right-0 sm:after:top-1/2 sm:after:h-8 sm:after:w-px sm:after:-translate-y-1/2 sm:after:bg-[rgba(206,202,194,0.58)] sm:after:content-['']" : "",
+          ].join(" ")}
+          role="listitem"
+        >
+          <div className="font-display text-lg italic leading-none text-[#18171A] md:text-xl">
+            {signal.value}
+          </div>
+          <div className="mt-1 text-[9px] font-medium uppercase tracking-[0.08em] text-[#9C9A95] md:text-[10px]">
+            {signal.label}
+          </div>
+        </div>
+      ))}
+    </motion.div>
+  );
+}
 
 export default function Hero() {
   const scrollToWork = () => {
@@ -15,7 +56,7 @@ export default function Hero() {
   return (
     <section
       aria-label="Introduction"
-      className="relative min-h-screen flex flex-col justify-center px-6 md:px-10 pt-24 pb-16"
+      className="relative min-h-[100svh] overflow-hidden px-6 pb-14 pt-16 md:px-10 md:pb-16 md:pt-20"
     >
       {/* Subtle grid texture */}
       <div
@@ -28,79 +69,65 @@ export default function Hero() {
         }}
       />
 
-      <div className="max-w-[1280px] mx-auto w-full relative">
-        {/* Role label */}
-        <motion.p
-          {...FADE_UP}
-          transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
-          className="text-sm text-[#9C9A95] tracking-widest uppercase mb-8 font-medium"
-        >
-          Product Designer
-        </motion.p>
+      <div className="relative mx-auto min-h-[calc(100svh-7.5rem)] w-full max-w-[1280px] pt-3 md:min-h-[calc(100svh-9rem)] md:pt-0">
+        <div className="max-w-[840px]">
+          <motion.div
+            {...FADE_UP}
+            transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
+            className="mb-6 inline-flex items-center gap-2 text-xs font-medium text-[#3A7A54]"
+          >
+            <span className="h-1.5 w-1.5 rounded-full bg-[#3A7A54]" />
+            Open to product design roles
+          </motion.div>
 
-        {/* Headline */}
-        <motion.h1
-          initial={{ opacity: 0, y: 28 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.65, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
-          className="font-[family-name:var(--font-instrument-serif)] italic text-[clamp(3rem,8vw,7rem)] leading-[1.05] tracking-tight text-[#18171A] mb-6 max-w-[16ch]"
-        >
-          Building clarity{" "}
-          <span className="not-italic font-[family-name:var(--font-instrument-serif)]">
-            out of
-          </span>{" "}
-          complexity.
-        </motion.h1>
+          <motion.h1
+            initial={{ opacity: 0, y: 28 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.65, delay: 0.12, ease: [0.16, 1, 0.3, 1] }}
+            className="font-display mb-5 max-w-[16ch] text-[clamp(3rem,8vw,7rem)] italic leading-[1.05] text-[#18171A]"
+          >
+            Building clarity{" "}
+            <span className="not-italic">out of</span>{" "}
+            complexity.
+          </motion.h1>
 
-        {/* Subtext + CTA row */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.55, delay: 0.25, ease: [0.16, 1, 0.3, 1] }}
-          className="flex flex-col md:flex-row md:items-end gap-8 md:gap-16"
-        >
-          <p className="text-base md:text-lg text-[#6A6764] max-w-[38ch] leading-relaxed">
-            I design products that feel obvious in hindsight — systems that work
-            invisibly and interfaces that people trust.
-          </p>
+          <motion.p
+            initial={{ opacity: 0, y: 18 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.55, delay: 0.24, ease: [0.16, 1, 0.3, 1] }}
+            className="mb-7 max-w-[58ch] text-base leading-relaxed text-[#6A6764] md:whitespace-nowrap md:text-lg"
+          >
+            I design products that work for people and perform for business.
+          </motion.p>
 
-          <div className="flex flex-wrap items-center gap-3">
+          <motion.div
+            initial={{ opacity: 0, y: 18 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.55, delay: 0.34, ease: [0.16, 1, 0.3, 1] }}
+            className="flex flex-wrap items-center gap-3"
+          >
             <button
+              type="button"
               onClick={scrollToWork}
-              className="inline-flex items-center gap-2 bg-[#18171A] text-[#F9F8F5] text-sm font-medium px-5 py-3 rounded-full hover:bg-[#C07B50] transition-colors duration-200 min-h-[44px]"
+              className="inline-flex min-h-[44px] items-center gap-2 rounded-full bg-[#18171A] px-5 py-3 text-sm font-medium text-[#F9F8F5] transition-colors duration-200 hover:bg-[#C07B50]"
             >
               View work
-              <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true">
-                <path d="M7 2.5v9M3 7.5l4 4 4-4" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round" />
-              </svg>
+              <ArrowDown size={14} weight="bold" aria-hidden="true" />
             </button>
             <a
-              href="#about"
-              onClick={(e) => {
-                e.preventDefault();
-                document.querySelector("#about")?.scrollIntoView({ behavior: "smooth" });
-              }}
-              className="inline-flex items-center text-sm font-medium text-[#6A6764] hover:text-[#18171A] transition-colors duration-200 min-h-[44px] px-2"
+              href="/resume.pdf"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex min-h-[44px] items-center gap-2 rounded-full border border-[#E6E3DD] px-5 py-3 text-sm font-medium text-[#6A6764] transition-all duration-200 hover:border-[#C07B50] hover:text-[#18171A]"
             >
-              About me →
+              Resume
+              <DownloadSimple size={14} weight="bold" aria-hidden="true" />
             </a>
-          </div>
-        </motion.div>
+          </motion.div>
 
-        {/* Scroll hint */}
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 0.5, delay: 0.8 }}
-          aria-hidden="true"
-          className="hidden md:flex items-center gap-3 absolute bottom-0 right-0 text-xs text-[#9C9A95] tracking-widest uppercase"
-        >
-          <span
-            className="block w-px h-10 bg-[#E6E3DD]"
-            style={{ animation: "pulse 2s ease-in-out infinite" }}
-          />
-          Scroll
-        </motion.div>
+          <SignalPanel />
+        </div>
+
       </div>
 
       {/* Decorative accent line at bottom */}

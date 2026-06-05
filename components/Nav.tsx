@@ -54,7 +54,8 @@ export default function Nav() {
             href="/"
             className="text-[#18171A] font-medium tracking-tight text-sm hover:text-[#C07B50] transition-colors duration-200"
           >
-            Sameer Gautam
+            <span>Sameer Gautam</span>
+            <span className="hidden text-[#9C9A95] sm:inline"> - Product Designer</span>
           </Link>
 
           {/* Desktop links */}
