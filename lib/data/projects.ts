@@ -1,4 +1,6 @@
 import type { Project, ProcessStep, Belief } from "@/lib/types";
+import { createElement } from "react";
+import GeminiThumbnail from "@/components/thumbnails/GeminiThumbnail";
 
 export const projects: Project[] = [
   {
@@ -11,7 +13,8 @@ export const projects: Project[] = [
     impact: "Launched to 20 FAEs in China",
     tags: ["Workflow Design", "B2B", "UX Research", "Systems Design"],
     featured: true,
-    coverColor: "#E0EDE8",
+    coverColor: "#EAF0EF",
+    thumbnail: createElement(GeminiThumbnail),
   },
   {
     slug: "design-system",

@@ -6,7 +6,7 @@ import { beliefs } from "@/lib/data/projects";
 export default function Philosophy() {
   return (
     <section
-      id="about"
+      id="philosophy"
       className="bg-[#141310] px-6 md:px-10 py-24 md:py-36"
     >
       <div className="max-w-[1280px] mx-auto">

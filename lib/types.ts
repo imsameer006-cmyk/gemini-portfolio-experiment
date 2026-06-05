@@ -1,3 +1,5 @@
+import type React from "react";
+
 export interface Project {
   slug: string;
   title: string;
@@ -8,6 +10,7 @@ export interface Project {
   tags: string[];
   featured: boolean;
   coverColor: string;
+  thumbnail?: React.ReactNode;
 }
 
 export interface ProcessStep {

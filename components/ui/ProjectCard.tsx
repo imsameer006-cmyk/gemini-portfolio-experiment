@@ -24,12 +24,20 @@ export default function ProjectCard({ project, index }: ProjectCardProps) {
       >
         {/* Visual panel */}
         <div
-          className="w-full h-52 md:h-64 flex items-center justify-center transition-transform duration-500 group-hover:scale-[1.02] origin-bottom"
+          className="w-full h-52 md:h-64 overflow-hidden transition-transform duration-500 group-hover:scale-[1.02] origin-bottom"
           style={{ backgroundColor: project.coverColor }}
         >
-          <span className="font-[family-name:var(--font-instrument-serif)] italic text-4xl md:text-5xl text-[#18171A]/20 select-none">
-            {String(index + 1).padStart(2, "0")}
-          </span>
+          {project.thumbnail ? (
+            <div className="w-full h-full">
+              {project.thumbnail}
+            </div>
+          ) : (
+            <div className="w-full h-full flex items-center justify-center">
+              <span className="font-[family-name:var(--font-instrument-serif)] italic text-4xl md:text-5xl text-[#18171A]/20 select-none">
+                {String(index + 1).padStart(2, "0")}
+              </span>
+            </div>
+          )}
         </div>
 
         {/* Content */}
