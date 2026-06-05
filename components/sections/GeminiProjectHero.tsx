@@ -588,16 +588,16 @@ export function GeminiProjectHero({
             transition={{ duration: reduceMotion ? 0 : 0.55, ease: EASE }}
             className="pointer-events-auto relative"
           >
-            <p className="mb-4 text-xs font-medium uppercase tracking-widest text-[#18171A]/65">
+            <p className="mb-5 text-xs font-medium uppercase tracking-widest text-[#18171A]/65">
               {category}
             </p>
             <h1
               id="hero-lab-title"
-              className="mb-5 max-w-[22ch] font-[family-name:var(--font-instrument-serif)] text-[clamp(2rem,5vw,4rem)] italic leading-tight text-[#18171A]"
+              className="mb-4 max-w-[22ch] font-[family-name:var(--font-instrument-serif)] text-[clamp(2rem,5vw,4rem)] italic leading-tight text-[#18171A]"
             >
               {title}
             </h1>
-            <p className="mb-8 max-w-[48ch] text-base leading-relaxed text-[#18171A]/65">
+            <p className="mb-10 max-w-[48ch] text-base leading-relaxed text-[#18171A]/65">
               {description}
             </p>
             <div className="flex flex-wrap gap-2">

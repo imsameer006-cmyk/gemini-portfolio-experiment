@@ -2,6 +2,18 @@
 
 This document outlines the current design system foundation and proposed refinements for the Gemini Portfolio, focusing on professional enterprise SaaS aesthetics.
 
+## Current Design Language Status
+
+The portfolio direction is warm, premium, minimal, and enterprise-oriented. The Gemini case study should feel like a rigorous workflow-system story rather than a decorative product showcase.
+
+- **Tone:** calm, clear, senior, systems-oriented, and specific.
+- **Visual posture:** editorial warmth combined with enterprise UI precision.
+- **Primary narrative:** clarity emerging from complex workflow governance.
+- **Gemini accent logic:** muted teal can be used to connect to the product UI, but it should be warmed and balanced with copper and paper neutrals.
+- **Status color logic:** green and red should be reserved for completion/approval and rejection/critical states.
+- **Motion:** subtle, purposeful, and state-driven. Avoid spectacle.
+- **Hero principle:** the Gemini hero should communicate hierarchy, progression, and completion without cluttering the text area.
+
 ## 1. Typography
 
 ### Typefaces
@@ -39,6 +51,12 @@ This document outlines the current design system foundation and proposed refinem
 - **Primary:** `#C07B50` (`var(--color-accent)`) - Brand identity and primary actions.
 - **Hover:** `#A8643C` (`var(--color-accent-hover)`) - Darker copper for interaction.
 - **Light:** `#F5E8DC` (`var(--color-accent-light)`) - Backgrounds for pills or selections.
+
+### Gemini / Workflow Teal
+- **Muted Teal:** `#477C6C` - Gemini product-system cue and active workflow routes.
+- **Deep Teal:** `#405F56` - Structural network lines, secondary active states, and quiet emphasis.
+- **Soft Teal Surface:** `#EAF0EF` - Icon backgrounds and low-intensity system surfaces.
+- **Teal Border:** `#C2D4D1` - Subtle diagram/icon borders.
 
 ### Status (Enterprise)
 - **Success (Green):** `#3a7a54` - Validated, Approved, Complete.
@@ -82,8 +100,29 @@ This document outlines the current design system foundation and proposed refinem
 - **Ownership:** Every actionable state must display the current owner (Role/Name).
 - **Permissions:** Read-only states must be explicit (Lock icons, subtle background shifts).
 - **Feedback:** Rejection feedback must be inline and distinct from general comments.
+- **Next Action:** Workflow screens and diagrams should make the next action visible, not just the current state.
+- **Review Role Clarity:** PAE and PMG review responsibility should be explicit before approve/reject actions are enabled.
 
 ### Visual Hierarchy
 - Use **Instrument Serif Italic** only for narrative/storytelling moments.
 - Use **Geist Sans/Mono** for all functional, interactive, and data-driven elements.
 - Maintain strict alignment between labels and their associated data/inputs.
+
+## 6. Diagram Language
+
+The Gemini case-study diagrams should use a shared visual system:
+
+- Card radius: 16px for main cards, 12px for internal modules/pills.
+- Border: warm neutral `#E6E3DD` unless semantic state requires more contrast.
+- Shadow: soft, low-opacity, paper-like elevation.
+- Structural connector stroke: warm muted neutral, approximately 1px.
+- Emphasis connector stroke: 1.5px to 2.5px only where state/progress requires it.
+- Icons: shared cube/module icon language for project/module references.
+- Teal: product/system structure and active workflow routes.
+- Copper: process emphasis and editorial accent.
+- Green/red: approved/rejected outcomes only.
+
+Currently aligned diagrams:
+- `context-governance`
+- `architecture-module-workflow`
+- `interaction-flow`
