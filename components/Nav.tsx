@@ -48,11 +48,11 @@ export default function Nav() {
             : "bg-transparent",
         ].join(" ")}
       >
-        <nav className="max-w-[1280px] mx-auto px-6 md:px-10 h-16 flex items-center justify-between">
+        <nav className="max-w-[1360px] mx-auto px-6 md:px-10 h-16 flex items-center justify-between">
           {/* Wordmark */}
           <Link
             href="/"
-            className="text-[#18171A] font-medium tracking-tight text-sm hover:text-[#C07B50] transition-colors duration-200"
+            className="text-[#6A6764] font-medium tracking-tight text-sm hover:text-[#18171A] transition-colors duration-200"
           >
             <span>Sameer Gautam</span>
             <span className="hidden text-[#9C9A95] sm:inline"> - Product Designer</span>
