@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Gemini — Short Flow Approval</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #e8f0eb;
+    font-family: -apple-system, 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  }
+
+  .canvas {
+    width: 960px;
+    min-height: 860px;
+    background: radial-gradient(ellipse at 60% 30%, #ddf0e6 0%, #e6f2ec 40%, #deeee6 100%);
+    border-radius: 24px;
+    padding: 60px 70px 60px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .arc-area {
+    position: relative;
+    height: 460px;
+    width: 100%;
+  }
+
+  .arc-svg {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    overflow: visible;
+  }
+
+  .node {
+    position: absolute;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 14px;
+    z-index: 3;
+  }
+
+  .node-circle {
+    border-radius: 50%;
+    background: #d6f0e5;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 2px solid rgba(255,255,255,0.85);
+    box-shadow:
+      0 4px 24px rgba(60,150,110,0.14),
+      0 1px 4px rgba(60,150,110,0.08),
+      inset 0 1px 0 rgba(255,255,255,0.6);
+  }
+
+  .node-circle.large  { width: 86px; height: 86px; }
+  .node-circle.medium { width: 74px; height: 74px; }
+  .node-circle.filled {
+    background: #2fa87a;
+    box-shadow:
+      0 6px 28px rgba(47,168,122,0.40),
+      0 2px 8px rgba(47,168,122,0.20),
+      inset 0 1px 0 rgba(255,255,255,0.2);
+    border-color: rgba(255,255,255,0.5);
+  }
+
+  .node-label {
+    font-size: 18px;
+    font-weight: 700;
+    color: #1e7a57;
+    letter-spacing: -0.3px;
+    white-space: nowrap;
+  }
+
+  .node-draft       { left: 28px;  bottom: 140px; }
+  .node-precheck    { left: 50%;   top: 90px; transform: translateX(-50%); }
+  .node-feasibility { right: 30px; top: 20px; }
+
+  .flow-card {
+    background: rgba(255,255,255,0.42);
+    border: 1.5px solid rgba(60,185,135,0.40);
+    border-radius: 20px;
+    padding: 18px 18px 20px;
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+  }
+
+  .flow-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 14px;
+    padding: 0 4px;
+  }
+
+  .flow-line {
+    flex: 1;
+    height: 1px;
+    background: rgba(60,185,135,0.28);
+  }
+
+  .flow-title {
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 2.5px;
+    color: #3db88a;
+  }
+
+  .steps-row {
+    display: flex;
+    align-items: stretch;
+    gap: 0;
+  }
+
+  .step-cell {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    padding: 12px 14px 14px;
+    gap: 8px;
+    min-width: 0;
+  }
+
+  .step-group-active {
+    flex: 2;
+    display: flex;
+    background: rgba(255,255,255,0.82);
+    border: 1px solid rgba(60,185,135,0.22);
+    border-radius: 12px;
+    box-shadow: 0 2px 12px rgba(60,150,110,0.07);
+    overflow: hidden;
+  }
+
+  .step-group-active .step-cell { flex: 1; }
+
+  .inner-divider {
+    width: 1px;
+    background: rgba(60,185,135,0.18);
+    margin: 12px 0;
+    flex-shrink: 0;
+  }
+
+  .v-divider {
+    width: 1px;
+    background: rgba(60,185,135,0.15);
+    margin: 10px 8px;
+    flex-shrink: 0;
+    align-self: stretch;
+  }
+
+  .step-num {
+    font-size: 10px;
+    font-weight: 500;
+    color: #a8c8ba;
+    line-height: 1;
+  }
+
+  .step-group-active .step-num { color: #2fa87a; }
+
+  .step-icon-name {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .step-icon {
+    flex-shrink: 0;
+    color: #b8d4c8;
+    display: flex;
+    align-items: center;
+  }
+
+  .step-group-active .step-icon { color: #2fa87a; }
+
+  .step-name {
+    font-size: 11.5px;
+    font-weight: 600;
+    color: #b0cec2;
+    line-height: 1.3;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .step-group-active .step-name { color: #14523a; }
+
+  .step-cell .step-name {
+    white-space: normal;
+    font-size: 10.5px;
+  }
+
+  .step-check {
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    border: 1.5px solid #c8ddd6;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 2px;
+  }
+
+  .step-check.done {
+    background: #2fa87a;
+    border-color: #2fa87a;
+    box-shadow: 0 2px 8px rgba(47,168,122,0.30);
+  }
+</style>
+</head>
+<body>
+<div class="canvas">
+  <div class="arc-area">
+    <svg class="arc-svg" viewBox="0 0 820 460" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <linearGradient id="arcGrad" x1="0%" y1="100%" x2="100%" y2="0%">
+          <stop offset="0%"   stop-color="#7ddcb5" stop-opacity="0.95"/>
+          <stop offset="45%"  stop-color="#3dba8c"/>
+          <stop offset="100%" stop-color="#28a878"/>
+        </linearGradient>
+      </defs>
+      <circle cx="410" cy="133" r="140" fill="none" stroke="rgba(80,180,130,0.08)" stroke-width="1"/>
+      <circle cx="410" cy="133" r="108" fill="none" stroke="rgba(80,180,130,0.11)" stroke-width="1"/>
+      <circle cx="410" cy="133" r="76"  fill="none" stroke="rgba(80,180,130,0.15)" stroke-width="1"/>
+      <path d="M 68 340 C 160 340 280 133 410 133 C 540 133 660 38 752 38"
+        fill="none" stroke="url(#arcGrad)" stroke-width="10" stroke-linecap="round"/>
+    </svg>
+
+    <div class="node node-draft">
+      <div class="node-circle medium">
+        <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#2fa87a" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+          <polyline points="14 2 14 8 20 8"/>
+          <line x1="9" y1="13" x2="15" y2="13"/>
+          <line x1="9" y1="17" x2="13" y2="17"/>
+        </svg>
+      </div>
+      <span class="node-label">Draft</span>
+    </div>
+
+    <div class="node node-precheck">
+      <div class="node-circle large">
+        <svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="#2fa87a" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="11" cy="11" r="8"/>
+          <line x1="21" y1="21" x2="16.65" y2="16.65"/>
+        </svg>
+      </div>
+      <span class="node-label">Pre-check</span>
+    </div>
+
+    <div class="node node-feasibility">
+      <div class="node-circle medium filled">
+        <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
+          <polyline points="20 6 9 17 4 12"/>
+        </svg>
+      </div>
+      <span class="node-label">Feasibility</span>
+    </div>
+  </div>
+
+  <div class="flow-card">
+    <div class="flow-header">
+      <div class="flow-line"></div>
+      <span class="flow-title">SHORT FLOW</span>
+      <div class="flow-line"></div>
+    </div>
+    <div class="steps-row">
+      <div class="step-cell">
+        <span class="step-num">01</span>
+        <div class="step-icon-name">
+          <span class="step-icon">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+              <polyline points="14 2 14 8 20 8"/>
+            </svg>
+          </span>
+          <span class="step-name">Draft</span>
+        </div>
+        <div class="step-check"></div>
+      </div>
+
+      <div class="v-divider"></div>
+
+      <div class="step-group-active">
+        <div class="step-cell">
+          <span class="step-num">02</span>
+          <div class="step-icon-name">
+            <span class="step-icon">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
+                <circle cx="9" cy="7" r="4"/>
+                <path d="M23 21v-2a4 4 0 0 0-3-3.87"/>
+                <path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+              </svg>
+            </span>
+            <span class="step-name">Pre-check</span>
+          </div>
+          <div class="step-check done">
+            <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round">
+              <polyline points="20 6 9 17 4 12"/>
+            </svg>
+          </div>
+        </div>
+        <div class="inner-divider"></div>
+        <div class="step-cell">
+          <span class="step-num">03</span>
+          <div class="step-icon-name">
+            <span class="step-icon">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                <line x1="18" y1="20" x2="18" y2="10"/>
+                <line x1="12" y1="20" x2="12" y2="4"/>
+                <line x1="6"  y1="20" x2="6"  y2="14"/>
+              </svg>
+            </span>
+            <span class="step-name">Feasibility</span>
+          </div>
+          <div class="step-check done">
+            <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round">
+              <polyline points="20 6 9 17 4 12"/>
+            </svg>
+          </div>
+        </div>
+      </div>
+
+      <div class="v-divider"></div>
+
+      <div class="step-cell">
+        <span class="step-num">04</span>
+        <div class="step-icon-name">
+          <span class="step-icon">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+              <polyline points="14 2 14 8 20 8"/>
+              <line x1="9" y1="13" x2="15" y2="13"/>
+            </svg>
+          </span>
+          <span class="step-name">Requirements Specification</span>
+        </div>
+        <div class="step-check"></div>
+      </div>
+
+      <div class="step-cell">
+        <span class="step-num">05</span>
+        <div class="step-icon-name">
+          <span class="step-icon">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="3" y="3" width="18" height="18" rx="2"/>
+              <path d="M3 9h18M9 21V9"/>
+            </svg>
+          </span>
+          <span class="step-name">Design Specification Creation</span>
+        </div>
+        <div class="step-check"></div>
+      </div>
+    </div>
+  </div>
+</div>
+</body>
+</html>
