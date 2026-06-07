@@ -1,12 +1,15 @@
 "use client";
 
 import { motion } from "framer-motion";
+import Image from "next/image";
 
 const FACTS = [
-  "10+ years",
-  "Enterprise products",
-  "Workflow systems",
-  "D2C experiences",
+  "Systems Design",
+  "Enterprise UX",
+  "User Research",
+  "Product Strategy",
+  "Complex Workflows",
+  "AI-Native Products",
 ];
 
 export default function About() {
@@ -26,9 +29,20 @@ export default function About() {
             <h2 className="font-[family-name:var(--font-instrument-serif)] text-[clamp(2rem,4.5vw,3.5rem)] italic leading-tight text-[#18171A]">
               The designer behind the systems.
             </h2>
+            <div className="mt-10 max-w-[360px] overflow-hidden rounded-lg border border-[#E6E3DD] bg-[#F4F1EC]">
+              <Image
+                src="/about-portrait.png"
+                alt="Sameer Gautam seated in a workspace"
+                width={720}
+                height={900}
+                sizes="(min-width: 1024px) 360px, 100vw"
+                className="aspect-[4/5] h-auto w-full object-cover object-[50%_35%]"
+                priority={false}
+              />
+            </div>
           </motion.div>
 
-          <div>
+          <div className="lg:mt-[188px] lg:flex lg:min-h-[450px] lg:flex-col lg:justify-center">
             <motion.p
               initial={{ opacity: 0, y: 16 }}
               whileInView={{ opacity: 1, y: 0 }}
@@ -36,11 +50,27 @@ export default function About() {
               transition={{ duration: 0.55, delay: 0.08, ease: [0.16, 1, 0.3, 1] }}
               className="max-w-[760px] text-lg leading-relaxed text-[#3A3836] md:text-xl"
             >
-              I&apos;m a Product Designer with 10+ years of experience designing enterprise products,
-              internal tools, D2C experiences, and complex workflow systems. I work at the
-              intersection of user needs, business goals, and technical constraints&mdash;transforming
-              ambiguity into clear, scalable solutions that simplify complexity, drive business
-              outcomes, and help people get work done.
+              Product Designer with 6+ years of experience designing enterprise products,
+              internal tools, D2C experiences, and complex workflow systems. Drawing on 10+
+              years across digital products and design, I translate complexity into intuitive,
+              scalable experiences that balance user needs, business goals, and technical
+              constraints.
+            </motion.p>
+
+            <motion.p
+              initial={{ opacity: 0, y: 12 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.45, delay: 0.14, ease: [0.16, 1, 0.3, 1] }}
+              className="mt-10 max-w-[420px] font-[family-name:var(--font-instrument-serif)] text-[clamp(1.2rem,1.6vw,1.5rem)] italic leading-[1.45] text-[#5F5A54]"
+            >
+              Think in systems.
+              <br />
+              Design for humans.
+              <br />
+              Build with evidence.
+              <br />
+              Simplify complexity.
             </motion.p>
 
             <motion.div
@@ -48,7 +78,7 @@ export default function About() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.45, delay: 0.18, ease: [0.16, 1, 0.3, 1] }}
-              className="mt-9 flex flex-wrap gap-2"
+              className="mt-12 flex flex-wrap gap-2"
             >
               {FACTS.map((fact) => (
                 <span

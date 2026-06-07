@@ -18,7 +18,7 @@ export default function Philosophy() {
           transition={{ duration: 0.45, ease: [0.16, 1, 0.3, 1] }}
           className="text-xs text-[#6A6860] tracking-widest uppercase font-medium mb-10"
         >
-          Philosophy
+          My Design Philosophy
         </motion.p>
 
         {/* Core statement */}
