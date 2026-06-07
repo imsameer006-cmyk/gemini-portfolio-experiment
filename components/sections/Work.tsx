@@ -9,7 +9,7 @@ const featured = projects.filter((p) => p.featured);
 
 export default function Work() {
   return (
-    <section id="work" className="px-6 md:px-10 py-24 md:py-36">
+    <section id="work" className="px-6 pb-16 pt-24 md:px-10 md:pb-24 md:pt-36">
       <div className="max-w-[1280px] mx-auto">
         {/* Section header */}
         <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-14">

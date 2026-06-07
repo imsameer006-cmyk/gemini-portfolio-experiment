@@ -59,7 +59,7 @@ export const processSteps: ProcessStep[] = [
     number: "01",
     title: "Understand",
     description:
-      "Deep research into users, business goals, and constraints. I look for the real problem beneath the stated one — the gap between what people ask for and what they actually need.",
+      "I start by understanding people, context, constraints, and goals. The real challenge often lies beneath the initial problem statement.",
   },
   {
     number: "02",
@@ -71,27 +71,27 @@ export const processSteps: ProcessStep[] = [
     number: "03",
     title: "Design",
     description:
-      "Iteration from rough to refined, always guided by principles. I design systems, not just screens — every decision should scale and compose.",
+      "I design systems, not just screens. Every interaction should support a larger experience and scale as products evolve.",
   },
   {
     number: "04",
     title: "Validate",
     description:
-      "Testing with real users, honest critique, and measurement. Good design is never finished — it is continuously refined against reality.",
+      "Reality is the ultimate design review. Every solution is tested against real user behavior, feedback, and measurable outcomes.",
   },
 ];
 
 export const beliefs: Belief[] = [
   {
-    heading: "Clarity is a design decision",
-    body: "Every word, interaction, and visual element is a choice about what to emphasize and what to leave out. Confusion is never accidental.",
+    heading: "Clarity is intentional",
+    body: "Good design doesn't happen by accident. Every decision—what to include, what to remove, and what to emphasize—shapes how people understand and interact with a product.",
   },
   {
-    heading: "Systems over solutions",
-    body: "Good design scales. I build foundations that compose, not workarounds that break under pressure. The best component is the one you never have to redesign.",
+    heading: "Systems before screens",
+    body: "Interfaces are the final expression of a system. Before designing screens, I focus on states, relationships, workflows, ownership, and constraints. When the system is clear, the interface becomes obvious.",
   },
   {
-    heading: "Process reveals product",
-    body: "How you work is visible in what you ship. Mine shows rigor, empathy, and a genuine willingness to be wrong before getting it right.",
+    heading: "Design creates alignment",
+    body: "The most valuable design work often happens before pixels. It happens when users, business stakeholders, and engineers develop a shared understanding of the problem and move toward the same outcome.",
   },
 ];

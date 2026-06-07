@@ -57,7 +57,7 @@ export default function Contact() {
             </svg>
           </a>
           <a
-            href="https://linkedin.com"
+            href="https://www.linkedin.com/in/uxd-sameer/"
             target="_blank"
             rel="noopener noreferrer"
             className="inline-flex items-center gap-2 border border-[#2E2C27] text-[#9A9890] text-sm font-medium px-6 py-3.5 rounded-full hover:border-[#6A6860] hover:text-[#EDEBE3] transition-all duration-200 min-h-[44px]"

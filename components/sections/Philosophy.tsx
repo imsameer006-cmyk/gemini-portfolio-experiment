@@ -29,7 +29,7 @@ export default function Philosophy() {
           transition={{ duration: 0.6, delay: 0.08, ease: [0.16, 1, 0.3, 1] }}
           className="font-[family-name:var(--font-instrument-serif)] italic text-[clamp(1.75rem,4vw,3.25rem)] leading-[1.2] text-[#EDEBE3] mb-6 max-w-[26ch]"
         >
-          &ldquo;Design is the reduction of complexity to its essential form — and then making that form beautiful.&rdquo;
+          &ldquo;Design is the practice of understanding complexity, uncovering what matters, and shaping it into experiences people can understand and use.&rdquo;
         </motion.blockquote>
 
         <motion.p
@@ -39,15 +39,15 @@ export default function Philosophy() {
           transition={{ duration: 0.4, delay: 0.2 }}
           className="text-[#6A6860] text-sm mb-20 max-w-[36ch] leading-relaxed"
         >
-          I&apos;ve spent years at the intersection of product strategy and interaction craft.
-          This is how I think about the work.
+          Over the years, I&apos;ve learned that good design isn&apos;t about adding more&mdash;it&apos;s
+          about understanding what matters and making it clear.
         </motion.p>
 
         {/* Divider */}
         <div className="border-t border-[#2E2C27] mb-16" />
 
         {/* Beliefs grid */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-10 md:gap-8">
+        <div className="grid grid-cols-1 gap-12 md:grid-cols-3 md:gap-12">
           {beliefs.map((belief, i) => (
             <motion.div
               key={belief.heading}
@@ -55,14 +55,17 @@ export default function Philosophy() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, margin: "-40px" }}
               transition={{ duration: 0.5, delay: i * 0.1, ease: [0.16, 1, 0.3, 1] }}
+              className="grid h-full grid-rows-[auto_auto_1fr] content-start"
             >
-              <span className="text-xs text-[#6A6860] font-medium tracking-widest uppercase block mb-4">
+              <span className="mb-5 block text-xs font-medium uppercase tracking-widest text-[#6A6860]">
                 {String(i + 1).padStart(2, "0")}
               </span>
-              <h3 className="text-[#EDEBE3] font-medium text-base md:text-lg leading-snug mb-3">
+              <h3 className="mb-4 max-w-[24ch] text-base font-medium leading-snug text-[#EDEBE3] md:text-lg">
                 {belief.heading}
               </h3>
-              <p className="text-[#6A6860] text-sm leading-relaxed">{belief.body}</p>
+              <p className="max-w-[38ch] text-sm leading-relaxed text-[#6A6860]">
+                {belief.body}
+              </p>
             </motion.div>
           ))}
         </div>

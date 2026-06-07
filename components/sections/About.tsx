@@ -14,7 +14,7 @@ const FACTS = [
 
 export default function About() {
   return (
-    <section id="about" className="px-6 py-24 md:px-10 md:py-32">
+    <section id="about" className="px-6 pb-24 pt-0 md:px-10 md:pb-32 md:pt-0">
       <div className="mx-auto max-w-[1280px] border-t border-[#E6E3DD] pt-16">
         <div className="grid gap-12 lg:grid-cols-[0.72fr_1.28fr] lg:gap-20">
           <motion.div

@@ -9,20 +9,12 @@ export default function Footer() {
         </p>
         <div className="flex items-center gap-6">
           <a
-            href="https://linkedin.com"
+            href="https://www.linkedin.com/in/uxd-sameer/"
             target="_blank"
             rel="noopener noreferrer"
             className="text-[#6A6860] text-sm hover:text-[#EDEBE3] transition-colors duration-200"
           >
             LinkedIn
-          </a>
-          <a
-            href="https://dribbble.com"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="text-[#6A6860] text-sm hover:text-[#EDEBE3] transition-colors duration-200"
-          >
-            Dribbble
           </a>
           <a
             href="mailto:imsameer006@gmail.com"
