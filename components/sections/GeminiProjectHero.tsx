@@ -567,7 +567,7 @@ export function GeminiProjectHero({
 
       <section
         aria-labelledby="hero-lab-title"
-        className="relative flex min-h-screen flex-col justify-start px-6 pb-16 pt-24 md:px-10 lg:pt-[24vh]"
+        className="relative flex min-h-screen flex-col justify-start overflow-hidden px-6 pb-16 pt-24 md:px-10 lg:h-screen lg:pt-[24vh]"
       >
         <div className="absolute inset-0 z-[1]">
           <InteractiveNetwork
