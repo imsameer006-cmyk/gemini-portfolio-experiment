@@ -622,15 +622,15 @@ export default function Hero() {
           <motion.div
             {...FADE_UP}
             transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
-            className="mb-2 inline-flex items-center gap-2.5 rounded-full border border-[#BFD9CB]/70 bg-[#EDF7F1]/90 px-3 py-1.5 text-xs font-medium text-[#6A6764]"
+            className="mb-2 inline-flex items-center gap-1.5 rounded-full border border-[#BFD9CB]/70 bg-[#EDF7F1]/90 px-2.5 py-1 text-[10px] font-medium text-[#6A6764]"
           >
-            <span className="h-1.5 w-1.5 rounded-full bg-[#3A7A54]" />
+            <span className="h-1 w-1 rounded-full bg-[#3A7A54]" />
             <span>Available for product design roles</span>
             <span className="text-[#A7A39B]" aria-hidden="true">
               /
             </span>
-            <span className="inline-flex items-center gap-1.5">
-              <MapPin size={13} weight="fill" aria-hidden="true" />
+            <span className="inline-flex items-center gap-1">
+              <MapPin size={11} weight="fill" aria-hidden="true" />
               Munich, Germany
             </span>
           </motion.div>
