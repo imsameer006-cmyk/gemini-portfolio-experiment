@@ -260,12 +260,12 @@ export default function HeroLabPage() {
           >
             <div className="absolute inset-0 bg-gradient-to-tr from-[#121115] via-transparent to-[#1A191E]/30" />
 
-            <div className="absolute left-0 top-0 h-full w-[720px]">
+            <div className="absolute left-[80px] top-0 h-full w-[720px]">
               <DarkClarityThread />
             </div>
 
             <div
-              className="absolute left-0 top-0 h-full w-[720px] pointer-events-none"
+              className="absolute left-[80px] top-0 h-full w-[720px] pointer-events-none"
               style={{
                 background: "linear-gradient(to right, transparent 60%, #121115 100%)",
               }}
@@ -312,12 +312,12 @@ export default function HeroLabPage() {
           >
             <div className="absolute inset-0 bg-gradient-to-tr from-[#121115] via-transparent to-[#1A191E]/30" />
 
-            <div className="absolute left-0 top-0 h-full w-[720px]">
+            <div className="absolute left-[80px] top-0 h-full w-[720px]">
               <SilverClarityThread />
             </div>
 
             <div
-              className="absolute left-0 top-0 h-full w-[720px] pointer-events-none"
+              className="absolute left-[80px] top-0 h-full w-[720px] pointer-events-none"
               style={{
                 background: "linear-gradient(to right, transparent 60%, #121115 100%)",
               }}
