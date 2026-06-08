@@ -567,7 +567,7 @@ export function GeminiProjectHero({
 
       <section
         aria-labelledby="hero-lab-title"
-        className="relative flex min-h-screen flex-col justify-center px-6 pb-16 pt-24 md:px-10"
+        className="relative flex min-h-screen flex-col justify-start px-6 pb-16 pt-24 md:px-10 lg:pt-[24vh]"
       >
         <div className="absolute inset-0 z-[1]">
           <InteractiveNetwork
@@ -581,7 +581,7 @@ export function GeminiProjectHero({
           />
         </div>
 
-        <div className="pointer-events-none relative z-[2] mx-auto grid w-full max-w-[1280px] items-center gap-10 lg:grid-cols-[minmax(0,0.95fr)_minmax(440px,1.05fr)] lg:gap-16">
+        <div className="pointer-events-none relative z-[2] mx-auto grid w-full max-w-[1280px] items-start gap-10 lg:grid-cols-[minmax(0,0.95fr)_minmax(440px,1.05fr)] lg:gap-16">
           <motion.div
             initial={{ opacity: 0, y: 18 }}
             animate={{ opacity: 1, y: 0 }}

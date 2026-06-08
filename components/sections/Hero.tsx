@@ -124,7 +124,7 @@ function ClarityThreadVisual({
           aria-hidden="true"
           viewBox="-44 -44 88 88"
           className="h-[44%] w-[44%] origin-center"
-          initial={{ opacity: 1, scale: 0.9 }}
+          initial={{ opacity: 0, scale: 0.9 }}
           animate={{
             opacity: [1, 0.45, 1],
             rotate: 360,
@@ -133,18 +133,18 @@ function ClarityThreadVisual({
           transition={{
             opacity: {
               duration: 3,
-              delay: 1.2,
+              delay: 3.65,
               ease: "easeInOut",
               repeat: Infinity,
               times: [0, 0.5, 1],
             },
             rotate: {
               duration: 6,
-              delay: 1.2,
+              delay: 3.65,
               ease: "linear",
               repeat: Infinity,
             },
-            scale: { duration: 0.7, delay: 1.2, ease: [0.16, 1, 0.3, 1] },
+            scale: { duration: 0.7, delay: 3.65, ease: [0.16, 1, 0.3, 1] },
           }}
         >
           <g stroke="currentColor" strokeLinecap="round" strokeWidth="8">
@@ -593,7 +593,7 @@ export default function Hero() {
   return (
     <section
       aria-label="Introduction"
-      className="relative min-h-[88svh] overflow-hidden px-6 pb-14 pt-16 md:min-h-[86svh] md:px-10 md:pb-16 md:pt-20"
+      className="relative min-h-[82svh] overflow-hidden px-6 pb-10 pt-14 md:min-h-[80svh] md:px-10 md:pb-12 md:pt-[4.5rem]"
     >
       <ClarityThreadVisual
         hoverSuppressed={hoverSuppressed}
@@ -617,7 +617,7 @@ export default function Hero() {
         }}
       />
 
-      <div className="relative z-10 mx-auto min-h-[calc(88svh-7.5rem)] w-full max-w-[1280px] pt-3 md:min-h-[calc(86svh-9rem)] md:pt-0">
+      <div className="relative z-10 mx-auto min-h-[calc(82svh-6rem)] w-full max-w-[1280px] pt-3 md:min-h-[calc(80svh-7.5rem)] md:pt-0">
         <div className="max-w-[840px]">
           <motion.div
             {...FADE_UP}
