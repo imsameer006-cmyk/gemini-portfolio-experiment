@@ -12,10 +12,10 @@ const TESTIMONIALS = [
   },
   {
     quote:
-      "What sets Sameer apart is that he designs with business outcomes in mind, not just aesthetics. Every decision was traceable back to a user need or a metric.",
-    name: "Priya Nair",
-    role: "VP of Design",
-    company: "Enterprise SaaS",
+      "We valued Sameer for his ability to take ownership, learn quickly, and translate challenges into practical solutions. He approached his work with initiative, operated independently, and consistently delivered under pressure while maintaining strong relationships with colleagues and stakeholders.",
+    name: "14PL Team",
+    role: "",
+    company: "Rohde & Schwarz, Munich",
   },
   {
     quote:
