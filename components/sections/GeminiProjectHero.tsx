@@ -620,8 +620,8 @@ export function GeminiProjectHero({
               id="hero-lab-title"
               className="font-[family-name:var(--font-instrument-serif)] text-[clamp(2rem,3vw,3.25rem)] italic leading-tight text-[#18171A]"
             >
-              Multi-Stakeholder Approval Workflow
-              <br />
+              Multi-Stakeholder Approval Workflow{" "}
+              <br className="hidden sm:inline" />
               for a Digital Twin Platform
             </h1>
           </motion.div>
