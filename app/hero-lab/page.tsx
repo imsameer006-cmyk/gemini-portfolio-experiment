@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 
 export const metadata: Metadata = {
   title: "Hero Banner Lab | Sameer Gautam",
-  description: "LinkedIn profile banner composition for the portfolio hero.",
+  description: "LinkedIn profile banner compositions for the portfolio hero.",
 };
 
 const COMPLEXITY_PATHS = [
@@ -19,10 +19,13 @@ const CORE_PATHS = [
   "M309 259C246 279 170 260 144 202C115 138 165 79 238 93C313 108 361 182 344 255C326 329 254 381 181 366C108 351 59 282 72 210",
 ];
 
-const PRIMARY_THREAD_PATH =
+const LIGHT_THREAD_PATH =
   "M94 274C133 219 215 304 286 242C334 201 250 150 188 206C125 264 207 343 293 292C351 257 335 210 291 234C247 259 285 303 338 275C353 268 363 262 370 260C392 260 414 260 436 260L1600 260";
 
-function ClarityThreadDecoration() {
+const DARK_THREAD_PATH =
+  "M94 274C133 219 215 304 286 242C334 201 250 150 188 206C125 264 207 343 293 292C351 257 335 210 291 234C247 259 285 303 338 275C353 268 363 262 370 260C392 260 414 260 436 260L720 260";
+
+function LightClarityThread() {
   return (
     <svg
       aria-hidden="true"
@@ -54,7 +57,7 @@ function ClarityThreadDecoration() {
       </g>
 
       <path
-        d={PRIMARY_THREAD_PATH}
+        d={LIGHT_THREAD_PATH}
         stroke="#18171A"
         strokeLinecap="round"
         strokeWidth="1.45"
@@ -75,73 +78,171 @@ function ClarityThreadDecoration() {
   );
 }
 
+function DarkClarityThread() {
+  return (
+    <svg
+      aria-hidden="true"
+      viewBox="0 0 720 396"
+      fill="none"
+      className="h-full w-full overflow-visible"
+      preserveAspectRatio="xMinYMid meet"
+    >
+      <g
+        stroke="#0D4F4D"
+        strokeLinecap="round"
+        opacity="0.45"
+        transform="translate(-60 -40) scale(0.95)"
+      >
+        {COMPLEXITY_PATHS.map((path) => (
+          <path key={path} d={path} strokeWidth="1.25" />
+        ))}
+      </g>
+
+      <g
+        stroke="#14726E"
+        strokeLinecap="round"
+        opacity="0.6"
+        transform="translate(-60 -40) scale(0.95)"
+      >
+        {CORE_PATHS.map((path) => (
+          <path key={path} d={path} strokeWidth="1.0" />
+        ))}
+      </g>
+
+      <path
+        d={DARK_THREAD_PATH}
+        stroke="#10B981"
+        strokeLinecap="round"
+        strokeWidth="1.75"
+        opacity="0.85"
+        transform="translate(0 -40)"
+      />
+
+      <g
+        transform="translate(370 220)"
+        stroke="#10B981"
+        strokeLinecap="round"
+        strokeWidth="3"
+        opacity="0.9"
+      >
+        <line x1="0" y1="-10" x2="0" y2="10" />
+        <line x1="-8.5" y1="-5" x2="8.5" y2="5" />
+        <line x1="-8.5" y1="5" x2="8.5" y2="-5" />
+      </g>
+    </svg>
+  );
+}
+
 export default function HeroLabPage() {
   return (
-    <section className="min-h-screen bg-[#F2F0EB] px-6 py-20 md:px-10">
-      <div className="mx-auto w-full max-w-[1584px]">
-        {/* LinkedIn banner canvas: 1584 × 396 px */}
-        <div
-          className="relative h-[396px] w-[1584px] max-w-full overflow-hidden border border-[#E6E3DD] bg-[#F9F8F5]"
-          style={{
-            backgroundImage:
-              "radial-gradient(circle at 1px 1px, #E0DDD7 1px, transparent 0)",
-            backgroundSize: "32px 32px",
-          }}
-        >
-          {/* Soften the dot grid */}
-          <div className="absolute inset-0 bg-[#F9F8F5]/58" />
+    <section className="min-h-screen bg-[#0B0A0C] px-6 py-20 md:px-10">
+      <div className="mx-auto w-full max-w-[1584px] flex flex-col gap-10">
 
-          {/* Decorative thread — pinned hard to the right edge */}
-          <div className="absolute right-0 top-0 h-full w-[720px]">
-            <ClarityThreadDecoration />
-          </div>
-
-          {/* Gradient mask: dissolve left ~38% of art container */}
+        {/* ── Canvas 1: Light ───────────────────────────────────────────── */}
+        <div>
           <div
-            className="absolute right-0 top-0 h-full w-[720px] pointer-events-none"
+            className="relative h-[396px] w-[1584px] max-w-full overflow-hidden border border-[#E6E3DD] bg-[#F9F8F5]"
             style={{
-              background:
-                "linear-gradient(to right, #F9F8F5 0%, transparent 38%)",
+              backgroundImage:
+                "radial-gradient(circle at 1px 1px, #E0DDD7 1px, transparent 0)",
+              backgroundSize: "32px 32px",
             }}
-          />
-
-          {/* Main content — tight block flush to left safe area */}
-          <div
-            className="absolute top-0 bottom-0 flex items-center"
-            style={{ left: "362px", width: "400px" }}
           >
-            <div>
-              {/* Copper rule — editorial marker above headline */}
-              <div className="mb-6 h-[2px] w-[44px] rounded-full bg-[#C07B50]" />
+            <div className="absolute inset-0 bg-[#F9F8F5]/58" />
 
-              <h1
-                className="font-[family-name:var(--font-instrument-serif)] italic leading-[0.93] text-[#18171A]"
-                style={{ fontSize: "50px" }}
-              >
-                Building clarity
-                <br />
-                out of complexity.
-              </h1>
-
-              <p
-                className="mt-5 text-[#6A6764]"
-                style={{ fontSize: "16px", letterSpacing: "0.04em" }}
-              >
-                Product Design&nbsp;&nbsp;·&nbsp;&nbsp;Enterprise
-                Systems&nbsp;&nbsp;·&nbsp;&nbsp;Workflow Design
-              </p>
+            <div className="absolute right-0 top-0 h-full w-[720px]">
+              <LightClarityThread />
             </div>
-          </div>
 
-          {/* Bottom rule — decorative, within canvas */}
-          <div className="absolute bottom-0 left-[76px] right-[76px] h-px bg-[#E6E3DD]" />
+            <div
+              className="absolute right-0 top-0 h-full w-[720px] pointer-events-none"
+              style={{
+                background: "linear-gradient(to right, #F9F8F5 0%, transparent 38%)",
+              }}
+            />
+
+            <div
+              className="absolute top-0 bottom-0 flex items-center"
+              style={{ left: "362px", width: "400px" }}
+            >
+              <div>
+                <div className="mb-6 h-[2px] w-[44px] rounded-full bg-[#C07B50]" />
+                <h1
+                  className="font-[family-name:var(--font-instrument-serif)] italic leading-[0.93] text-[#18171A]"
+                  style={{ fontSize: "50px" }}
+                >
+                  Building clarity
+                  <br />
+                  out of complexity.
+                </h1>
+                <p
+                  className="mt-5 text-[#6A6764]"
+                  style={{ fontSize: "16px", letterSpacing: "0.04em" }}
+                >
+                  Product Design&nbsp;&nbsp;·&nbsp;&nbsp;Enterprise
+                  Systems&nbsp;&nbsp;·&nbsp;&nbsp;Workflow Design
+                </p>
+              </div>
+            </div>
+
+            <div className="absolute bottom-0 left-[76px] right-[76px] h-px bg-[#E6E3DD]" />
+          </div>
+          <p className="mt-3 text-[11px] font-mono tracking-wider text-[#4A484D] uppercase">
+            Canvas 1 — Light&nbsp;&nbsp;·&nbsp;&nbsp;1584 × 396 px&nbsp;&nbsp;·&nbsp;&nbsp;Safe area: 350px left, 120px right
+          </p>
         </div>
 
-        {/* Safe area reference — remove before export */}
-        <p className="mt-4 text-xs text-[#9C9A95]">
-          Canvas: 1584 × 396 px&nbsp;&nbsp;·&nbsp;&nbsp;Safe area: 350px left,
-          120px right&nbsp;&nbsp;·&nbsp;&nbsp;Content at 362px
-        </p>
+        {/* ── Canvas 2: Dark ────────────────────────────────────────────── */}
+        <div>
+          <div
+            className="relative h-[396px] w-[1584px] max-w-full overflow-hidden border border-[#1F1E22] bg-[#121115]"
+            style={{
+              backgroundImage:
+                "radial-gradient(circle at 1px 1px, #222126 1px, transparent 0)",
+              backgroundSize: "32px 32px",
+            }}
+          >
+            <div className="absolute inset-0 bg-gradient-to-tr from-[#121115] via-transparent to-[#1A191E]/30" />
+
+            <div className="absolute left-0 top-0 h-full w-[720px]">
+              <DarkClarityThread />
+            </div>
+
+            <div
+              className="absolute left-0 top-0 h-full w-[720px] pointer-events-none"
+              style={{
+                background: "linear-gradient(to right, transparent 60%, #121115 100%)",
+              }}
+            />
+
+            <div
+              className="absolute top-0 bottom-0 right-[120px] flex items-center justify-end text-right"
+              style={{ width: "550px" }}
+            >
+              <div className="flex flex-col items-end">
+                <div className="mb-6 h-[2px] w-[44px] rounded-full bg-[#10B981]" />
+                <h1
+                  className="font-[family-name:var(--font-instrument-serif)] italic leading-[0.95] text-[#F3F3F3]"
+                  style={{ fontSize: "52px" }}
+                >
+                  Building clarity
+                  <br />
+                  out of complexity.
+                </h1>
+                <p className="mt-6 font-mono text-[11px] uppercase tracking-[0.18em] text-[#9A989B]">
+                  Product Design&nbsp;&nbsp;·&nbsp;&nbsp;Enterprise
+                  Systems&nbsp;&nbsp;·&nbsp;&nbsp;Systems Thinking
+                </p>
+              </div>
+            </div>
+
+            <div className="absolute bottom-0 left-[60px] right-[60px] h-px bg-[#1F1E22]" />
+          </div>
+          <p className="mt-3 text-[11px] font-mono tracking-wider text-[#4A484D] uppercase">
+            Canvas 2 — Dark&nbsp;&nbsp;·&nbsp;&nbsp;1584 × 396 px&nbsp;&nbsp;·&nbsp;&nbsp;Art left, copy right
+          </p>
+        </div>
+
       </div>
     </section>
   );
