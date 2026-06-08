@@ -5,10 +5,10 @@ import { motion } from "framer-motion";
 const TESTIMONIALS = [
   {
     quote:
-      "Sameer has a rare ability to hold complexity with calm. He took a workflow that had confused our team for months and turned it into something our clients understood on first use.",
-    name: "Alex Meier",
-    role: "Head of Product",
-    company: "FinTech Scale-up",
+      "We valued Sameer for his initiative, sound judgment, and dependable execution. He consistently took ownership of complex challenges, delivered with reliability, and built strong relationships across teams and stakeholders.",
+    name: "Gemini Digital Twin Team",
+    role: "",
+    company: "Infineon Technologies, Munich",
   },
   {
     quote:
@@ -72,8 +72,12 @@ export default function Testimonials() {
               <div className="mt-6 border-t border-[#E6E3DD] pt-5">
                 <p className="text-sm font-medium text-[#18171A]">{t.name}</p>
                 <p className="mt-0.5 text-xs text-[#6A6764]">
-                  {t.role}
-                  <span className="mx-1.5 text-[#CECAC2]">·</span>
+                  {t.role && (
+                    <>
+                      {t.role}
+                      <span className="mx-1.5 text-[#CECAC2]">·</span>
+                    </>
+                  )}
                   {t.company}
                 </p>
               </div>
