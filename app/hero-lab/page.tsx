@@ -29,12 +29,12 @@ function ClarityThreadDecoration() {
       viewBox="0 0 720 520"
       fill="none"
       className="h-full w-full overflow-visible"
-      preserveAspectRatio="xMidYMid meet"
+      preserveAspectRatio="xMaxYMid meet"
     >
       <g
         stroke="#18171A"
         strokeLinecap="round"
-        opacity="0.25"
+        opacity="0.28"
         transform="translate(-56 0) scale(0.88 1)"
       >
         {COMPLEXITY_PATHS.map((path) => (
@@ -45,7 +45,7 @@ function ClarityThreadDecoration() {
       <g
         stroke="#18171A"
         strokeLinecap="round"
-        opacity="0.18"
+        opacity="0.2"
         transform="translate(-56 0) scale(0.88 1)"
       >
         {CORE_PATHS.map((path) => (
@@ -63,7 +63,7 @@ function ClarityThreadDecoration() {
 
       <g
         transform="translate(370 260)"
-        stroke="#C07B50"
+        stroke="#18171A"
         strokeLinecap="round"
         strokeWidth="3.5"
       >
@@ -91,27 +91,24 @@ export default function HeroLabPage() {
           {/* Soften the dot grid */}
           <div className="absolute inset-0 bg-[#F9F8F5]/58" />
 
-          {/* Decorative thread — right side only, fades left */}
-          <div
-            className="absolute right-0 top-0 h-full w-[720px]"
-            style={{ opacity: 0.17 }}
-          >
+          {/* Decorative thread — pinned to the right edge */}
+          <div className="absolute right-0 top-0 h-full w-[760px]">
             <ClarityThreadDecoration />
           </div>
 
-          {/* Gradient mask: fade the decoration into nothing near the content edge */}
+          {/* Gradient mask: dissolve left edge of art into background */}
           <div
-            className="absolute right-0 top-0 h-full w-[720px] pointer-events-none"
+            className="absolute right-0 top-0 h-full w-[760px] pointer-events-none"
             style={{
               background:
-                "linear-gradient(to right, #F9F8F5 0%, transparent 28%)",
+                "linear-gradient(to right, #F9F8F5 0%, transparent 30%)",
             }}
           />
 
-          {/* Main content — left edge at 388px (safe area starts at 350px) */}
+          {/* Main content — left edge at 362px (safe area starts at 350px) */}
           <div
             className="absolute inset-0 flex items-center"
-            style={{ paddingLeft: "388px", paddingRight: "160px" }}
+            style={{ paddingLeft: "362px", paddingRight: "840px" }}
           >
             <div>
               {/* Copper rule — editorial marker above headline */}
@@ -119,7 +116,7 @@ export default function HeroLabPage() {
 
               <h1
                 className="font-[family-name:var(--font-instrument-serif)] italic leading-[0.93] text-[#18171A]"
-                style={{ fontSize: "62px", maxWidth: "760px" }}
+                style={{ fontSize: "62px" }}
               >
                 Building clarity
                 <br />
@@ -142,8 +139,8 @@ export default function HeroLabPage() {
 
         {/* Safe area reference — remove before export */}
         <p className="mt-4 text-xs text-[#9C9A95]">
-          Canvas: 1584 × 396 px&nbsp;&nbsp;·&nbsp;&nbsp;Safe area starts at
-          350px from left&nbsp;&nbsp;·&nbsp;&nbsp;Content begins at 388px
+          Canvas: 1584 × 396 px&nbsp;&nbsp;·&nbsp;&nbsp;Safe area: 350px left,
+          120px right&nbsp;&nbsp;·&nbsp;&nbsp;Content at 362px
         </p>
       </div>
     </section>
