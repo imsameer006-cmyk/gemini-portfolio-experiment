@@ -20,13 +20,13 @@ export default function GeminiThumbnail() {
 
       <g filter="url(#gemini-route-shadow)">
         <path
-          d="M76 178C138 174 165 128 211 119C265 109 305 75 378 72"
+          d="M76 178C118 166 170 130 227 125C284 120 336 84 378 72"
           stroke="#D8D3C9"
           strokeWidth="7"
           strokeLinecap="round"
         />
         <path
-          d="M76 178C138 174 165 128 211 119C265 109 305 75 378 72"
+          d="M76 178C118 166 170 130 227 125C284 120 336 84 378 72"
           stroke="#477C6C"
           strokeWidth="3"
           strokeLinecap="round"
@@ -40,24 +40,22 @@ export default function GeminiThumbnail() {
         <path d="M72 177H81" stroke="#9C9A95" strokeWidth="1" strokeLinecap="round" />
         <path d="M72 182H78" stroke="#9C9A95" strokeWidth="1" strokeLinecap="round" />
       </g>
-      <text x="76" y="220" fontFamily="var(--font-geist-sans), system-ui, sans-serif" fontSize="9.5" fontWeight="700" letterSpacing="0.08em" fill="#3A3836" textAnchor="middle">
+      <text x="76" y="220" fontFamily="var(--font-geist-sans), system-ui, sans-serif" fontSize="9.5" fontWeight="700" letterSpacing="0.08em" fill="#6A6764" textAnchor="middle">
         DRAFT
       </text>
 
       <g filter="url(#gemini-node-shadow)">
-        <circle cx="211" cy="119" r="32" fill="#F9F8F5" stroke="#C07B50" strokeWidth="1.5" />
-        <circle cx="208.5" cy="116.5" r="8.5" stroke="#C07B50" strokeWidth="2" />
-        <path d="M215 123L223 131" stroke="#C07B50" strokeWidth="2.2" strokeLinecap="round" />
+        <circle cx="227" cy="125" r="24" fill="#FFFFFF" stroke="#E6E3DD" strokeWidth="1.25" />
+        <circle cx="224.5" cy="122.5" r="8.5" stroke="#6A6764" strokeWidth="1.35" />
+        <path d="M231 129L239 137" stroke="#6A6764" strokeWidth="1.5" strokeLinecap="round" />
       </g>
-      <text x="211" y="166" fontFamily="var(--font-geist-sans), system-ui, sans-serif" fontSize="9.5" fontWeight="700" letterSpacing="0.08em" fill="#405F56" textAnchor="middle">
+      <text x="227" y="166" fontFamily="var(--font-geist-sans), system-ui, sans-serif" fontSize="9.5" fontWeight="700" letterSpacing="0.08em" fill="#6A6764" textAnchor="middle">
         PRE-CHECK
       </text>
 
-      <circle cx="378" cy="72" r="58" stroke="#C2D4D1" strokeWidth="1.2" opacity="0.68" />
-      <circle cx="378" cy="72" r="77" stroke="#C2D4D1" strokeWidth="1" opacity="0.35" />
       <g filter="url(#gemini-node-shadow)">
-        <circle cx="378" cy="72" r="38" fill="#3A7A54" />
-        <path d="M363 72L374 83L395 59" stroke="#FFFFFF" strokeWidth="3.6" strokeLinecap="round" strokeLinejoin="round" />
+        <circle cx="378" cy="72" r="32" fill="#DCE8E4" stroke="#477C6C" strokeWidth="2.4" />
+        <path d="M363 72L374 83L395 59" stroke="#477C6C" strokeWidth="3.6" strokeLinecap="round" strokeLinejoin="round" />
       </g>
       <text x="378" y="134" fontFamily="var(--font-geist-sans), system-ui, sans-serif" fontSize="9.5" fontWeight="700" letterSpacing="0.08em" fill="#405F56" textAnchor="middle">
         FEASIBILITY

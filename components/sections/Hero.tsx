@@ -1,7 +1,7 @@
 "use client";
 
 import { ArrowDown, DownloadSimple, MapPin } from "@phosphor-icons/react";
-import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
+import { motion, useReducedMotion } from "framer-motion";
 import { useEffect, useRef, useState } from "react";
 
 const FADE_UP = {
@@ -16,32 +16,16 @@ const SIGNALS = [
   { value: "Craft", label: "Execution Excellence" },
 ];
 
-type Origin = {
-  x: number;
-  y: number;
-};
-
 type ClarityThreadVisualProps = {
   hoverSuppressed: boolean;
   isOpen: boolean;
-  onNodeBlur: () => void;
-  onNodeEnter: (origin: Origin) => void;
+  onNodeEnter: () => void;
   onNodeUnlock: () => void;
 };
-
-function getElementCenter(element: HTMLElement): Origin {
-  const rect = element.getBoundingClientRect();
-
-  return {
-    x: rect.left + rect.width / 2,
-    y: rect.top + rect.height / 2,
-  };
-}
 
 function ClarityThreadVisual({
   hoverSuppressed,
   isOpen,
-  onNodeBlur,
   onNodeEnter,
   onNodeUnlock,
 }: ClarityThreadVisualProps) {
@@ -60,7 +44,7 @@ function ClarityThreadVisual({
   ];
 
   const primaryThreadPath =
-    "M94 274C133 219 215 304 286 242C334 201 250 150 188 206C125 264 207 343 293 292C351 257 335 210 291 234C247 259 285 303 338 275C353 268 363 262 370 260C399 260 395 205 423 208C455 212 428 292 481 298C525 303 508 260 552 265C605 271 658 268 700 260";
+    "M94 274C133 219 215 304 286 242C334 201 250 150 188 206C125 264 207 343 293 292C351 257 335 210 291 234C247 259 285 303 338 275C353 268 363 262 370 260C392 260 414 260 436 260L1600 260";
 
   return (
     <motion.div
@@ -113,86 +97,71 @@ function ClarityThreadVisual({
           animate={{ opacity: 0.5, pathLength: 1 }}
           transition={{ duration: 2.7, delay: 1.05, ease: [0.42, 0, 0.18, 1] }}
         />
-
-        <motion.path
-          d="M370 238C370.3 252 370.3 268 370 282"
-          stroke="#C07B50"
-          strokeLinecap="round"
-          strokeWidth="5"
-          initial={{ opacity: 0, pathLength: 0 }}
-          animate={{ opacity: 0.72, pathLength: 1 }}
-          transition={{ duration: 0.8, delay: 1.15, ease: [0.42, 0, 0.18, 1] }}
-        />
-
-        <motion.g
-          initial={{ opacity: 0, scale: 0.82, rotate: -18 }}
-          animate={{ opacity: 0.82, scale: 1, rotate: 342 }}
-          transition={{
-            opacity: { duration: 0.7, delay: 1.55, ease: [0.16, 1, 0.3, 1] },
-            scale: { duration: 0.7, delay: 1.55, ease: [0.16, 1, 0.3, 1] },
-            rotate: { duration: 8, delay: 1.55, ease: "linear", repeat: Infinity },
-          }}
-          style={{ transformOrigin: "370px 260px" }}
-        >
-          <g transform="translate(370 260)">
-            <circle r="15" fill="#C07B50" stroke="#F9F8F5" strokeWidth="1.8" />
-            {Array.from({ length: 4 }).map((_, i) => (
-              <rect
-                key={i}
-                x="-2.2"
-                y="-10.2"
-                width="4.4"
-                height="9.6"
-                rx="0.6"
-                fill="#F9F8F5"
-                transform={`rotate(${i * 90})`}
-              />
-            ))}
-            <circle r="3.2" fill="#F9F8F5" />
-          </g>
-        </motion.g>
       </svg>
       <button
         type="button"
         aria-label="Reveal design philosophy"
         aria-expanded={isOpen}
-        onBlur={onNodeBlur}
-        onClick={(event) => {
+        onClick={() => {
           if (!hoverSuppressed) {
-            onNodeEnter(getElementCenter(event.currentTarget));
+            onNodeEnter();
           }
         }}
-        onFocus={(event) => {
+        onFocus={() => {
           if (!hoverSuppressed) {
-            onNodeEnter(getElementCenter(event.currentTarget));
+            onNodeEnter();
           }
         }}
         onPointerEnter={(event) => {
           if (event.pointerType === "mouse" && !hoverSuppressed) {
-            onNodeEnter(getElementCenter(event.currentTarget));
+            onNodeEnter();
           }
         }}
         onPointerLeave={onNodeUnlock}
-        className="pointer-events-auto absolute left-[51.4%] top-1/2 h-11 w-11 -translate-x-1/2 -translate-y-1/2 rounded-full focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#C07B50]"
+        className="pointer-events-auto absolute left-[56%] top-1/2 flex h-[88px] w-[88px] -translate-x-1/2 -translate-y-1/2 cursor-pointer select-none items-center justify-center border-0 bg-transparent p-0 text-[54px] font-bold leading-none text-[#0A0A0A] outline-none focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#C07B50]"
       >
-        <span className="sr-only">Reveal design philosophy</span>
+        <motion.svg
+          aria-hidden="true"
+          viewBox="-44 -44 88 88"
+          className="h-[44%] w-[44%] origin-center"
+          initial={{ opacity: 1, scale: 0.9 }}
+          animate={{
+            opacity: [1, 0.45, 1],
+            rotate: 360,
+            scale: 1,
+          }}
+          transition={{
+            opacity: {
+              duration: 3,
+              delay: 1.2,
+              ease: "easeInOut",
+              repeat: Infinity,
+              times: [0, 0.5, 1],
+            },
+            rotate: {
+              duration: 6,
+              delay: 1.2,
+              ease: "linear",
+              repeat: Infinity,
+            },
+            scale: { duration: 0.7, delay: 1.2, ease: [0.16, 1, 0.3, 1] },
+          }}
+        >
+          <g stroke="currentColor" strokeLinecap="round" strokeWidth="8">
+            <line x1="0" y1="-26" x2="0" y2="26" />
+            <line x1="-22.5" y1="-13" x2="22.5" y2="13" />
+            <line x1="-22.5" y1="13" x2="22.5" y2="-13" />
+          </g>
+        </motion.svg>
       </button>
     </motion.div>
   );
 }
 
-function PhilosophyOverlay({
-  isOpen,
-  onClose,
-  origin,
-}: {
-  isOpen: boolean;
-  onClose: () => void;
-  origin: Origin;
-}) {
+function PhilosophyOverlay({ isOpen, onComplete }: { isOpen: boolean; onComplete: () => void }) {
   const shouldReduceMotion = useReducedMotion();
   const overlayRef = useRef<HTMLDivElement>(null);
-  const originPoint = `${origin.x}px ${origin.y}px`;
+  const canvasRef = useRef<HTMLCanvasElement>(null);
 
   useEffect(() => {
     if (isOpen) {
@@ -205,139 +174,348 @@ function PhilosophyOverlay({
       return;
     }
 
-    const closeTimer = setTimeout(onClose, shouldReduceMotion ? 1800 : 5200);
+    const overlay = overlayRef.current;
+    const canvas = canvasRef.current;
+
+    if (!overlay || !canvas) {
+      return;
+    }
+
+    const ctx = canvas.getContext("2d");
+
+    if (!ctx) {
+      return;
+    }
+
+    let cancelled = false;
+    const text = "Building clarity out of complexity.";
+    const color = "#EFEFEF";
+    const rootStyles = getComputedStyle(document.documentElement);
+    const displayFamily =
+      rootStyles.getPropertyValue("--font-instrument-serif").trim() ||
+      "Georgia, Times New Roman, serif";
+
+    const wait = (ms: number) =>
+      new Promise<void>((resolve) => {
+        window.setTimeout(resolve, ms);
+      });
+
+    const easeOutCubic = (t: number) => 1 - Math.pow(1 - t, 3);
+    const easeInOutCubic = (t: number) =>
+      t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
+    const easeInQuart = (t: number) => t * t * t * t;
+    const lerp = (a: number, b: number, t: number) => a + (b - a) * t;
+
+    const animLoop = (duration: number, draw: (progress: number) => void) =>
+      new Promise<void>((resolve) => {
+        const start = performance.now();
+
+        const frame = (now: number) => {
+          if (cancelled) {
+            resolve();
+            return;
+          }
+
+          const progress = Math.min((now - start) / duration, 1);
+          draw(progress);
+
+          if (progress < 1) {
+            window.requestAnimationFrame(frame);
+          } else {
+            resolve();
+          }
+        };
+
+        window.requestAnimationFrame(frame);
+      });
+
+    const setupCanvas = () => {
+      const dpr = window.devicePixelRatio || 1;
+      const width = window.innerWidth;
+      const height = window.innerHeight;
+
+      canvas.width = width * dpr;
+      canvas.height = height * dpr;
+      canvas.style.width = `${width}px`;
+      canvas.style.height = `${height}px`;
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+
+      return { width, height };
+    };
+
+    const buildGrid = (width: number, height: number) => {
+      const spacing = 30;
+      const cols = Math.ceil(width / spacing) + 1;
+      const rows = Math.ceil(height / spacing) + 1;
+      const offsetX = (width - (cols - 1) * spacing) / 2;
+      const offsetY = (height - (rows - 1) * spacing) / 2;
+      const jitter = 11;
+
+      return Array.from({ length: rows * cols }, (_, index) => {
+        const row = Math.floor(index / cols);
+        const col = index % cols;
+        const targetX = offsetX + col * spacing;
+        const targetY = offsetY + row * spacing;
+
+        return {
+          sourceX: targetX + (Math.random() - 0.5) * jitter * 2,
+          sourceY: targetY + (Math.random() - 0.5) * jitter * 2,
+          targetX,
+          targetY,
+        };
+      });
+    };
+
+    const drawGrid = (
+      dots: ReturnType<typeof buildGrid>,
+      progress: number,
+      masterAlpha: number,
+      width: number,
+      height: number,
+    ) => {
+      const centerX = width / 2;
+      const centerY = height / 2;
+      const maxDistance = Math.hypot(width, height) * 0.55;
+
+      ctx.shadowBlur = 0;
+      ctx.shadowColor = "transparent";
+
+      dots.forEach((dot) => {
+        const x = lerp(dot.sourceX, dot.targetX, progress);
+        const y = lerp(dot.sourceY, dot.targetY, progress);
+        const distance = Math.hypot(dot.targetX - centerX, dot.targetY - centerY);
+        const falloff = Math.pow(1 - Math.min(distance / maxDistance, 1), 1.5);
+        const alpha = lerp(0.03, 0.1, falloff) * masterAlpha;
+        const radius = lerp(0.8, 1.4, falloff);
+
+        ctx.beginPath();
+        ctx.arc(x, y, radius, 0, Math.PI * 2);
+        ctx.fillStyle = `rgba(239,239,239,${alpha.toFixed(3)})`;
+        ctx.fill();
+      });
+    };
+
+    const drawLine = (x: number, y: number, width: number, height: number, alpha: number) => {
+      ctx.save();
+      ctx.globalAlpha = alpha;
+      ctx.shadowColor = "rgba(255,255,255,0.9)";
+      ctx.shadowBlur = 18;
+      ctx.fillStyle = color;
+
+      if (typeof ctx.roundRect === "function") {
+        ctx.beginPath();
+        ctx.roundRect(x, y - height / 2, width, height, height / 2);
+        ctx.fill();
+      } else {
+        ctx.fillRect(x, y - height / 2, width, height);
+      }
+
+      ctx.shadowBlur = 8;
+      ctx.shadowColor = "rgba(255,255,255,0.5)";
+      ctx.fill();
+      ctx.restore();
+    };
+
+    const run = async () => {
+      const { width, height } = setupCanvas();
+      const centerX = width / 2;
+      const centerY = height / 2;
+      const dots = buildGrid(width, height);
+      const fontSize = shouldReduceMotion ? 42 : Math.min(Math.max(width * 0.032, 36), 58);
+      const font = `italic 400 ${fontSize}px ${displayFamily}`;
+
+      ctx.font = font;
+      ctx.textBaseline = "middle";
+
+      const chars = text.split("");
+      const totalWidth = chars.reduce((sum, char) => sum + ctx.measureText(char).width, 0);
+      let glyphX = centerX - totalWidth / 2;
+      const glyphs = chars.map((char) => {
+        const width = ctx.measureText(char).width;
+        const glyph = { char, x: glyphX, width };
+        glyphX += width;
+
+        return glyph;
+      });
+
+      overlay.style.opacity = "0";
+      overlay.style.pointerEvents = "auto";
+
+      if (shouldReduceMotion) {
+        overlay.style.opacity = "1";
+        ctx.clearRect(0, 0, width, height);
+        drawGrid(dots, 1, 0.7, width, height);
+        ctx.fillStyle = color;
+        ctx.font = font;
+        ctx.textAlign = "center";
+        ctx.fillText(text, centerX, centerY);
+        await wait(1600);
+
+        if (!cancelled) {
+          onComplete();
+        }
+
+        return;
+      }
+
+      await animLoop(380, (progress) => {
+        const eased = easeOutCubic(progress);
+        overlay.style.opacity = eased.toFixed(4);
+        ctx.clearRect(0, 0, width, height);
+        drawGrid(dots, Math.min(eased * 1.6, 1), eased, width, height);
+      });
+
+      ctx.clearRect(0, 0, width, height);
+      drawGrid(dots, 1, 1, width, height);
+      await wait(60);
+
+      const stagger = 20;
+      const enterDuration = 320;
+      const fullEnterDuration = (chars.length - 1) * stagger + enterDuration;
+
+      await new Promise<void>((resolve) => {
+        const start = performance.now();
+
+        const frame = (now: number) => {
+          if (cancelled) {
+            resolve();
+            return;
+          }
+
+          const elapsed = now - start;
+          ctx.clearRect(0, 0, width, height);
+          drawGrid(dots, 1, 1, width, height);
+
+          glyphs.forEach((glyph, index) => {
+            const local = elapsed - index * stagger;
+            const progress = local <= 0 ? 0 : Math.min(local / enterDuration, 1);
+            const eased = easeOutCubic(progress);
+
+            ctx.save();
+            ctx.globalAlpha = eased;
+            ctx.shadowBlur = 0;
+            ctx.fillStyle = color;
+            ctx.font = font;
+            ctx.textBaseline = "middle";
+            ctx.fillText(glyph.char, glyph.x, centerY + lerp(10, 0, eased));
+            ctx.restore();
+          });
+
+          if (elapsed < fullEnterDuration) {
+            window.requestAnimationFrame(frame);
+          } else {
+            resolve();
+          }
+        };
+
+        window.requestAnimationFrame(frame);
+      });
+
+      await wait(600);
+
+      const lineHeight = 5;
+
+      await animLoop(700, (progress) => {
+        const eased = easeInOutCubic(progress);
+        ctx.clearRect(0, 0, width, height);
+        drawGrid(dots, 1, 1, width, height);
+
+        glyphs.forEach((glyph) => {
+          ctx.save();
+          ctx.translate(glyph.x + glyph.width / 2, centerY);
+          ctx.scale(1, lerp(1, 0, eased));
+          ctx.globalAlpha = 1;
+          ctx.shadowBlur = 0;
+          ctx.fillStyle = color;
+          ctx.font = font;
+          ctx.textBaseline = "middle";
+          ctx.fillText(glyph.char, -glyph.width / 2, 0);
+          ctx.restore();
+        });
+
+        if (progress > 0.55) {
+          const lineProgress = (progress - 0.55) / 0.45;
+          const lineEased = easeOutCubic(lineProgress);
+          drawLine(
+            centerX - (totalWidth / 2) * lineEased,
+            centerY,
+            totalWidth * lineEased,
+            lineHeight,
+            lineProgress,
+          );
+        }
+      });
+
+      await wait(320);
+
+      const lineStartX = centerX - totalWidth / 2;
+
+      await animLoop(500, (progress) => {
+        const eased = easeInQuart(progress);
+        const deltaX = width * 1.6 * eased;
+        const alpha = progress < 0.7 ? 1 : lerp(1, 0, (progress - 0.7) / 0.3);
+
+        ctx.clearRect(0, 0, width, height);
+        drawGrid(dots, 1, 1, width, height);
+        drawLine(lineStartX + deltaX, centerY, totalWidth, lineHeight, alpha);
+      });
+
+      ctx.clearRect(0, 0, width, height);
+      await wait(420);
+
+      await animLoop(400, (progress) => {
+        const fadeOut = 1 - easeOutCubic(progress);
+        overlay.style.opacity = fadeOut.toFixed(4);
+        ctx.clearRect(0, 0, width, height);
+        drawGrid(dots, 1, fadeOut, width, height);
+      });
+
+      if (!cancelled) {
+        onComplete();
+      }
+    };
+
+    run();
 
     return () => {
-      clearTimeout(closeTimer);
+      cancelled = true;
     };
-  }, [isOpen, onClose, shouldReduceMotion]);
+  }, [isOpen, onComplete, shouldReduceMotion]);
+
+  useEffect(() => {
+    if (!isOpen) {
+      return;
+    }
+
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === "Escape") {
+        onComplete();
+      }
+    };
+
+    document.addEventListener("keydown", handleKeyDown, true);
+
+    return () => {
+      document.removeEventListener("keydown", handleKeyDown, true);
+    };
+  }, [isOpen, onComplete]);
+
+  if (!isOpen) {
+    return null;
+  }
 
   return (
-    <AnimatePresence>
-      {isOpen ? (
-        <motion.div
-          ref={overlayRef}
-          role="dialog"
-          aria-modal="true"
-          aria-label="Design philosophy"
-          tabIndex={-1}
-          className="fixed inset-0 z-[80] flex items-center justify-center overflow-hidden bg-[#141310] px-6 text-center md:px-10"
-          initial={
-            shouldReduceMotion
-              ? { opacity: 0 }
-              : { clipPath: `circle(0px at ${originPoint})`, opacity: 0 }
-          }
-          animate={
-            shouldReduceMotion
-              ? { opacity: 1 }
-              : { clipPath: `circle(150vmax at ${originPoint})`, opacity: 1 }
-          }
-          exit={
-            shouldReduceMotion
-              ? { opacity: 0 }
-              : { clipPath: `circle(0px at ${originPoint})`, opacity: 0 }
-          }
-          transition={{ duration: shouldReduceMotion ? 0.18 : 1.15, ease: [0.16, 1, 0.3, 1] }}
-          onKeyDown={(event) => {
-            if (event.key === "Escape") {
-              onClose();
-            }
-          }}
-          onClick={onClose}
-          onPointerLeave={(event) => {
-            if (event.pointerType === "mouse") {
-              onClose();
-            }
-          }}
-        >
-          <div
-            aria-hidden="true"
-            className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(249,248,245,0.10),transparent_45%)]"
-          />
-          <div
-            aria-hidden="true"
-            className="absolute inset-0 bg-[radial-gradient(circle_at_1px_1px,rgba(237,235,227,0.08)_1px,transparent_0)] bg-[length:34px_34px] opacity-60"
-          />
-
-          <motion.div
-            className="relative flex min-h-[44vh] w-full max-w-[980px] items-center justify-center"
-            onClick={(event) => event.stopPropagation()}
-          >
-            <motion.p
-              className="font-[family-name:var(--font-instrument-serif)] text-[clamp(2.5rem,7vw,6rem)] italic leading-[1.04] text-[#F9F8F5]"
-              initial={shouldReduceMotion ? { opacity: 0 } : { opacity: 0, scale: 0.94, y: 14 }}
-              animate={
-                shouldReduceMotion
-                  ? { opacity: 1 }
-                  : {
-                      opacity: [0, 1, 1, 0],
-                      scale: [0.96, 1, 1, 1],
-                      x: [0, 0, 0, 180],
-                      y: [14, 0, 0, 0],
-                      filter: [
-                        "blur(8px)",
-                        "blur(0px)",
-                        "blur(0px)",
-                        "blur(3px)",
-                      ],
-                    }
-              }
-              exit={
-                shouldReduceMotion
-                  ? { opacity: 0, transition: { duration: 0.18 } }
-                  : {
-                      opacity: 0,
-                      scale: 0.94,
-                      y: 14,
-                      filter: "blur(8px)",
-                      transition: { duration: 0.24, ease: [0.16, 1, 0.3, 1] },
-                    }
-              }
-              transition={
-                shouldReduceMotion
-                  ? { duration: 0.18 }
-                  : {
-                      duration: 3.3,
-                      times: [0, 0.22, 0.68, 1],
-                      ease: [0.16, 1, 0.3, 1],
-                    }
-              }
-            >
-              Design is the art of turning complexity into clarity.
-            </motion.p>
-
-            <motion.div
-              aria-hidden="true"
-              className="absolute h-1.5 w-[min(46vw,460px)] origin-left rounded-full bg-[#F9F8F5]"
-              initial={{ opacity: 0, scaleX: 0, x: 0 }}
-              animate={
-                shouldReduceMotion
-                  ? { opacity: 0 }
-                  : {
-                      opacity: [0, 0, 1, 1, 0],
-                      scaleX: [0, 0, 1, 1, 1],
-                      x: [0, 0, 0, 0, 180],
-                    }
-              }
-              exit={{
-                opacity: 0,
-                x: 180,
-                transition: { duration: 0.2, ease: [0.16, 1, 0.3, 1] },
-              }}
-              transition={
-                shouldReduceMotion
-                  ? { duration: 0.01 }
-                  : {
-                      duration: 4.1,
-                      times: [0, 0.48, 0.62, 0.84, 1],
-                      ease: [0.16, 1, 0.3, 1],
-                    }
-              }
-            />
-          </motion.div>
-        </motion.div>
-      ) : null}
-    </AnimatePresence>
+    <div
+      ref={overlayRef}
+      role="dialog"
+      aria-modal="true"
+      aria-label="Design philosophy"
+      tabIndex={-1}
+      className="fixed inset-0 z-[80] overflow-hidden bg-[#080808] opacity-0 outline-none"
+    >
+      <canvas ref={canvasRef} aria-hidden="true" className="absolute inset-0 h-full w-full" />
+      <p className="sr-only">Building clarity out of complexity.</p>
+    </div>
   );
 }
 
@@ -377,75 +555,40 @@ function SignalPanel() {
 export default function Hero() {
   const [hoverSuppressed, setHoverSuppressed] = useState(false);
   const [isPhilosophyOpen, setIsPhilosophyOpen] = useState(false);
-  const [overlayOrigin, setOverlayOrigin] = useState<Origin>({ x: 0, y: 0 });
-  const closeTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const unlockTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   const scrollToWork = () => {
     document.querySelector("#work")?.scrollIntoView({ behavior: "smooth" });
   };
 
-  const openPhilosophy = (origin: Origin) => {
-    if (closeTimeoutRef.current) {
-      clearTimeout(closeTimeoutRef.current);
+  const openPhilosophy = () => {
+    if (isPhilosophyOpen) {
+      return;
     }
 
-    setOverlayOrigin(origin);
+    if (unlockTimeoutRef.current) {
+      clearTimeout(unlockTimeoutRef.current);
+    }
+
     setIsPhilosophyOpen(true);
   };
 
   const closePhilosophy = () => {
-    if (closeTimeoutRef.current) {
-      clearTimeout(closeTimeoutRef.current);
-    }
-
     setHoverSuppressed(true);
     setIsPhilosophyOpen(false);
-  };
 
-  const closePhilosophySoon = () => {
-    if (closeTimeoutRef.current) {
-      clearTimeout(closeTimeoutRef.current);
-    }
-
-    closeTimeoutRef.current = setTimeout(() => {
-      setIsPhilosophyOpen(false);
-    }, 120);
+    unlockTimeoutRef.current = setTimeout(() => {
+      setHoverSuppressed(false);
+    }, 650);
   };
 
   useEffect(() => {
-    const handleKeyDown = (event: KeyboardEvent) => {
-      if (event.key === "Escape") {
-        closePhilosophy();
-      }
-    };
-
-    window.addEventListener("keydown", handleKeyDown);
-
     return () => {
-      window.removeEventListener("keydown", handleKeyDown);
-      if (closeTimeoutRef.current) {
-        clearTimeout(closeTimeoutRef.current);
+      if (unlockTimeoutRef.current) {
+        clearTimeout(unlockTimeoutRef.current);
       }
     };
   }, []);
-
-  useEffect(() => {
-    if (!isPhilosophyOpen) {
-      return;
-    }
-
-    const handleDismissKey = (event: KeyboardEvent) => {
-      if (event.key === "Escape") {
-        closePhilosophy();
-      }
-    };
-
-    document.addEventListener("keydown", handleDismissKey, true);
-
-    return () => {
-      document.removeEventListener("keydown", handleDismissKey, true);
-    };
-  }, [isPhilosophyOpen]);
 
   return (
     <section
@@ -455,14 +598,12 @@ export default function Hero() {
       <ClarityThreadVisual
         hoverSuppressed={hoverSuppressed}
         isOpen={isPhilosophyOpen}
-        onNodeBlur={closePhilosophySoon}
         onNodeEnter={openPhilosophy}
         onNodeUnlock={() => setHoverSuppressed(false)}
       />
       <PhilosophyOverlay
         isOpen={isPhilosophyOpen}
-        onClose={closePhilosophy}
-        origin={overlayOrigin}
+        onComplete={closePhilosophy}
       />
 
       {/* Subtle grid texture */}
