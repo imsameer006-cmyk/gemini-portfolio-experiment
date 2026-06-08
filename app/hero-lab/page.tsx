@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 
 export const metadata: Metadata = {
   title: "Hero Banner Lab | Sameer Gautam",
-  description: "Static banner composition for the portfolio hero.",
+  description: "LinkedIn profile banner composition for the portfolio hero.",
 };
 
 const COMPLEXITY_PATHS = [
@@ -20,9 +20,9 @@ const CORE_PATHS = [
 ];
 
 const PRIMARY_THREAD_PATH =
-  "M94 274C133 219 215 304 286 242C334 201 250 150 188 206C125 264 207 343 293 292C351 257 335 210 291 234C247 259 285 303 338 275C353 268 363 262 370 260C399 260 395 205 423 208C455 212 428 292 481 298C525 303 508 260 552 265C605 271 658 268 700 260";
+  "M94 274C133 219 215 304 286 242C334 201 250 150 188 206C125 264 207 343 293 292C351 257 335 210 291 234C247 259 285 303 338 275C353 268 363 262 370 260C392 260 414 260 436 260L1600 260";
 
-function StaticClarityThread() {
+function ClarityThreadDecoration() {
   return (
     <svg
       aria-hidden="true"
@@ -61,29 +61,15 @@ function StaticClarityThread() {
         opacity="0.5"
       />
 
-      <path
-        d="M370 238C370.3 252 370.3 268 370 282"
+      <g
+        transform="translate(370 260)"
         stroke="#C07B50"
         strokeLinecap="round"
-        strokeWidth="5"
-        opacity="0.72"
-      />
-
-      <g transform="translate(370 260)">
-        <circle r="15" fill="#C07B50" stroke="#F9F8F5" strokeWidth="1.8" />
-        {Array.from({ length: 4 }).map((_, i) => (
-          <rect
-            key={i}
-            x="-2.2"
-            y="-10.2"
-            width="4.4"
-            height="9.6"
-            rx="0.6"
-            fill="#F9F8F5"
-            transform={`rotate(${i * 90})`}
-          />
-        ))}
-        <circle r="3.2" fill="#F9F8F5" />
+        strokeWidth="3.5"
+      >
+        <line x1="0" y1="-11" x2="0" y2="11" />
+        <line x1="-9.5" y1="-5.5" x2="9.5" y2="5.5" />
+        <line x1="-9.5" y1="5.5" x2="9.5" y2="-5.5" />
       </g>
     </svg>
   );
@@ -91,34 +77,74 @@ function StaticClarityThread() {
 
 export default function HeroLabPage() {
   return (
-    <section className="min-h-screen bg-[#F9F8F5] px-6 py-20 md:px-10">
+    <section className="min-h-screen bg-[#F2F0EB] px-6 py-20 md:px-10">
       <div className="mx-auto w-full max-w-[1584px]">
+        {/* LinkedIn banner canvas: 1584 × 396 px */}
         <div
           className="relative h-[396px] w-[1584px] max-w-full overflow-hidden border border-[#E6E3DD] bg-[#F9F8F5]"
           style={{
-            backgroundImage: "radial-gradient(circle at 1px 1px, #E6E3DD 1px, transparent 0)",
+            backgroundImage:
+              "radial-gradient(circle at 1px 1px, #E0DDD7 1px, transparent 0)",
             backgroundSize: "32px 32px",
           }}
         >
-          <div className="absolute inset-0 bg-[#F9F8F5]/50" />
+          {/* Soften the dot grid */}
+          <div className="absolute inset-0 bg-[#F9F8F5]/58" />
 
-          <div className="relative z-10 grid h-full grid-cols-[minmax(0,1fr)_520px] items-center gap-10 px-[76px]">
+          {/* Decorative thread — right side only, fades left */}
+          <div
+            className="absolute right-0 top-0 h-full w-[720px]"
+            style={{ opacity: 0.17 }}
+          >
+            <ClarityThreadDecoration />
+          </div>
+
+          {/* Gradient mask: fade the decoration into nothing near the content edge */}
+          <div
+            className="absolute right-0 top-0 h-full w-[720px] pointer-events-none"
+            style={{
+              background:
+                "linear-gradient(to right, #F9F8F5 0%, transparent 28%)",
+            }}
+          />
+
+          {/* Main content — left edge at 388px (safe area starts at 350px) */}
+          <div
+            className="absolute inset-0 flex items-center"
+            style={{ paddingLeft: "388px", paddingRight: "160px" }}
+          >
             <div>
-              <h1 className="max-w-[790px] font-[family-name:var(--font-instrument-serif)] text-[78px] italic leading-[0.98] text-[#18171A]">
-                Building clarity out of complexity.
-              </h1>
-              <p className="mt-7 max-w-[820px] text-[23px] leading-relaxed text-[#6A6764]">
-                I design products that work for people and perform for business.
-              </p>
-            </div>
+              {/* Copper rule — editorial marker above headline */}
+              <div className="mb-7 h-[2px] w-[44px] rounded-full bg-[#C07B50]" />
 
-            <div className="relative h-[300px] w-[520px] justify-self-end">
-              <StaticClarityThread />
+              <h1
+                className="font-[family-name:var(--font-instrument-serif)] italic leading-[0.93] text-[#18171A]"
+                style={{ fontSize: "62px", maxWidth: "760px" }}
+              >
+                Building clarity
+                <br />
+                out of complexity.
+              </h1>
+
+              <p
+                className="mt-6 text-[#6A6764]"
+                style={{ fontSize: "17px", letterSpacing: "0.04em" }}
+              >
+                Product Design&nbsp;&nbsp;·&nbsp;&nbsp;Enterprise
+                Systems&nbsp;&nbsp;·&nbsp;&nbsp;Workflow Design
+              </p>
             </div>
           </div>
 
+          {/* Bottom rule — decorative, within canvas */}
           <div className="absolute bottom-0 left-[76px] right-[76px] h-px bg-[#E6E3DD]" />
         </div>
+
+        {/* Safe area reference — remove before export */}
+        <p className="mt-4 text-xs text-[#9C9A95]">
+          Canvas: 1584 × 396 px&nbsp;&nbsp;·&nbsp;&nbsp;Safe area starts at
+          350px from left&nbsp;&nbsp;·&nbsp;&nbsp;Content begins at 388px
+        </p>
       </div>
     </section>
   );
