@@ -92,31 +92,31 @@ export default function HeroLabPage() {
           <div className="absolute inset-0 bg-[#F9F8F5]/58" />
 
           {/* Decorative thread — pinned to the right edge */}
-          <div className="absolute right-0 top-0 h-full w-[760px]">
+          <div className="absolute right-0 top-0 h-full w-[640px]">
             <ClarityThreadDecoration />
           </div>
 
           {/* Gradient mask: dissolve left edge of art into background */}
           <div
-            className="absolute right-0 top-0 h-full w-[760px] pointer-events-none"
+            className="absolute right-0 top-0 h-full w-[640px] pointer-events-none"
             style={{
               background:
-                "linear-gradient(to right, #F9F8F5 0%, transparent 30%)",
+                "linear-gradient(to right, #F9F8F5 0%, transparent 32%)",
             }}
           />
 
-          {/* Main content — left edge at 362px (safe area starts at 350px) */}
+          {/* Main content — fixed width block, left edge at 362px */}
           <div
-            className="absolute inset-0 flex items-center"
-            style={{ paddingLeft: "362px", paddingRight: "840px" }}
+            className="absolute top-0 bottom-0 flex items-center"
+            style={{ left: "362px", width: "500px" }}
           >
             <div>
               {/* Copper rule — editorial marker above headline */}
-              <div className="mb-7 h-[2px] w-[44px] rounded-full bg-[#C07B50]" />
+              <div className="mb-6 h-[2px] w-[44px] rounded-full bg-[#C07B50]" />
 
               <h1
                 className="font-[family-name:var(--font-instrument-serif)] italic leading-[0.93] text-[#18171A]"
-                style={{ fontSize: "62px" }}
+                style={{ fontSize: "50px" }}
               >
                 Building clarity
                 <br />
@@ -124,8 +124,8 @@ export default function HeroLabPage() {
               </h1>
 
               <p
-                className="mt-6 text-[#6A6764]"
-                style={{ fontSize: "17px", letterSpacing: "0.04em" }}
+                className="mt-5 text-[#6A6764]"
+                style={{ fontSize: "16px", letterSpacing: "0.04em" }}
               >
                 Product Design&nbsp;&nbsp;·&nbsp;&nbsp;Enterprise
                 Systems&nbsp;&nbsp;·&nbsp;&nbsp;Workflow Design
