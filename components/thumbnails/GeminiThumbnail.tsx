@@ -20,13 +20,13 @@ export default function GeminiThumbnail() {
 
       <g filter="url(#gemini-route-shadow)">
         <path
-          d="M76 178C118 166 170 130 227 125C284 120 336 84 378 72"
+          d="M76 178L227 125L378 72"
           stroke="#D8D3C9"
           strokeWidth="7"
           strokeLinecap="round"
         />
         <path
-          d="M76 178C118 166 170 130 227 125C284 120 336 84 378 72"
+          d="M76 178L227 125L378 72"
           stroke="#477C6C"
           strokeWidth="3"
           strokeLinecap="round"
