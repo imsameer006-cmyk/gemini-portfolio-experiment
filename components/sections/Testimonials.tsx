@@ -24,6 +24,13 @@ const TESTIMONIALS = [
     role: "Research & Design Lead",
     company: "Infineon Technologies",
   },
+  {
+    quote:
+      "Sameer was part of our Product Lifecycle Management team as a UX Designer Working Student. I came across some of his other work during design reviews and team meetings, which consistently stood out as thoughtful and user-centric. Sameer brought a positive attitude to the team and was always receptive to feedback. His contributions were a valuable addition to our team environment.",
+    name: "Jürgen Engelbrecht",
+    role: "Agile Coach",
+    company: "",
+  },
 ];
 
 const EASE = [0.16, 1, 0.3, 1] as const;
@@ -50,7 +57,7 @@ export default function Testimonials() {
           </h2>
         </motion.div>
 
-        <div className="grid gap-5 lg:grid-cols-3">
+        <div className="grid gap-5 sm:grid-cols-2">
           {TESTIMONIALS.map((t, i) => (
             <motion.div
               key={t.name}
