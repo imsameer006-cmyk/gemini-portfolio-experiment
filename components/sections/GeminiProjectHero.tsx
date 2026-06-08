@@ -618,7 +618,7 @@ export function GeminiProjectHero({
             </div>
             <h1
               id="hero-lab-title"
-              className="font-[family-name:var(--font-instrument-serif)] text-[clamp(1.75rem,3vw,3.25rem)] italic leading-tight text-[#18171A]"
+              className="font-[family-name:var(--font-instrument-serif)] text-[clamp(2rem,3vw,3.25rem)] italic leading-tight text-[#18171A]"
             >
               Multi-Stakeholder Approval Workflow
               <br />
@@ -638,7 +638,7 @@ export function GeminiProjectHero({
             </p>
 
             {/* Metadata grid — full content width */}
-            <div className="mb-6 grid max-w-[560px] grid-cols-3 overflow-hidden rounded-xl border border-[#18171A]/10 divide-x divide-y divide-[#18171A]/10">
+            <div className="mb-6 grid max-w-[560px] grid-cols-2 sm:grid-cols-3 overflow-hidden rounded-xl border border-[#18171A]/10 divide-x divide-y divide-[#18171A]/10">
               {[
                 { label: "Year", value: "2025–2026" },
                 { label: "Role", value: "UX Designer (co-lead)" },

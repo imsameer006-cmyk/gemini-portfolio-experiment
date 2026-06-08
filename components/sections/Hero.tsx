@@ -593,7 +593,7 @@ export default function Hero() {
   return (
     <section
       aria-label="Introduction"
-      className="relative min-h-[82svh] overflow-hidden px-6 pb-10 pt-[76px] md:min-h-[80svh] md:px-10 md:pb-12 md:pt-[92px]"
+      className="relative overflow-hidden px-6 pb-10 pt-[76px] md:min-h-[80svh] md:px-10 md:pb-12 md:pt-[92px]"
     >
       <ClarityThreadVisual
         hoverSuppressed={hoverSuppressed}
@@ -617,7 +617,7 @@ export default function Hero() {
         }}
       />
 
-      <div className="relative z-10 mx-auto min-h-[calc(82svh-6rem)] w-full max-w-[1280px] pt-3 md:min-h-[calc(80svh-7.5rem)] md:pt-0">
+      <div className="relative z-10 mx-auto w-full max-w-[1280px] pt-3 md:min-h-[calc(80svh-7.5rem)] md:pt-0">
         <div className="max-w-[840px]">
           <motion.div
             {...FADE_UP}

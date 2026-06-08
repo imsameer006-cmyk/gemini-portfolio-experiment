@@ -19,12 +19,12 @@ export default function ProjectCard({ project, index }: ProjectCardProps) {
     >
       <Link
         href={`/work/${project.slug}`}
-        className="group block bg-[#FFFFFF] border border-[#E6E3DD] rounded-2xl overflow-hidden hover:border-[#C07B50]/40 hover:shadow-[0_8px_40px_-8px_rgba(0,0,0,0.12)] transition-all duration-300"
+        className="group block bg-[#FFFFFF] border border-[#E6E3DD] rounded-2xl overflow-hidden hover:border-[#C07B50]/40 hover:shadow-[0_8px_40px_-8px_rgba(0,0,0,0.12)] transition-[border-color,box-shadow] duration-300"
         aria-label={`View case study: ${project.title}`}
       >
         {/* Visual panel */}
         <div
-          className="w-full h-52 md:h-64 overflow-hidden transition-transform duration-500 group-hover:scale-[1.02] origin-bottom"
+          className="w-full h-52 md:h-64 overflow-hidden lg:transition-transform lg:duration-500 lg:group-hover:scale-[1.02] lg:origin-bottom"
           style={{ backgroundColor: project.coverColor }}
         >
           {project.thumbnail ? (
