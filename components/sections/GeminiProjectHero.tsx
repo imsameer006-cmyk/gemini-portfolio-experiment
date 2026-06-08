@@ -120,6 +120,20 @@ const MICRO_PATHS = [
   "M1372 500V568H1420",
   "M1400 300H1432V258",
   "M1400 394H1434V430",
+  "M598 528H678V588",
+  "M678 528V588H758",
+  "M758 588H838V648",
+  "M838 588V648H906",
+  "M678 588V648H738",
+  "M758 648V718H818",
+  "M818 648H898V718",
+  "M898 648V718H956",
+  "M618 648V718H678",
+  "M738 648V718H798",
+  "M678 718V792H738",
+  "M818 718V798H878",
+  "M758 718V802",
+  "M898 718V790H958",
 ] as const;
 
 const MICRO_NODES = [
@@ -137,6 +151,13 @@ const MICRO_NODES = [
   { x: 1004, y: 618 }, { x: 1192, y: 52 }, { x: 1206, y: 626 },
   { x: 1418, y: 116 }, { x: 1388, y: 668 }, { x: 1422, y: 522 },
   { x: 1420, y: 568 }, { x: 1432, y: 258 }, { x: 1434, y: 430 },
+  { x: 598, y: 528 }, { x: 678, y: 528 }, { x: 758, y: 588 },
+  { x: 838, y: 588 }, { x: 906, y: 588 }, { x: 678, y: 648 },
+  { x: 758, y: 648 }, { x: 838, y: 648 }, { x: 898, y: 648 },
+  { x: 618, y: 648 }, { x: 738, y: 648 }, { x: 818, y: 718 },
+  { x: 898, y: 718 }, { x: 678, y: 718 }, { x: 758, y: 718 },
+  { x: 738, y: 792 }, { x: 818, y: 798 }, { x: 758, y: 802 },
+  { x: 878, y: 718 }, { x: 956, y: 718 }, { x: 958, y: 790 },
 ] as const;
 
 function InteractiveNetwork({
@@ -160,7 +181,7 @@ function InteractiveNetwork({
 
   return (
     <svg
-      viewBox="0 0 1440 820"
+      viewBox="0 -30 1440 820"
       preserveAspectRatio="xMidYMid slice"
       className="pointer-events-none absolute inset-0 h-full w-full lg:pointer-events-auto"
       aria-label="Interactive abstract workflow network"
@@ -465,7 +486,7 @@ interface GeminiProjectHeroProps {
 
 export function GeminiProjectHero({
   category = "Workflow Design",
-  title = "Gemini — Digital Twin",
+  title = "Designing a Multi-Stakeholder Approval Workflow for a Digital Twin Platform",
   description = "Designed a visible approval workflow that clarified ownership, review state, and next actions across four engineering roles.",
   impact = "Launched to 20 FAEs in China",
   tags = ["Workflow Design", "B2B", "UX Research", "Systems Design"],
@@ -567,7 +588,7 @@ export function GeminiProjectHero({
 
       <section
         aria-labelledby="hero-lab-title"
-        className="relative flex min-h-screen flex-col justify-start overflow-hidden px-6 pb-16 pt-24 md:px-10 lg:h-screen lg:pt-[24vh]"
+        className="relative flex min-h-screen flex-col justify-start overflow-hidden px-6 pb-16 pt-24 md:px-10 lg:h-screen lg:pt-[114px]"
       >
         <div className="absolute inset-0 z-[1]">
           <InteractiveNetwork
@@ -581,43 +602,59 @@ export function GeminiProjectHero({
           />
         </div>
 
-        <div className="pointer-events-none relative z-[2] mx-auto grid w-full max-w-[1280px] items-start gap-10 lg:grid-cols-[minmax(0,0.95fr)_minmax(440px,1.05fr)] lg:gap-16">
+        <div className="pointer-events-none relative z-[2] mx-auto w-full max-w-[1280px]">
+          {/* Full-width headline */}
           <motion.div
             initial={{ opacity: 0, y: 18 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: reduceMotion ? 0 : 0.55, ease: EASE }}
-            className="pointer-events-auto relative"
+            className="mb-6"
           >
-            {/* Label */}
-            <p className="mb-3 text-xs font-medium uppercase tracking-widest text-[#18171A]/65">
-              {category}
-            </p>
-
-            {/* Divider */}
-            <div aria-hidden="true" className="mb-7 h-px w-full bg-[#18171A]/10" />
-
-            {/* Title */}
+            <div className="mb-6 w-fit">
+              <p className="mb-2 text-xs font-medium uppercase tracking-widest text-[#18171A]/65">
+                {category}
+              </p>
+              <div aria-hidden="true" className="h-px w-full bg-[#18171A]/10" />
+            </div>
             <h1
               id="hero-lab-title"
-              className="mb-6 max-w-[22ch] font-[family-name:var(--font-instrument-serif)] text-[clamp(2rem,5vw,4rem)] italic leading-tight text-[#18171A]"
+              className="font-[family-name:var(--font-instrument-serif)] text-[clamp(1.75rem,3vw,3.25rem)] italic leading-tight text-[#18171A]"
             >
-              {title}
+              Multi-Stakeholder Approval Workflow
+              <br />
+              for a Digital Twin Platform
             </h1>
+          </motion.div>
 
-            {/* Description — extended for hero context */}
-            <p className="mb-4 max-w-[48ch] text-base leading-relaxed text-[#18171A]/65">
-              {description}{" "}
-              The core challenge was surfacing complex data lifecycle states across time zones and specialisms — making each role&apos;s required action immediately visible without synchronous handoffs.
+          {/* Content — full width */}
+          <motion.div
+            initial={{ opacity: 0, y: 18 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: reduceMotion ? 0 : 0.55, delay: 0.1, ease: EASE }}
+            className="pointer-events-none"
+          >
+            <p className="mb-6 max-w-[48ch] text-base leading-relaxed text-[#18171A]/65">
+              Transforming fragmented engineering reviews into a structured workflow with clear ownership, visibility, and approval states.
             </p>
 
-            {/* Outcome line */}
-            <p className="mb-8 max-w-[44ch] text-sm leading-relaxed text-[#18171A]/45">
-              <span aria-hidden="true">— </span>
-              Turned a fragmented, email-driven review process into a single auditable approval surface.
-            </p>
+            {/* Metadata grid — full content width */}
+            <div className="mb-6 grid max-w-[560px] grid-cols-3 overflow-hidden rounded-xl border border-[#18171A]/10 divide-x divide-y divide-[#18171A]/10">
+              {[
+                { label: "Year", value: "2025–2026" },
+                { label: "Role", value: "UX Designer (co-lead)" },
+                { label: "Product", value: "Gemini – Digital Twin" },
+                { label: "Domain", value: "B2B" },
+                { label: "Users", value: "FAE, PAE, PMG, PJM" },
+                { label: "Scope", value: "MVP" },
+              ].map(({ label, value }) => (
+                <div key={label} className="flex flex-col gap-1 bg-[#E6EDE7] px-3 py-2.5">
+                  <span className="text-[10px] font-medium uppercase tracking-widest text-[#18171A]/45">{label}</span>
+                  <span className="text-sm font-medium text-[#18171A] leading-snug">{value}</span>
+                </div>
+              ))}
+            </div>
 
-            {/* Metadata group */}
-            <div className="flex flex-wrap gap-2">
+            <div className="flex max-w-[420px] flex-wrap gap-2">
               <span className="rounded-full bg-[#18171A]/8 px-3 py-1.5 text-sm font-medium text-[#18171A]">
                 {impact}
               </span>
@@ -631,15 +668,13 @@ export function GeminiProjectHero({
               ))}
             </div>
           </motion.div>
-
-          <div className="hidden min-h-[520px] lg:block" aria-hidden="true" />
         </div>
 
         <AnimatePresence>
           {!hasInteracted ? (
             <motion.div
               aria-hidden="true"
-              className="pointer-events-none absolute bottom-32 right-10 z-[3] hidden items-center gap-2.5 lg:flex xl:bottom-36 xl:right-[max(2.5rem,calc((100vw-1280px)/2))]"
+              className="pointer-events-none absolute bottom-[25px] right-10 z-[3] hidden items-center gap-2.5 lg:flex xl:right-[max(2.5rem,calc((100vw-1280px)/2))]"
               initial={{ opacity: 0, y: 6 }}
               animate={{ opacity: 0.62, y: 0 }}
               exit={{ opacity: 0, y: 4 }}

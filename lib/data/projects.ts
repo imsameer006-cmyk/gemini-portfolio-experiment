@@ -5,13 +5,13 @@ import GeminiThumbnail from "@/components/thumbnails/GeminiThumbnail";
 export const projects: Project[] = [
   {
     slug: "gemini-digital-twin",
-    title: "Gemini — Digital Twin",
+    title: "Designing a Multi-Stakeholder Approval Workflow for a Digital Twin Platform",
     category: "Workflow Design",
     year: "2025–2026",
     description:
       "Designed a multi-role approval workflow that eliminated status uncertainty across 4 engineering roles on a B2B digital twin platform.",
-    impact: "Launched to 20 FAEs in China",
-    tags: ["Workflow Design", "B2B", "UX Research", "Systems Design"],
+    impact: "Launched to 20+ FAEs",
+    tags: ["Systems Design", "Workflow Design", "Enterprise UX", "B2B SaaS", "UX Research"],
     featured: true,
     coverColor: "#EAF0EF",
     thumbnail: createElement(GeminiThumbnail),

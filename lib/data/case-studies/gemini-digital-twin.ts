@@ -14,17 +14,6 @@ export const geminiDigitalTwin: CaseStudyData = {
           type: "paragraph",
           text: "Before Gemini, this process was fragmented across local tools, Excel sheets, email approvals, and long stakeholder conversations.",
         },
-        {
-          type: "meta-grid",
-          fields: [
-            { label: "Year", value: "2025–2026" },
-            { label: "Role", value: "UX Designer (co-lead)" },
-            { label: "Product", value: "Gemini - Digital Twin" },
-            { label: "Domain", value: "B2B" },
-            { label: "Users", value: "FAE, PAE, PMG, PJM" },
-            { label: "Scope", value: "MVP" },
-          ],
-        },
         { type: "subheading", text: "My Role" },
         {
           type: "bullet-list",
