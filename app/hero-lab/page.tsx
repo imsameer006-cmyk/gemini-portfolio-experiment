@@ -133,6 +133,61 @@ function DarkClarityThread() {
   );
 }
 
+function SilverClarityThread() {
+  return (
+    <svg
+      aria-hidden="true"
+      viewBox="0 0 720 396"
+      fill="none"
+      className="h-full w-full overflow-visible"
+      preserveAspectRatio="xMinYMid meet"
+    >
+      <g
+        stroke="#2E2D32"
+        strokeLinecap="round"
+        opacity="0.6"
+        transform="translate(-60 -40) scale(0.95)"
+      >
+        {COMPLEXITY_PATHS.map((path) => (
+          <path key={path} d={path} strokeWidth="1.25" />
+        ))}
+      </g>
+
+      <g
+        stroke="#475569"
+        strokeLinecap="round"
+        opacity="0.65"
+        transform="translate(-60 -40) scale(0.95)"
+      >
+        {CORE_PATHS.map((path) => (
+          <path key={path} d={path} strokeWidth="1.0" />
+        ))}
+      </g>
+
+      <path
+        d={DARK_THREAD_PATH}
+        stroke="#CBD5E1"
+        strokeLinecap="round"
+        strokeWidth="1.75"
+        opacity="0.95"
+        transform="translate(0 -40)"
+      />
+
+      <g
+        transform="translate(370 220)"
+        stroke="#CBD5E1"
+        strokeLinecap="round"
+        strokeWidth="3"
+        opacity="0.9"
+      >
+        <line x1="0" y1="-10" x2="0" y2="10" />
+        <line x1="-8.5" y1="-5" x2="8.5" y2="5" />
+        <line x1="-8.5" y1="5" x2="8.5" y2="-5" />
+      </g>
+    </svg>
+  );
+}
+
 export default function HeroLabPage() {
   return (
     <section className="min-h-screen bg-[#0B0A0C] px-6 py-20 md:px-10">
@@ -240,6 +295,57 @@ export default function HeroLabPage() {
           </div>
           <p className="mt-3 text-[11px] font-mono tracking-wider text-[#4A484D] uppercase">
             Canvas 2 — Dark&nbsp;&nbsp;·&nbsp;&nbsp;1584 × 396 px&nbsp;&nbsp;·&nbsp;&nbsp;Art left, copy right
+          </p>
+        </div>
+
+        {/* ── Canvas 3: Silver / Platinum ───────────────────────────────── */}
+        <div>
+          <div
+            className="relative h-[396px] w-[1584px] max-w-full overflow-hidden border border-[#222126] bg-[#121115]"
+            style={{
+              backgroundImage:
+                "radial-gradient(circle at 1px 1px, #222126 1px, transparent 0)",
+              backgroundSize: "32px 32px",
+            }}
+          >
+            <div className="absolute inset-0 bg-gradient-to-tr from-[#121115] via-transparent to-[#1A191E]/30" />
+
+            <div className="absolute left-0 top-0 h-full w-[720px]">
+              <SilverClarityThread />
+            </div>
+
+            <div
+              className="absolute left-0 top-0 h-full w-[720px] pointer-events-none"
+              style={{
+                background: "linear-gradient(to right, transparent 60%, #121115 100%)",
+              }}
+            />
+
+            <div
+              className="absolute top-0 bottom-0 right-[120px] flex items-center justify-end text-right"
+              style={{ width: "550px" }}
+            >
+              <div className="flex flex-col items-end">
+                <div className="mb-6 h-[2px] w-[44px] rounded-full bg-[#CBD5E1]" />
+                <h1
+                  className="font-[family-name:var(--font-instrument-serif)] italic leading-[0.95] text-[#F3F4F6]"
+                  style={{ fontSize: "52px" }}
+                >
+                  Building clarity
+                  <br />
+                  out of complexity.
+                </h1>
+                <p className="mt-6 font-mono text-[11px] uppercase tracking-[0.18em] text-[#94A3B8]">
+                  Product Design&nbsp;&nbsp;·&nbsp;&nbsp;Enterprise
+                  Systems&nbsp;&nbsp;·&nbsp;&nbsp;Systems Thinking
+                </p>
+              </div>
+            </div>
+
+            <div className="absolute bottom-0 left-[60px] right-[60px] h-px bg-[#222126]" />
+          </div>
+          <p className="mt-3 text-[11px] font-mono tracking-wider text-[#4A484D] uppercase">
+            Canvas 3 — Silver / Platinum&nbsp;&nbsp;·&nbsp;&nbsp;1584 × 396 px&nbsp;&nbsp;·&nbsp;&nbsp;Art left, copy right
           </p>
         </div>
 
