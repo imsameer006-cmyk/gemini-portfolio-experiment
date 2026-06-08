@@ -19,10 +19,10 @@ const TESTIMONIALS = [
   },
   {
     quote:
-      "He joined mid-stream on a difficult project and within two weeks had reframed the problem entirely. The team immediately felt more confident about the direction.",
-    name: "Jonas Weiss",
-    role: "Product Lead",
-    company: "B2B Platform",
+      "Sameer has the rare ability to dive deep into the topics that are usually avoided due to complexity. Very knowledgeable and very kind — always happy to help and contribute. Was a great pleasure to work with him.",
+    name: "Yeva Lalayan",
+    role: "Research & Design Lead",
+    company: "Infineon Technologies",
   },
 ];
 
