@@ -28,6 +28,10 @@ export const metadata: Metadata = {
   title: "Sameer Gautam — Product Designer",
   description:
     "Product designer who builds clarity out of complexity. Systems thinker, interaction designer, and UX researcher.",
+  icons: {
+    icon: "/favicon.svg",
+    shortcut: "/favicon.svg",
+  },
   openGraph: {
     title: "Sameer Gautam — Product Designer",
     description:
