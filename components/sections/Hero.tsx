@@ -29,6 +29,14 @@ function ClarityThreadVisual({
   onNodeEnter,
   onNodeUnlock,
 }: ClarityThreadVisualProps) {
+  const [nodeReady, setNodeReady] = useState(false);
+
+  useEffect(() => {
+    // primary thread finishes at 1.05s delay + 2.7s duration = 3.75s
+    const t = setTimeout(() => setNodeReady(true), 3800);
+    return () => clearTimeout(t);
+  }, []);
+
   const complexityPaths = [
     "M307 258C251 177 120 194 91 271C58 360 176 428 259 383C351 333 317 184 207 179C96 174 64 309 144 374C235 448 352 363 321 250C291 137 119 131 76 248C34 363 171 462 275 407C380 352 370 190 255 151C138 111 39 234 83 347C128 463 309 457 353 334C395 218 273 102 153 149C43 192 23 343 127 417C231 492 398 409 381 275C364 137 195 78 93 172C-8 265 33 441 165 472C298 504 424 391 383 254C343 119 166 70 66 188",
     "M329 260C268 211 171 215 123 272C68 337 105 427 195 431C293 435 359 342 318 250C276 156 146 141 82 223C17 306 56 421 161 456C269 492 382 408 377 294C371 171 238 88 123 142C6 197-17 354 75 442C168 531 337 522 405 405C474 286 400 132 272 103",
@@ -120,6 +128,7 @@ function ClarityThreadVisual({
         onPointerLeave={onNodeUnlock}
         className="pointer-events-auto absolute left-[56%] top-1/2 flex h-[88px] w-[88px] -translate-x-1/2 -translate-y-1/2 cursor-pointer select-none items-center justify-center border-0 bg-transparent p-0 text-[54px] font-bold leading-none text-[#0A0A0A] outline-none focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#C07B50]"
       >
+        {nodeReady && (
         <motion.svg
           aria-hidden="true"
           viewBox="-44 -44 88 88"
@@ -133,18 +142,16 @@ function ClarityThreadVisual({
           transition={{
             opacity: {
               duration: 3,
-              delay: 3.65,
               ease: "easeInOut",
               repeat: Infinity,
               times: [0, 0.5, 1],
             },
             rotate: {
               duration: 6,
-              delay: 3.65,
               ease: "linear",
               repeat: Infinity,
             },
-            scale: { duration: 0.7, delay: 3.65, ease: [0.16, 1, 0.3, 1] },
+            scale: { duration: 0.7, ease: [0.16, 1, 0.3, 1] },
           }}
         >
           <g stroke="currentColor" strokeLinecap="round" strokeWidth="8">
@@ -153,6 +160,7 @@ function ClarityThreadVisual({
             <line x1="-22.5" y1="13" x2="22.5" y2="-13" />
           </g>
         </motion.svg>
+        )}
       </button>
     </motion.div>
   );
