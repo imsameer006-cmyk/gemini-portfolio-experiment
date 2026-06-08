@@ -91,24 +91,24 @@ export default function HeroLabPage() {
           {/* Soften the dot grid */}
           <div className="absolute inset-0 bg-[#F9F8F5]/58" />
 
-          {/* Decorative thread — pinned to the right edge */}
-          <div className="absolute right-0 top-0 h-full w-[640px]">
+          {/* Decorative thread — pinned hard to the right edge */}
+          <div className="absolute right-0 top-0 h-full w-[720px]">
             <ClarityThreadDecoration />
           </div>
 
-          {/* Gradient mask: dissolve left edge of art into background */}
+          {/* Gradient mask: dissolve left ~38% of art container */}
           <div
-            className="absolute right-0 top-0 h-full w-[640px] pointer-events-none"
+            className="absolute right-0 top-0 h-full w-[720px] pointer-events-none"
             style={{
               background:
-                "linear-gradient(to right, #F9F8F5 0%, transparent 32%)",
+                "linear-gradient(to right, #F9F8F5 0%, transparent 38%)",
             }}
           />
 
-          {/* Main content — fixed width block, left edge at 362px */}
+          {/* Main content — tight block flush to left safe area */}
           <div
             className="absolute top-0 bottom-0 flex items-center"
-            style={{ left: "362px", width: "500px" }}
+            style={{ left: "362px", width: "400px" }}
           >
             <div>
               {/* Copper rule — editorial marker above headline */}
