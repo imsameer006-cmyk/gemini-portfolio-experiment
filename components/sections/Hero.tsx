@@ -33,7 +33,7 @@ function ClarityThreadVisual({
 
   useEffect(() => {
     // primary thread finishes at 1.05s delay + 2.7s duration = 3.75s
-    const t = setTimeout(() => setNodeReady(true), 3800);
+    const t = setTimeout(() => setNodeReady(true), 1900);
     return () => clearTimeout(t);
   }, []);
 
@@ -129,37 +129,29 @@ function ClarityThreadVisual({
         className="pointer-events-auto absolute left-[56%] top-1/2 flex h-[88px] w-[88px] -translate-x-1/2 -translate-y-1/2 cursor-pointer select-none items-center justify-center border-0 bg-transparent p-0 text-[54px] font-bold leading-none text-[#0A0A0A] outline-none focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#C07B50]"
       >
         {nodeReady && (
-        <motion.svg
-          aria-hidden="true"
-          viewBox="-44 -44 88 88"
-          className="h-[44%] w-[44%] origin-center"
-          initial={{ opacity: 0, scale: 0.9 }}
-          animate={{
-            opacity: [1, 0.45, 1],
-            rotate: 360,
-            scale: 1,
-          }}
-          transition={{
-            opacity: {
-              duration: 3,
-              ease: "easeInOut",
-              repeat: Infinity,
-              times: [0, 0.5, 1],
-            },
-            rotate: {
-              duration: 6,
-              ease: "linear",
-              repeat: Infinity,
-            },
-            scale: { duration: 0.7, ease: [0.16, 1, 0.3, 1] },
-          }}
-        >
-          <g stroke="currentColor" strokeLinecap="round" strokeWidth="8">
-            <line x1="0" y1="-26" x2="0" y2="26" />
-            <line x1="-22.5" y1="-13" x2="22.5" y2="13" />
-            <line x1="-22.5" y1="13" x2="22.5" y2="-13" />
-          </g>
-        </motion.svg>
+          <motion.div
+            className="h-[44%] w-[44%]"
+            initial={{ opacity: 0, scale: 0.85, y: 6 }}
+            animate={{ opacity: 1, scale: 1, y: 0 }}
+            transition={{ duration: 1.4, ease: [0.16, 1, 0.3, 1] }}
+          >
+            <motion.svg
+              aria-hidden="true"
+              viewBox="-44 -44 88 88"
+              className="h-full w-full origin-center"
+              animate={{ opacity: [1, 0.45, 1], rotate: 360 }}
+              transition={{
+                opacity: { duration: 3, ease: "easeInOut", repeat: Infinity, times: [0, 0.5, 1] },
+                rotate: { duration: 6, ease: "linear", repeat: Infinity },
+              }}
+            >
+              <g stroke="currentColor" strokeLinecap="round" strokeWidth="8">
+                <line x1="0" y1="-26" x2="0" y2="26" />
+                <line x1="-22.5" y1="-13" x2="22.5" y2="13" />
+                <line x1="-22.5" y1="13" x2="22.5" y2="-13" />
+              </g>
+            </motion.svg>
+          </motion.div>
         )}
       </button>
     </motion.div>
@@ -533,7 +525,7 @@ function SignalPanel() {
       initial={{ opacity: 0, y: 18 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.55, delay: 0.44, ease: [0.16, 1, 0.3, 1] }}
-      className="mt-9 grid max-w-[660px] grid-cols-2 border-y border-[#E6E3DD] sm:grid-cols-4 md:mt-10"
+      className="mt-[61px] grid max-w-[660px] grid-cols-2 border-y border-[#E6E3DD] sm:grid-cols-4 md:mt-[69px]"
       aria-label="Portfolio focus areas"
       role="list"
     >
@@ -601,7 +593,7 @@ export default function Hero() {
   return (
     <section
       aria-label="Introduction"
-      className="relative min-h-[82svh] overflow-hidden px-6 pb-10 pt-14 md:min-h-[80svh] md:px-10 md:pb-12 md:pt-[4.5rem]"
+      className="relative min-h-[82svh] overflow-hidden px-6 pb-10 pt-[76px] md:min-h-[80svh] md:px-10 md:pb-12 md:pt-[92px]"
     >
       <ClarityThreadVisual
         hoverSuppressed={hoverSuppressed}
@@ -630,7 +622,7 @@ export default function Hero() {
           <motion.div
             {...FADE_UP}
             transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
-            className="mb-5 inline-flex items-center gap-2.5 rounded-full border border-[#BFD9CB]/70 bg-[#EDF7F1]/90 px-3 py-1.5 text-xs font-medium text-[#6A6764]"
+            className="mb-2 inline-flex items-center gap-2.5 rounded-full border border-[#BFD9CB]/70 bg-[#EDF7F1]/90 px-3 py-1.5 text-xs font-medium text-[#6A6764]"
           >
             <span className="h-1.5 w-1.5 rounded-full bg-[#3A7A54]" />
             <span>Available for product design roles</span>
