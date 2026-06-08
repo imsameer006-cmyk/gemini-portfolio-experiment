@@ -588,18 +588,35 @@ export function GeminiProjectHero({
             transition={{ duration: reduceMotion ? 0 : 0.55, ease: EASE }}
             className="pointer-events-auto relative"
           >
-            <p className="mb-5 text-xs font-medium uppercase tracking-widest text-[#18171A]/65">
+            {/* Label */}
+            <p className="mb-3 text-xs font-medium uppercase tracking-widest text-[#18171A]/65">
               {category}
             </p>
+
+            {/* Divider */}
+            <div aria-hidden="true" className="mb-7 h-px w-full bg-[#18171A]/10" />
+
+            {/* Title */}
             <h1
               id="hero-lab-title"
-              className="mb-4 max-w-[22ch] font-[family-name:var(--font-instrument-serif)] text-[clamp(2rem,5vw,4rem)] italic leading-tight text-[#18171A]"
+              className="mb-6 max-w-[22ch] font-[family-name:var(--font-instrument-serif)] text-[clamp(2rem,5vw,4rem)] italic leading-tight text-[#18171A]"
             >
               {title}
             </h1>
-            <p className="mb-10 max-w-[48ch] text-base leading-relaxed text-[#18171A]/65">
-              {description}
+
+            {/* Description — extended for hero context */}
+            <p className="mb-4 max-w-[48ch] text-base leading-relaxed text-[#18171A]/65">
+              {description}{" "}
+              The core challenge was surfacing complex data lifecycle states across time zones and specialisms — making each role&apos;s required action immediately visible without synchronous handoffs.
             </p>
+
+            {/* Outcome line */}
+            <p className="mb-8 max-w-[44ch] text-sm leading-relaxed text-[#18171A]/45">
+              <span aria-hidden="true">— </span>
+              Turned a fragmented, email-driven review process into a single auditable approval surface.
+            </p>
+
+            {/* Metadata group */}
             <div className="flex flex-wrap gap-2">
               <span className="rounded-full bg-[#18171A]/8 px-3 py-1.5 text-sm font-medium text-[#18171A]">
                 {impact}
