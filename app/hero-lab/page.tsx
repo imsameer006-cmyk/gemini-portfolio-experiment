@@ -250,6 +250,7 @@ export default function HeroLabPage() {
         {/* ── Canvas 2: Dark ────────────────────────────────────────────── */}
         <div>
           <div
+            id="canvas-2"
             className="relative h-[396px] w-[1584px] max-w-full overflow-hidden border border-[#221E1C] bg-[#121115]"
             style={{
               backgroundImage:
@@ -301,6 +302,7 @@ export default function HeroLabPage() {
         {/* ── Canvas 3: Silver / Platinum ───────────────────────────────── */}
         <div>
           <div
+            id="canvas-3"
             className="relative h-[396px] w-[1584px] max-w-full overflow-hidden border border-[#222126] bg-[#121115]"
             style={{
               backgroundImage:
