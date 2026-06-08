@@ -5,6 +5,13 @@ import { motion } from "framer-motion";
 const TESTIMONIALS = [
   {
     quote:
+      "Sameer has the rare ability to dive deep into the topics that are usually avoided due to complexity. Very knowledgeable and very kind — always happy to help and contribute. Was a great pleasure to work with him.",
+    name: "Yeva Lalayan",
+    role: "Research & Design Lead",
+    company: "Infineon Technologies",
+  },
+  {
+    quote:
       "We valued Sameer for his initiative, sound judgment, and dependable execution. He consistently took ownership of complex challenges, delivered with reliability, and built strong relationships across teams and stakeholders.",
     name: "Gemini Digital Twin Team",
     role: "",
@@ -16,13 +23,6 @@ const TESTIMONIALS = [
     name: "14PL Team",
     role: "",
     company: "Rohde & Schwarz, Munich",
-  },
-  {
-    quote:
-      "Sameer has the rare ability to dive deep into the topics that are usually avoided due to complexity. Very knowledgeable and very kind — always happy to help and contribute. Was a great pleasure to work with him.",
-    name: "Yeva Lalayan",
-    role: "Research & Design Lead",
-    company: "Infineon Technologies",
   },
   {
     quote:
