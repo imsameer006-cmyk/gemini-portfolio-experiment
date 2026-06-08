@@ -25,15 +25,16 @@ const CANVASES = [
   const browser = await chromium.launch();
   const page = await browser.newPage();
 
-  // 2× device scale = native 3168 × 792 px output
-  await page.setViewportSize({ width: 1584, height: 900 });
+  // 1920px viewport → canvas renders at full 1584px (1584 + 2×40px section padding)
+  await page.setViewportSize({ width: 1920, height: 900 });
   await page.emulateMedia({ colorScheme: "dark" });
 
   console.log(`Navigating to ${URL} …`);
-  await page.goto(URL, { waitUntil: "networkidle" });
+  await page.goto(URL, { waitUntil: "networkidle", timeout: 60000 });
 
-  // Wait for fonts to load
+  // Wait for fonts and first canvas to appear
   await page.waitForFunction(() => document.fonts.ready);
+  await page.waitForSelector("#canvas-2", { timeout: 30000 });
 
   for (const { id, file } of CANVASES) {
     const el = page.locator(`#${id}`);

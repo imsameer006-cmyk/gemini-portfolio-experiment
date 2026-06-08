@@ -260,20 +260,22 @@ export default function HeroLabPage() {
           >
             <div className="absolute inset-0 bg-gradient-to-tr from-[#121115] via-transparent to-[#1A191E]/30" />
 
-            <div className="absolute left-[80px] top-0 h-full w-[720px]">
+            <div className="absolute top-0 h-full" style={{ left: "5%", width: "45%" }}>
               <DarkClarityThread />
             </div>
 
             <div
-              className="absolute left-[80px] top-0 h-full w-[720px] pointer-events-none"
+              className="absolute top-0 h-full pointer-events-none"
               style={{
+                left: "5%",
+                width: "45%",
                 background: "linear-gradient(to right, transparent 60%, #121115 100%)",
               }}
             />
 
             <div
-              className="absolute top-0 bottom-0 right-[120px] flex items-center justify-end text-right"
-              style={{ width: "550px" }}
+              className="absolute top-0 bottom-0 flex items-center justify-end text-right"
+              style={{ right: "7.5%", width: "35%" }}
             >
               <div className="flex flex-col items-end">
                 <div className="mb-6 h-[2px] w-[44px] rounded-full bg-[#C07B50]" />
@@ -312,20 +314,22 @@ export default function HeroLabPage() {
           >
             <div className="absolute inset-0 bg-gradient-to-tr from-[#121115] via-transparent to-[#1A191E]/30" />
 
-            <div className="absolute left-[80px] top-0 h-full w-[720px]">
+            <div className="absolute top-0 h-full" style={{ left: "5%", width: "45%" }}>
               <SilverClarityThread />
             </div>
 
             <div
-              className="absolute left-[80px] top-0 h-full w-[720px] pointer-events-none"
+              className="absolute top-0 h-full pointer-events-none"
               style={{
+                left: "5%",
+                width: "45%",
                 background: "linear-gradient(to right, transparent 60%, #121115 100%)",
               }}
             />
 
             <div
-              className="absolute top-0 bottom-0 right-[120px] flex items-center justify-end text-right"
-              style={{ width: "550px" }}
+              className="absolute top-0 bottom-0 flex items-center justify-end text-right"
+              style={{ right: "7.5%", width: "35%" }}
             >
               <div className="flex flex-col items-end">
                 <div className="mb-6 h-[2px] w-[44px] rounded-full bg-[#CBD5E1]" />
