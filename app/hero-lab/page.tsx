@@ -88,9 +88,9 @@ function DarkClarityThread() {
       preserveAspectRatio="xMinYMid meet"
     >
       <g
-        stroke="#0D4F4D"
+        stroke="#3A271C"
         strokeLinecap="round"
-        opacity="0.45"
+        opacity="0.5"
         transform="translate(-60 -40) scale(0.95)"
       >
         {COMPLEXITY_PATHS.map((path) => (
@@ -99,9 +99,9 @@ function DarkClarityThread() {
       </g>
 
       <g
-        stroke="#14726E"
+        stroke="#5C3E2B"
         strokeLinecap="round"
-        opacity="0.6"
+        opacity="0.65"
         transform="translate(-60 -40) scale(0.95)"
       >
         {CORE_PATHS.map((path) => (
@@ -111,16 +111,16 @@ function DarkClarityThread() {
 
       <path
         d={DARK_THREAD_PATH}
-        stroke="#10B981"
+        stroke="#C07B50"
         strokeLinecap="round"
         strokeWidth="1.75"
-        opacity="0.85"
+        opacity="0.9"
         transform="translate(0 -40)"
       />
 
       <g
         transform="translate(370 220)"
-        stroke="#10B981"
+        stroke="#C07B50"
         strokeLinecap="round"
         strokeWidth="3"
         opacity="0.9"
@@ -195,10 +195,10 @@ export default function HeroLabPage() {
         {/* ── Canvas 2: Dark ────────────────────────────────────────────── */}
         <div>
           <div
-            className="relative h-[396px] w-[1584px] max-w-full overflow-hidden border border-[#1F1E22] bg-[#121115]"
+            className="relative h-[396px] w-[1584px] max-w-full overflow-hidden border border-[#221E1C] bg-[#121115]"
             style={{
               backgroundImage:
-                "radial-gradient(circle at 1px 1px, #222126 1px, transparent 0)",
+                "radial-gradient(circle at 1px 1px, #221E1C 1px, transparent 0)",
               backgroundSize: "32px 32px",
             }}
           >
@@ -220,23 +220,23 @@ export default function HeroLabPage() {
               style={{ width: "550px" }}
             >
               <div className="flex flex-col items-end">
-                <div className="mb-6 h-[2px] w-[44px] rounded-full bg-[#10B981]" />
+                <div className="mb-6 h-[2px] w-[44px] rounded-full bg-[#C07B50]" />
                 <h1
-                  className="font-[family-name:var(--font-instrument-serif)] italic leading-[0.95] text-[#F3F3F3]"
+                  className="font-[family-name:var(--font-instrument-serif)] italic leading-[0.95] text-[#F5F3F1]"
                   style={{ fontSize: "52px" }}
                 >
                   Building clarity
                   <br />
                   out of complexity.
                 </h1>
-                <p className="mt-6 font-mono text-[11px] uppercase tracking-[0.18em] text-[#9A989B]">
+                <p className="mt-6 font-mono text-[11px] uppercase tracking-[0.18em] text-[#968E88]">
                   Product Design&nbsp;&nbsp;·&nbsp;&nbsp;Enterprise
                   Systems&nbsp;&nbsp;·&nbsp;&nbsp;Systems Thinking
                 </p>
               </div>
             </div>
 
-            <div className="absolute bottom-0 left-[60px] right-[60px] h-px bg-[#1F1E22]" />
+            <div className="absolute bottom-0 left-[60px] right-[60px] h-px bg-[#221E1C]" />
           </div>
           <p className="mt-3 text-[11px] font-mono tracking-wider text-[#4A484D] uppercase">
             Canvas 2 — Dark&nbsp;&nbsp;·&nbsp;&nbsp;1584 × 396 px&nbsp;&nbsp;·&nbsp;&nbsp;Art left, copy right
