@@ -260,7 +260,7 @@ export default function HeroLabPage() {
           >
             <div className="absolute inset-0 bg-gradient-to-tr from-[#121115] via-transparent to-[#1A191E]/30" />
 
-            <div className="absolute top-0 h-full" style={{ left: "5%", width: "45%" }}>
+            <div className="absolute top-0 h-full" style={{ left: "15%", width: "45%" }}>
               <DarkClarityThread />
             </div>
 
@@ -314,7 +314,7 @@ export default function HeroLabPage() {
           >
             <div className="absolute inset-0 bg-gradient-to-tr from-[#121115] via-transparent to-[#1A191E]/30" />
 
-            <div className="absolute top-0 h-full" style={{ left: "5%", width: "45%" }}>
+            <div className="absolute top-0 h-full" style={{ left: "15%", width: "45%" }}>
               <SilverClarityThread />
             </div>
 
