@@ -640,9 +640,12 @@ export function GeminiProjectHero({
             </p>
 
             {/* Metadata grid — full content width */}
-            <div className="grid w-fit grid-cols-[auto_auto] sm:grid-cols-[auto_auto_auto] overflow-hidden rounded-xl border border-[#C8BFB2] divide-x divide-y divide-[#C8BFB2]">
+            <div 
+              className="grid w-fit grid-cols-[auto_auto] sm:grid-cols-[auto_auto_auto] overflow-hidden rounded-xl border border-[#E6E3DD] bg-[#E6E3DD] gap-px"
+              style={{ boxShadow: "0 2px 8px rgba(0,0,0,0.05)" }}
+            >
               {metadata.map(({ label, value }) => (
-                <div key={label} className="flex flex-col gap-1.5 bg-[#EAE2D6]/50 px-6 py-3">
+                <div key={label} className="flex flex-col gap-1.5 bg-white px-6 py-3">
                   <span className="text-[10px] font-medium uppercase tracking-widest text-[#1C1A16]/[0.38]">{label}</span>
                   <span className="text-[15px] font-normal text-[#1C1A16]/85 leading-snug">{value}</span>
                 </div>
