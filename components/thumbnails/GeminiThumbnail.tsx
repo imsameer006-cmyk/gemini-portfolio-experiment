@@ -9,7 +9,7 @@ export default function GeminiThumbnail() {
       pathLength: 1,
       opacity: 1,
       transition: {
-        pathLength: { type: "spring", duration: 1.2, bounce: 0, delay: 0.1 },
+        pathLength: { type: "spring" as const, duration: 1.2, bounce: 0, delay: 0.1 },
         opacity: { duration: 0.2 }
       }
     }
@@ -21,12 +21,12 @@ export default function GeminiThumbnail() {
       pathLength: 1,
       opacity: [0.4, 1, 0.4],
       transition: {
-        pathLength: { type: "spring", duration: 1.2, bounce: 0, delay: 0.1 },
-        opacity: { 
+        pathLength: { type: "spring" as const, duration: 1.2, bounce: 0, delay: 0.1 },
+        opacity: {
           delay: 1.3,
-          duration: 4, 
-          repeat: Infinity, 
-          ease: "easeInOut" 
+          duration: 4,
+          repeat: Infinity,
+          ease: "easeInOut" as const
         }
       }
     }
@@ -40,7 +40,7 @@ export default function GeminiThumbnail() {
       transition: {
         delay: 0.3 + i * 0.12,
         duration: 0.5,
-        ease: [0.16, 1, 0.3, 1]
+        ease: [0.16, 1, 0.3, 1] as [number, number, number, number]
       }
     })
   };
