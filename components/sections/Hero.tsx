@@ -32,8 +32,9 @@ function ClarityThreadVisual({
   const [nodeReady, setNodeReady] = useState(false);
 
   useEffect(() => {
-    // primary thread finishes at 1.05s delay + 2.7s duration = 3.75s
-    const t = setTimeout(() => setNodeReady(true), 1900);
+    // Faster narrative: complexity (0.2s delay + 1.5s duration) -> thread (0.5s delay + 1.6s duration)
+    // nodeReady at ~1.2s instead of 1.9s
+    const t = setTimeout(() => setNodeReady(true), 1200);
     return () => clearTimeout(t);
   }, []);
 
@@ -52,7 +53,7 @@ function ClarityThreadVisual({
   ];
 
   const primaryThreadPath =
-    "M94 274C133 219 215 304 286 242C334 201 250 150 188 206C125 264 207 343 293 292C351 257 335 210 291 234C247 259 285 303 338 275C353 268 363 262 370 260C392 260 414 260 436 260L1600 260";
+    "M94 274C133 219 215 304 286 242C334 201 250 150 188 206C125 264 207 343 293 292C351 257 335 210 291 234C247 259 285 303 338 275C353 268 363 262 370 260C392 260 414 260 436 260L800 260";
 
   return (
     <motion.div
@@ -72,8 +73,8 @@ function ClarityThreadVisual({
           stroke="#18171A"
           strokeLinecap="round"
           initial={{ opacity: 0, pathLength: 0 }}
-          animate={{ opacity: 0.28, pathLength: 1 }}
-          transition={{ duration: 2.4, delay: 0.5, ease: [0.42, 0, 0.18, 1] }}
+          animate={{ opacity: 0.2, pathLength: 1 }}
+          transition={{ duration: 1.5, delay: 0.2, ease: [0.42, 0, 0.18, 1] }}
           transform="translate(-56 0) scale(0.88 1)"
           style={{ transformBox: "fill-box", transformOrigin: "center" }}
         >
@@ -86,8 +87,8 @@ function ClarityThreadVisual({
           stroke="#18171A"
           strokeLinecap="round"
           initial={{ opacity: 0, pathLength: 0 }}
-          animate={{ opacity: 0.2, pathLength: 1 }}
-          transition={{ duration: 2, delay: 0.75, ease: [0.42, 0, 0.18, 1] }}
+          animate={{ opacity: 0.15, pathLength: 1 }}
+          transition={{ duration: 1.2, delay: 0.4, ease: [0.42, 0, 0.18, 1] }}
           transform="translate(-56 0) scale(0.88 1)"
           style={{ transformBox: "fill-box", transformOrigin: "center" }}
         >
@@ -98,12 +99,18 @@ function ClarityThreadVisual({
 
         <motion.path
           d={primaryThreadPath}
-          stroke="#18171A"
+          stroke="#C07B50"
           strokeLinecap="round"
-          strokeWidth="1.45"
+          strokeWidth="1.6"
           initial={{ opacity: 0, pathLength: 0 }}
-          animate={{ opacity: 0.5, pathLength: 1 }}
-          transition={{ duration: 2.7, delay: 1.05, ease: [0.42, 0, 0.18, 1] }}
+          animate={{ 
+            opacity: 0.7, 
+            pathLength: 1 
+          }}
+          transition={{ 
+            pathLength: { duration: 2.2, delay: 0.6, ease: [0.33, 1, 0.68, 1] },
+            opacity: { duration: 0.3, delay: 0.6 }
+          }}
         />
       </svg>
       <button
@@ -126,7 +133,7 @@ function ClarityThreadVisual({
           }
         }}
         onPointerLeave={onNodeUnlock}
-        className="pointer-events-auto absolute left-[56%] top-1/2 flex h-[88px] w-[88px] -translate-x-1/2 -translate-y-1/2 cursor-pointer select-none items-center justify-center border-0 bg-transparent p-0 text-[54px] font-bold leading-none text-[#0A0A0A] outline-none focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#C07B50]"
+        className="pointer-events-auto absolute left-[56%] top-1/2 flex h-[88px] w-[88px] -translate-x-1/2 -translate-y-1/2 cursor-pointer select-none items-center justify-center border-0 bg-transparent p-0 text-[54px] font-bold leading-none text-[#C07B50] outline-none focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#C07B50]"
       >
         {nodeReady && (
           <motion.div
@@ -556,6 +563,7 @@ export default function Hero() {
   const [hoverSuppressed, setHoverSuppressed] = useState(false);
   const [isPhilosophyOpen, setIsPhilosophyOpen] = useState(false);
   const unlockTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const hoverTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   const scrollToWork = () => {
     document.querySelector("#work")?.scrollIntoView({ behavior: "smooth" });
@@ -582,10 +590,32 @@ export default function Hero() {
     }, 650);
   };
 
+  const onNodeEnter = () => {
+    if (isPhilosophyOpen || hoverSuppressed) {
+      return;
+    }
+
+    // 450ms charge-up delay to prevent accidental screen hijacks
+    hoverTimeoutRef.current = setTimeout(() => {
+      openPhilosophy();
+    }, 450);
+  };
+
+  const onNodeUnlock = () => {
+    if (hoverTimeoutRef.current) {
+      clearTimeout(hoverTimeoutRef.current);
+      hoverTimeoutRef.current = null;
+    }
+    setHoverSuppressed(false);
+  };
+
   useEffect(() => {
     return () => {
       if (unlockTimeoutRef.current) {
         clearTimeout(unlockTimeoutRef.current);
+      }
+      if (hoverTimeoutRef.current) {
+        clearTimeout(hoverTimeoutRef.current);
       }
     };
   }, []);
@@ -598,21 +628,21 @@ export default function Hero() {
       <ClarityThreadVisual
         hoverSuppressed={hoverSuppressed}
         isOpen={isPhilosophyOpen}
-        onNodeEnter={openPhilosophy}
-        onNodeUnlock={() => setHoverSuppressed(false)}
+        onNodeEnter={onNodeEnter}
+        onNodeUnlock={onNodeUnlock}
       />
       <PhilosophyOverlay
         isOpen={isPhilosophyOpen}
         onComplete={closePhilosophy}
       />
 
-      {/* Subtle grid texture */}
+      {/* Subtle grid texture - Harmonized to 40px spacing */}
       <div
         aria-hidden="true"
         className="absolute inset-0 pointer-events-none"
         style={{
           backgroundImage: `radial-gradient(circle at 1px 1px, #E6E3DD 1px, transparent 0)`,
-          backgroundSize: "32px 32px",
+          backgroundSize: "40px 40px",
           opacity: 0.5,
         }}
       />
