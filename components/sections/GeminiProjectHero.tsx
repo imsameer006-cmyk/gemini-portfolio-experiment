@@ -662,7 +662,7 @@ export function GeminiProjectHero({
               ))}
             </div>
 
-            <div className="flex max-w-[420px] flex-wrap gap-[10px] mt-[20px]">
+            <div className="flex max-w-[560px] flex-wrap gap-[10px] mt-[20px]">
               <span className="rounded-full bg-[#18171A]/8 px-3 py-1.5 text-sm font-medium text-[#18171A]">
                 {impact}
               </span>

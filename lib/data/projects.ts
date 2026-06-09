@@ -5,7 +5,7 @@ import GeminiThumbnail from "@/components/thumbnails/GeminiThumbnail";
 export const projects: Project[] = [
   {
     slug: "gemini-digital-twin",
-    title: "Designing a Multi-Stakeholder Approval Workflow for a Digital Twin Platform",
+    title: "Multi-Stakeholder Approval Workflow for a Digital Twin Platform",
     category: "Workflow Design",
     year: "2025–2026",
     description:
