@@ -186,7 +186,7 @@ function InteractiveNetwork({
       className="pointer-events-none absolute inset-0 h-full w-full lg:pointer-events-auto"
       aria-label="Interactive abstract workflow network"
       role="group"
-      style={{ opacity: complete ? 0.84 : 1, transition: "opacity 900ms ease" }}
+      style={{ opacity: complete ? 0.84 : 0.35, transition: "opacity 900ms ease" }}
     >
       <defs>
         <linearGradient id="micro-network-fade" x1="320" y1="0" x2="1400" y2="0" gradientUnits="userSpaceOnUse">
@@ -223,7 +223,7 @@ function InteractiveNetwork({
         data-micro-paths="true"
         fill="none"
         stroke="url(#micro-network-fade)"
-        strokeWidth="1"
+        strokeWidth="0.75"
         initial={false}
         animate={{ opacity: complete ? 1 : 0.9 }}
         transition={{ duration: 1.2, ease: EASE }}
@@ -248,7 +248,7 @@ function InteractiveNetwork({
         ))}
       </motion.g>
 
-      <g fill="none" stroke="url(#base-network-fade)" strokeWidth="1">
+      <g fill="none" stroke="url(#base-network-fade)" strokeWidth="0.75">
         {NETWORK_PATHS.map((path) => (
           <path key={path.id} d={path.d} />
         ))}
@@ -459,7 +459,7 @@ function InteractiveNetwork({
               <motion.circle
                 cx={node.x}
                 cy={node.y}
-                r="7"
+                r="4"
                 fill={finalComplete ? "#39705C" : active ? "#405F56" : "#E6EDE7"}
                 stroke={finalComplete ? "#39705C" : active ? "#405F56" : "#627B72"}
                 strokeWidth="1.2"
@@ -599,9 +599,15 @@ export function GeminiProjectHero({
 
       <section
         aria-labelledby="hero-lab-title"
-        className="relative flex min-h-screen flex-col justify-start overflow-hidden px-6 pb-16 pt-[76px] md:px-10 lg:h-screen lg:pt-[94px]"
+        className="relative flex min-h-screen flex-col justify-start overflow-hidden px-6 pb-[88px] pt-[72px] md:px-10 lg:h-screen lg:pt-[72px]"
       >
-        <div className="absolute inset-0 z-[1]">
+        <div
+          className="absolute inset-0 z-[1]"
+          style={{
+            maskImage: "linear-gradient(to right, transparent 0%, transparent 48%, black 54%, black 72%, transparent 100%)",
+            WebkitMaskImage: "linear-gradient(to right, transparent 0%, transparent 48%, black 54%, black 72%, transparent 100%)",
+          }}
+        >
           <InteractiveNetwork
             activated={activated}
             frozenHalos={frozenHalos}
@@ -613,7 +619,7 @@ export function GeminiProjectHero({
           />
         </div>
 
-        <div className="pointer-events-none relative z-[2] mx-auto w-full max-w-[1280px]">
+        <div className="pointer-events-none relative z-[2] mx-auto w-full max-w-[1280px] lg:pl-[52px]">
           {/* Full-width headline */}
           <motion.div
             initial={{ opacity: 0, y: 18 }}
@@ -621,15 +627,14 @@ export function GeminiProjectHero({
             transition={{ duration: reduceMotion ? 0 : 0.55, ease: EASE }}
             className="mb-6"
           >
-            <div className="mb-6 w-fit">
-              <p className="mb-2 text-xs font-medium uppercase tracking-widest text-[#18171A]/65">
+            <div className="mb-[28px] w-fit">
+              <p className="text-[12px] font-medium uppercase tracking-[0.12em] text-[#7A8A72] before:content-[''] before:inline-block before:w-[5px] before:h-[5px] before:rounded-full before:bg-current before:mr-2 before:align-middle">
                 {category}
               </p>
-              <div aria-hidden="true" className="h-px w-full bg-[#18171A]/10" />
             </div>
             <h1
               id="hero-lab-title"
-              className="font-[family-name:var(--font-instrument-serif)] text-[clamp(2rem,3vw,3.25rem)] italic leading-tight text-[#18171A]"
+              className="font-[family-name:var(--font-instrument-serif)] text-[56px] italic leading-[1.15] text-[#18171A] max-w-[720px]"
             >
               {title}
             </h1>
@@ -642,28 +647,28 @@ export function GeminiProjectHero({
             transition={{ duration: reduceMotion ? 0 : 0.55, delay: 0.1, ease: EASE }}
             className="pointer-events-none"
           >
-            <p className="mb-6 max-w-[48ch] text-base leading-relaxed text-[#18171A]/65">
+            <p className="mb-[32px] max-w-[620px] text-[17px] leading-[1.6] text-[#18171A]/65">
               {description}
             </p>
 
             {/* Metadata grid — full content width */}
-            <div className="mb-6 grid max-w-[560px] grid-cols-2 sm:grid-cols-3 overflow-hidden rounded-xl border border-[#18171A]/10 divide-x divide-y divide-[#18171A]/10">
+            <div className="grid max-w-[620px] grid-cols-2 sm:grid-cols-3 overflow-hidden rounded-[10px] border-[0.5px] border-[#C4CBBA] divide-x-[0.5px] divide-y-[0.5px] divide-[#D8DDD0]">
               {metadata.map(({ label, value }) => (
-                <div key={label} className="flex flex-col gap-1 bg-[#E6EDE7] px-3 py-2.5">
-                  <span className="text-[10px] font-medium uppercase tracking-widest text-[#18171A]/45">{label}</span>
-                  <span className="text-sm font-medium text-[#18171A] leading-snug">{value}</span>
+                <div key={label} className="flex flex-col gap-1 bg-[#E6EDE7] px-4 py-[14px]">
+                  <span className="text-[10px] font-medium uppercase tracking-[0.09em] text-[#8E9485]">{label}</span>
+                  <span className="text-[15px] font-medium text-[#1C1E18] leading-snug">{value}</span>
                 </div>
               ))}
             </div>
 
-            <div className="flex max-w-[420px] flex-wrap gap-2 mt-[40px]">
-              <span className="rounded-full bg-[#18171A]/8 px-3 py-1.5 text-sm font-medium text-[#18171A]">
+            <div className="flex max-w-[420px] flex-wrap gap-[10px] mt-[20px]">
+              <span className="rounded-full bg-[#18171A]/8 px-3 py-1.5 text-[12.5px] font-medium text-[#18171A]">
                 {impact}
               </span>
               {tags.map((tag) => (
                 <span
                   key={tag}
-                  className="rounded-full border border-[#18171A]/20 px-3 py-1.5 text-xs text-[#18171A]/65"
+                  className="rounded-full border border-[#18171A]/20 px-3 py-1.5 text-[12.5px] text-[#18171A]/65"
                 >
                   {tag}
                 </span>
