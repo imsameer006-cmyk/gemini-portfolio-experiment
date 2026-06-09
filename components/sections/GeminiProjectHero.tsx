@@ -611,9 +611,10 @@ export function GeminiProjectHero({
             className="mb-6"
           >
             <div className="mb-6 w-fit">
-              <span className="inline-block rounded-full border border-[#C2D4D1] bg-[#EAF0EF] px-3.5 py-1 text-xs font-medium uppercase tracking-widest text-[#405F56] shadow-[0_1px_4px_rgba(64,95,86,0.06)]">
+              <p className="mb-2 text-xs font-medium uppercase tracking-widest text-[#18171A]/65">
                 {category}
-              </span>
+              </p>
+              <div aria-hidden="true" className="h-px w-full bg-[#18171A]/10" />
             </div>
             <h1
               id="hero-lab-title"
