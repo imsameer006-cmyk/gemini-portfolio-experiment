@@ -45,7 +45,7 @@ export default function GeminiThumbnail() {
       </text>
 
       <g style={{ filter: "drop-shadow(0 10px 12px rgba(24,23,26,0.08))" }}>
-        <circle cx="378" cy="72" r="32" fill="#DCE8E4" stroke="#477C6C" strokeWidth="2.4" />
+        <circle cx="378" cy="72" r="32" fill="#EDE9E3" stroke="#477C6C" strokeWidth="2.4" />
         <path d="M363 72L374 83L395 59" stroke="#477C6C" strokeWidth="3.6" strokeLinecap="round" strokeLinejoin="round" />
       </g>
       <text x="378" y="134" fontFamily="var(--font-geist-sans), system-ui, sans-serif" fontSize="9.5" fontWeight="700" letterSpacing="0.08em" fill="#405F56" textAnchor="middle">

@@ -98,10 +98,10 @@ export default function Nav() {
           <div className="flex-1">
             <Link
               href="/"
-              className="text-[#6A6764] font-medium tracking-tight text-sm hover:text-[#18171A] transition-colors duration-200"
+              className="font-medium tracking-tight text-sm transition-colors duration-200"
             >
-              <span>Sameer Gautam</span>
-              <span className="hidden text-[#9C9A95] sm:inline"> - Product Designer</span>
+              <span className="text-[#1C1A16]">Sameer Gautam</span>
+              <span className="hidden text-[#1C1A16]/35 sm:inline"> - Product Designer</span>
             </Link>
           </div>
 
@@ -114,8 +114,8 @@ export default function Nav() {
                   className={[
                     "text-sm transition-colors duration-200 cursor-pointer relative",
                     isActive(href)
-                      ? "text-[#18171A] font-medium after:absolute after:-bottom-0.5 after:left-0 after:w-full after:h-px after:bg-[#C07B50] after:content-['']"
-                      : "text-[#6A6764] hover:text-[#18171A]",
+                      ? "text-[#1C1A16] font-[450] after:absolute after:-bottom-0.5 after:left-0 after:w-full after:h-px after:bg-[#C07B50] after:content-['']"
+                      : "text-[#1C1A16]/50 hover:text-[#1C1A16]",
                   ].join(" ")}
                 >
                   {label}
@@ -138,7 +138,7 @@ export default function Nav() {
               aria-label={mobileOpen ? "Close menu" : "Open menu"}
               aria-expanded={mobileOpen}
               onClick={() => setMobileOpen((o) => !o)}
-              className="md:hidden flex flex-col gap-1.5 w-6 h-5 justify-center items-center"
+              className="md:hidden flex flex-col gap-1.5 w-6 h-5 justify-center items-center opacity-60"
             >
               <span
                 className={[
@@ -176,8 +176,8 @@ export default function Nav() {
                 <button
                   onClick={() => handleNavClick(href)}
                   className={[
-                    "text-3xl font-medium transition-colors duration-200 cursor-pointer",
-                    isActive(href) ? "text-[#C07B50]" : "text-[#18171A] hover:text-[#C07B50]",
+                    "text-3xl transition-colors duration-200 cursor-pointer",
+                    isActive(href) ? "text-[#C07B50] font-[450]" : "text-[#18171A] hover:text-[#C07B50] opacity-60 font-medium",
                   ].join(" ")}
                 >
                   {label}

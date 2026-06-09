@@ -9,7 +9,7 @@ const INTERACTIVE_NODES = [
   { id: 0, x: 700, y: 270, shape: "circle", halo: "#477C6C" },
   { id: 1, x: 860, y: 330, shape: "square", halo: "#405F56" },
   { id: 2, x: 1045, y: 300, shape: "diamond", halo: "#C07B50" },
-  { id: 3, x: 1230, y: 350, shape: "completion", halo: "#95ADA2" },
+  { id: 3, x: 640, y: 390, shape: "completion", halo: "#95ADA2" },
 ] as const;
 
 const NETWORK_PATHS = [
@@ -19,14 +19,14 @@ const NETWORK_PATHS = [
   { id: "p04", owner: 1, delay: 0, d: "M860 330H922C954 330 968 316 968 300H1045" },
   { id: "p05", owner: 1, delay: 0.1, d: "M860 330V438H944" },
   { id: "p06", owner: 1, delay: 0.18, d: "M860 330V220H916" },
-  { id: "p07", owner: 2, delay: 0, d: "M1045 300H1106C1138 300 1152 314 1152 336V350H1230" },
+  { id: "p07", owner: 2, delay: 0, d: "M1045 300H820C800 300 790 310 790 340V390H640" },
   { id: "p08", owner: 2, delay: 0.08, d: "M1045 300V190H1118" },
   { id: "p09", owner: 2, delay: 0.16, d: "M1045 300V430H1130" },
   { id: "p10", owner: 2, delay: 0.24, d: "M1045 300H1100V246H1170" },
-  { id: "p11", owner: 3, delay: 0, d: "M1230 350H1360" },
-  { id: "p12", owner: 3, delay: 0.08, d: "M1230 350V470H1326" },
-  { id: "p13", owner: 3, delay: 0.16, d: "M1230 350V244H1320" },
-  { id: "p14", owner: 3, delay: 0.24, d: "M1230 350H1284V406H1372" },
+  { id: "p11", owner: 3, delay: 0, d: "M640 390H770" },
+  { id: "p12", owner: 3, delay: 0.08, d: "M640 390V510H736" },
+  { id: "p13", owner: 3, delay: 0.16, d: "M640 390V284H730" },
+  { id: "p14", owner: 3, delay: 0.24, d: "M640 390H694V446H782" },
 ] as const;
 
 const SECONDARY_PATHS = [
@@ -43,12 +43,12 @@ const SECONDARY_PATHS = [
   "M1045 430V520H1130",
   "M1130 430H1180V486",
   "M1170 246V194H1222",
-  "M1230 244V164H1320",
-  "M1230 470V550H1326",
-  "M1326 470H1382",
-  "M1284 406V500H1372",
-  "M1360 350V300H1400",
-  "M1360 350V394H1400",
+  "M640 284V204H730",
+  "M640 510V590H736",
+  "M736 510H792",
+  "M694 446V540H782",
+  "M770 390V340H810",
+  "M770 390V434H810",
 ] as const;
 
 const DECORATIVE_NODES = [
@@ -68,16 +68,16 @@ const DECORATIVE_NODES = [
   { x: 1130, y: 520, r: 4 },
   { x: 1180, y: 486, r: 3 },
   { x: 1222, y: 194, r: 3 },
-  { x: 1320, y: 164, r: 3 },
-  { x: 1326, y: 550, r: 4 },
-  { x: 1382, y: 470, r: 3 },
-  { x: 1372, y: 500, r: 3 },
-  { x: 1400, y: 300, r: 3 },
-  { x: 1400, y: 394, r: 3 },
-  { x: 1360, y: 350, r: 4 },
-  { x: 1326, y: 470, r: 3 },
-  { x: 1320, y: 244, r: 3 },
-  { x: 1372, y: 406, r: 3 },
+  { x: 730, y: 204, r: 3 },
+  { x: 736, y: 590, r: 4 },
+  { x: 792, y: 510, r: 3 },
+  { x: 782, y: 540, r: 3 },
+  { x: 810, y: 340, r: 3 },
+  { x: 810, y: 434, r: 3 },
+  { x: 770, y: 390, r: 4 },
+  { x: 736, y: 510, r: 3 },
+  { x: 730, y: 284, r: 3 },
+  { x: 782, y: 446, r: 3 },
   { x: 900, y: 746, r: 2 },
   { x: 738, y: 752, r: 4 },
   { x: 700, y: 470, r: 3 },
@@ -95,11 +95,11 @@ const MICRO_PATHS = [
   "M792 70H860V122H934",
   "M980 62V136H1048",
   "M1102 72H1178V122H1282",
-  "M1284 154H1372",
-  "M1248 244H1360",
-  "M1330 330V430H1386",
-  "M1286 466H1388",
-  "M1228 548H1334V594H1400",
+  "M694 194H782",
+  "M658 284H770",
+  "M740 370V470H796",
+  "M696 506H798",
+  "M638 588H744V634H810",
   "M1184 672H1276V744",
   "M1036 756H1104V692H1172",
   "M842 778V716H900",
@@ -114,12 +114,12 @@ const MICRO_PATHS = [
   "M944 522V574H1004V618",
   "M1118 118V82H1192V52",
   "M1130 520V584H1206V626",
-  "M1320 164H1370V116H1418",
-  "M1326 550V616H1388V668",
-  "M1382 470H1422V522",
-  "M1372 500V568H1420",
-  "M1400 300H1432V258",
-  "M1400 394H1434V430",
+  "M730 204H780V156H828",
+  "M736 590V656H798V708",
+  "M792 510H832V562",
+  "M782 540V608H830",
+  "M810 340H842V298",
+  "M810 434H844V470",
   "M598 528H678V588",
   "M678 528V588H758",
   "M758 588H838V648",
@@ -141,16 +141,16 @@ const MICRO_NODES = [
   { x: 536, y: 214 }, { x: 360, y: 548 }, { x: 458, y: 602 },
   { x: 486, y: 744 }, { x: 566, y: 76 }, { x: 666, y: 52 },
   { x: 792, y: 70 }, { x: 860, y: 122 }, { x: 980, y: 62 },
-  { x: 1102, y: 72 }, { x: 1178, y: 122 }, { x: 1284, y: 154 },
-  { x: 1360, y: 244 }, { x: 1330, y: 330 }, { x: 1388, y: 466 },
-  { x: 1334, y: 594 }, { x: 1276, y: 744 }, { x: 1104, y: 692 },
+  { x: 1102, y: 72 }, { x: 1178, y: 122 }, { x: 694, y: 194 },
+  { x: 770, y: 284 }, { x: 740, y: 370 }, { x: 798, y: 506 },
+  { x: 744, y: 634 }, { x: 1276, y: 744 }, { x: 1104, y: 692 },
   { x: 1036, y: 756 }, { x: 842, y: 778 }, { x: 646, y: 772 },
   { x: 552, y: 710 }, { x: 520, y: 342 }, { x: 736, y: 328 },
   { x: 1014, y: 324 }, { x: 1106, y: 512 },
   { x: 830, y: 48 }, { x: 686, y: 458 }, { x: 626, y: 458 },
   { x: 1004, y: 618 }, { x: 1192, y: 52 }, { x: 1206, y: 626 },
-  { x: 1418, y: 116 }, { x: 1388, y: 668 }, { x: 1422, y: 522 },
-  { x: 1420, y: 568 }, { x: 1432, y: 258 }, { x: 1434, y: 430 },
+  { x: 828, y: 156 }, { x: 798, y: 708 }, { x: 832, y: 562 },
+  { x: 830, y: 608 }, { x: 842, y: 298 }, { x: 844, y: 470 },
   { x: 598, y: 528 }, { x: 678, y: 528 }, { x: 758, y: 588 },
   { x: 838, y: 588 }, { x: 906, y: 588 }, { x: 678, y: 648 },
   { x: 758, y: 648 }, { x: 838, y: 648 }, { x: 898, y: 648 },
@@ -181,34 +181,35 @@ function InteractiveNetwork({
 
   return (
     <svg
-      viewBox="0 -30 1440 820"
+      viewBox="0 0 1280 700"
       preserveAspectRatio="xMidYMid slice"
       className="pointer-events-none absolute inset-0 h-full w-full lg:pointer-events-auto"
       aria-label="Interactive abstract workflow network"
       role="group"
-      style={{ opacity: complete ? 0.84 : 0.4, transition: "opacity 900ms ease" }}
+      style={{ opacity: complete ? 0.84 : 0.32, transition: "opacity 900ms ease" }}
     >
       <defs>
-        <linearGradient id="micro-network-fade" x1="320" y1="0" x2="1400" y2="0" gradientUnits="userSpaceOnUse">
-          <stop stopColor="#405F56" stopOpacity="0.018" />
-          <stop offset="0.34" stopColor="#405F56" stopOpacity="0.05" />
-          <stop offset="0.68" stopColor="#405F56" stopOpacity="0.11" />
-          <stop offset="1" stopColor="#405F56" stopOpacity="0.18" />
+        <linearGradient id="micro-network-fade" x1="284" y1="0" x2="1245" y2="0" gradientUnits="userSpaceOnUse">
+          <stop stopColor="#8A8078" stopOpacity="0.018" />
+          <stop offset="0.34" stopColor="#8A8078" stopOpacity="0.05" />
+          <stop offset="0.68" stopColor="#8A8078" stopOpacity="0.11" />
+          <stop offset="0.88" stopColor="#8A8078" stopOpacity="0.18" />
+          <stop offset="1" stopColor="#8A8078" stopOpacity="0.02" />
         </linearGradient>
-        <linearGradient id="base-network-fade" x1="360" y1="0" x2="1320" y2="0" gradientUnits="userSpaceOnUse">
-          <stop stopColor="#405F56" stopOpacity="0.045" />
-          <stop offset="0.3" stopColor="#405F56" stopOpacity="0.11" />
-          <stop offset="1" stopColor="#405F56" stopOpacity="0.25" />
+        <linearGradient id="base-network-fade" x1="320" y1="0" x2="1173" y2="0" gradientUnits="userSpaceOnUse">
+          <stop stopColor="#8A8078" stopOpacity="0.045" />
+          <stop offset="0.3" stopColor="#8A8078" stopOpacity="0.11" />
+          <stop offset="1" stopColor="#8A8078" stopOpacity="0.25" />
         </linearGradient>
-        <linearGradient id="active-network-route" x1="560" y1="0" x2="1320" y2="0" gradientUnits="userSpaceOnUse">
+        <linearGradient id="active-network-route" x1="498" y1="0" x2="1173" y2="0" gradientUnits="userSpaceOnUse">
           <stop stopColor="#477C6C" stopOpacity="0.28" />
           <stop offset="0.72" stopColor="#477C6C" stopOpacity="0.85" />
           <stop offset="1" stopColor="#405F56" stopOpacity="0.7" />
         </linearGradient>
         <linearGradient id="network-shimmer" x1="0" y1="0" x2="1" y2="0">
           <stop stopColor="#FFFFFF" stopOpacity="0" />
-          <stop offset="0.44" stopColor="#FFFFFF" stopOpacity="0.72" />
-          <stop offset="0.58" stopColor="#F9F8F5" stopOpacity="0.88" />
+          <stop offset="0.44" stopColor="#F9F8F5" stopOpacity="0.72" />
+          <stop offset="0.58" stopColor="#F0EDE8" stopOpacity="0.88" />
           <stop offset="1" stopColor="#FFFFFF" stopOpacity="0" />
         </linearGradient>
         <filter id="network-node-glow" x="-180%" y="-180%" width="460%" height="460%">
@@ -218,6 +219,8 @@ function InteractiveNetwork({
           <feGaussianBlur stdDeviation="2.5" />
         </filter>
       </defs>
+
+      <g transform="translate(-50, 40) scale(0.889, 0.854) translate(0, 30)">
 
       <motion.g
         data-micro-paths="true"
@@ -406,8 +409,9 @@ function InteractiveNetwork({
                 y={node.y - 7}
                 width="14"
                 height="14"
-                fill={finalComplete ? "#39705C" : active ? "#405F56" : "#E6EDE7"}
+                fill={finalComplete ? "#39705C" : active ? "#405F56" : "#F9F8F5"}
                 stroke={finalComplete ? "#39705C" : active ? "#405F56" : "#627B72"}
+                strokeWidth="2"
                 initial={false}
                 animate={{ opacity: highlighted ? 1 : 0.66, scale: highlighted ? 1.12 : 1 }}
                 transition={{ delay: active ? 0.72 : 0, duration: 0.35, ease: EASE }}
@@ -420,9 +424,9 @@ function InteractiveNetwork({
                 width="13"
                 height="13"
                 rx="1"
-                fill={active ? "#405F56" : "#E6EDE7"}
+                fill={active ? "#405F56" : "#F9F8F5"}
                 stroke={active ? "#405F56" : "#627B72"}
-                strokeWidth="1.1"
+                strokeWidth="2"
                 initial={false}
                 animate={{
                   opacity: highlighted ? 1 : 0.66,
@@ -443,15 +447,15 @@ function InteractiveNetwork({
                   cx={node.x}
                   cy={node.y}
                   r="8"
-                  fill={finalComplete ? "#39705C" : active ? "#405F56" : "#E6EDE7"}
+                  fill={finalComplete ? "#39705C" : active ? "#405F56" : "#F9F8F5"}
                   stroke={finalComplete ? "#39705C" : active ? "#405F56" : "#627B72"}
-                  strokeWidth="1.2"
+                  strokeWidth="2"
                 />
                 <circle
                   cx={node.x}
                   cy={node.y}
                   r="3"
-                  fill={finalComplete ? "#E6EDE7" : active ? "#E6EDE7" : "#627B72"}
+                  fill={finalComplete ? "#F9F8F5" : active ? "#F9F8F5" : "#627B72"}
                   opacity={finalComplete || active ? 0.92 : 0.52}
                 />
               </motion.g>
@@ -460,9 +464,9 @@ function InteractiveNetwork({
                 cx={node.x}
                 cy={node.y}
                 r="4"
-                fill={finalComplete ? "#39705C" : active ? "#405F56" : "#E6EDE7"}
+                fill={finalComplete ? "#39705C" : active ? "#405F56" : "#F9F8F5"}
                 stroke={finalComplete ? "#39705C" : active ? "#405F56" : "#627B72"}
-                strokeWidth="1.2"
+                strokeWidth="2"
                 initial={false}
                 animate={{ opacity: highlighted ? 1 : 0.66, scale: highlighted ? 1.18 : 1 }}
                 transition={{ delay: active ? 0.72 : 0, duration: 0.35, ease: EASE }}
@@ -472,6 +476,8 @@ function InteractiveNetwork({
           </g>
         );
       })}
+
+      </g>
     </svg>
   );
 }
@@ -539,13 +545,13 @@ export function GeminiProjectHero({
   };
 
   return (
-    <div className="relative isolate overflow-hidden bg-[#E6EDE7]">
+    <div className="relative isolate overflow-hidden bg-[#F9F8F5]">
       <div
         aria-hidden="true"
         className="pointer-events-none absolute inset-y-0 right-0 z-[2] w-[7%]"
         style={{
           background:
-            "linear-gradient(90deg, rgba(230,237,231,0), rgba(230,237,231,0.72))",
+            "linear-gradient(90deg, rgba(249,248,245,0), rgba(249,248,245,0.72))",
         }}
       />
       <div
@@ -553,43 +559,25 @@ export function GeminiProjectHero({
         className="pointer-events-none absolute inset-x-0 bottom-0 z-[2] h-24"
         style={{
           background:
-            "linear-gradient(180deg, rgba(230,237,231,0), rgba(249,248,245,0.46))",
+            "linear-gradient(180deg, rgba(249,248,245,0), rgba(249,248,245,0.52))",
         }}
       />
-
-      <AnimatePresence>
-        {completionArrived ? (
-          <motion.div
-            aria-hidden="true"
-            data-completion-edge-glow="true"
-            className="pointer-events-none absolute inset-y-0 right-0 z-0 w-[32%] blur-xl"
-            style={{
-              background:
-                "linear-gradient(90deg, transparent 0%, rgba(71,124,108,0.07) 30%, rgba(57,112,92,0.24) 100%)",
-            }}
-            initial={{ opacity: 0, scaleX: 0.62, transformOrigin: "right center" }}
-            animate={{ opacity: 1, scaleX: 1.08 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: reduceMotion ? 0 : 1.25, ease: EASE }}
-          />
-        ) : null}
-      </AnimatePresence>
 
       <AnimatePresence>
         {showCompletionSweep ? (
           <motion.div
             aria-hidden="true"
             data-completion-sweep="true"
-            className="pointer-events-none absolute -inset-y-[18%] -left-[68%] z-[3] w-[78%] skew-x-[-6deg] blur-2xl"
+            className="pointer-events-none absolute -inset-y-[18%] -left-[68%] z-[3] w-[65%] skew-x-[-6deg] blur-[28px]"
             style={{
               background:
-                "linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.1) 20%, rgba(255,255,255,0.56) 50%, rgba(245,232,220,0.2) 68%, transparent 100%)",
+                "linear-gradient(90deg, transparent 0%, rgba(200,192,180,0.08) 15%, rgba(210,200,186,0.72) 48%, rgba(195,182,165,0.30) 70%, transparent 100%)",
             }}
             initial={{ x: "0%", opacity: 0.08 }}
-            animate={{ x: "225%", opacity: [0.08, 0.62, 0] }}
+            animate={{ x: "225%", opacity: [0, 0.85, 0] }}
             exit={{ opacity: 0 }}
             transition={{
-              duration: reduceMotion ? 0 : 3.2,
+              duration: reduceMotion ? 0 : 2.4,
               ease: [0.4, 0, 0.2, 1],
               times: [0, 0.48, 1],
             }}
@@ -619,7 +607,7 @@ export function GeminiProjectHero({
           />
         </div>
 
-        <div className="pointer-events-none relative z-[2] mx-auto w-full max-w-[1280px] lg:pl-[52px]">
+        <div className="pointer-events-none relative z-[2] mx-auto w-full max-w-[1280px]">
           {/* Full-width headline */}
           <motion.div
             initial={{ opacity: 0, y: 18 }}
@@ -628,14 +616,13 @@ export function GeminiProjectHero({
             className="mb-8"
           >
             <div className="mb-[28px] w-fit">
-              <p className="text-[12px] font-medium uppercase tracking-widest text-[#18171A]/45">
-                <span className="inline-block w-[5px] h-[5px] rounded-full bg-current opacity-50 mr-2 align-middle mb-[1px]" aria-hidden="true" />
+              <p className="text-[12px] font-[525] uppercase tracking-widest text-[#1C1A16]/40">
                 {category}
               </p>
             </div>
             <h1
               id="hero-lab-title"
-              className="font-[family-name:var(--font-instrument-serif)] text-[clamp(2rem,3vw,3.25rem)] italic leading-tight text-[#18171A] max-w-[720px]"
+              className="font-[family-name:var(--font-instrument-serif)] text-[clamp(2.50rem,3.74vw,4.06rem)] italic leading-tight text-[#1C1A16] max-w-[670px]"
             >
               {title}
             </h1>
@@ -648,28 +635,28 @@ export function GeminiProjectHero({
             transition={{ duration: reduceMotion ? 0 : 0.55, delay: 0.1, ease: EASE }}
             className="pointer-events-none"
           >
-            <p className="mb-[32px] max-w-[560px] text-base leading-relaxed text-[#18171A]/65">
+            <p className="mb-[32px] max-w-[560px] text-base leading-relaxed text-[#1C1A16]/60">
               {description}
             </p>
 
             {/* Metadata grid — full content width */}
-            <div className="grid max-w-[560px] grid-cols-2 sm:grid-cols-3 overflow-hidden rounded-xl border border-[#18171A]/10 divide-x divide-y divide-[#18171A]/10">
+            <div className="grid w-fit grid-cols-[auto_auto] sm:grid-cols-[auto_auto_auto] overflow-hidden rounded-xl border border-[#C8BFB2] divide-x divide-y divide-[#C8BFB2]">
               {metadata.map(({ label, value }) => (
-                <div key={label} className="flex flex-col gap-1.5 bg-[#E6EDE7] px-3 py-3">
-                  <span className="text-[10px] font-medium uppercase tracking-widest text-[#18171A]/45">{label}</span>
-                  <span className="text-[15px] font-medium text-[#18171A] leading-snug">{value}</span>
+                <div key={label} className="flex flex-col gap-1.5 bg-[#EAE2D6]/50 px-6 py-3">
+                  <span className="text-[10px] font-medium uppercase tracking-widest text-[#1C1A16]/[0.38]">{label}</span>
+                  <span className="text-[15px] font-normal text-[#1C1A16]/85 leading-snug">{value}</span>
                 </div>
               ))}
             </div>
 
             <div className="flex max-w-[560px] flex-wrap gap-[10px] mt-[20px]">
-              <span className="rounded-full bg-[#18171A]/8 px-3 py-1.5 text-sm font-medium text-[#18171A]">
+              <span className="rounded-full bg-[#1C1A16]/[0.09] px-3 py-1.5 text-sm font-medium text-[#1C1A16]">
                 {impact}
               </span>
               {tags.map((tag) => (
                 <span
                   key={tag}
-                  className="rounded-full border border-[#18171A]/20 px-3 py-1.5 text-[12.5px] text-[#18171A]/65"
+                  className="rounded-full border border-[#C8BFB2] px-3 py-1.5 text-[12.5px] text-[#1C1A16]/55"
                 >
                   {tag}
                 </span>
