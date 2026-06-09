@@ -11,6 +11,8 @@ export interface Project {
   featured: boolean;
   coverColor: string;
   thumbnail?: React.ReactNode;
+  status?: "published" | "in-progress";
+  heroMetadata?: { label: string; value: string }[];
 }
 
 export interface ProcessStep {

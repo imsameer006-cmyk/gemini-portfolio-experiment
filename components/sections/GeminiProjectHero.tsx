@@ -482,7 +482,17 @@ interface GeminiProjectHeroProps {
   description?: string;
   impact?: string;
   tags?: string[];
+  metadata?: { label: string; value: string }[];
 }
+
+const DEFAULT_METADATA: { label: string; value: string }[] = [
+  { label: "Year", value: "2025–2026" },
+  { label: "Role", value: "UX Designer (co-lead)" },
+  { label: "Product", value: "Gemini – Digital Twin" },
+  { label: "Domain", value: "B2B" },
+  { label: "Users", value: "FAE, PAE, PMG, PJM" },
+  { label: "Scope", value: "MVP" },
+];
 
 export function GeminiProjectHero({
   category = "Workflow Design",
@@ -490,6 +500,7 @@ export function GeminiProjectHero({
   description = "Designed a visible approval workflow that clarified ownership, review state, and next actions across four engineering roles.",
   impact = "Launched to 20 FAEs in China",
   tags = ["Workflow Design", "B2B", "UX Research", "Systems Design"],
+  metadata = DEFAULT_METADATA,
 }: GeminiProjectHeroProps) {
   const reduceMotion = useReducedMotion();
   const [activated, setActivated] = useState<Set<number>>(() => new Set());
@@ -620,9 +631,7 @@ export function GeminiProjectHero({
               id="hero-lab-title"
               className="font-[family-name:var(--font-instrument-serif)] text-[clamp(2rem,3vw,3.25rem)] italic leading-tight text-[#18171A]"
             >
-              Multi-Stakeholder Approval Workflow{" "}
-              <br className="hidden sm:inline" />
-              for a Digital Twin Platform
+              {title}
             </h1>
           </motion.div>
 
@@ -634,19 +643,12 @@ export function GeminiProjectHero({
             className="pointer-events-none"
           >
             <p className="mb-6 max-w-[48ch] text-base leading-relaxed text-[#18171A]/65">
-              Transforming fragmented engineering reviews into a structured workflow with clear ownership, visibility, and approval states.
+              {description}
             </p>
 
             {/* Metadata grid — full content width */}
             <div className="mb-6 grid max-w-[560px] grid-cols-2 sm:grid-cols-3 overflow-hidden rounded-xl border border-[#18171A]/10 divide-x divide-y divide-[#18171A]/10">
-              {[
-                { label: "Year", value: "2025–2026" },
-                { label: "Role", value: "UX Designer (co-lead)" },
-                { label: "Product", value: "Gemini – Digital Twin" },
-                { label: "Domain", value: "B2B" },
-                { label: "Users", value: "FAE, PAE, PMG, PJM" },
-                { label: "Scope", value: "MVP" },
-              ].map(({ label, value }) => (
+              {metadata.map(({ label, value }) => (
                 <div key={label} className="flex flex-col gap-1 bg-[#E6EDE7] px-3 py-2.5">
                   <span className="text-[10px] font-medium uppercase tracking-widest text-[#18171A]/45">{label}</span>
                   <span className="text-sm font-medium text-[#18171A] leading-snug">{value}</span>

@@ -38,29 +38,33 @@ function ChevronDown() {
 function DrawerList({
   activeId,
   onSelect,
+  disabled = false,
 }: {
   activeId: string;
   onSelect: (label: string) => void;
+  disabled?: boolean;
 }) {
   return (
     <>
       {SECTIONS.map(({ label }) => {
-        const isActive = toSectionId(label) === activeId;
+        const isActive = !disabled && toSectionId(label) === activeId;
         return (
           <button
             key={label}
             role="option"
             aria-selected={isActive}
-            onClick={() => onSelect(label)}
+            disabled={disabled}
+            onClick={disabled ? undefined : () => onSelect(label)}
             className={[
               "w-full flex items-center gap-3 px-6 h-[48px] text-sm text-left",
-              "transition-colors duration-150 focus-visible:outline-none focus-visible:bg-[#F2F0EB]",
-              isActive
-                ? "text-[#18171A] font-medium"
-                : "text-[#6A6764] hover:text-[#18171A]",
+              disabled
+                ? "text-[#9C9A95] opacity-35 pointer-events-none cursor-default"
+                : [
+                    "transition-colors duration-150 focus-visible:outline-none focus-visible:bg-[#F2F0EB]",
+                    isActive ? "text-[#18171A] font-medium" : "text-[#6A6764] hover:text-[#18171A]",
+                  ].join(" "),
             ].join(" ")}
           >
-            {/* Left accent line */}
             <span
               className={[
                 "w-[2px] h-[14px] rounded-full shrink-0 transition-all duration-200",
@@ -76,16 +80,17 @@ function DrawerList({
   );
 }
 
-export default function JumpToNav() {
+export default function JumpToNav({ disabled = false }: { disabled?: boolean }) {
   const [isOpen, setIsOpen] = useState(false);
   const [activeId, setActiveId] = useState(toSectionId("Overview"));
-  const [isVisible, setIsVisible] = useState(false);
+  const [isVisible, setIsVisible] = useState(disabled);
   const [isNearBottom, setIsNearBottom] = useState(false);
 
   const bottomBarRef = useRef<HTMLDivElement>(null);
 
   // ── Visibility: IntersectionObserver on hero ─────────────────
   useEffect(() => {
+    if (disabled) return;
     const hero = document.querySelector<HTMLElement>("article > div:first-child");
     if (!hero) return;
 
@@ -115,11 +120,8 @@ export default function JumpToNav() {
   }, []);
 
   // ── Active section via scroll position ───────────────────────
-  // Finds the last section whose top edge is at or above 96px
-  // (just below the 64px fixed header + 32px buffer). Because
-  // sections are ordered top-to-bottom we can loop and keep
-  // overwriting — the final match is the one "in view".
   useEffect(() => {
+    if (disabled) return;
     const OFFSET = 96;
 
     const update = () => {
@@ -207,24 +209,26 @@ export default function JumpToNav() {
                   const isActive = toSectionId(label) === activeId;
                   return (
                     <li key={label} className="flex items-center gap-2" role="presentation">
-                      {/* 2px left accent bar */}
                       <span
-                        className={[
-                          "w-[2px] h-3 rounded-full shrink-0 transition-all duration-200",
-                          isActive ? "bg-[#C07B50]" : "bg-transparent",
-                        ].join(" ")}
+                        className="w-[2px] h-3 rounded-full shrink-0 bg-transparent"
                         aria-hidden="true"
                       />
                       <button
                         role="option"
-                        aria-selected={isActive}
-                        onClick={() => scrollTo(label)}
+                        aria-selected={false}
+                        disabled={disabled}
+                        onClick={disabled ? undefined : () => scrollTo(label)}
                         className={[
                           "text-left text-[11px] tracking-[0.08em] uppercase leading-snug",
-                          "transition-colors duration-200 focus-visible:outline-none",
-                          isActive
-                            ? "text-[#18171A] font-medium"
-                            : "text-[#9C9A95] hover:text-[#6A6764]",
+                          "focus-visible:outline-none",
+                          disabled
+                            ? "text-[#9C9A95] opacity-35 pointer-events-none cursor-default"
+                            : [
+                                "transition-colors duration-200",
+                                isActive
+                                  ? "text-[#18171A] font-medium"
+                                  : "text-[#9C9A95] hover:text-[#6A6764]",
+                              ].join(" "),
                         ].join(" ")}
                       >
                         {label}
@@ -267,38 +271,48 @@ export default function JumpToNav() {
                   className="bg-[#F9F8F5] border-t border-[#E6E3DD] rounded-t-[12px] overflow-y-auto"
                   style={{ maxHeight: "60vh" }}
                 >
-                  <DrawerList activeId={activeId} onSelect={scrollTo} />
+                  <DrawerList activeId={activeId} onSelect={scrollTo} disabled={disabled} />
                 </motion.div>
               )}
             </AnimatePresence>
 
             {/* ── Trigger bar ─────────────────────────────────── */}
             <button
-              onClick={() => setIsOpen((o) => !o)}
-              aria-haspopup="listbox"
-              aria-expanded={isOpen}
-              aria-controls="jumpto-drawer"
-              aria-label={`Jump to section. Current: ${activeLabel}`}
-              className="w-full h-[52px] flex items-center bg-[#F9F8F5] border-t border-[#E6E3DD]"
+              onClick={disabled ? undefined : () => setIsOpen((o) => !o)}
+              aria-haspopup={disabled ? undefined : "listbox"}
+              aria-expanded={disabled ? undefined : isOpen}
+              aria-controls={disabled ? undefined : "jumpto-drawer"}
+              aria-label={disabled ? "Case study sections — coming soon" : `Jump to section. Current: ${activeLabel}`}
+              className={[
+                "w-full h-[52px] flex items-center bg-[#F9F8F5] border-t border-[#E6E3DD]",
+                disabled ? "pointer-events-none" : "",
+              ].join(" ")}
             >
-              {/* Inner content aligned to the 900px shared grid origin */}
               <div className="max-w-[900px] mx-auto w-full flex items-center justify-between px-6 md:px-10">
                 <div className="flex items-center gap-3 min-w-0">
-                  <span className="text-[11px] text-[#9C9A95] font-medium tracking-[0.08em] uppercase shrink-0">
-                    Jump to
+                  <span className={[
+                    "text-[11px] font-medium tracking-[0.08em] uppercase shrink-0",
+                    disabled ? "text-[#9C9A95] opacity-50" : "text-[#9C9A95]",
+                  ].join(" ")}>
+                    {disabled ? "Case study" : "Jump to"}
                   </span>
                   <span className="text-[#D4D0C8] shrink-0 select-none">|</span>
-                  <span className="text-sm font-medium text-[#18171A] truncate">
-                    {activeLabel}
+                  <span className={[
+                    "text-sm truncate",
+                    disabled ? "text-[#9C9A95] opacity-50" : "font-medium text-[#18171A]",
+                  ].join(" ")}>
+                    {disabled ? "In progress" : activeLabel}
                   </span>
                 </div>
-                <motion.span
-                  animate={{ rotate: isOpen ? 180 : 0 }}
-                  transition={{ duration: 0.2 }}
-                  className="text-[#9C9A95] shrink-0 ml-4"
-                >
-                  <ChevronDown />
-                </motion.span>
+                {!disabled && (
+                  <motion.span
+                    animate={{ rotate: isOpen ? 180 : 0 }}
+                    transition={{ duration: 0.2 }}
+                    className="text-[#9C9A95] shrink-0 ml-4"
+                  >
+                    <ChevronDown />
+                  </motion.span>
+                )}
               </div>
             </button>
           </motion.div>

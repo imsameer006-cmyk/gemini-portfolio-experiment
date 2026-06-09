@@ -27,6 +27,15 @@ export const projects: Project[] = [
     tags: ["Design Systems", "Figma", "Documentation"],
     featured: true,
     coverColor: "#E0E8EC",
+    status: "in-progress",
+    heroMetadata: [
+      { label: "Year", value: "2023" },
+      { label: "Role", value: "UX Designer" },
+      { label: "Product", value: "Design System" },
+      { label: "Domain", value: "Multi-product" },
+      { label: "Teams", value: "4 product teams" },
+      { label: "Scope", value: "Foundation" },
+    ],
   },
   {
     slug: "mobile-checkout",
@@ -39,6 +48,15 @@ export const projects: Project[] = [
     tags: ["Mobile Design", "UX Research", "Prototyping"],
     featured: true,
     coverColor: "#E8E0ED",
+    status: "in-progress",
+    heroMetadata: [
+      { label: "Year", value: "2023" },
+      { label: "Role", value: "Lead UX Designer" },
+      { label: "Product", value: "Mobile Commerce" },
+      { label: "Domain", value: "B2C" },
+      { label: "Users", value: "Mobile shoppers" },
+      { label: "Scope", value: "Full redesign" },
+    ],
   },
   {
     slug: "search-intent",
