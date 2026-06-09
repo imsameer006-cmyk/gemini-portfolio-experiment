@@ -71,7 +71,7 @@ function InProgressHero({ project }: { project: Project }) {
               </div>
             )}
 
-            <div className="mt-[20px] flex flex-wrap gap-[10px]">
+            <div className="mt-[20px] flex max-w-[476px] flex-wrap gap-[10px]">
               {project.impact && (
                 <span className="rounded-full bg-[#1C1A16]/[0.09] px-3 py-1.5 text-sm font-medium text-[#1C1A16]">
                   {project.impact}
