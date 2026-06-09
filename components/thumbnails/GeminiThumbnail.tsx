@@ -64,22 +64,22 @@ export default function GeminiThumbnail() {
       {/* Subtle grid background */}
       <defs>
         <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse">
-          <path d="M 40 0 L 0 0 0 40" fill="none" stroke="#D1DBDA" strokeWidth="0.5" opacity="0.3" />
+          <path d="M 40 0 L 0 0 0 40" fill="none" stroke="#E6E3DD" strokeWidth="0.5" opacity="0.4" />
         </pattern>
       </defs>
-      <rect width="460" height="256" fill="#EAF0EF" />
+      <rect width="460" height="256" fill="#F2F0EB" />
       <rect width="460" height="256" fill="url(#grid)" />
 
       {/* Main Connection Path - Horizontal & Asymmetrical */}
       <motion.path
         d={`M80 ${yPos}H380`}
-        stroke="#C2D4D1"
+        stroke="#CECAC2"
         strokeWidth="1"
         variants={draw}
       />
       <motion.path
         d={`M80 ${yPos}H220`}
-        stroke="#477C6C"
+        stroke="#C07B50"
         strokeWidth="1.5"
         strokeLinecap="round"
         variants={draw}
@@ -91,14 +91,14 @@ export default function GeminiThumbnail() {
         <motion.circle 
           cx="80" cy={yPos} r="16" 
           fill="#FFFFFF" 
-          stroke="#C2D4D1" 
+          stroke="#CECAC2" 
           strokeWidth="1"
           variants={nodeVariants}
           custom={0}
         />
         <motion.path 
           d={`M76 ${yPos-4}H81L84 ${yPos-1}V${yPos+6}H76V${yPos-4}Z`} 
-          stroke="#477C6C" 
+          stroke="#6A6764" 
           strokeWidth="1" 
           variants={nodeVariants}
           custom={0}
@@ -109,7 +109,7 @@ export default function GeminiThumbnail() {
           fontSize="9" 
           fontWeight="500" 
           letterSpacing="0.05em" 
-          fill="#6A6764" 
+          fill="#9C9A95" 
           textAnchor="middle"
           variants={labelVariants}
           custom={0}
@@ -123,21 +123,21 @@ export default function GeminiThumbnail() {
         <motion.circle 
           cx="220" cy={yPos} r="16" 
           fill="#FFFFFF" 
-          stroke="#477C6C" 
+          stroke="#C07B50" 
           strokeWidth="1.5"
           variants={nodeVariants}
           custom={1}
         />
         <motion.circle 
           cx="218" cy={yPos-2} r="5" 
-          stroke="#477C6C" 
+          stroke="#C07B50" 
           strokeWidth="1" 
           variants={nodeVariants}
           custom={1}
         />
         <motion.path 
           d={`M222 ${yPos+2}L226 ${yPos+6}`} 
-          stroke="#477C6C" 
+          stroke="#C07B50" 
           strokeWidth="1" 
           strokeLinecap="round" 
           variants={nodeVariants}
@@ -149,7 +149,7 @@ export default function GeminiThumbnail() {
           fontSize="9" 
           fontWeight="500" 
           letterSpacing="0.05em" 
-          fill="#477C6C" 
+          fill="#C07B50" 
           textAnchor="middle"
           variants={labelVariants}
           custom={1}
@@ -163,14 +163,14 @@ export default function GeminiThumbnail() {
         <motion.circle 
           cx="360" cy={yPos} r="16" 
           fill="#FFFFFF" 
-          stroke="#C2D4D1" 
+          stroke="#CECAC2" 
           strokeWidth="1"
           variants={nodeVariants}
           custom={2}
         />
         <motion.path 
           d={`M354 ${yPos}L358 ${yPos+4}L366 ${yPos-4}`} 
-          stroke="#C2D4D1" 
+          stroke="#CECAC2" 
           strokeWidth="1.2" 
           strokeLinecap="round" 
           strokeLinejoin="round" 

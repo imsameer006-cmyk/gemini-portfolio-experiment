@@ -13,7 +13,7 @@ export const projects: Project[] = [
     impact: "Launched to 20+ FAEs",
     tags: ["Systems Design", "Workflow Design", "Enterprise UX", "B2B SaaS", "UX Research"],
     featured: true,
-    coverColor: "#EAF0EF",
+    coverColor: "#F2F0EB",
     thumbnail: createElement(GeminiThumbnail),
   },
   {
