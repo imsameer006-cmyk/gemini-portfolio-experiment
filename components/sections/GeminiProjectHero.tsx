@@ -186,7 +186,7 @@ function InteractiveNetwork({
       className="pointer-events-none absolute inset-0 h-full w-full lg:pointer-events-auto"
       aria-label="Interactive abstract workflow network"
       role="group"
-      style={{ opacity: complete ? 0.84 : 0.35, transition: "opacity 900ms ease" }}
+      style={{ opacity: complete ? 0.84 : 0.4, transition: "opacity 900ms ease" }}
     >
       <defs>
         <linearGradient id="micro-network-fade" x1="320" y1="0" x2="1400" y2="0" gradientUnits="userSpaceOnUse">
@@ -496,7 +496,7 @@ const DEFAULT_METADATA: { label: string; value: string }[] = [
 
 export function GeminiProjectHero({
   category = "Workflow Design",
-  title = "Designing a Multi-Stakeholder Approval Workflow for a Digital Twin Platform",
+  title = "Multi-Stakeholder Approval Workflow for a Digital Twin Platform",
   description = "Designed a visible approval workflow that clarified ownership, review state, and next actions across four engineering roles.",
   impact = "Launched to 20 FAEs in China",
   tags = ["Workflow Design", "B2B", "UX Research", "Systems Design"],
@@ -599,13 +599,13 @@ export function GeminiProjectHero({
 
       <section
         aria-labelledby="hero-lab-title"
-        className="relative flex min-h-screen flex-col justify-start overflow-hidden px-6 pb-[88px] pt-[72px] md:px-10 lg:h-screen lg:pt-[72px]"
+        className="relative flex min-h-screen flex-col justify-start overflow-x-hidden px-6 pb-[88px] pt-[72px] md:px-10 lg:min-h-screen lg:pt-[72px]"
       >
         <div
           className="absolute inset-0 z-[1]"
           style={{
-            maskImage: "linear-gradient(to right, transparent 0%, transparent 48%, black 54%, black 72%, transparent 100%)",
-            WebkitMaskImage: "linear-gradient(to right, transparent 0%, transparent 48%, black 54%, black 72%, transparent 100%)",
+            maskImage: "linear-gradient(to right, transparent 0%, transparent 39%, black 43%, black 80%, transparent 100%)",
+            WebkitMaskImage: "linear-gradient(to right, transparent 0%, transparent 39%, black 43%, black 80%, transparent 100%)",
           }}
         >
           <InteractiveNetwork
@@ -625,16 +625,17 @@ export function GeminiProjectHero({
             initial={{ opacity: 0, y: 18 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: reduceMotion ? 0 : 0.55, ease: EASE }}
-            className="mb-6"
+            className="mb-8"
           >
             <div className="mb-[28px] w-fit">
-              <p className="text-[12px] font-medium uppercase tracking-[0.12em] text-[#7A8A72] before:content-[''] before:inline-block before:w-[5px] before:h-[5px] before:rounded-full before:bg-current before:mr-2 before:align-middle">
+              <p className="text-[12px] font-medium uppercase tracking-widest text-[#18171A]/45">
+                <span className="inline-block w-[5px] h-[5px] rounded-full bg-current opacity-50 mr-2 align-middle mb-[1px]" aria-hidden="true" />
                 {category}
               </p>
             </div>
             <h1
               id="hero-lab-title"
-              className="font-[family-name:var(--font-instrument-serif)] text-[56px] italic leading-[1.15] text-[#18171A] max-w-[720px]"
+              className="font-[family-name:var(--font-instrument-serif)] text-[56px] italic leading-snug text-[#18171A] max-w-[720px]"
             >
               {title}
             </h1>
@@ -647,16 +648,16 @@ export function GeminiProjectHero({
             transition={{ duration: reduceMotion ? 0 : 0.55, delay: 0.1, ease: EASE }}
             className="pointer-events-none"
           >
-            <p className="mb-[32px] max-w-[620px] text-[17px] leading-[1.6] text-[#18171A]/65">
+            <p className="mb-[32px] max-w-[560px] text-base leading-relaxed text-[#18171A]/65">
               {description}
             </p>
 
             {/* Metadata grid — full content width */}
-            <div className="grid max-w-[620px] grid-cols-2 sm:grid-cols-3 overflow-hidden rounded-[10px] border-[0.5px] border-[#C4CBBA] divide-x-[0.5px] divide-y-[0.5px] divide-[#D8DDD0]">
+            <div className="grid max-w-[560px] grid-cols-2 sm:grid-cols-3 overflow-hidden rounded-xl border-[0.5px] border-[#C4CBBA] divide-x-[0.5px] divide-y-[0.5px] divide-[#D8DDD0]">
               {metadata.map(({ label, value }) => (
-                <div key={label} className="flex flex-col gap-1 bg-[#E6EDE7] px-4 py-[14px]">
-                  <span className="text-[10px] font-medium uppercase tracking-[0.09em] text-[#8E9485]">{label}</span>
-                  <span className="text-[15px] font-medium text-[#1C1E18] leading-snug">{value}</span>
+                <div key={label} className="flex flex-col gap-1.5 bg-[#E6EDE7] px-3 py-3">
+                  <span className="text-[10px] font-medium uppercase tracking-widest text-[#18171A]/45">{label}</span>
+                  <span className="text-[15px] font-medium text-[#18171A] leading-snug">{value}</span>
                 </div>
               ))}
             </div>
