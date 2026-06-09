@@ -195,7 +195,7 @@ export default function JumpToNav({ disabled = false }: { disabled?: boolean }) 
           ═══════════════════════════════════════════════════════ */}
       <div className="hidden lg:block">
         <AnimatePresence>
-          {isVisible && !isNearBottom && (
+          {!disabled && isVisible && !isNearBottom && (
             <motion.nav
               aria-label="Jump to section"
               initial={{ opacity: 0, x: -6 }}
