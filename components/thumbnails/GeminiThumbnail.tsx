@@ -1,56 +1,196 @@
+"use client";
+
+import { motion } from "framer-motion";
+
 export default function GeminiThumbnail() {
+  const draw = {
+    hidden: { pathLength: 0, opacity: 0 },
+    visible: {
+      pathLength: 1,
+      opacity: 1,
+      transition: {
+        pathLength: { type: "spring", duration: 1.2, bounce: 0, delay: 0.1 },
+        opacity: { duration: 0.2 }
+      }
+    }
+  };
+
+  const nodeVariants = {
+    hidden: { opacity: 0, scale: 0.8 },
+    visible: (i: number) => ({
+      opacity: 1,
+      scale: 1,
+      transition: {
+        delay: 0.3 + i * 0.12,
+        duration: 0.5,
+        ease: [0.16, 1, 0.3, 1]
+      }
+    })
+  };
+
+  const labelVariants = {
+    hidden: { opacity: 0 },
+    visible: (i: number) => ({
+      opacity: 1,
+      transition: {
+        delay: 0.5 + i * 0.12,
+        duration: 0.6
+      }
+    })
+  };
+
+  const pulse = {
+    opacity: [0.4, 1, 0.4],
+    transition: {
+      duration: 4,
+      repeat: Infinity,
+      ease: "easeInOut"
+    }
+  };
+
+  const yPos = 145;
+
   return (
-    <svg
+    <motion.svg
       viewBox="0 0 460 256"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
       className="h-full w-full"
       aria-hidden="true"
+      initial="hidden"
+      whileInView="visible"
+      viewport={{ once: true }}
     >
+      {/* Subtle grid background */}
+      <defs>
+        <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse">
+          <path d="M 40 0 L 0 0 0 40" fill="none" stroke="#D1DBDA" strokeWidth="0.5" opacity="0.3" />
+        </pattern>
+      </defs>
       <rect width="460" height="256" fill="#EAF0EF" />
+      <rect width="460" height="256" fill="url(#grid)" />
 
-      <g style={{ filter: "drop-shadow(0 5px 4px rgba(24,23,26,0.08))" }}>
-        <path
-          d="M76 178L227 125L378 72"
-          stroke="#D8D3C9"
-          strokeWidth="7"
-          strokeLinecap="round"
+      {/* Main Connection Path - Horizontal & Asymmetrical */}
+      <motion.path
+        d={`M80 ${yPos}H380`}
+        stroke="#C2D4D1"
+        strokeWidth="1"
+        variants={draw}
+      />
+      <motion.path
+        d={`M80 ${yPos}H220`}
+        stroke="#477C6C"
+        strokeWidth="1.5"
+        strokeLinecap="round"
+        variants={draw}
+        animate={pulse}
+      />
+
+      {/* Node 1: DRAFT */}
+      <g>
+        <motion.circle 
+          cx="80" cy={yPos} r="16" 
+          fill="#FFFFFF" 
+          stroke="#C2D4D1" 
+          strokeWidth="1"
+          variants={nodeVariants}
+          custom={0}
         />
-        <path
-          d="M76 178L227 125L378 72"
-          stroke="#477C6C"
-          strokeWidth="3"
-          strokeLinecap="round"
+        <motion.path 
+          d={`M76 ${yPos-4}H81L84 ${yPos-1}V${yPos+6}H76V${yPos-4}Z`} 
+          stroke="#477C6C" 
+          strokeWidth="1" 
+          variants={nodeVariants}
+          custom={0}
         />
+        <motion.text 
+          x="80" y={yPos+36} 
+          fontFamily="var(--font-geist-mono), monospace" 
+          fontSize="9" 
+          fontWeight="500" 
+          letterSpacing="0.05em" 
+          fill="#6A6764" 
+          textAnchor="middle"
+          variants={labelVariants}
+          custom={0}
+        >
+          DRAFT
+        </motion.text>
       </g>
 
-      <g style={{ filter: "drop-shadow(0 10px 12px rgba(24,23,26,0.08))" }}>
-        <circle cx="76" cy="178" r="24" fill="#FFFFFF" stroke="#E6E3DD" strokeWidth="1.25" />
-        <path d="M67 164H80L87 171V190H67V164Z" stroke="#6A6764" strokeWidth="1.35" strokeLinejoin="round" />
-        <path d="M80 164V171H87" stroke="#6A6764" strokeWidth="1.35" strokeLinejoin="round" />
-        <path d="M72 177H81" stroke="#9C9A95" strokeWidth="1" strokeLinecap="round" />
-        <path d="M72 182H78" stroke="#9C9A95" strokeWidth="1" strokeLinecap="round" />
+      {/* Node 2: PRE-CHECK */}
+      <g>
+        <motion.circle 
+          cx="220" cy={yPos} r="16" 
+          fill="#FFFFFF" 
+          stroke="#477C6C" 
+          strokeWidth="1.5"
+          variants={nodeVariants}
+          custom={1}
+        />
+        <motion.circle 
+          cx="218" cy={yPos-2} r="5" 
+          stroke="#477C6C" 
+          strokeWidth="1" 
+          variants={nodeVariants}
+          custom={1}
+        />
+        <motion.path 
+          d={`M222 ${yPos+2}L226 ${yPos+6}`} 
+          stroke="#477C6C" 
+          strokeWidth="1" 
+          strokeLinecap="round" 
+          variants={nodeVariants}
+          custom={1}
+        />
+        <motion.text 
+          x="220" y={yPos+36} 
+          fontFamily="var(--font-geist-mono), monospace" 
+          fontSize="9" 
+          fontWeight="500" 
+          letterSpacing="0.05em" 
+          fill="#477C6C" 
+          textAnchor="middle"
+          variants={labelVariants}
+          custom={1}
+        >
+          PRE-CHECK
+        </motion.text>
       </g>
-      <text x="76" y="220" fontFamily="var(--font-geist-sans), system-ui, sans-serif" fontSize="9.5" fontWeight="700" letterSpacing="0.08em" fill="#6A6764" textAnchor="middle">
-        DRAFT
-      </text>
 
-      <g style={{ filter: "drop-shadow(0 10px 12px rgba(24,23,26,0.08))" }}>
-        <circle cx="227" cy="125" r="24" fill="#FFFFFF" stroke="#E6E3DD" strokeWidth="1.25" />
-        <circle cx="224.5" cy="122.5" r="8.5" stroke="#6A6764" strokeWidth="1.35" />
-        <path d="M231 129L239 137" stroke="#6A6764" strokeWidth="1.5" strokeLinecap="round" />
+      {/* Node 3: FEASIBILITY */}
+      <g>
+        <motion.circle 
+          cx="360" cy={yPos} r="16" 
+          fill="#FFFFFF" 
+          stroke="#C2D4D1" 
+          strokeWidth="1"
+          variants={nodeVariants}
+          custom={2}
+        />
+        <motion.path 
+          d={`M354 ${yPos}L358 ${yPos+4}L366 ${yPos-4}`} 
+          stroke="#C2D4D1" 
+          strokeWidth="1.2" 
+          strokeLinecap="round" 
+          strokeLinejoin="round" 
+          variants={nodeVariants}
+          custom={2}
+        />
+        <motion.text 
+          x="360" y={yPos+36} 
+          fontFamily="var(--font-geist-mono), monospace" 
+          fontSize="9" 
+          fontWeight="500" 
+          letterSpacing="0.05em" 
+          fill="#9C9A95" 
+          textAnchor="middle"
+          variants={labelVariants}
+          custom={2}
+        >
+          FEASIBILITY
+        </motion.text>
       </g>
-      <text x="227" y="166" fontFamily="var(--font-geist-sans), system-ui, sans-serif" fontSize="9.5" fontWeight="700" letterSpacing="0.08em" fill="#6A6764" textAnchor="middle">
-        PRE-CHECK
-      </text>
-
-      <g style={{ filter: "drop-shadow(0 10px 12px rgba(24,23,26,0.08))" }}>
-        <circle cx="378" cy="72" r="32" fill="#EDE9E3" stroke="#477C6C" strokeWidth="2.4" />
-        <path d="M363 72L374 83L395 59" stroke="#477C6C" strokeWidth="3.6" strokeLinecap="round" strokeLinejoin="round" />
-      </g>
-      <text x="378" y="134" fontFamily="var(--font-geist-sans), system-ui, sans-serif" fontSize="9.5" fontWeight="700" letterSpacing="0.08em" fill="#405F56" textAnchor="middle">
-        FEASIBILITY
-      </text>
-    </svg>
+    </motion.svg>
   );
 }

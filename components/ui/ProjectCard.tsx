@@ -16,15 +16,16 @@ export default function ProjectCard({ project, index }: ProjectCardProps) {
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, margin: "-60px" }}
       transition={{ duration: 0.5, delay: index * 0.1, ease: [0.16, 1, 0.3, 1] }}
+      className="h-full"
     >
       <Link
         href={`/work/${project.slug}`}
-        className="group block bg-[#FFFFFF] border border-[#E6E3DD] rounded-2xl overflow-hidden hover:border-[#C07B50]/40 hover:shadow-[0_8px_40px_-8px_rgba(0,0,0,0.12)] transition-[border-color,box-shadow] duration-300"
+        className="group flex flex-col h-full bg-[#FFFFFF] border border-[#E6E3DD] rounded-2xl overflow-hidden hover:border-[#C07B50]/40 hover:shadow-[0_8px_40px_-8px_rgba(0,0,0,0.12)] transition-[border-color,box-shadow] duration-300"
         aria-label={`View case study: ${project.title}`}
       >
         {/* Visual panel */}
         <div
-          className="w-full h-52 md:h-64 overflow-hidden lg:transition-transform lg:duration-500 lg:group-hover:scale-[1.02] lg:origin-bottom"
+          className="w-full h-52 md:h-64 overflow-hidden shrink-0 lg:transition-transform lg:duration-500 lg:group-hover:scale-[1.02] lg:origin-bottom"
           style={{ backgroundColor: project.coverColor }}
         >
           {project.thumbnail ? (
@@ -41,7 +42,7 @@ export default function ProjectCard({ project, index }: ProjectCardProps) {
         </div>
 
         {/* Content */}
-        <div className="p-6 md:p-7">
+        <div className="p-6 md:p-7 flex-1 flex flex-col">
           <div className="flex items-center justify-between mb-3">
             <span className="text-xs font-medium text-[#C07B50] tracking-wide uppercase">
               {project.category}
@@ -53,11 +54,11 @@ export default function ProjectCard({ project, index }: ProjectCardProps) {
             {project.title}
           </h3>
 
-          <p className="text-sm text-[#6A6764] leading-relaxed mb-5 line-clamp-2">
+          <p className="text-sm text-[#6A6764] leading-relaxed mb-6 line-clamp-2">
             {project.description}
           </p>
 
-          <div className="flex items-center justify-between">
+          <div className="mt-auto flex items-center justify-between">
             <span className="text-xs font-medium text-[#18171A] bg-[#F2F0EB] px-2.5 py-1 rounded-full">
               {project.impact}
             </span>
