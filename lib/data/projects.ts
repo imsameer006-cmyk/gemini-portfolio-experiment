@@ -1,6 +1,7 @@
 import type { Project, ProcessStep, Belief } from "@/lib/types";
 import { createElement } from "react";
 import GeminiThumbnail from "@/components/thumbnails/GeminiThumbnail";
+import CollabspaceThumbnail from "@/components/thumbnails/CollabspaceThumbnail";
 
 export const projects: Project[] = [
   {
@@ -27,6 +28,7 @@ export const projects: Project[] = [
     tags: ["UX Research", "Stakeholder Discovery", "Information Architecture", "Knowledge Management"],
     featured: true,
     coverColor: "#E0E8EC",
+    thumbnail: createElement(CollabspaceThumbnail),
     status: "in-progress",
     heroMetadata: [
       { label: "Year", value: "2023–2024" },
