@@ -588,7 +588,7 @@ export function GeminiProjectHero({
 
       <section
         aria-labelledby="hero-lab-title"
-        className="relative flex min-h-screen flex-col justify-start overflow-hidden px-6 pb-16 pt-24 md:px-10 lg:h-screen lg:pt-[114px]"
+        className="relative flex min-h-screen flex-col justify-start overflow-hidden px-6 pb-16 pt-[76px] md:px-10 lg:h-screen lg:pt-[94px]"
       >
         <div className="absolute inset-0 z-[1]">
           <InteractiveNetwork
@@ -611,10 +611,9 @@ export function GeminiProjectHero({
             className="mb-6"
           >
             <div className="mb-6 w-fit">
-              <p className="mb-2 text-xs font-medium uppercase tracking-widest text-[#18171A]/65">
+              <span className="inline-block rounded-full border border-[#C2D4D1] bg-[#EAF0EF] px-3.5 py-1 text-xs font-medium uppercase tracking-widest text-[#405F56] shadow-[0_1px_4px_rgba(64,95,86,0.06)]">
                 {category}
-              </p>
-              <div aria-hidden="true" className="h-px w-full bg-[#18171A]/10" />
+              </span>
             </div>
             <h1
               id="hero-lab-title"
@@ -654,7 +653,7 @@ export function GeminiProjectHero({
               ))}
             </div>
 
-            <div className="flex max-w-[420px] flex-wrap gap-2">
+            <div className="flex max-w-[420px] flex-wrap gap-2 mt-[40px]">
               <span className="rounded-full bg-[#18171A]/8 px-3 py-1.5 text-sm font-medium text-[#18171A]">
                 {impact}
               </span>
