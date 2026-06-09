@@ -51,25 +51,6 @@ export default function Work() {
             <ProjectCard key={project.slug} project={project} index={i} />
           ))}
         </div>
-
-        {/* All projects link */}
-        <motion.div
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.4, delay: 0.3 }}
-          className="mt-10 flex justify-center"
-        >
-          <Link
-            href="/work"
-            className="inline-flex items-center gap-2 text-sm text-[#6A6764] border border-[#E6E3DD] rounded-full px-5 py-2.5 hover:border-[#C07B50] hover:text-[#C07B50] transition-all duration-200 min-h-[44px]"
-          >
-            View all projects
-            <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true">
-              <path d="M2.5 7h9M7.5 3l4 4-4 4" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round" />
-            </svg>
-          </Link>
-        </motion.div>
       </div>
     </section>
   );

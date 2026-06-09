@@ -15,6 +15,23 @@ export default function GeminiThumbnail() {
     }
   };
 
+  const pulseDraw = {
+    hidden: { pathLength: 0, opacity: 0 },
+    visible: {
+      pathLength: 1,
+      opacity: [0.4, 1, 0.4],
+      transition: {
+        pathLength: { type: "spring", duration: 1.2, bounce: 0, delay: 0.1 },
+        opacity: { 
+          delay: 1.3,
+          duration: 4, 
+          repeat: Infinity, 
+          ease: "easeInOut" 
+        }
+      }
+    }
+  };
+
   const nodeVariants = {
     hidden: { opacity: 0, scale: 0.8 },
     visible: (i: number) => ({
@@ -37,15 +54,6 @@ export default function GeminiThumbnail() {
         duration: 0.6
       }
     })
-  };
-
-  const pulse = {
-    opacity: [0.4, 1, 0.4],
-    transition: {
-      duration: 4,
-      repeat: Infinity,
-      ease: "easeInOut"
-    }
   };
 
   const yPos = 145;
@@ -82,8 +90,7 @@ export default function GeminiThumbnail() {
         stroke="#C07B50"
         strokeWidth="1.5"
         strokeLinecap="round"
-        variants={draw}
-        animate={pulse}
+        variants={pulseDraw}
       />
 
       {/* Node 1: DRAFT */}

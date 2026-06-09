@@ -112,6 +112,7 @@ Approved visual audit findings:
 - Teal should be warmed/muted and balanced with copper and warm neutrals.
 - Green/red should be reserved mostly for success/rejection outcomes.
 - Three flow diagrams should share card radius, border, shadow, connector stroke, icon style, and muted status palette.
+- Work section thumbnails follow the comprehensive ruleset in `THUMBNAIL_GUIDELINES.md`.
 
 Phase 1 completed:
 - Portfolio foundation audited.
