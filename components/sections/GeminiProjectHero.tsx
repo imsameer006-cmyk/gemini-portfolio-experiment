@@ -602,10 +602,10 @@ export function GeminiProjectHero({
         className="relative flex min-h-screen flex-col justify-start overflow-x-hidden px-6 pb-[88px] pt-[72px] md:px-10 lg:min-h-screen lg:pt-[72px]"
       >
         <div
-          className="absolute inset-0 z-[1]"
+          className="absolute top-0 right-0 bottom-0 left-[600px] z-[1]"
           style={{
-            maskImage: "linear-gradient(to right, transparent 0%, transparent 39%, black 43%, black 80%, transparent 100%)",
-            WebkitMaskImage: "linear-gradient(to right, transparent 0%, transparent 39%, black 43%, black 80%, transparent 100%)",
+            maskImage: "linear-gradient(to right, black 0%, black 80%, transparent 100%)",
+            WebkitMaskImage: "linear-gradient(to right, black 0%, black 80%, transparent 100%)",
           }}
         >
           <InteractiveNetwork
@@ -635,7 +635,7 @@ export function GeminiProjectHero({
             </div>
             <h1
               id="hero-lab-title"
-              className="font-[family-name:var(--font-instrument-serif)] text-[56px] italic leading-snug text-[#18171A] max-w-[720px]"
+              className="font-[family-name:var(--font-instrument-serif)] text-[clamp(2rem,3vw,3.25rem)] italic leading-tight text-[#18171A] max-w-[720px]"
             >
               {title}
             </h1>
@@ -653,7 +653,7 @@ export function GeminiProjectHero({
             </p>
 
             {/* Metadata grid — full content width */}
-            <div className="grid max-w-[560px] grid-cols-2 sm:grid-cols-3 overflow-hidden rounded-xl border-[0.5px] border-[#C4CBBA] divide-x-[0.5px] divide-y-[0.5px] divide-[#D8DDD0]">
+            <div className="grid max-w-[560px] grid-cols-2 sm:grid-cols-3 overflow-hidden rounded-xl border border-[#18171A]/10 divide-x divide-y divide-[#18171A]/10">
               {metadata.map(({ label, value }) => (
                 <div key={label} className="flex flex-col gap-1.5 bg-[#E6EDE7] px-3 py-3">
                   <span className="text-[10px] font-medium uppercase tracking-widest text-[#18171A]/45">{label}</span>
@@ -663,7 +663,7 @@ export function GeminiProjectHero({
             </div>
 
             <div className="flex max-w-[420px] flex-wrap gap-[10px] mt-[20px]">
-              <span className="rounded-full bg-[#18171A]/8 px-3 py-1.5 text-[12.5px] font-medium text-[#18171A]">
+              <span className="rounded-full bg-[#18171A]/8 px-3 py-1.5 text-sm font-medium text-[#18171A]">
                 {impact}
               </span>
               {tags.map((tag) => (
