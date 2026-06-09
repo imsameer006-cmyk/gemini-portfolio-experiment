@@ -186,25 +186,25 @@ function InteractiveNetwork({
       className="pointer-events-none absolute inset-0 h-full w-full lg:pointer-events-auto"
       aria-label="Interactive abstract workflow network"
       role="group"
-      style={{ opacity: complete ? 0.84 : 0.32, transition: "opacity 900ms ease" }}
+      style={{ opacity: complete ? 0.52 : 0.28, transition: "opacity 1200ms ease" }}
     >
       <defs>
         <linearGradient id="micro-network-fade" x1="284" y1="0" x2="1245" y2="0" gradientUnits="userSpaceOnUse">
-          <stop stopColor="#8A8078" stopOpacity="0.018" />
-          <stop offset="0.34" stopColor="#8A8078" stopOpacity="0.05" />
-          <stop offset="0.68" stopColor="#8A8078" stopOpacity="0.11" />
-          <stop offset="0.88" stopColor="#8A8078" stopOpacity="0.18" />
-          <stop offset="1" stopColor="#8A8078" stopOpacity="0.02" />
+          <stop stopColor="#A89F94" stopOpacity="0.01" />
+          <stop offset="0.34" stopColor="#A89F94" stopOpacity="0.03" />
+          <stop offset="0.68" stopColor="#A89F94" stopOpacity="0.08" />
+          <stop offset="0.88" stopColor="#A89F94" stopOpacity="0.12" />
+          <stop offset="1" stopColor="#A89F94" stopOpacity="0.01" />
         </linearGradient>
         <linearGradient id="base-network-fade" x1="320" y1="0" x2="1173" y2="0" gradientUnits="userSpaceOnUse">
-          <stop stopColor="#8A8078" stopOpacity="0.045" />
-          <stop offset="0.3" stopColor="#8A8078" stopOpacity="0.11" />
-          <stop offset="1" stopColor="#8A8078" stopOpacity="0.25" />
+          <stop stopColor="#A89F94" stopOpacity="0.02" />
+          <stop offset="0.3" stopColor="#A89F94" stopOpacity="0.08" />
+          <stop offset="1" stopColor="#A89F94" stopOpacity="0.22" />
         </linearGradient>
         <linearGradient id="active-network-route" x1="498" y1="0" x2="1173" y2="0" gradientUnits="userSpaceOnUse">
-          <stop stopColor="#477C6C" stopOpacity="0.28" />
-          <stop offset="0.72" stopColor="#477C6C" stopOpacity="0.85" />
-          <stop offset="1" stopColor="#405F56" stopOpacity="0.7" />
+          <stop stopColor="#5A9382" stopOpacity="0.22" />
+          <stop offset="0.72" stopColor="#5A9382" stopOpacity="0.82" />
+          <stop offset="1" stopColor="#477C6C" stopOpacity="0.65" />
         </linearGradient>
         <linearGradient id="network-shimmer" x1="0" y1="0" x2="1" y2="0">
           <stop stopColor="#FFFFFF" stopOpacity="0" />
@@ -213,7 +213,7 @@ function InteractiveNetwork({
           <stop offset="1" stopColor="#FFFFFF" stopOpacity="0" />
         </linearGradient>
         <filter id="network-node-glow" x="-180%" y="-180%" width="460%" height="460%">
-          <feGaussianBlur stdDeviation="12" />
+          <feGaussianBlur stdDeviation="10" />
         </filter>
         <filter id="network-shimmer-glow" x="-50%" y="-50%" width="200%" height="200%">
           <feGaussianBlur stdDeviation="2.5" />
@@ -226,37 +226,37 @@ function InteractiveNetwork({
         data-micro-paths="true"
         fill="none"
         stroke="url(#micro-network-fade)"
-        strokeWidth="0.75"
+        strokeWidth="0.65"
         initial={false}
-        animate={{ opacity: complete ? 1 : 0.9 }}
+        animate={{ opacity: complete ? 1 : 0.85 }}
         transition={{ duration: 1.2, ease: EASE }}
       >
         {MICRO_PATHS.map((path, index) => (
           <path
             key={path}
             d={path}
-            strokeDasharray={index % 3 === 0 ? "2 7" : index % 3 === 1 ? "8 9" : undefined}
+            strokeDasharray={index % 3 === 0 ? "2 12" : index % 3 === 1 ? "12 14" : undefined}
           />
         ))}
       </motion.g>
       <motion.g
         data-micro-nodes="true"
-        fill="#405F56"
+        fill="#5A9382"
         initial={false}
-        animate={{ opacity: complete ? 0.16 : 0.11 }}
+        animate={{ opacity: complete ? 0.12 : 0.08 }}
         transition={{ duration: 1.2, ease: EASE }}
       >
         {MICRO_NODES.map((node, index) => (
-          <circle key={`${node.x}-${node.y}`} cx={node.x} cy={node.y} r={index % 4 === 0 ? 1.8 : 1.2} />
+          <circle key={`${node.x}-${node.y}`} cx={node.x} cy={node.y} r={index % 4 === 0 ? 1.5 : 1} />
         ))}
       </motion.g>
 
-      <g fill="none" stroke="url(#base-network-fade)" strokeWidth="0.75">
+      <g fill="none" stroke="url(#base-network-fade)" strokeWidth="0.65">
         {NETWORK_PATHS.map((path) => (
           <path key={path.id} d={path.d} />
         ))}
         {SECONDARY_PATHS.map((path) => (
-          <path key={path} d={path} strokeDasharray="4 7" />
+          <path key={path} d={path} strokeDasharray="6 10" />
         ))}
       </g>
 
@@ -272,11 +272,11 @@ function InteractiveNetwork({
             d={path.d}
             fill="none"
             stroke="url(#active-network-route)"
-            strokeWidth={active ? 1.8 : 1.4}
+            strokeWidth={active ? 1.5 : 1.2}
             strokeLinecap="round"
             initial={false}
             animate={{
-              opacity: active ? 0.82 : preview ? 0.3 : 0,
+              opacity: active ? 0.78 : preview ? 0.25 : 0,
               pathLength: active || preview ? 1 : 0,
             }}
             transition={{
@@ -348,7 +348,7 @@ function InteractiveNetwork({
         const active = activated.has(node.id);
         const preview = hovered === node.id;
         const highlighted = active || preview;
-        const finalComplete = node.id === 3 && completionArrived;
+        const finalComplete = completionArrived;
 
         return (
           <g
@@ -397,7 +397,7 @@ function InteractiveNetwork({
               cx={node.x}
               cy={node.y}
               r="22"
-              fill={finalComplete ? "#39705C" : node.halo}
+              fill={finalComplete ? "#5A9382" : node.halo}
               filter="url(#network-node-glow)"
               initial={false}
               animate={{ opacity: active ? 0.08 : 0 }}
@@ -409,8 +409,8 @@ function InteractiveNetwork({
                 y={node.y - 7}
                 width="14"
                 height="14"
-                fill={finalComplete ? "#39705C" : active ? "#405F56" : "#F9F8F5"}
-                stroke={finalComplete ? "#39705C" : active ? "#405F56" : "#627B72"}
+                fill={finalComplete ? "#5A9382" : active ? "#405F56" : "#F9F8F5"}
+                stroke={finalComplete ? "#5A9382" : active ? "#405F56" : "#627B72"}
                 strokeWidth="2"
                 initial={false}
                 animate={{ opacity: highlighted ? 1 : 0.66, scale: highlighted ? 1.12 : 1 }}
@@ -424,8 +424,8 @@ function InteractiveNetwork({
                 width="13"
                 height="13"
                 rx="1"
-                fill={active ? "#405F56" : "#F9F8F5"}
-                stroke={active ? "#405F56" : "#627B72"}
+                fill={finalComplete ? "#5A9382" : active ? "#405F56" : "#F9F8F5"}
+                stroke={finalComplete ? "#5A9382" : active ? "#405F56" : "#627B72"}
                 strokeWidth="2"
                 initial={false}
                 animate={{
@@ -447,8 +447,8 @@ function InteractiveNetwork({
                   cx={node.x}
                   cy={node.y}
                   r="8"
-                  fill={finalComplete ? "#39705C" : active ? "#405F56" : "#F9F8F5"}
-                  stroke={finalComplete ? "#39705C" : active ? "#405F56" : "#627B72"}
+                  fill={finalComplete ? "#5A9382" : active ? "#405F56" : "#F9F8F5"}
+                  stroke={finalComplete ? "#5A9382" : active ? "#405F56" : "#627B72"}
                   strokeWidth="2"
                 />
                 <circle
@@ -464,8 +464,8 @@ function InteractiveNetwork({
                 cx={node.x}
                 cy={node.y}
                 r="4"
-                fill={finalComplete ? "#39705C" : active ? "#405F56" : "#F9F8F5"}
-                stroke={finalComplete ? "#39705C" : active ? "#405F56" : "#627B72"}
+                fill={finalComplete ? "#5A9382" : active ? "#405F56" : "#F9F8F5"}
+                stroke={finalComplete ? "#5A9382" : active ? "#405F56" : "#627B72"}
                 strokeWidth="2"
                 initial={false}
                 animate={{ opacity: highlighted ? 1 : 0.66, scale: highlighted ? 1.18 : 1 }}
@@ -568,10 +568,10 @@ export function GeminiProjectHero({
           <motion.div
             aria-hidden="true"
             data-completion-sweep="true"
-            className="pointer-events-none absolute -inset-y-[18%] -left-[68%] z-[3] w-[65%] skew-x-[-6deg] blur-[28px]"
+            className="pointer-events-none absolute -inset-y-[18%] -left-[68%] z-[3] w-[72%] skew-x-[-26deg] blur-[28px]"
             style={{
               background:
-                "linear-gradient(90deg, transparent 0%, rgba(200,192,180,0.08) 15%, rgba(210,200,186,0.72) 48%, rgba(195,182,165,0.30) 70%, transparent 100%)",
+                "linear-gradient(90deg, transparent 0%, rgba(192,123,80,0.06) 15%, rgba(255,255,255,1.0) 48%, rgba(192,123,80,0.12) 70%, transparent 100%)",
             }}
             initial={{ x: "0%", opacity: 0.08 }}
             animate={{ x: "225%", opacity: [0, 0.85, 0] }}
@@ -652,50 +652,52 @@ export function GeminiProjectHero({
               ))}
             </div>
 
-            <div className="flex max-w-[560px] flex-wrap gap-[10px] mt-[20px]">
-              <span className="rounded-full bg-[#1C1A16]/[0.09] px-3 py-1.5 text-sm font-medium text-[#1C1A16]">
-                {impact}
-              </span>
-              {tags.map((tag) => (
-                <span
-                  key={tag}
-                  className="rounded-full border border-[#C8BFB2] px-3 py-1.5 text-[12.5px] text-[#1C1A16]/55"
-                >
-                  {tag}
+            <div className="mt-[20px] flex max-w-[1280px] items-end justify-between">
+              <div className="flex max-w-[560px] flex-wrap gap-[10px]">
+                <span className="rounded-full bg-[#1C1A16]/[0.09] px-3 py-1.5 text-sm font-medium text-[#1C1A16]">
+                  {impact}
                 </span>
-              ))}
+                {tags.map((tag) => (
+                  <span
+                    key={tag}
+                    className="rounded-full border border-[#C8BFB2] px-3 py-1.5 text-[12.5px] text-[#1C1A16]/55"
+                  >
+                    {tag}
+                  </span>
+                ))}
+              </div>
+
+              <AnimatePresence>
+                {!hasInteracted ? (
+                  <motion.div
+                    aria-hidden="true"
+                    className="pointer-events-none hidden items-center gap-2.5 pb-1 lg:flex"
+                    initial={{ opacity: 0, y: 6 }}
+                    animate={{ opacity: 0.62, y: 0 }}
+                    exit={{ opacity: 0, y: 4 }}
+                    transition={{ duration: 0.45, delay: 1.1, ease: EASE }}
+                  >
+                    <motion.span
+                      className="block h-2.5 w-2.5 rounded-full border border-[#405F56]/75 bg-[#F9F8F5] shadow-[0_0_0_1px_rgba(64,95,86,0.08)]"
+                      animate={{
+                        boxShadow: [
+                          "0 0 0 1px rgba(64,95,86,0.18), 0 0 0 0 rgba(64,95,86,0.18)",
+                          "0 0 0 1px rgba(64,95,86,0.22), 0 0 0 8px rgba(64,95,86,0.12)",
+                          "0 0 0 1px rgba(64,95,86,0.16), 0 0 0 15px rgba(64,95,86,0)",
+                        ],
+                        scale: [1, 1.12, 1],
+                      }}
+                      transition={{ duration: 2.2, repeat: Infinity, ease: "easeOut" }}
+                    />
+                    <span className="text-[10px] font-semibold uppercase tracking-[0.16em] text-[#405F56]/85">
+                      Explore the workflow
+                    </span>
+                  </motion.div>
+                ) : null}
+              </AnimatePresence>
             </div>
           </motion.div>
         </div>
-
-        <AnimatePresence>
-          {!hasInteracted ? (
-            <motion.div
-              aria-hidden="true"
-              className="pointer-events-none absolute bottom-[25px] right-10 z-[3] hidden items-center gap-2.5 lg:flex xl:right-[max(2.5rem,calc((100vw-1280px)/2))]"
-              initial={{ opacity: 0, y: 6 }}
-              animate={{ opacity: 0.62, y: 0 }}
-              exit={{ opacity: 0, y: 4 }}
-              transition={{ duration: 0.45, delay: 1.1, ease: EASE }}
-            >
-              <motion.span
-                className="block h-2.5 w-2.5 rounded-full border border-[#405F56]/75 bg-[#F9F8F5] shadow-[0_0_0_1px_rgba(64,95,86,0.08)]"
-                animate={{
-                  boxShadow: [
-                    "0 0 0 1px rgba(64,95,86,0.18), 0 0 0 0 rgba(64,95,86,0.18)",
-                    "0 0 0 1px rgba(64,95,86,0.22), 0 0 0 8px rgba(64,95,86,0.12)",
-                    "0 0 0 1px rgba(64,95,86,0.16), 0 0 0 15px rgba(64,95,86,0)",
-                  ],
-                  scale: [1, 1.12, 1],
-                }}
-                transition={{ duration: 2.2, repeat: Infinity, ease: "easeOut" }}
-              />
-              <span className="text-[10px] font-semibold uppercase tracking-[0.16em] text-[#405F56]/85">
-                Explore the workflow
-              </span>
-            </motion.div>
-          ) : null}
-        </AnimatePresence>
       </section>
     </div>
   );
