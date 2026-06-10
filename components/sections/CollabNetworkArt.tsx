@@ -241,9 +241,14 @@ function RadialShimmerWave({ active }: { active: boolean }) {
 
 // ─── MAIN COMPONENT ──────────────────────────────────────────────────────────
 export default function CollabNetworkArt() {
+  const [isMounted, setMounted] = useState(false);
   const [activated, setActivated] = useState(false);
   const [hovered,   setHovered]   = useState(false);
   const [complete,  setComplete]  = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   const nodeMap = Object.fromEntries(ALL_NODES.map(n => [n.id, n])) as Record<number, { x: number; y: number; ring: number }>;
 
@@ -252,6 +257,8 @@ export default function CollabNetworkArt() {
     setActivated(true);
     setTimeout(() => setComplete(true), 2450);
   }, [activated]);
+
+  if (!isMounted) return null; // Prevent hydration mismatch
 
   return (
     <div className="absolute inset-0 flex items-center justify-end z-[20] pointer-events-none">
