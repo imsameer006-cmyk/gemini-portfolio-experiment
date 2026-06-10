@@ -212,33 +212,30 @@ function ConnectionLine({ conn, nodeMap, active }: {
   );
 }
 
-// ─── RADIAL GROWTH OVERLAY ──────────────────────────────────────────────────
-export function RadialGrowthOverlay({ active, centerX, centerY }: { active: boolean; centerX: number; centerY: number }) {
+// ─── RADIAL SHIMMER WAVE ──────────────────────────────────────────────────────
+function RadialShimmerWave({ active }: { active: boolean }) {
   if (!active) return null;
   return (
-    <div className="pointer-events-none absolute inset-0 z-[10] overflow-hidden">
+    <>
       {([0, 0.3, 0.65] as const).map((delay, i) => (
-        <motion.div
+        <motion.circle
           key={i}
-          className="absolute rounded-full"
-          style={{
-            left: centerX,
-            top: centerY,
-            width: 40,
-            height: 40,
-            background: "radial-gradient(circle, #C07B50 0%, #477C6C 44%, #C07B50 58%, transparent 100%)",
-            opacity: 0,
-          }}
-          initial={{ x: -20, y: -20, scale: 1, opacity: 0 }}
-          animate={{ x: -500, y: -500, scale: 25, opacity: [0, 0.6, 0] }}
+          cx={CENTER.x} cy={CENTER.y}
+          r={20}
+          fill="none"
+          stroke="url(#collab-radial-shimmer)"
+          // Increased stroke widths and adjusted opacity for better visibility
+          strokeWidth={i === 0 ? 5 : i === 1 ? 4 : 3}
+          filter="url(#collab-shimmer-glow)"
+          initial={{ r: 20, opacity: 0 }}
+          animate={{ r: [20, 500], opacity: [0, 0.9, 0] }}
           transition={{
-            duration: 1.4,
-            delay,
-            ease: EASE,
+            r:       { duration: 1.4, delay, ease: EASE },
+            opacity: { duration: 1.4, delay, ease: EASE, times: [0, 0.15, 1] },
           }}
         />
       ))}
-    </div>
+    </>
   );
 }
 
@@ -265,7 +262,6 @@ export default function CollabNetworkArt() {
 
   return (
     <div className="absolute inset-0 flex items-center justify-end z-[20] pointer-events-none">
-      <RadialGrowthOverlay active={activated} centerX={CENTER.x} centerY={CENTER.y} />
       <svg
         viewBox="0 0 1280 700"
         className="w-[1280px] h-[700px] pointer-events-auto"
@@ -294,6 +290,13 @@ export default function CollabNetworkArt() {
             <stop offset="1"    stopColor="#FFFFFF" stopOpacity="0"    />
           </linearGradient>
 
+          <radialGradient id="collab-radial-shimmer" cx="50%" cy="50%" r="50%">
+            <stop offset="0%" stopColor="#C07B50" stopOpacity="0" />
+            <stop offset="44%" stopColor="#477C6C" stopOpacity="0.4" />
+            <stop offset="58%" stopColor="#C07B50" stopOpacity="0.6" />
+            <stop offset="100%" stopColor="#C07B50" stopOpacity="0" />
+          </radialGradient>
+
           <filter id="collab-node-glow" x="-50%" y="-50%" width="200%" height="200%">
             <feGaussianBlur stdDeviation="10" />
           </filter>
@@ -302,8 +305,6 @@ export default function CollabNetworkArt() {
             <feGaussianBlur stdDeviation="2.5" />
           </filter>
         </defs>
-
-        {/* ... (rest of SVG content remains same) */}
 
         {/* Layer 1: Micro texture lines */}
         <g stroke="url(#collab-base-fade)" strokeWidth="0.5" fill="none"
