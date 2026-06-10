@@ -1,6 +1,6 @@
 "use client";
 
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import { useState, useCallback } from "react";
 
 const EASE: [number, number, number, number] = [0.25, 0.46, 0.45, 0.94];
@@ -263,6 +263,15 @@ export default function CollabNetworkArt() {
         style={{ opacity: complete ? 0.52 : 0.28, transition: "opacity 1200ms ease" }}
       >
         <defs>
+          {/* Completion Sweep Gradient */}
+          <linearGradient id="collab-completion-sweep" x1="0%" y1="0%" x2="100%" y2="0%">
+            <stop offset="0%" stopColor="transparent" stopOpacity="0" />
+            <stop offset="15%" stopColor="#C07B50" stopOpacity="0.06" />
+            <stop offset="48%" stopColor="#FFFFFF" stopOpacity="1.0" />
+            <stop offset="70%" stopColor="#C07B50" stopOpacity="0.12" />
+            <stop offset="100%" stopColor="transparent" stopOpacity="0" />
+          </linearGradient>
+
           <radialGradient id="collab-base-fade" cx={CENTER.x} cy={CENTER.y} r="240" gradientUnits="userSpaceOnUse">
             <stop offset="0"   stopColor="#A89F94" stopOpacity="0.25" />
             <stop offset="0.5" stopColor="#A89F94" stopOpacity="0.14" />
