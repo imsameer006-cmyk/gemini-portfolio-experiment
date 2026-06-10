@@ -834,6 +834,7 @@ export default function CaseStudy({ project, content }: Props) {
           category={project.category}
           title={project.title}
           description={project.description}
+          client={project.client}
           impact={project.impact}
           tags={project.tags}
         />

@@ -3,6 +3,7 @@
 import { motion, useReducedMotion } from "framer-motion";
 import { CaseStudyInProgress } from "./CaseStudyInProgress";
 import JumpToNav from "@/components/ui/JumpToNav";
+import CollabNetworkArt from "@/components/sections/CollabNetworkArt";
 import type { Project } from "@/lib/types";
 
 const EASE = [0.16, 1, 0.3, 1] as const;
@@ -22,6 +23,10 @@ function InProgressHero({ project }: { project: Project }) {
           opacity: 0.5,
         }}
       />
+
+      {/* Hero art — radial community network */}
+      <CollabNetworkArt />
+
       <section
         aria-labelledby="project-hero-title"
         className="relative flex min-h-screen flex-col justify-start px-6 pb-[88px] pt-[72px] md:px-10"
@@ -71,9 +76,14 @@ function InProgressHero({ project }: { project: Project }) {
               </div>
             )}
 
-            <div className="mt-[20px] flex max-w-[476px] flex-wrap gap-[10px]">
-              {project.impact && (
+            <div className="mt-[20px] flex max-w-[640px] flex-wrap gap-[10px]">
+              {project.client && (
                 <span className="rounded-full bg-[#1C1A16]/[0.09] px-3 py-1.5 text-sm font-medium text-[#1C1A16]">
+                  {project.client}
+                </span>
+              )}
+              {project.impact && (
+                <span className="rounded-full border border-[#C8BFB2] px-3 py-1.5 text-[12.5px] text-[#1C1A16]/55">
                   {project.impact}
                 </span>
               )}

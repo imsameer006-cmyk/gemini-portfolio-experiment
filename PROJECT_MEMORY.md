@@ -1,27 +1,28 @@
 # Project Memory: Gemini Portfolio
 
-Last updated: 2026-06-05
+Last updated: 2026-06-10
 
 ## START HERE
 
 Read this file first in future AI sessions. It is the source of truth for current portfolio status, branch workflow, Gemini case-study decisions, hero exploration, and design language.
 
+**IMPORTANT — Branch strategy as of 2026-06-10:** All work is committed directly to `main`. There is no active `claude` branch workflow. Do not create or assume a `claude` branch.
+
 Current priorities:
+- Project 3 (mobile-checkout): needs real content update + thumbnail (same pattern as project 2).
 - Keep the Gemini case study production-ready and coherent.
 - Preserve the finalized Gemini hero direction unless a new exploration is explicitly requested.
-- Do future experimentation on `claude`, review it, then merge approved work into `main`.
 - Do not modify production functionality unless the user explicitly asks.
 
 Current branch structure:
-- `main`: approved production branch and public portfolio source.
-- `claude`: active experimentation branch.
-- `gemini-cli-review`: older review/audit branch; do not use by default.
+- `main`: active working branch AND production source. All recent work committed here directly.
+- `gemini-cli-review`: older audit branch — do not use.
 
 Current active work:
-- Latest approved production commit: `14c8445 Finalize Gemini hero and diagram system`.
-- Gemini hero has been promoted from lab exploration into the Gemini project page.
-- Three Gemini flow diagrams have been visually aligned and exported.
-- Local uncommitted state may include the recent `challenge-poc` annotation adjustment: annotation 2 moved down, connector shortened, node kept fixed. Review before committing.
+- Latest production commit: `220daaa Add PLM Collabspace thumbnail with radial shimmer animation`
+- Working tree: **clean**, nothing uncommitted.
+- Project 2 (PLM Collabspace): content fully updated, CollabspaceThumbnail implemented.
+- Project 3 (mobile-checkout): still has old placeholder content and no custom thumbnail.
 
 Known constraints:
 - This project uses Next.js 16.2.6. Read `node_modules/next/dist/docs/` before writing Next.js code, per `AGENTS.md`.
@@ -44,36 +45,27 @@ Important positioning decisions:
 
 ## Project Status
 
-Current state:
-- Next.js portfolio with a warm editorial visual language.
-- Gemini Digital Twin is the primary and most developed case study.
-- Main homepage hero remains in `components/sections/Hero.tsx`.
-- Gemini project hero lives in `components/sections/GeminiProjectHero.tsx`.
-- Hero Lab exists at `/hero-lab` for isolated preview.
+Current state (as of 2026-06-10):
+- Next.js 16.2.6 portfolio with a warm editorial visual language.
+- Gemini Digital Twin is the primary and most developed case study (published, full case study).
+- Project 2 (slug: `design-system`) = PLM Collabspace: in-progress page active, content + thumbnail complete.
+- Project 3 (slug: `mobile-checkout`): in-progress page active, content + thumbnail NOT yet updated.
+- Main homepage hero: `components/sections/Hero.tsx` (ClarityThreadVisual abstract paths)
+- Gemini project hero: `components/sections/GeminiProjectHero.tsx` — **project 1 only**
+- In-progress projects (2 & 3) use `InProgressHero` inside `ProjectInProgress.tsx` — text-only, no SVG art
+- Desktop JumpToNav is fully hidden on in-progress pages (`!disabled` gate)
+
+Component inventory (thumbnails):
+- `GeminiThumbnail.tsx` — linear horizontal workflow, 3 nodes (Draft → Pre-Check → Feasibility)
+- `CollabspaceThumbnail.tsx` — radial hub-and-spoke, 6 outer nodes with copper shimmer sweeps
 
 Published status:
-- `main` contains approved production work through commit `14c8445`.
-- The project has been pushed to GitHub.
-- Deployment appears connected to the pushed production branch, but verify Vercel when an exact live deploy state matters.
-
-Current deployment status:
-- Last verified production build passed after the Gemini hero and diagram updates.
-- Build may need network access because `next/font` fetches Google fonts.
-- Full lint currently reports unrelated existing issues in bundled Three.js files, screenshot scripts, `Work.tsx`, and `JumpToNav.tsx`.
+- All commits through `220daaa` are on `origin/main`.
+- Vercel auto-deploys from `main` on push.
+- Production TypeScript build verified clean (strict mode).
 
 Active branch strategy:
-- Work on `claude`.
-- Review.
-- Approve.
-- Merge into `main`.
-- Push `main`.
-- Deploy from `main`.
-
-Main branch purpose:
-- Stable, approved, production-ready portfolio.
-
-Claude branch purpose:
-- Active experimentation and iteration branch for visual exploration, copy refinement, and case-study polish.
+- Commit directly to `main`. Push to deploy. No separate experimentation branch currently.
 
 ## Gemini Case Study Status
 

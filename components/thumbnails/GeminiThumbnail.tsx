@@ -15,21 +15,32 @@ export default function GeminiThumbnail() {
     }
   };
 
-  const pulseDraw = {
+  const baseLineDraw = {
     hidden: { pathLength: 0, opacity: 0 },
     visible: {
       pathLength: 1,
-      opacity: [0.4, 1, 0.4],
+      opacity: 0.3,
       transition: {
         pathLength: { type: "spring" as const, duration: 1.2, bounce: 0, delay: 0.1 },
-        opacity: {
-          delay: 1.3,
-          duration: 4,
-          repeat: Infinity,
-          ease: "easeInOut" as const
-        }
-      }
-    }
+        opacity: { duration: 0.3 },
+      },
+    },
+  };
+
+  const shimmerDraw = {
+    hidden: { pathLength: 0, opacity: 0 },
+    visible: {
+      pathLength: [0, 1, 1],
+      opacity: [0, 0.9, 0],
+      transition: {
+        duration: 1.8,
+        delay: 0.6,
+        times: [0, 0.5, 1],
+        ease: "easeOut" as const,
+        repeat: Infinity,
+        repeatDelay: 1.0,
+      },
+    },
   };
 
   const nodeVariants = {
@@ -75,6 +86,13 @@ export default function GeminiThumbnail() {
         <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse">
           <path d="M 40 0 L 0 0 0 40" fill="none" stroke="#E6E3DD" strokeWidth="0.5" opacity="0.4" />
         </pattern>
+        <linearGradient id="line-shimmer" x1="80" y1="145" x2="220" y2="145" gradientUnits="userSpaceOnUse">
+          <stop offset="0%"   stopColor="#F5C88A" stopOpacity="0.9" />
+          <stop offset="30%"  stopColor="#E08A58" stopOpacity="1"   />
+          <stop offset="60%"  stopColor="#C07B50" stopOpacity="1"   />
+          <stop offset="85%"  stopColor="#8A4830" stopOpacity="0.65" />
+          <stop offset="100%" stopColor="#5A2810" stopOpacity="0"   />
+        </linearGradient>
       </defs>
       <rect width="460" height="256" fill="#F2F0EB" />
       <rect width="460" height="256" fill="url(#grid)" />
@@ -91,7 +109,14 @@ export default function GeminiThumbnail() {
         stroke="#C07B50"
         strokeWidth="1.5"
         strokeLinecap="round"
-        variants={pulseDraw}
+        variants={baseLineDraw}
+      />
+      <motion.path
+        d={`M80 ${yPos}H220`}
+        stroke="url(#line-shimmer)"
+        strokeWidth="1.5"
+        strokeLinecap="round"
+        variants={shimmerDraw}
       />
 
       {/* Node 1: DRAFT */}

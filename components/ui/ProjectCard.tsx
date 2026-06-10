@@ -58,11 +58,18 @@ export default function ProjectCard({ project, index }: ProjectCardProps) {
             {project.description}
           </p>
 
-          <div className="mt-auto flex items-center justify-between">
-            <span className="text-xs font-medium text-[#18171A] bg-[#F2F0EB] px-2.5 py-1 rounded-full">
-              {project.impact}
-            </span>
-            <span className="text-sm text-[#C07B50] font-medium opacity-0 group-hover:opacity-100 transition-opacity duration-200 flex items-center gap-1">
+          <div className="mt-auto flex items-end justify-between">
+            <div className="flex flex-wrap items-center gap-2">
+              {project.client && (
+                <span className="whitespace-nowrap text-xs font-medium text-[#18171A] bg-[#F2F0EB] px-2.5 py-1 rounded-full">
+                  {project.client}
+                </span>
+              )}
+              <span className="whitespace-nowrap text-xs text-[#6A6764] border border-[#E6E3DD] px-2.5 py-1 rounded-full">
+                {project.impact}
+              </span>
+            </div>
+            <span className="shrink-0 whitespace-nowrap text-sm text-[#C07B50] font-medium opacity-0 group-hover:opacity-100 transition-opacity duration-200 flex items-center gap-1">
               View case study
               <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true">
                 <path d="M2.5 7h9M7.5 3l4 4-4 4" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round" />

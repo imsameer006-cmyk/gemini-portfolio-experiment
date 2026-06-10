@@ -3,7 +3,6 @@
 import { motion } from "framer-motion";
 
 const CENTER = { x: 230, y: 128 };
-const SPOKE_LENGTH = 85;
 
 const OUTER_NODES = [
   { x: 315, y: 128, shape: "square"   },
@@ -48,7 +47,7 @@ export default function CollabspaceThumbnail() {
     hidden: { pathLength: 0, opacity: 0 },
     visible: {
       pathLength: 1,
-      opacity: 0.22,
+      opacity: 0.3,
       transition: {
         pathLength: { type: "spring" as const, duration: 1.2, bounce: 0, delay: 0.1 },
         opacity: { duration: 0.3 },
@@ -57,18 +56,17 @@ export default function CollabspaceThumbnail() {
   };
 
   const shimmerVariants = {
-    hidden: { strokeDashoffset: 18, opacity: 0 },
+    hidden: { pathLength: 0, opacity: 0 },
     visible: (i: number) => ({
-      strokeDashoffset: [18, -(SPOKE_LENGTH + 18)],
-      opacity: 1,
+      pathLength: [0, 1, 1],
+      opacity: [0, 0.9, 0],
       transition: {
-        strokeDashoffset: {
-          duration: 2,
-          delay: 0.6 + i * 0.28,
-          ease: "linear" as const,
-          repeat: Infinity,
-        },
-        opacity: { duration: 0.3, delay: 0.6 },
+        duration: 1.8,
+        delay: 0.6,
+        times: [0, 0.5, 1],
+        ease: "easeOut" as const,
+        repeat: Infinity,
+        repeatDelay: 1.0,
       },
     }),
   };
@@ -102,7 +100,6 @@ export default function CollabspaceThumbnail() {
         <pattern id="grid-collab" width="40" height="40" patternUnits="userSpaceOnUse">
           <path d="M 40 0 L 0 0 0 40" fill="none" stroke="#E6E3DD" strokeWidth="0.5" opacity="0.4" />
         </pattern>
-        {/* Radial gradient centred at hub — shimmer goes warm-amber → copper → deep sienna */}
         <radialGradient id="spoke-shimmer" cx="230" cy="128" r="90" gradientUnits="userSpaceOnUse">
           <stop offset="0%"   stopColor="#F5C88A" stopOpacity="0.9" />
           <stop offset="30%"  stopColor="#E08A58" stopOpacity="1"   />
@@ -121,20 +118,19 @@ export default function CollabspaceThumbnail() {
           key={`base-${i}`}
           d={`M${CENTER.x} ${CENTER.y}L${node.x} ${node.y}`}
           stroke="#C07B50"
-          strokeWidth="1"
+          strokeWidth="1.5"
           variants={baseLineDraw}
         />
       ))}
 
-      {/* Shimmer sweeps — gradient dash travelling centre → outer */}
+      {/* Shimmer sweeps — draw from centre → outer, repeat */}
       {OUTER_NODES.map((node, i) => (
         <motion.path
           key={`shimmer-${i}`}
           d={`M${CENTER.x} ${CENTER.y}L${node.x} ${node.y}`}
           stroke="url(#spoke-shimmer)"
-          strokeWidth="2.5"
+          strokeWidth="1.5"
           strokeLinecap="round"
-          strokeDasharray="18 100"
           variants={shimmerVariants}
           custom={i}
         />

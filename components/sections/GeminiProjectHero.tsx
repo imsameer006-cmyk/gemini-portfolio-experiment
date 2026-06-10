@@ -486,6 +486,7 @@ interface GeminiProjectHeroProps {
   category?: string;
   title?: string;
   description?: string;
+  client?: string;
   impact?: string;
   tags?: string[];
   metadata?: { label: string; value: string }[];
@@ -504,6 +505,7 @@ export function GeminiProjectHero({
   category = "Workflow Design",
   title = "Multi-Stakeholder Approval Workflow for a Digital Twin Platform",
   description = "Designed a visible approval workflow that clarified ownership, review state, and next actions across four engineering roles.",
+  client,
   impact = "Launched to 20 FAEs in China",
   tags = ["Workflow Design", "B2B", "UX Research", "Systems Design"],
   metadata = DEFAULT_METADATA,
@@ -653,8 +655,13 @@ export function GeminiProjectHero({
             </div>
 
             <div className="mt-[20px] flex max-w-[1280px] items-end justify-between">
-              <div className="flex max-w-[560px] flex-wrap gap-[10px]">
-                <span className="rounded-full bg-[#1C1A16]/[0.09] px-3 py-1.5 text-sm font-medium text-[#1C1A16]">
+              <div className="flex max-w-[720px] flex-wrap gap-[10px]">
+                {client && (
+                  <span className="rounded-full bg-[#1C1A16]/[0.09] px-3 py-1.5 text-sm font-medium text-[#1C1A16]">
+                    {client}
+                  </span>
+                )}
+                <span className="rounded-full border border-[#C8BFB2] px-3 py-1.5 text-[12.5px] text-[#1C1A16]/55">
                   {impact}
                 </span>
                 {tags.map((tag) => (

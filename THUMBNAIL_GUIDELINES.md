@@ -51,6 +51,44 @@ These guidelines ensure consistency across all project thumbnails in the "Work" 
     - Repeat: `Infinity`.
     - Ease: `easeInOut`.
 
+---
+
+# Pattern 2: Radial Hub-and-Spoke (PLM Collabspace)
+
+For projects about collaboration platforms, knowledge networks, or multi-stakeholder systems, use a radial layout instead of the linear progression pattern.
+
+## Composition
+
+- **Canvas:** 460×256 viewBox, `preserveAspectRatio="xMidYMid slice"`
+- **Center node:** `cx=230, cy=128` (true center of canvas)
+- **Outer nodes:** 6 nodes at radius 85, hexagonal arrangement (0°, 60°, 120°, 180°, 240°, 300°)
+  - Coordinates: (315,128), (273,202), (188,202), (145,128), (188,54), (273,54)
+- **Outer node shapes:** Each uses a distinct polygonal icon (square, triangle, hexagon, diamond, pentagon, circle) — no two the same
+
+## Spoke system (two-layer)
+
+**Layer 1 — Base line:**
+- Stroke: `#C07B50` (Copper), `1px`, opacity `0.22`
+- Draws in with `pathLength` spring animation (same as linear pattern)
+
+**Layer 2 — Shimmer sweep:**
+- Stroke: `url(#spoke-shimmer)` radial gradient
+- Radial gradient: centered at hub `(230,128)`, `r=90`, `gradientUnits="userSpaceOnUse"`
+  - 0%: `#F5C88A` opacity 0.9 | 30%: `#E08A58` opacity 1 | 60%: `#C07B50` opacity 1 | 85%: `#8A4830` opacity 0.65 | 100%: transparent
+- StrokeWidth: `2.5px`, strokeLinecap: `round`
+- `strokeDasharray="18 100"`, strokeDashoffset animates: `18 → -(85+18)=-103`, linear, repeat Infinity
+- Stagger: `0.6 + i × 0.28` delay per spoke
+
+## Center node
+
+- Circle r=16, `fill="white"`, `stroke="#C07B50"`, `strokeWidth="1.5"` (matches active node in linear pattern)
+- Hub dot r=1.5, `fill="#C07B50"` (no pulsation — shimmer on the lines is the "life" signal)
+
+## Outer nodes
+
+- Circle r=16, `fill="white"`, `stroke="#CECAC2"`, `strokeWidth="1"` (inactive state)
+- Icon inside: 1px stroke, `#6A6764`, sized ±4–5px from node center
+
 ## 5. Narrative Intent
 - **Curiosity over Decoration:** The thumbnail should feel like a captured snippet of a high-fidelity system status, not a marketing illustration.
 - **System State:** Every visual element must represent a specific state (Completed, Active, or Pending) in a larger workflow.
