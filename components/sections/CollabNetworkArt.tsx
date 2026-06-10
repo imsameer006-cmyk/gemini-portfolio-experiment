@@ -6,57 +6,46 @@ import { useState, useCallback } from "react";
 const EASE: [number, number, number, number] = [0.25, 0.46, 0.45, 0.94];
 
 // ─── NODE DATA ───────────────────────────────────────────────────────────────
-// Center: (940, 340)
-// Ring 1: r=110, 5 nodes every 72° starting at -90° (top)
-// Ring 2: r=220, 10 nodes every 36° starting at -90° (top)
-// All positions computed from exact trigonometry — no positional jitter.
+const CENTER = { x: 940, y: 340 };
+const R1 = 120;
+const R2 = 240;
 
-const CENTER_NODE = { id: 0, x: 940, y: 340, ring: 0 };
+const calculatePos = (angleDeg: number, radius: number) => {
+  const angleRad = (angleDeg * Math.PI) / 180;
+  return {
+    x: CENTER.x + radius * Math.cos(angleRad),
+    y: CENTER.y + radius * Math.sin(angleRad),
+  };
+};
 
-const RING1_NODES = [
-  { id: 1, x: 940,  y: 230, ring: 1 },  // -90°
-  { id: 2, x: 1045, y: 306, ring: 1 },  // -18°
-  { id: 3, x: 1005, y: 429, ring: 1 },  //  54°
-  { id: 4, x: 875,  y: 429, ring: 1 },  // 126°
-  { id: 5, x: 835,  y: 306, ring: 1 },  // 198°
-];
+// Ring 1: 5 nodes at 72 deg spacing
+const RING1_NODES = Array.from({ length: 5 }).map((_, i) => ({
+  id: i + 1,
+  ...calculatePos(-90 + i * 72, R1),
+  ring: 1,
+}));
 
-const RING2_NODES = [
-  { id: 6,  x: 940,  y: 120, ring: 2 },  // -90°
-  { id: 7,  x: 1069, y: 162, ring: 2 },  // -54°
-  { id: 8,  x: 1149, y: 272, ring: 2 },  // -18°
-  { id: 9,  x: 1149, y: 408, ring: 2 },  //  18°
-  { id: 10, x: 1069, y: 518, ring: 2 },  //  54°
-  { id: 11, x: 940,  y: 560, ring: 2 },  //  90°
-  { id: 12, x: 811,  y: 518, ring: 2 },  // 126°
-  { id: 13, x: 731,  y: 408, ring: 2 },  // 162°
-  { id: 14, x: 731,  y: 272, ring: 2 },  // 198°
-  { id: 15, x: 811,  y: 162, ring: 2 },  // 234°
-];
+// Ring 2: 10 nodes at 36 deg spacing
+const RING2_NODES = Array.from({ length: 10 }).map((_, i) => ({
+  id: i + 6,
+  ...calculatePos(-90 + i * 36, R2),
+  ring: 2,
+}));
 
+const CENTER_NODE = { id: 0, ...CENTER, ring: 0 };
 const ALL_NODES = [CENTER_NODE, ...RING1_NODES, ...RING2_NODES];
 
-// ─── CONNECTIONS — radial spokes only, no lateral ring connections ────────────
-// Each Ring 1 node fans outward to its aligned Ring 2 node + the next one
-// clockwise (a 36° fan). Every connection travels strictly inside → outside.
-const CONNECTIONS: { from: number; to: number; layer: 0 | 1; delay: number }[] = [
-  // Center → Ring 1
-  { from: 0, to: 1, layer: 0, delay: 0.00 },
-  { from: 0, to: 2, layer: 0, delay: 0.06 },
-  { from: 0, to: 3, layer: 0, delay: 0.12 },
-  { from: 0, to: 4, layer: 0, delay: 0.18 },
-  { from: 0, to: 5, layer: 0, delay: 0.24 },
-  // Ring 1 → Ring 2 (each node fans to aligned + next clockwise)
-  { from: 1, to: 6,  layer: 1, delay: 0.40 },
-  { from: 1, to: 7,  layer: 1, delay: 0.46 },
-  { from: 2, to: 8,  layer: 1, delay: 0.40 },
-  { from: 2, to: 9,  layer: 1, delay: 0.46 },
-  { from: 3, to: 10, layer: 1, delay: 0.40 },
-  { from: 3, to: 11, layer: 1, delay: 0.46 },
-  { from: 4, to: 12, layer: 1, delay: 0.40 },
-  { from: 4, to: 13, layer: 1, delay: 0.46 },
-  { from: 5, to: 14, layer: 1, delay: 0.40 },
-  { from: 5, to: 15, layer: 1, delay: 0.46 },
+// Connections: Center->Ring1, Ring1->Ring2 (strictly radial)
+const CONNECTIONS = [
+  ...RING1_NODES.map((n, i) => ({ from: 0, to: n.id, layer: 0 as const, delay: i * 0.05 })),
+  ...RING1_NODES.flatMap((n, i) => [
+    // Connect to the two nodes in Ring 2 that are radially aligned
+    // Ring 1 nodes start at -90, step 72. Ring 2 nodes start at -90, step 36.
+    // Node i in Ring 1 should connect to node (i*2 - 1) and (i*2) in Ring 2, 
+    // with proper wrap-around handling.
+    { from: n.id, to: RING2_NODES[(i * 2 + 9) % 10].id, layer: 1 as const, delay: 0.3 + i * 0.05 },
+    { from: n.id, to: RING2_NODES[(i * 2) % 10].id, layer: 1 as const, delay: 0.3 + i * 0.05 },
+  ]),
 ];
 
 // ─── AMBIENT DOT FIELD ───────────────────────────────────────────────────────
@@ -225,7 +214,7 @@ function RadialShimmerWave({ active }: { active: boolean }) {
       {([0, 0.3, 0.65] as const).map((delay, i) => (
         <motion.circle
           key={i}
-          cx={940} cy={340}
+          cx={CENTER.x} cy={CENTER.y}
           r={20}
           fill="none"
           stroke="url(#collab-radial-shimmer)"
@@ -258,23 +247,23 @@ export default function CollabNetworkArt() {
   }, [activated]);
 
   return (
-    <div className="absolute top-0 right-0 bottom-0 left-[600px] z-[1]">
+    <div className="absolute inset-0 flex items-center justify-end z-[20] pointer-events-none">
       <svg
         viewBox="0 0 1280 700"
-        preserveAspectRatio="xMidYMid slice"
-        className="pointer-events-none absolute inset-0 h-full w-full lg:pointer-events-auto"
+        className="w-[1280px] h-[700px] pointer-events-auto"
+        preserveAspectRatio="xMidYMid meet"
         aria-label="Interactive community network — click to activate"
         role="group"
         style={{ opacity: complete ? 0.52 : 0.28, transition: "opacity 1200ms ease" }}
       >
         <defs>
-          <radialGradient id="collab-base-fade" cx="940" cy="340" r="240" gradientUnits="userSpaceOnUse">
+          <radialGradient id="collab-base-fade" cx={CENTER.x} cy={CENTER.y} r="240" gradientUnits="userSpaceOnUse">
             <stop offset="0"   stopColor="#A89F94" stopOpacity="0.25" />
             <stop offset="0.5" stopColor="#A89F94" stopOpacity="0.14" />
             <stop offset="1"   stopColor="#A89F94" stopOpacity="0.04" />
           </radialGradient>
 
-          <radialGradient id="collab-active-route" cx="940" cy="340" r="230" gradientUnits="userSpaceOnUse">
+          <radialGradient id="collab-active-route" cx={CENTER.x} cy={CENTER.y} r="230" gradientUnits="userSpaceOnUse">
             <stop offset="0"    stopColor="#5A9382" stopOpacity="0.9"  />
             <stop offset="0.55" stopColor="#5A9382" stopOpacity="0.65" />
             <stop offset="1"    stopColor="#477C6C" stopOpacity="0.35" />
@@ -293,7 +282,7 @@ export default function CollabNetworkArt() {
             <stop offset="1"   stopColor="#FFFFFF" stopOpacity="0"   />
           </radialGradient>
 
-          <filter id="collab-node-glow" x="-180%" y="-180%" width="460%" height="460%">
+          <filter id="collab-node-glow" x="-50%" y="-50%" width="200%" height="200%">
             <feGaussianBlur stdDeviation="10" />
           </filter>
 
@@ -326,8 +315,8 @@ export default function CollabNetworkArt() {
         <RadialShimmerWave active={activated} />
 
         {/* Ambient topology rings */}
-        <circle cx={940} cy={340} r={110} fill="none" stroke="#627B72" strokeWidth="0.4" opacity="0.06" strokeDasharray="4 8" />
-        <circle cx={940} cy={340} r={220} fill="none" stroke="#627B72" strokeWidth="0.4" opacity="0.04" strokeDasharray="3 10" />
+        <circle cx={CENTER.x} cy={CENTER.y} r={R1} fill="none" stroke="#627B72" strokeWidth="0.4" opacity="0.06" strokeDasharray="4 8" />
+        <circle cx={CENTER.x} cy={CENTER.y} r={R2} fill="none" stroke="#627B72" strokeWidth="0.4" opacity="0.04" strokeDasharray="3 10" />
 
         {/* Layer 7: Node glows */}
         {ALL_NODES.map(node => (
@@ -353,7 +342,7 @@ export default function CollabNetworkArt() {
 
         {/* Layer 9: Centre hit target */}
         <circle
-          cx={940} cy={340} r={36}
+          cx={CENTER.x} cy={CENTER.y} r={36}
           fill="transparent"
           className="cursor-pointer"
           style={{ pointerEvents: "auto" }}
