@@ -39,12 +39,9 @@ const ALL_NODES = [CENTER_NODE, ...RING1_NODES, ...RING2_NODES];
 const CONNECTIONS = [
   ...RING1_NODES.map((n, i) => ({ from: 0, to: n.id, layer: 0 as const, delay: i * 0.05 })),
   ...RING1_NODES.flatMap((n, i) => [
-    // Connect to the two nodes in Ring 2 that are radially aligned
-    // Ring 1 nodes start at -90, step 72. Ring 2 nodes start at -90, step 36.
-    // Node i in Ring 1 should connect to node (i*2 - 1) and (i*2) in Ring 2, 
-    // with proper wrap-around handling.
+    // Connect to the two nodes in Ring 2 that are symmetrical around the radial axis
     { from: n.id, to: RING2_NODES[(i * 2 + 9) % 10].id, layer: 1 as const, delay: 0.3 + i * 0.05 },
-    { from: n.id, to: RING2_NODES[(i * 2) % 10].id, layer: 1 as const, delay: 0.3 + i * 0.05 },
+    { from: n.id, to: RING2_NODES[(i * 2 + 1) % 10].id, layer: 1 as const, delay: 0.3 + i * 0.05 },
   ]),
 ];
 
