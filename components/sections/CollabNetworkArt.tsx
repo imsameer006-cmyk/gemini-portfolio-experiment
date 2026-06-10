@@ -1,7 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { useState, useCallback } from "react";
+import { useState, useCallback, useEffect } from "react";
 
 const EASE: [number, number, number, number] = [0.25, 0.46, 0.45, 0.94];
 
