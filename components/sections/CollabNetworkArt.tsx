@@ -37,11 +37,14 @@ const ALL_NODES = [CENTER_NODE, ...RING1_NODES, ...RING2_NODES];
 
 // Connections: Center->Ring1, Ring1->Ring2 (strictly radial)
 const CONNECTIONS = [
-  ...RING1_NODES.map((n, i) => ({ from: 0, to: n.id, layer: 0 as const, delay: i * 0.05 })),
+  // Center -> Ring 1 (Sequential around the circle)
+  ...RING1_NODES.map((n, i) => ({ from: 0, to: n.id, layer: 0 as const, delay: i * 0.1 })),
+  
+  // Ring 1 -> Ring 2 (Strictly radial fan, symmetrically aligned)
   ...RING1_NODES.flatMap((n, i) => [
     // Connect to the two nodes in Ring 2 that are symmetrical around the radial axis
-    { from: n.id, to: RING2_NODES[(i * 2 + 9) % 10].id, layer: 1 as const, delay: 0.3 + i * 0.05 },
-    { from: n.id, to: RING2_NODES[(i * 2 + 1) % 10].id, layer: 1 as const, delay: 0.3 + i * 0.05 },
+    { from: n.id, to: RING2_NODES[(i * 2 + 9) % 10].id, layer: 1 as const, delay: 0.5 + (i * 0.2) },
+    { from: n.id, to: RING2_NODES[(i * 2 + 1) % 10].id, layer: 1 as const, delay: 0.5 + (i * 0.2) + 0.05 },
   ]),
 ];
 
@@ -88,7 +91,7 @@ function NodeMarker({ node, active, highlighted, finalComplete }: {
       <motion.g
         initial={false}
         animate={{ opacity: highlighted ? 1 : 0.8, scale: highlighted ? 1.05 : 1 }}
-        transition={{ duration: 0.3, ease: EASE }}
+        transition={{ delay: 0.1, duration: 0.3, ease: EASE }}
         style={{ transformOrigin: `${node.x}px ${node.y}px` }}
       >
         <circle cx={node.x} cy={node.y} r={10} fill="none" stroke={stroke} strokeWidth="2" opacity={op} />
@@ -103,7 +106,7 @@ function NodeMarker({ node, active, highlighted, finalComplete }: {
       <motion.g
         initial={false}
         animate={{ opacity: op, scale: highlighted ? 1.1 : 1 }}
-        transition={{ delay: active ? 0.45 : 0, duration: 0.3, ease: EASE }}
+        transition={{ delay: active ? 0.3 : 0, duration: 0.3, ease: EASE }}
         style={{ transformOrigin: `${node.x}px ${node.y}px` }}
       >
         <circle cx={node.x} cy={node.y} r={6} fill={finalComplete ? "#5A9382" : active ? "#477C6C" : "#F9F8F5"} stroke={stroke} strokeWidth="2" />
@@ -115,7 +118,7 @@ function NodeMarker({ node, active, highlighted, finalComplete }: {
     <motion.g
       initial={false}
       animate={{ opacity: op * 0.8, scale: highlighted ? 1.1 : 1 }}
-      transition={{ delay: active ? 0.72 : 0, duration: 0.3, ease: EASE }}
+      transition={{ delay: active ? 0.5 : 0, duration: 0.3, ease: EASE }}
       style={{ transformOrigin: `${node.x}px ${node.y}px` }}
     >
       <rect
@@ -136,8 +139,9 @@ function NodeGlow({ node, active, highlighted, finalComplete }: {
 }) {
   const color = finalComplete ? "#5A9382" : active ? "#477C6C" : "#95ADA2";
   const r     = node.ring === 0 ? 24 : node.ring === 1 ? 16 : 10;
-  // Subtler glow opacity
+  // Subtler glow opacity with ring-based delay for sequential reveal
   const op    = finalComplete ? 0.1 : active ? 0.08 : highlighted ? 0.05 : 0;
+  const delay = node.ring * 0.15;
 
   return (
     <motion.circle
@@ -146,7 +150,7 @@ function NodeGlow({ node, active, highlighted, finalComplete }: {
       filter="url(#collab-node-glow)"
       initial={false}
       animate={{ opacity: op }}
-      transition={{ duration: 0.4, ease: EASE }}
+      transition={{ delay, duration: 0.4, ease: EASE }}
     />
   );
 }
