@@ -121,16 +121,16 @@ function NodeMarker({ node, active, highlighted, finalComplete }: {
       transition={{ delay: active ? 0.5 : 0, duration: 0.3, ease: EASE }}
       style={{ transformOrigin: `${node.x}px ${node.y}px` }}
     >
-      <rect
-        x={node.x - 5} y={node.y - 5}
-        width={10} height={10}
-        transform={`rotate(45 ${node.x} ${node.y})`}
-        fill={finalComplete ? "#5A9382" : active ? "#477C6C" : "#F9F8F5"}
-        stroke={stroke} strokeWidth="2"
+      <circle
+        cx={node.x} cy={node.y}
+        r={5}
+        fill="transparent"
+        stroke={stroke}
+        strokeWidth="2"
       />
     </motion.g>
   );
-}
+  }
 
 // ─── GLOW HALO ───────────────────────────────────────────────────────────────
 function NodeGlow({ node, active, highlighted, finalComplete }: {
