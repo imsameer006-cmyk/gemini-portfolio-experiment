@@ -283,9 +283,10 @@ export default function CollabNetworkArt() {
           </linearGradient>
 
           <radialGradient id="collab-radial-shimmer" cx="50%" cy="50%" r="50%">
-            <stop offset="0"   stopColor="#F0EDE8" stopOpacity="0"   />
-            <stop offset="0.4" stopColor="#F0EDE8" stopOpacity="0.9" />
-            <stop offset="1"   stopColor="#FFFFFF" stopOpacity="0"   />
+            <stop offset="0%" stopColor="#C07B50" stopOpacity="0" />
+            <stop offset="44%" stopColor="#477C6C" stopOpacity="0.4" />
+            <stop offset="58%" stopColor="#C07B50" stopOpacity="0.6" />
+            <stop offset="100%" stopColor="#C07B50" stopOpacity="0" />
           </radialGradient>
 
           <filter id="collab-node-glow" x="-50%" y="-50%" width="200%" height="200%">
