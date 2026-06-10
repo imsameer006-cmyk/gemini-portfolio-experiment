@@ -228,7 +228,7 @@ function RadialShimmerWave({ active }: { active: boolean }) {
           strokeWidth={i === 0 ? 5 : i === 1 ? 4 : 3}
           filter="url(#collab-shimmer-glow)"
           initial={{ r: 20, opacity: 0 }}
-          animate={{ r: [20, 240], opacity: [0, 0.9, 0] }}
+          animate={{ r: [20, 500], opacity: [0, 0.9, 0] }}
           transition={{
             r:       { duration: 1.4, delay, ease: EASE },
             opacity: { duration: 1.4, delay, ease: EASE, times: [0, 0.15, 1] },
