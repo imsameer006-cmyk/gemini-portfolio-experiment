@@ -83,7 +83,7 @@ function NodeMarker({ node, active, highlighted, finalComplete }: {
 }) {
   // Muted Copper-based activation colors (Subtle Copper / Terra Cotta)
   const fill   = finalComplete ? "#BFA391" : active ? "#BFA391" : "#F9F8F5";
-  const stroke = finalComplete ? "#9E7E6B" : active ? "#9E7E6B" : "#9E7E6B";
+  const stroke = finalComplete ? "#BFA391" : active ? "#BFA391" : "#9E7E6B";
   
   // Healthy inactive visibility: outer nodes need more presence
   const baseOp = node.ring === 2 && !active && !finalComplete ? 0.32 : 0.65;
@@ -98,7 +98,7 @@ function NodeMarker({ node, active, highlighted, finalComplete }: {
         style={{ transformOrigin: `${node.x}px ${node.y}px` }}
       >
         <circle cx={node.x} cy={node.y} r={10} fill="none" stroke={stroke} strokeWidth="2" opacity={op} />
-        <circle cx={node.x} cy={node.y} r={5}  fill={fill}  stroke={stroke} strokeWidth="2" opacity={op} />
+        <circle cx={node.x} cy={node.y} r={5}  fill={finalComplete ? "#BFA391" : active ? "#BFA391" : "#BFA391"}  stroke={stroke} strokeWidth="2" opacity={op} />
         <circle cx={node.x} cy={node.y} r={2}  fill={finalComplete ? "#F9F8F5" : active ? "#F9F8F5" : "#9E7E6B"} opacity={active ? 0.8 : 0.52} />
       </motion.g>
     );
@@ -345,8 +345,8 @@ export default function CollabNetworkArt() {
         ))}
 
         {/* Ambient topology rings */}
-        <circle cx={CENTER.x} cy={CENTER.y} r={R1} fill="none" stroke="#C8BFB2" strokeWidth="0.4" opacity="0.08" strokeDasharray="4 8" />
-        <circle cx={CENTER.x} cy={CENTER.y} r={R2} fill="none" stroke="#C8BFB2" strokeWidth="0.4" opacity="0.06" strokeDasharray="3 10" />
+        <circle cx={CENTER.x} cy={CENTER.y} r={R1} fill="none" stroke="#9E7E6B" strokeWidth="0.4" opacity="0.12" strokeDasharray="4 8" />
+        <circle cx={CENTER.x} cy={CENTER.y} r={R2} fill="none" stroke="#9E7E6B" strokeWidth="0.4" opacity="0.08" strokeDasharray="3 10" />
 
         {/* Layer 7: Node glows */}
         {ALL_NODES.map(node => (

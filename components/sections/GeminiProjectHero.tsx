@@ -6,10 +6,10 @@ import { useRef, useState } from "react";
 const EASE = [0.16, 1, 0.3, 1] as const;
 
 const INTERACTIVE_NODES = [
-  { id: 0, x: 700, y: 270, shape: "circle", halo: "#477C6C" },
-  { id: 1, x: 860, y: 330, shape: "square", halo: "#405F56" },
+  { id: 0, x: 700, y: 270, shape: "circle", halo: "#BFA391" },
+  { id: 1, x: 860, y: 330, shape: "square", halo: "#9E7E6B" },
   { id: 2, x: 1045, y: 300, shape: "diamond", halo: "#C07B50" },
-  { id: 3, x: 640, y: 390, shape: "completion", halo: "#95ADA2" },
+  { id: 3, x: 640, y: 390, shape: "completion", halo: "#BFA391" },
 ] as const;
 
 const NETWORK_PATHS = [
@@ -209,9 +209,9 @@ function InteractiveNetwork({
             <stop offset="1" stopColor="#C8BFB2" stopOpacity="0.25" />
           </linearGradient>
           <linearGradient id="active-network-route" x1="498" y1="0" x2="1173" y2="0" gradientUnits="userSpaceOnUse">
-            <stop stopColor="#5A9382" stopOpacity="0.95" />
-            <stop offset="0.72" stopColor="#5A9382" stopOpacity="0.82" />
-            <stop offset="1" stopColor="#477C6C" stopOpacity="0.45" />
+            <stop stopColor="#C07B50" stopOpacity="0.85" />
+            <stop offset="0.72" stopColor="#C07B50" stopOpacity="0.75" />
+            <stop offset="1" stopColor="#BFA391" stopOpacity="0.45" />
           </linearGradient>
           <linearGradient id="network-shimmer" x1="0" y1="0" x2="1" y2="0">
             <stop stopColor="#FFFFFF" stopOpacity="0" />
@@ -251,9 +251,9 @@ function InteractiveNetwork({
         {/* Layer 2: Ambient dot field (Standardized) */}
         <motion.g
           data-micro-nodes="true"
-          fill="#5A9382"
+          fill="#9E7E6B"
           initial={false}
-          animate={{ opacity: complete ? 0.12 : 0.08 }}
+          animate={{ opacity: complete ? 0.22 : 0.14 }}
           transition={{ duration: 1.2, ease: EASE }}
         >
           {MICRO_NODES.map((node, index) => (
@@ -282,11 +282,11 @@ function InteractiveNetwork({
             d={path.d}
             fill="none"
             stroke="url(#active-network-route)"
-            strokeWidth={active ? 1.5 : 1.2}
+            strokeWidth={active ? 1.6 : 1.2}
             strokeLinecap="round"
             initial={false}
             animate={{
-              opacity: active ? 0.78 : preview ? 0.25 : 0,
+              opacity: active ? 0.82 : preview ? 0.25 : 0,
               pathLength: active || preview ? 1 : 0,
             }}
             transition={{
@@ -328,9 +328,9 @@ function InteractiveNetwork({
         );
       })}
 
-      <g fill="#405F56">
+      <g fill="#9E7E6B">
         {DECORATIVE_NODES.map((node) => (
-          <circle key={`${node.x}-${node.y}`} cx={node.x} cy={node.y} r={node.r} opacity="0.22" />
+          <circle key={`${node.x}-${node.y}`} cx={node.x} cy={node.y} r={node.r} opacity="0.32" />
         ))}
       </g>
 
@@ -344,7 +344,7 @@ function InteractiveNetwork({
             data-frozen-halo={node.id}
             cx={node.x}
             cy={node.y}
-            fill={node.halo}
+            fill={node.id === 2 ? "#C07B50" : "#BFA391"}
             filter="url(#network-node-glow)"
             pointerEvents="none"
             initial={{ opacity: 0.055, r: frozenHalo.captured }}
@@ -388,7 +388,7 @@ function InteractiveNetwork({
                 cx={node.x}
                 cy={node.y}
                 r="22"
-                fill={node.halo}
+                fill={node.id === 2 ? "#C07B50" : "#BFA391"}
                 filter="url(#network-node-glow)"
                 pointerEvents="none"
                 initial={{ opacity: 0.055, r: 22 }}
@@ -407,7 +407,7 @@ function InteractiveNetwork({
               cx={node.x}
               cy={node.y}
               r="22"
-              fill={finalComplete ? "#5A9382" : node.halo}
+              fill={finalComplete ? "#BFA391" : node.id === 2 ? "#C07B50" : "#BFA391"}
               filter="url(#network-node-glow)"
               initial={false}
               animate={{ opacity: active ? 0.08 : 0 }}
@@ -419,11 +419,11 @@ function InteractiveNetwork({
                 y={node.y - 7}
                 width="14"
                 height="14"
-                fill={finalComplete ? "#5A9382" : active ? "#405F56" : "#F9F8F5"}
-                stroke={finalComplete ? "#5A9382" : active ? "#405F56" : "#627B72"}
+                fill={finalComplete ? "#BFA391" : active ? "#9E7E6B" : "#F9F8F5"}
+                stroke={finalComplete ? "#BFA391" : active ? "#9E7E6B" : "#9E7E6B"}
                 strokeWidth="2"
                 initial={false}
-                animate={{ opacity: highlighted ? 1 : 0.66, scale: highlighted ? 1.12 : 1 }}
+                animate={{ opacity: highlighted ? 1 : 0.72, scale: highlighted ? 1.12 : 1 }}
                 transition={{ delay: active ? 0.72 : 0, duration: 0.35, ease: EASE }}
                 style={{ transformOrigin: `${node.x}px ${node.y}px` }}
               />
@@ -434,12 +434,12 @@ function InteractiveNetwork({
                 width="13"
                 height="13"
                 rx="1"
-                fill={finalComplete ? "#5A9382" : active ? "#405F56" : "#F9F8F5"}
-                stroke={finalComplete ? "#5A9382" : active ? "#405F56" : "#627B72"}
+                fill={finalComplete ? "#BFA391" : active ? "#9E7E6B" : "#F9F8F5"}
+                stroke={finalComplete ? "#BFA391" : active ? "#9E7E6B" : "#9E7E6B"}
                 strokeWidth="2"
                 initial={false}
                 animate={{
-                  opacity: highlighted ? 1 : 0.66,
+                  opacity: highlighted ? 1 : 0.72,
                   scale: highlighted ? 1.14 : 1,
                   rotate: 45,
                 }}
@@ -449,7 +449,7 @@ function InteractiveNetwork({
             ) : node.shape === "completion" ? (
               <motion.g
                 initial={false}
-                animate={{ opacity: highlighted ? 1 : 0.66, scale: highlighted ? 1.12 : 1 }}
+                animate={{ opacity: highlighted ? 1 : 0.72, scale: highlighted ? 1.12 : 1 }}
                 transition={{ delay: active ? 0.72 : 0, duration: 0.35, ease: EASE }}
                 style={{ transformOrigin: `${node.x}px ${node.y}px` }}
               >
@@ -457,15 +457,15 @@ function InteractiveNetwork({
                   cx={node.x}
                   cy={node.y}
                   r="8"
-                  fill={finalComplete ? "#5A9382" : active ? "#405F56" : "#F9F8F5"}
-                  stroke={finalComplete ? "#5A9382" : active ? "#405F56" : "#627B72"}
+                  fill={finalComplete ? "#BFA391" : active ? "#9E7E6B" : "#F9F8F5"}
+                  stroke={finalComplete ? "#BFA391" : active ? "#9E7E6B" : "#9E7E6B"}
                   strokeWidth="2"
                 />
                 <circle
                   cx={node.x}
                   cy={node.y}
                   r="3"
-                  fill={finalComplete ? "#F9F8F5" : active ? "#F9F8F5" : "#627B72"}
+                  fill={finalComplete ? "#F9F8F5" : active ? "#F9F8F5" : "#9E7E6B"}
                   opacity={finalComplete || active ? 0.92 : 0.52}
                 />
               </motion.g>
@@ -474,11 +474,11 @@ function InteractiveNetwork({
                 cx={node.x}
                 cy={node.y}
                 r="4"
-                fill={finalComplete ? "#5A9382" : active ? "#405F56" : "#F9F8F5"}
-                stroke={finalComplete ? "#5A9382" : active ? "#405F56" : "#627B72"}
+                fill={finalComplete ? "#BFA391" : active ? "#9E7E6B" : "#F9F8F5"}
+                stroke={finalComplete ? "#BFA391" : active ? "#9E7E6B" : "#9E7E6B"}
                 strokeWidth="2"
                 initial={false}
-                animate={{ opacity: highlighted ? 1 : 0.66, scale: highlighted ? 1.18 : 1 }}
+                animate={{ opacity: highlighted ? 1 : 0.72, scale: highlighted ? 1.18 : 1 }}
                 transition={{ delay: active ? 0.72 : 0, duration: 0.35, ease: EASE }}
                 style={{ transformOrigin: `${node.x}px ${node.y}px` }}
               />
@@ -688,18 +688,18 @@ export function GeminiProjectHero({
                     transition={{ duration: 0.45, delay: 1.1, ease: EASE }}
                   >
                     <motion.span
-                      className="block h-2.5 w-2.5 rounded-full border border-[#405F56]/75 bg-[#F9F8F5] shadow-[0_0_0_1px_rgba(64,95,86,0.08)]"
+                      className="block h-2.5 w-2.5 rounded-full border border-[#C07B50]/75 bg-[#F9F8F5] shadow-[0_0_0_1px_rgba(192,123,80,0.08)]"
                       animate={{
                         boxShadow: [
-                          "0 0 0 1px rgba(64,95,86,0.18), 0 0 0 0 rgba(64,95,86,0.18)",
-                          "0 0 0 1px rgba(64,95,86,0.22), 0 0 0 8px rgba(64,95,86,0.12)",
-                          "0 0 0 1px rgba(64,95,86,0.16), 0 0 0 15px rgba(64,95,86,0)",
+                          "0 0 0 1px rgba(192,123,80,0.18), 0 0 0 0 rgba(192,123,80,0.18)",
+                          "0 0 0 1px rgba(192,123,80,0.22), 0 0 0 8px rgba(192,123,80,0.12)",
+                          "0 0 0 1px rgba(192,123,80,0.16), 0 0 0 15px rgba(192,123,80,0)",
                         ],
                         scale: [1, 1.12, 1],
                       }}
                       transition={{ duration: 2.2, repeat: Infinity, ease: "easeOut" }}
                     />
-                    <span className="text-[10px] font-semibold uppercase tracking-[0.16em] text-[#405F56]/85">
+                    <span className="text-[10px] font-semibold uppercase tracking-[0.16em] text-[#C07B50]/85">
                       Explore the workflow
                     </span>
                   </motion.div>
