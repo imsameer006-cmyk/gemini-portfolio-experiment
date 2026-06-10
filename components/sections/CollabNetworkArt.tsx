@@ -78,21 +78,22 @@ function NodeMarker({ node, active, highlighted, finalComplete }: {
   highlighted: boolean;
   finalComplete: boolean;
 }) {
+  // Subtle activation colors matching Gemini
   const fill   = finalComplete ? "#5A9382" : active ? "#477C6C" : "#F9F8F5";
   const stroke = finalComplete ? "#5A9382" : active ? "#477C6C" : "#95ADA2";
-  const op     = (highlighted || active) ? 1 : 0.8;
+  const op     = (highlighted || active) ? 1 : 0.6; // Reduced opacity for subtlety
 
   if (node.ring === 0) {
     return (
       <motion.g
         initial={false}
-        animate={{ opacity: highlighted ? 1 : 0.9, scale: highlighted ? 1.05 : 1 }}
+        animate={{ opacity: highlighted ? 1 : 0.8, scale: highlighted ? 1.05 : 1 }}
         transition={{ duration: 0.3, ease: EASE }}
         style={{ transformOrigin: `${node.x}px ${node.y}px` }}
       >
         <circle cx={node.x} cy={node.y} r={10} fill="none" stroke={stroke} strokeWidth="2" opacity={op} />
         <circle cx={node.x} cy={node.y} r={5}  fill={fill}  stroke={stroke} strokeWidth="2" opacity={op} />
-        <circle cx={node.x} cy={node.y} r={2}  fill={finalComplete ? "#F9F8F5" : active ? "#F9F8F5" : "#95ADA2"} opacity={active ? 0.9 : 0.6} />
+        <circle cx={node.x} cy={node.y} r={2}  fill={finalComplete ? "#F9F8F5" : active ? "#F9F8F5" : "#95ADA2"} opacity={active ? 0.8 : 0.4} />
       </motion.g>
     );
   }
@@ -113,7 +114,7 @@ function NodeMarker({ node, active, highlighted, finalComplete }: {
   return (
     <motion.g
       initial={false}
-      animate={{ opacity: op * 0.9, scale: highlighted ? 1.1 : 1 }}
+      animate={{ opacity: op * 0.8, scale: highlighted ? 1.1 : 1 }}
       transition={{ delay: active ? 0.72 : 0, duration: 0.3, ease: EASE }}
       style={{ transformOrigin: `${node.x}px ${node.y}px` }}
     >
@@ -135,7 +136,8 @@ function NodeGlow({ node, active, highlighted, finalComplete }: {
 }) {
   const color = finalComplete ? "#5A9382" : active ? "#477C6C" : "#95ADA2";
   const r     = node.ring === 0 ? 24 : node.ring === 1 ? 16 : 10;
-  const op    = finalComplete ? 0.2 : active ? 0.15 : highlighted ? 0.1 : 0;
+  // Subtler glow opacity
+  const op    = finalComplete ? 0.1 : active ? 0.08 : highlighted ? 0.05 : 0;
 
   return (
     <motion.circle
