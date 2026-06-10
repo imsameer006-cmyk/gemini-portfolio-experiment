@@ -348,7 +348,7 @@ export default function CollabNetworkArt() {
           cx={CENTER.x} cy={CENTER.y} r={36}
           fill="transparent"
           className="cursor-pointer"
-          style={{ pointerEvents: "auto" }}
+          style={{ pointerEvents: "auto", outline: "none" }}
           tabIndex={0}
           aria-label={activated ? "Network activated" : "Activate collaboration network"}
           onMouseEnter={() => setHovered(true)}
