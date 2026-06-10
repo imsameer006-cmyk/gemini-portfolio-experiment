@@ -35,13 +35,15 @@ const RING2_NODES = Array.from({ length: 10 }).map((_, i) => ({
 const CENTER_NODE = { id: 0, ...CENTER, ring: 0 };
 const ALL_NODES = [CENTER_NODE, ...RING1_NODES, ...RING2_NODES];
 
-// Connections: Center->Ring1, Ring1->Ring2 (strictly radial)
+// Connections: Center->Ring1, Ring1->Ring2 (strictly radial, sequential flow)
 const CONNECTIONS = [
-  ...RING1_NODES.map((n, i) => ({ from: 0, to: n.id, layer: 0 as const, delay: i * 0.05 })),
+  // Center -> Ring 1 (Sequential around the circle)
+  ...RING1_NODES.map((n, i) => ({ from: 0, to: n.id, layer: 0 as const, delay: i * 0.1 })),
+  
+  // Ring 1 -> Ring 2 (Sequential fan per Ring 1 node)
   ...RING1_NODES.flatMap((n, i) => [
-    // Connect to the two nodes in Ring 2 that are symmetrical around the radial axis
-    { from: n.id, to: RING2_NODES[(i * 2 + 9) % 10].id, layer: 1 as const, delay: 0.3 + i * 0.05 },
-    { from: n.id, to: RING2_NODES[(i * 2 + 1) % 10].id, layer: 1 as const, delay: 0.3 + i * 0.05 },
+    { from: n.id, to: RING2_NODES[(i * 2 + 9) % 10].id, layer: 1 as const, delay: 0.5 + (i * 0.2) },
+    { from: n.id, to: RING2_NODES[(i * 2) % 10].id, layer: 1 as const, delay: 0.5 + (i * 0.2) + 0.05 },
   ]),
 ];
 
