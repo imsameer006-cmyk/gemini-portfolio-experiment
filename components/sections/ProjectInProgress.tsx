@@ -24,14 +24,14 @@ function InProgressHero({ project }: { project: Project }) {
         }}
       />
 
-      {/* Hero art — radial community network */}
-      <CollabNetworkArt />
-
       <section
         aria-labelledby="project-hero-title"
         className="relative flex min-h-screen flex-col justify-start px-6 pb-[88px] pt-[72px] md:px-10"
       >
-        <div className="relative z-10 mx-auto w-full max-w-[1280px]">
+        {/* Hero art — radial community network */}
+        <CollabNetworkArt />
+
+        <div className="pointer-events-none relative z-10 mx-auto w-full max-w-[1280px]">
           <motion.div
             initial={{ opacity: 0, y: 18 }}
             animate={{ opacity: 1, y: 0 }}

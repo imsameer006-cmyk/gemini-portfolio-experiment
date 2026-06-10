@@ -180,85 +180,95 @@ function InteractiveNetwork({
   const hoverRadii = useRef<Record<number, number>>({});
 
   return (
-    <svg
-      viewBox="0 0 1280 700"
-      preserveAspectRatio="xMidYMid slice"
-      className="pointer-events-none absolute inset-0 h-full w-full lg:pointer-events-auto"
-      aria-label="Interactive abstract workflow network"
-      role="group"
-      style={{ opacity: complete ? 0.52 : 0.28, transition: "opacity 1200ms ease" }}
-    >
-      <defs>
-        <linearGradient id="micro-network-fade" x1="284" y1="0" x2="1245" y2="0" gradientUnits="userSpaceOnUse">
-          <stop stopColor="#A89F94" stopOpacity="0.01" />
-          <stop offset="0.34" stopColor="#A89F94" stopOpacity="0.03" />
-          <stop offset="0.68" stopColor="#A89F94" stopOpacity="0.08" />
-          <stop offset="0.88" stopColor="#A89F94" stopOpacity="0.12" />
-          <stop offset="1" stopColor="#A89F94" stopOpacity="0.01" />
-        </linearGradient>
-        <linearGradient id="base-network-fade" x1="320" y1="0" x2="1173" y2="0" gradientUnits="userSpaceOnUse">
-          <stop stopColor="#A89F94" stopOpacity="0.02" />
-          <stop offset="0.3" stopColor="#A89F94" stopOpacity="0.08" />
-          <stop offset="1" stopColor="#A89F94" stopOpacity="0.22" />
-        </linearGradient>
-        <linearGradient id="active-network-route" x1="498" y1="0" x2="1173" y2="0" gradientUnits="userSpaceOnUse">
-          <stop stopColor="#5A9382" stopOpacity="0.22" />
-          <stop offset="0.72" stopColor="#5A9382" stopOpacity="0.82" />
-          <stop offset="1" stopColor="#477C6C" stopOpacity="0.65" />
-        </linearGradient>
-        <linearGradient id="network-shimmer" x1="0" y1="0" x2="1" y2="0">
-          <stop stopColor="#FFFFFF" stopOpacity="0" />
-          <stop offset="0.44" stopColor="#F9F8F5" stopOpacity="0.72" />
-          <stop offset="0.58" stopColor="#F0EDE8" stopOpacity="0.88" />
-          <stop offset="1" stopColor="#FFFFFF" stopOpacity="0" />
-        </linearGradient>
-        <filter id="network-node-glow" x="-180%" y="-180%" width="460%" height="460%">
-          <feGaussianBlur stdDeviation="10" />
-        </filter>
-        <filter id="network-shimmer-glow" x="-50%" y="-50%" width="200%" height="200%">
-          <feGaussianBlur stdDeviation="2.5" />
-        </filter>
-      </defs>
+    <div className="absolute inset-0 z-[1]">
+      {/* Content Protection Mask: Fades the art out as it approaches the left content column */}
+      <div 
+        className="absolute inset-0 z-[2] pointer-events-none"
+        style={{
+          background: "linear-gradient(to right, #F9F8F5 0%, #F9F8F5 25%, transparent 50%)",
+        }}
+      />
 
-      <g transform="translate(-50, 40) scale(0.889, 0.854) translate(0, 30)">
-
-      <motion.g
-        data-micro-paths="true"
-        fill="none"
-        stroke="url(#micro-network-fade)"
-        strokeWidth="0.65"
-        initial={false}
-        animate={{ opacity: complete ? 1 : 0.85 }}
-        transition={{ duration: 1.2, ease: EASE }}
+      <svg
+        viewBox="0 0 1280 700"
+        preserveAspectRatio="xMidYMid slice"
+        className="pointer-events-none absolute inset-0 h-full w-full lg:pointer-events-auto"
+        aria-label="Interactive abstract workflow network"
+        role="group"
+        style={{ opacity: complete ? 0.48 : 0.24, transition: "opacity 1200ms ease" }}
       >
-        {MICRO_PATHS.map((path, index) => (
-          <path
-            key={path}
-            d={path}
-            strokeDasharray={index % 3 === 0 ? "2 12" : index % 3 === 1 ? "12 14" : undefined}
-          />
-        ))}
-      </motion.g>
-      <motion.g
-        data-micro-nodes="true"
-        fill="#5A9382"
-        initial={false}
-        animate={{ opacity: complete ? 0.12 : 0.08 }}
-        transition={{ duration: 1.2, ease: EASE }}
-      >
-        {MICRO_NODES.map((node, index) => (
-          <circle key={`${node.x}-${node.y}`} cx={node.x} cy={node.y} r={index % 4 === 0 ? 1.5 : 1} />
-        ))}
-      </motion.g>
+        <defs>
+          <linearGradient id="micro-network-fade" x1="284" y1="0" x2="1245" y2="0" gradientUnits="userSpaceOnUse">
+            <stop stopColor="#C8BFB2" stopOpacity="0.12" />
+            <stop offset="0.5" stopColor="#C8BFB2" stopOpacity="0.12" />
+            <stop offset="1" stopColor="#C8BFB2" stopOpacity="0.12" />
+          </linearGradient>
+          <linearGradient id="base-network-fade" x1="320" y1="0" x2="1173" y2="0" gradientUnits="userSpaceOnUse">
+            <stop stopColor="#C8BFB2" stopOpacity="0.08" />
+            <stop offset="0.5" stopColor="#C8BFB2" stopOpacity="0.16" />
+            <stop offset="1" stopColor="#C8BFB2" stopOpacity="0.25" />
+          </linearGradient>
+          <linearGradient id="active-network-route" x1="498" y1="0" x2="1173" y2="0" gradientUnits="userSpaceOnUse">
+            <stop stopColor="#5A9382" stopOpacity="0.95" />
+            <stop offset="0.72" stopColor="#5A9382" stopOpacity="0.82" />
+            <stop offset="1" stopColor="#477C6C" stopOpacity="0.45" />
+          </linearGradient>
+          <linearGradient id="network-shimmer" x1="0" y1="0" x2="1" y2="0">
+            <stop stopColor="#FFFFFF" stopOpacity="0" />
+            <stop offset="0.44" stopColor="#F9F8F5" stopOpacity="0.72" />
+            <stop offset="0.58" stopColor="#F0EDE8" stopOpacity="0.88" />
+            <stop offset="1" stopColor="#FFFFFF" stopOpacity="0" />
+          </linearGradient>
+          <filter id="network-node-glow" x="-180%" y="-180%" width="460%" height="460%">
+            <feGaussianBlur stdDeviation="10" />
+          </filter>
+          <filter id="network-shimmer-glow" x="-50%" y="-50%" width="200%" height="200%">
+            <feGaussianBlur stdDeviation="2.5" />
+          </filter>
+        </defs>
 
-      <g fill="none" stroke="url(#base-network-fade)" strokeWidth="0.65">
-        {NETWORK_PATHS.map((path) => (
-          <path key={path.id} d={path.d} />
-        ))}
-        {SECONDARY_PATHS.map((path) => (
-          <path key={path} d={path} strokeDasharray="6 10" />
-        ))}
-      </g>
+        <g transform="translate(80, 0)">
+
+        {/* Layer 1: Micro texture lines (Standardized) */}
+        <motion.g
+          data-micro-paths="true"
+          fill="none"
+          stroke="#C8BFB2"
+          strokeWidth="0.5"
+          initial={false}
+          animate={{ opacity: complete ? 0.2 : 0.12 }}
+          transition={{ duration: 1.2, ease: EASE }}
+        >
+          {MICRO_PATHS.map((path, index) => (
+            <path
+              key={path}
+              d={path}
+              strokeDasharray={index % 3 === 0 ? "2 12" : index % 3 === 1 ? "12 14" : undefined}
+            />
+          ))}
+        </motion.g>
+
+        {/* Layer 2: Ambient dot field (Standardized) */}
+        <motion.g
+          data-micro-nodes="true"
+          fill="#5A9382"
+          initial={false}
+          animate={{ opacity: complete ? 0.12 : 0.08 }}
+          transition={{ duration: 1.2, ease: EASE }}
+        >
+          {MICRO_NODES.map((node, index) => (
+            <circle key={`${node.x}-${node.y}`} cx={node.x} cy={node.y} r={index % 4 === 0 ? 1.5 : 1} />
+          ))}
+        </motion.g>
+
+        <g fill="none" stroke="url(#base-network-fade)" strokeWidth="0.65">
+          {NETWORK_PATHS.map((path) => (
+            <path key={path.id} d={path.d} />
+          ))}
+          {SECONDARY_PATHS.map((path) => (
+            <path key={path} d={path} strokeDasharray="6 10" />
+          ))}
+        </g>
 
       {NETWORK_PATHS.map((path) => {
         const active = activated.has(path.owner);
@@ -479,6 +489,7 @@ function InteractiveNetwork({
 
       </g>
     </svg>
+    </div>
   );
 }
 
@@ -591,25 +602,17 @@ export function GeminiProjectHero({
         aria-labelledby="hero-lab-title"
         className="relative flex min-h-screen flex-col justify-start overflow-x-hidden px-6 pb-[88px] pt-[72px] md:px-10 lg:min-h-screen lg:pt-[72px]"
       >
-        <div
-          className="absolute top-0 right-0 bottom-0 left-[600px] z-[1]"
-          style={{
-            maskImage: "linear-gradient(to right, black 0%, black 80%, transparent 100%)",
-            WebkitMaskImage: "linear-gradient(to right, black 0%, black 80%, transparent 100%)",
-          }}
-        >
-          <InteractiveNetwork
-            activated={activated}
-            frozenHalos={frozenHalos}
-            hovered={hovered}
-            complete={complete}
-            completionArrived={completionArrived}
-            onHover={handleHover}
-            onActivate={activateNode}
-          />
-        </div>
+        <InteractiveNetwork
+          activated={activated}
+          frozenHalos={frozenHalos}
+          hovered={hovered}
+          complete={complete}
+          completionArrived={completionArrived}
+          onHover={handleHover}
+          onActivate={activateNode}
+        />
 
-        <div className="pointer-events-none relative z-[2] mx-auto w-full max-w-[1280px]">
+        <div className="pointer-events-none relative z-[10] mx-auto w-full max-w-[1280px]">
           {/* Full-width headline */}
           <motion.div
             initial={{ opacity: 0, y: 18 }}
