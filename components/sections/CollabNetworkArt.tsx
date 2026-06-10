@@ -81,25 +81,25 @@ function NodeMarker({ node, active, highlighted, finalComplete }: {
   highlighted: boolean;
   finalComplete: boolean;
 }) {
-  // Copper-based activation colors
-  const fill   = finalComplete ? "#C07B50" : active ? "#D9976C" : "#F9F8F5";
-  const stroke = finalComplete ? "#A8643C" : active ? "#C07B50" : "#C8BFB2";
+  // Muted Copper-based activation colors (Subtle Copper / Terra Cotta)
+  const fill   = finalComplete ? "#BFA391" : active ? "#BFA391" : "#F9F8F5";
+  const stroke = finalComplete ? "#9E7E6B" : active ? "#9E7E6B" : "#9E7E6B";
   
-  // Reduce opacity of outer nodes until activated
-  const baseOp = node.ring === 2 && !active && !finalComplete ? 0.15 : 0.6;
+  // Healthy inactive visibility: outer nodes need more presence
+  const baseOp = node.ring === 2 && !active && !finalComplete ? 0.32 : 0.65;
   const op     = (highlighted || active) ? 1 : baseOp; 
 
   if (node.ring === 0) {
     return (
       <motion.g
         initial={false}
-        animate={{ opacity: highlighted ? 1 : 0.8, scale: highlighted ? 1.05 : 1 }}
+        animate={{ opacity: highlighted ? 1 : 0.85, scale: highlighted ? 1.05 : 1 }}
         transition={{ delay: 0.1, duration: 0.3, ease: EASE }}
         style={{ transformOrigin: `${node.x}px ${node.y}px` }}
       >
         <circle cx={node.x} cy={node.y} r={10} fill="none" stroke={stroke} strokeWidth="2" opacity={op} />
         <circle cx={node.x} cy={node.y} r={5}  fill={fill}  stroke={stroke} strokeWidth="2" opacity={op} />
-        <circle cx={node.x} cy={node.y} r={2}  fill={finalComplete ? "#F9F8F5" : active ? "#F9F8F5" : "#C8BFB2"} opacity={active ? 0.8 : 0.4} />
+        <circle cx={node.x} cy={node.y} r={2}  fill={finalComplete ? "#F9F8F5" : active ? "#F9F8F5" : "#9E7E6B"} opacity={active ? 0.8 : 0.52} />
       </motion.g>
     );
   }
@@ -112,7 +112,7 @@ function NodeMarker({ node, active, highlighted, finalComplete }: {
         transition={{ delay: active ? 0.3 : 0, duration: 0.3, ease: EASE }}
         style={{ transformOrigin: `${node.x}px ${node.y}px` }}
       >
-        <circle cx={node.x} cy={node.y} r={6} fill={finalComplete ? "#C07B50" : active ? "#D9976C" : "#F9F8F5"} stroke={stroke} strokeWidth="2" />
+        <circle cx={node.x} cy={node.y} r={6} fill={finalComplete ? "#BFA391" : active ? "#BFA391" : "#F9F8F5"} stroke={stroke} strokeWidth="2" />
       </motion.g>
     );
   }
@@ -140,10 +140,10 @@ function NodeGlow({ node, active, highlighted, finalComplete }: {
   node: { id: number; x: number; y: number; ring: number };
   active: boolean; highlighted: boolean; finalComplete: boolean;
 }) {
-  const color = finalComplete ? "#C07B50" : active ? "#D9976C" : "#CECAC2";
+  const color = finalComplete ? "#BFA391" : active ? "#BFA391" : "#CECAC2";
   const r     = node.ring === 0 ? 24 : node.ring === 1 ? 16 : 10;
   // Subtler glow opacity with ring-based delay for sequential reveal
-  const op    = finalComplete ? 0.1 : active ? 0.08 : highlighted ? 0.05 : 0;
+  const op    = finalComplete ? 0.08 : active ? 0.06 : highlighted ? 0.05 : 0;
   const delay = node.ring * 0.15;
 
   return (
@@ -171,7 +171,7 @@ function ConnectionLine({ conn, nodeMap, active, index }: {
 
   const d       = `M${a.x} ${a.y}L${b.x} ${b.y}`;
   const strokeW = conn.layer === 0 ? 1.2 : 0.9;
-  const baseOp  = conn.layer === 0 ? 0.22 : 0.14;
+  const baseOp  = conn.layer === 0 ? 0.38 : 0.28;
 
   // Staggering logic: base delay + a small offset per connection index for organic flow
   const staggerDelay = conn.delay + (index * 0.04);
@@ -256,20 +256,20 @@ export default function CollabNetworkArt() {
       {activated && (
         <motion.div
           aria-hidden="true"
-          className="absolute rounded-full pointer-events-none"
+          className="absolute rounded-full pointer-events-none z-[3]"
           style={{
             left: CENTER.x,
             top: CENTER.y,
             transform: "translate(-50%, -50%)",
-            background: "radial-gradient(circle, transparent 0%, rgba(192,123,80,0.06) 15%, rgba(255,255,255,1.0) 48%, rgba(192,123,80,0.12) 70%, transparent 100%)",
+            background: "radial-gradient(circle, transparent 0%, rgba(192,123,80,0.32) 35%, rgba(255,255,255,1.0) 50%, rgba(192,123,80,0.32) 65%, transparent 100%)",
             filter: "blur(28px)",
           }}
-          initial={{ width: 40, height: 40, opacity: 0 }}
+          initial={{ width: 40, height: 40, opacity: 0.08 }}
           animate={{ width: 3600, height: 3600, opacity: [0, 0.85, 0] }}
           transition={{
-            width:   { duration: 2.4, ease: WAVE_EASE },
-            height:  { duration: 2.4, ease: WAVE_EASE },
-            opacity: { duration: 2.4, ease: WAVE_EASE, times: [0, 0.48, 1] },
+            width:   { duration: 2.4, ease: [0.4, 0, 0.2, 1] },
+            height:  { duration: 2.4, ease: [0.4, 0, 0.2, 1] },
+            opacity: { duration: 2.4, ease: [0.4, 0, 0.2, 1], times: [0, 0.48, 1] },
           }}
         />
       )}
@@ -297,15 +297,15 @@ export default function CollabNetworkArt() {
         `}</style>
         <defs>
           <radialGradient id="collab-base-fade" cx={CENTER.x} cy={CENTER.y} r="240" gradientUnits="userSpaceOnUse">
-            <stop offset="0"   stopColor="#C8BFB2" stopOpacity="0.25" />
-            <stop offset="0.5" stopColor="#C8BFB2" stopOpacity="0.12" />
-            <stop offset="1"   stopColor="#C8BFB2" stopOpacity="0.04" />
+            <stop offset="0"   stopColor="#9E7E6B" stopOpacity="0.45" />
+            <stop offset="0.5" stopColor="#9E7E6B" stopOpacity="0.25" />
+            <stop offset="1"   stopColor="#9E7E6B" stopOpacity="0.12" />
           </radialGradient>
 
           <radialGradient id="collab-active-route" cx={CENTER.x} cy={CENTER.y} r="230" gradientUnits="userSpaceOnUse">
-            <stop offset="0"    stopColor="#C07B50" stopOpacity="0.95" />
-            <stop offset="0.55" stopColor="#C07B50" stopOpacity="0.75" />
-            <stop offset="1"    stopColor="#A8643C" stopOpacity="0.45" />
+            <stop offset="0"    stopColor="#BFA391" stopOpacity="0.72" />
+            <stop offset="0.55" stopColor="#BFA391" stopOpacity="0.52" />
+            <stop offset="1"    stopColor="#9E7E6B" stopOpacity="0.32" />
           </radialGradient>
 
           <linearGradient id="collab-shimmer" x1="0" y1="0" x2="1" y2="0">
@@ -324,16 +324,16 @@ export default function CollabNetworkArt() {
           </filter>
         </defs>
 
-        {/* Layer 1: Micro texture lines (Standardized opacity) */}
-        <g stroke="#C8BFB2" strokeWidth="0.5" fill="none"
-           opacity={complete ? 0.2 : 0.12} style={{ transition: "opacity 1200ms ease" }}>
+        {/* Layer 1: Micro texture lines (Standardized healthy visibility) */}
+        <g stroke="#9E7E6B" strokeWidth="0.5" fill="none"
+           opacity={complete ? 0.28 : 0.18} style={{ transition: "opacity 1200ms ease" }}>
           {MICRO_LINES.map((d, i) => (
             <path key={i} d={d} strokeDasharray={i % 3 === 0 ? "2 10" : i % 3 === 1 ? "8 12" : undefined} />
           ))}
         </g>
 
-        {/* Layer 2: Ambient dot field (Standardized opacity) */}
-        <g fill="#C07B50" opacity="0.08">
+        {/* Layer 2: Ambient dot field (Standardized healthy visibility) */}
+        <g fill="#9E7E6B" opacity="0.14">
           {AMBIENT_DOTS.map((dot, i) => (
             <circle key={i} cx={dot.x} cy={dot.y} r={i % 4 === 0 ? 1.5 : 1} />
           ))}
@@ -391,7 +391,7 @@ export default function CollabNetworkArt() {
           <motion.circle
             key={`prepulse-${node.id}`}
             cx={node.x} cy={node.y} r={16}
-            fill="#C07B50"
+            fill="#9E7E6B"
             filter="url(#collab-node-glow)"
             initial={false}
             animate={{ opacity: hovered ? 0.15 : 0 }}
