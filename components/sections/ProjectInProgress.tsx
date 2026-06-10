@@ -1,6 +1,7 @@
 "use client";
 
-import { motion, useReducedMotion } from "framer-motion";
+import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
+import { useState } from "react";
 import { CaseStudyInProgress } from "./CaseStudyInProgress";
 import JumpToNav from "@/components/ui/JumpToNav";
 import CollabNetworkArt from "@/components/sections/CollabNetworkArt";
@@ -11,6 +12,12 @@ const EASE = [0.16, 1, 0.3, 1] as const;
 function InProgressHero({ project }: { project: Project }) {
   const reduceMotion = useReducedMotion();
   const metadata = project.heroMetadata ?? [];
+
+  const [hasInteracted, setHasInteracted] = useState(false);
+
+  const handleInteraction = () => {
+    setHasInteracted(true);
+  };
 
   return (
     <div className="relative isolate overflow-hidden bg-[#F9F8F5]">
@@ -29,7 +36,7 @@ function InProgressHero({ project }: { project: Project }) {
         className="relative flex min-h-screen flex-col justify-start px-6 pb-[88px] pt-[72px] md:px-10"
       >
         {/* Hero art — radial community network */}
-        <CollabNetworkArt />
+        <CollabNetworkArt onInteract={handleInteraction} />
 
         <div className="pointer-events-none relative z-10 mx-auto w-full max-w-[1280px]">
           <motion.div
@@ -76,25 +83,56 @@ function InProgressHero({ project }: { project: Project }) {
               </div>
             )}
 
-            <div className="mt-[20px] flex max-w-[640px] flex-wrap gap-[10px]">
-              {project.client && (
-                <span className="rounded-full bg-[#1C1A16]/[0.09] px-3 py-1.5 text-sm font-medium text-[#1C1A16]">
-                  {project.client}
-                </span>
-              )}
-              {project.impact && (
-                <span className="rounded-full border border-[#C8BFB2] px-3 py-1.5 text-[12.5px] text-[#1C1A16]/55">
-                  {project.impact}
-                </span>
-              )}
-              {project.tags?.map((tag) => (
-                <span
-                  key={tag}
-                  className="rounded-full border border-[#C8BFB2] px-3 py-1.5 text-[12.5px] text-[#1C1A16]/55"
-                >
-                  {tag}
-                </span>
-              ))}
+            <div className="mt-[20px] flex max-w-[1280px] items-end justify-between">
+              <div className="flex max-w-[720px] flex-wrap gap-[10px]">
+                {project.client && (
+                  <span className="rounded-full bg-[#1C1A16]/[0.09] px-3 py-1.5 text-sm font-medium text-[#1C1A16]">
+                    {project.client}
+                  </span>
+                )}
+                {project.impact && (
+                  <span className="rounded-full border border-[#C8BFB2] px-3 py-1.5 text-[12.5px] text-[#1C1A16]/55">
+                    {project.impact}
+                  </span>
+                )}
+                {project.tags?.map((tag) => (
+                  <span
+                    key={tag}
+                    className="rounded-full border border-[#C8BFB2] px-3 py-1.5 text-[12.5px] text-[#1C1A16]/55"
+                  >
+                    {tag}
+                  </span>
+                ))}
+              </div>
+
+              <AnimatePresence>
+                {!hasInteracted ? (
+                  <motion.div
+                    aria-hidden="true"
+                    className="pointer-events-none flex items-center gap-2.5 pb-1 opacity-0 md:flex"
+                    initial={{ opacity: 0, y: 6 }}
+                    animate={{ opacity: 0.62, y: 0 }}
+                    exit={{ opacity: 0, y: 4 }}
+                    transition={{ duration: 0.45, delay: 1.1, ease: EASE }}
+                  >
+                    <motion.span
+                      className="block h-2.5 w-2.5 rounded-full border border-[#C07B50]/75 bg-[#F9F8F5] shadow-[0_0_0_1px_rgba(192,123,80,0.08)]"
+                      animate={{
+                        boxShadow: [
+                          "0 0 0 1px rgba(192,123,80,0.18), 0 0 0 0 rgba(192,123,80,0.18)",
+                          "0 0 0 1px rgba(192,123,80,0.22), 0 0 0 8px rgba(192,123,80,0.12)",
+                          "0 0 0 1px rgba(192,123,80,0.16), 0 0 0 15px rgba(192,123,80,0)",
+                        ],
+                        scale: [1, 1.12, 1],
+                      }}
+                      transition={{ duration: 2.2, repeat: Infinity, ease: "easeOut" }}
+                    />
+                    <span className="text-[10px] font-semibold uppercase tracking-[0.16em] text-[#C07B50]/85">
+                      Explore the network
+                    </span>
+                  </motion.div>
+                ) : null}
+              </AnimatePresence>
             </div>
           </motion.div>
         </div>

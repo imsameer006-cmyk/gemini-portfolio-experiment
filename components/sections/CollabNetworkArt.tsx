@@ -220,7 +220,7 @@ function ConnectionLine({ conn, nodeMap, active, index }: {
 const WAVE_EASE: [number, number, number, number] = [0.4, 0, 0.2, 1];
 
 // ─── MAIN COMPONENT ──────────────────────────────────────────────────────────
-export default function CollabNetworkArt() {
+export default function CollabNetworkArt({ onInteract }: { onInteract?: () => void }) {
   const [isMounted, setMounted] = useState(false);
   const [activated, setActivated] = useState(false);
   const [hovered,   setHovered]   = useState(false);
@@ -235,8 +235,14 @@ export default function CollabNetworkArt() {
   const handleClick = useCallback(() => {
     if (activated) return;
     setActivated(true);
+    if (onInteract) onInteract();
     setTimeout(() => setComplete(true), 2450);
-  }, [activated]);
+  }, [activated, onInteract]);
+
+  const handleMouseEnter = useCallback(() => {
+    setHovered(true);
+    if (onInteract) onInteract();
+  }, [onInteract]);
 
   if (!isMounted) return <div className="hidden md:absolute md:inset-0 md:flex md:items-center md:justify-end z-[1] pointer-events-none" />;
 
@@ -261,11 +267,11 @@ export default function CollabNetworkArt() {
             left: CENTER.x,
             top: CENTER.y,
             transform: "translate(-50%, -50%)",
-            background: "radial-gradient(circle, transparent 0%, rgba(192,123,80,0.32) 35%, rgba(255,255,255,1.0) 50%, rgba(192,123,80,0.32) 65%, transparent 100%)",
-            filter: "blur(28px)",
+            background: "radial-gradient(circle, transparent 20%, rgba(192,123,80,0.3) 45%, rgba(255,255,255,1.0) 50%, transparent 70%)",
+            filter: "blur(40px)",
           }}
           initial={{ width: 40, height: 40, opacity: 0.08 }}
-          animate={{ width: 3600, height: 3600, opacity: [0, 0.85, 0] }}
+          animate={{ width: 3600, height: 3600, opacity: [0, 0.52, 0] }}
           transition={{
             width:   { duration: 2.4, ease: [0.4, 0, 0.2, 1] },
             height:  { duration: 2.4, ease: [0.4, 0, 0.2, 1] },
@@ -378,9 +384,9 @@ export default function CollabNetworkArt() {
           style={{ pointerEvents: "auto", outline: "none" }}
           tabIndex={0}
           aria-label={activated ? "Network activated" : "Activate collaboration network"}
-          onMouseEnter={() => setHovered(true)}
+          onMouseEnter={handleMouseEnter}
           onMouseLeave={() => setHovered(false)}
-          onFocus={() => setHovered(true)}
+          onFocus={handleMouseEnter}
           onBlur={() => setHovered(false)}
           onClick={handleClick}
           onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") handleClick(); }}

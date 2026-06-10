@@ -24,7 +24,7 @@ function NodeIcon({
   variants: Parameters<typeof motion.path>[0]["variants"];
   custom: number;
 }) {
-  const base = { stroke: "#6A6764", strokeWidth: "1", fill: "none", variants, custom } as const;
+  const base = { stroke: "#9E7E6B", strokeWidth: "1", fill: "none", variants, custom } as const;
 
   switch (shape) {
     case "square":
@@ -38,7 +38,7 @@ function NodeIcon({
     case "pentagon":
       return <motion.path d={`M${cx} ${cy-5}L${cx+4.8} ${cy-1.5}L${cx+2.9} ${cy+4}L${cx-2.9} ${cy+4}L${cx-4.8} ${cy-1.5}Z`} strokeLinejoin="round" {...base} />;
     case "circle":
-      return <motion.circle cx={cx} cy={cy} r={4} stroke="#6A6764" strokeWidth="1" fill="none" variants={variants} custom={custom} />;
+      return <motion.circle cx={cx} cy={cy} r={4} stroke="#9E7E6B" strokeWidth="1" fill="none" variants={variants} custom={custom} />;
   }
 }
 
@@ -47,7 +47,7 @@ export default function CollabspaceThumbnail() {
     hidden: { pathLength: 0, opacity: 0 },
     visible: {
       pathLength: 1,
-      opacity: 0.3,
+      opacity: 0.38,
       transition: {
         pathLength: { type: "spring" as const, duration: 1.2, bounce: 0, delay: 0.1 },
         opacity: { duration: 0.3 },
@@ -55,21 +55,17 @@ export default function CollabspaceThumbnail() {
     },
   };
 
-  const shimmerVariants = {
+  const shimmerVariants = (delay: number) => ({
     hidden: { pathLength: 0, opacity: 0 },
     visible: (i: number) => ({
-      pathLength: [0, 1, 1],
-      opacity: [0, 0.9, 0],
+      pathLength: [0, 1],
+      opacity: [0, 1, 0],
       transition: {
-        duration: 1.8,
-        delay: 0.6,
-        times: [0, 0.5, 1],
-        ease: "easeOut" as const,
-        repeat: Infinity,
-        repeatDelay: 1.0,
+        pathLength: { duration: 3.5, ease: "easeInOut", repeat: Infinity, delay: delay + i * 0.4 },
+        opacity:    { duration: 3.5, ease: "easeInOut", repeat: Infinity, delay: delay + i * 0.4, times: [0, 0.5, 1] },
       },
     }),
-  };
+  });
 
   const nodeVariants = {
     hidden: { opacity: 0, scale: 0.8 },
@@ -82,6 +78,14 @@ export default function CollabspaceThumbnail() {
         ease: [0.16, 1, 0.3, 1] as [number, number, number, number],
       },
     }),
+  };
+
+  const labelVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 0.45,
+      transition: { delay: 0.8, duration: 0.6 }
+    }
   };
 
   return (
@@ -101,15 +105,13 @@ export default function CollabspaceThumbnail() {
           <path d="M 40 0 L 0 0 0 40" fill="none" stroke="#E6E3DD" strokeWidth="0.5" opacity="0.4" />
         </pattern>
         <radialGradient id="spoke-shimmer" cx="230" cy="128" r="90" gradientUnits="userSpaceOnUse">
-          <stop offset="0%"   stopColor="#F5C88A" stopOpacity="0.9" />
-          <stop offset="30%"  stopColor="#E08A58" stopOpacity="1"   />
-          <stop offset="60%"  stopColor="#C07B50" stopOpacity="1"   />
-          <stop offset="85%"  stopColor="#8A4830" stopOpacity="0.65" />
-          <stop offset="100%" stopColor="#5A2810" stopOpacity="0"   />
+          <stop offset="0%"   stopColor="#BFA391" stopOpacity="0" />
+          <stop offset="50%"  stopColor="#C07B50" stopOpacity="1"   />
+          <stop offset="100%" stopColor="#BFA391" stopOpacity="0" />
         </radialGradient>
       </defs>
 
-      <rect width="460" height="256" fill="#F2F0EB" />
+      <rect width="460" height="256" fill="#F9F8F5" />
       <rect width="460" height="256" fill="url(#grid-collab)" />
 
       {/* Base spokes — static, low opacity */}
@@ -118,30 +120,40 @@ export default function CollabspaceThumbnail() {
           key={`base-${i}`}
           d={`M${CENTER.x} ${CENTER.y}L${node.x} ${node.y}`}
           stroke="#C07B50"
-          strokeWidth="1.5"
+          strokeWidth="1.6"
           variants={baseLineDraw}
+          className="group-hover:opacity-60 transition-opacity duration-500"
         />
       ))}
 
-      {/* Shimmer sweeps — draw from centre → outer, repeat */}
+      {/* Overlapping Shimmer sweeps for "River" Flow */}
       {OUTER_NODES.map((node, i) => (
-        <motion.path
-          key={`shimmer-${i}`}
-          d={`M${CENTER.x} ${CENTER.y}L${node.x} ${node.y}`}
-          stroke="url(#spoke-shimmer)"
-          strokeWidth="1.5"
-          strokeLinecap="round"
-          variants={shimmerVariants}
-          custom={i}
-        />
+        <g key={`shimmer-group-${i}`}>
+          <motion.path
+            d={`M${CENTER.x} ${CENTER.y}L${node.x} ${node.y}`}
+            stroke="url(#spoke-shimmer)"
+            strokeWidth="1.8"
+            strokeLinecap="round"
+            variants={shimmerVariants(0.6)}
+            custom={i}
+          />
+          <motion.path
+            d={`M${CENTER.x} ${CENTER.y}L${node.x} ${node.y}`}
+            stroke="url(#spoke-shimmer)"
+            strokeWidth="1.8"
+            strokeLinecap="round"
+            variants={shimmerVariants(2.35)}
+            custom={i}
+          />
+        </g>
       ))}
 
       {/* Outer nodes — inactive with distinct shapes */}
       {OUTER_NODES.map((node, i) => (
         <g key={i}>
           <motion.circle
-            cx={node.x} cy={node.y} r="16"
-            fill="#FFFFFF" stroke="#CECAC2" strokeWidth="1"
+            cx={node.x} cy={node.y} r={16}
+            fill="#FFFFFF" stroke="#9E7E6B" strokeWidth="1"
             variants={nodeVariants}
             custom={i + 1}
           />
@@ -156,17 +168,43 @@ export default function CollabspaceThumbnail() {
 
       {/* Centre node — active */}
       <motion.circle
-        cx={CENTER.x} cy={CENTER.y} r="16"
-        fill="#FFFFFF" stroke="#C07B50" strokeWidth="1.5"
+        cx={CENTER.x} cy={CENTER.y} r={16}
+        fill="#FFFFFF" stroke="#C07B50" strokeWidth="1.6"
         variants={nodeVariants}
         custom={0}
       />
       <motion.circle
-        cx={CENTER.x} cy={CENTER.y} r="1.5"
+        cx={CENTER.x} cy={CENTER.y} r={1.5}
         fill="#C07B50"
         variants={nodeVariants}
         custom={0}
       />
+
+      {/* Subtle Mono Labels */}
+      <motion.text
+        x={CENTER.x} y={CENTER.y + 36}
+        fontFamily="var(--font-geist-mono), monospace"
+        fontSize="8"
+        fontWeight="500"
+        letterSpacing="0.08em"
+        fill="#9E7E6B"
+        textAnchor="middle"
+        variants={labelVariants}
+      >
+        CORE
+      </motion.text>
+      <motion.text
+        x={CENTER.x} y={CENTER.y - 100}
+        fontFamily="var(--font-geist-mono), monospace"
+        fontSize="8"
+        fontWeight="500"
+        letterSpacing="0.08em"
+        fill="#9E7E6B"
+        textAnchor="middle"
+        variants={labelVariants}
+      >
+        NETWORK
+      </motion.text>
     </motion.svg>
   );
 }

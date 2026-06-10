@@ -27,21 +27,17 @@ export default function GeminiThumbnail() {
     },
   };
 
-  const shimmerDraw = {
+  const shimmerVariants = (delay: number) => ({
     hidden: { pathLength: 0, opacity: 0 },
     visible: {
-      pathLength: [0, 1, 1],
-      opacity: [0, 0.9, 0],
+      pathLength: [0, 1],
+      opacity: [0, 1, 0],
       transition: {
-        duration: 1.8,
-        delay: 0.6,
-        times: [0, 0.5, 1],
-        ease: "easeOut" as const,
-        repeat: Infinity,
-        repeatDelay: 1.0,
-      },
-    },
-  };
+        pathLength: { duration: 3, ease: "easeInOut", repeat: Infinity, delay },
+        opacity: { duration: 3, ease: "easeInOut", repeat: Infinity, delay, times: [0, 0.5, 1] },
+      }
+    }
+  });
 
   const nodeVariants = {
     hidden: { opacity: 0, scale: 0.8 },
@@ -87,36 +83,45 @@ export default function GeminiThumbnail() {
           <path d="M 40 0 L 0 0 0 40" fill="none" stroke="#E6E3DD" strokeWidth="0.5" opacity="0.4" />
         </pattern>
         <linearGradient id="line-shimmer" x1="80" y1="145" x2="220" y2="145" gradientUnits="userSpaceOnUse">
-          <stop offset="0%"   stopColor="#F5C88A" stopOpacity="0.9" />
-          <stop offset="30%"  stopColor="#E08A58" stopOpacity="1"   />
-          <stop offset="60%"  stopColor="#C07B50" stopOpacity="1"   />
-          <stop offset="85%"  stopColor="#8A4830" stopOpacity="0.65" />
-          <stop offset="100%" stopColor="#5A2810" stopOpacity="0"   />
+          <stop offset="0%"   stopColor="#BFA391" stopOpacity="0" />
+          <stop offset="50%"  stopColor="#C07B50" stopOpacity="1"   />
+          <stop offset="100%" stopColor="#BFA391" stopOpacity="0" />
         </linearGradient>
       </defs>
-      <rect width="460" height="256" fill="#F2F0EB" />
+      <rect width="460" height="256" fill="#F9F8F5" />
       <rect width="460" height="256" fill="url(#grid)" />
 
       {/* Main Connection Path - Horizontal & Asymmetrical */}
       <motion.path
         d={`M80 ${yPos}H380`}
-        stroke="#CECAC2"
+        stroke="#9E7E6B"
         strokeWidth="1"
+        opacity="0.22"
         variants={draw}
       />
       <motion.path
         d={`M80 ${yPos}H220`}
         stroke="#C07B50"
-        strokeWidth="1.5"
+        strokeWidth="1.6"
         strokeLinecap="round"
         variants={baseLineDraw}
+        className="group-hover:opacity-60 transition-opacity duration-500"
+      />
+
+      {/* Overlapping Shimmer Paths for "River" Flow */}
+      <motion.path
+        d={`M80 ${yPos}H220`}
+        stroke="url(#line-shimmer)"
+        strokeWidth="2.0"
+        strokeLinecap="round"
+        variants={shimmerVariants(0.6)}
       />
       <motion.path
         d={`M80 ${yPos}H220`}
         stroke="url(#line-shimmer)"
-        strokeWidth="1.5"
+        strokeWidth="2.0"
         strokeLinecap="round"
-        variants={shimmerDraw}
+        variants={shimmerVariants(2.1)}
       />
 
       {/* Node 1: DRAFT */}
@@ -124,14 +129,14 @@ export default function GeminiThumbnail() {
         <motion.circle 
           cx="80" cy={yPos} r="16" 
           fill="#FFFFFF" 
-          stroke="#CECAC2" 
-          strokeWidth="1"
+          stroke="#C07B50" 
+          strokeWidth="1.2"
           variants={nodeVariants}
           custom={0}
         />
         <motion.path 
           d={`M76 ${yPos-4}H81L84 ${yPos-1}V${yPos+6}H76V${yPos-4}Z`} 
-          stroke="#6A6764" 
+          stroke="#C07B50" 
           strokeWidth="1" 
           variants={nodeVariants}
           custom={0}
@@ -142,7 +147,8 @@ export default function GeminiThumbnail() {
           fontSize="9" 
           fontWeight="500" 
           letterSpacing="0.05em" 
-          fill="#9C9A95" 
+          fill="#C07B50" 
+          opacity="0.85"
           textAnchor="middle"
           variants={labelVariants}
           custom={0}
@@ -157,21 +163,21 @@ export default function GeminiThumbnail() {
           cx="220" cy={yPos} r="16" 
           fill="#FFFFFF" 
           stroke="#C07B50" 
-          strokeWidth="1.5"
+          strokeWidth="1.6"
           variants={nodeVariants}
           custom={1}
         />
         <motion.circle 
           cx="218" cy={yPos-2} r="5" 
           stroke="#C07B50" 
-          strokeWidth="1" 
+          strokeWidth="1.2" 
           variants={nodeVariants}
           custom={1}
         />
         <motion.path 
           d={`M222 ${yPos+2}L226 ${yPos+6}`} 
           stroke="#C07B50" 
-          strokeWidth="1" 
+          strokeWidth="1.2" 
           strokeLinecap="round" 
           variants={nodeVariants}
           custom={1}
@@ -196,17 +202,19 @@ export default function GeminiThumbnail() {
         <motion.circle 
           cx="360" cy={yPos} r="16" 
           fill="#FFFFFF" 
-          stroke="#CECAC2" 
+          stroke="#9E7E6B" 
           strokeWidth="1"
+          opacity="0.45"
           variants={nodeVariants}
           custom={2}
         />
         <motion.path 
           d={`M354 ${yPos}L358 ${yPos+4}L366 ${yPos-4}`} 
-          stroke="#CECAC2" 
+          stroke="#9E7E6B" 
           strokeWidth="1.2" 
           strokeLinecap="round" 
           strokeLinejoin="round" 
+          opacity="0.6"
           variants={nodeVariants}
           custom={2}
         />
@@ -216,7 +224,8 @@ export default function GeminiThumbnail() {
           fontSize="9" 
           fontWeight="500" 
           letterSpacing="0.05em" 
-          fill="#9C9A95" 
+          fill="#9E7E6B" 
+          opacity="0.45"
           textAnchor="middle"
           variants={labelVariants}
           custom={2}
