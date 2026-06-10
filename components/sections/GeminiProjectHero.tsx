@@ -658,7 +658,7 @@ export function GeminiProjectHero({
             </div>
 
             <div className="mt-[20px] flex max-w-[1280px] items-end justify-between">
-              <div className="flex max-w-[720px] flex-wrap gap-[10px]">
+              <div className="flex max-w-[612px] flex-wrap gap-[10px]">
                 {client && (
                   <span className="rounded-full bg-[#1C1A16]/[0.09] px-3 py-1.5 text-sm font-medium text-[#1C1A16]">
                     {client}
