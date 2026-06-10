@@ -258,7 +258,7 @@ export default function CollabNetworkArt() {
     setTimeout(() => setComplete(true), 2450);
   }, [activated]);
 
-  if (!isMounted) return null; // Prevent hydration mismatch
+  if (!isMounted) return <div className="absolute inset-0 flex items-center justify-end z-[20] pointer-events-none" />;
 
   return (
     <div className="absolute inset-0 flex items-center justify-end z-[20] pointer-events-none">
