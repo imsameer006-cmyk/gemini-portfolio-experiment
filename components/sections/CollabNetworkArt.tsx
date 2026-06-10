@@ -8,7 +8,7 @@ const EASE: [number, number, number, number] = [0.25, 0.46, 0.45, 0.94];
 // ─── NODE DATA ───────────────────────────────────────────────────────────────
 const CENTER = { x: 940, y: 340 };
 const R1 = 120;
-const R2 = 192; // 120 + 72 (previously 240, reducing distance by 40% from 120 to 72)
+const R2 = 178; // 120 + 58 (previously 192, reducing distance by 20%)
 
 const calculatePos = (angleDeg: number, radius: number) => {
   const angleRad = (angleDeg * Math.PI) / 180;
