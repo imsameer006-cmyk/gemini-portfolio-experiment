@@ -25,10 +25,10 @@ const RING1_NODES = Array.from({ length: 5 }).map((_, i) => ({
   ring: 1,
 }));
 
-// Ring 2: 10 nodes at 36 deg spacing
+// Ring 2: 10 nodes at 36 deg spacing, offset by 18 deg to flank Ring 1 nodes
 const RING2_NODES = Array.from({ length: 10 }).map((_, i) => ({
   id: i + 6,
-  ...calculatePos(-90 + i * 36, R2),
+  ...calculatePos(-90 + 18 + i * 36, R2),
   ring: 2,
 }));
 
@@ -38,13 +38,13 @@ const ALL_NODES = [CENTER_NODE, ...RING1_NODES, ...RING2_NODES];
 // Connections: Center->Ring1, Ring1->Ring2 (strictly radial)
 const CONNECTIONS = [
   // Center -> Ring 1 (Sequential around the circle)
-  ...RING1_NODES.map((n, i) => ({ from: 0, to: n.id, layer: 0 as const, delay: i * 0.1 })),
-  
+  ...RING1_NODES.map((n, i) => ({ from: 0, to: n.id, layer: 0 as const, delay: 0.1 })),
+
   // Ring 1 -> Ring 2 (Strictly radial fan, symmetrically aligned)
   ...RING1_NODES.flatMap((n, i) => [
     // Connect to the two nodes in Ring 2 that are symmetrical around the radial axis
-    { from: n.id, to: RING2_NODES[(i * 2 + 9) % 10].id, layer: 1 as const, delay: 0.5 + (i * 0.2) },
-    { from: n.id, to: RING2_NODES[(i * 2 + 1) % 10].id, layer: 1 as const, delay: 0.5 + (i * 0.2) + 0.05 },
+    { from: n.id, to: RING2_NODES[(i * 2 + 9) % 10].id, layer: 1 as const, delay: 0.3 },
+    { from: n.id, to: RING2_NODES[(i * 2) % 10].id, layer: 1 as const, delay: 0.3 },
   ]),
 ];
 
