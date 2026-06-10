@@ -84,7 +84,10 @@ function NodeMarker({ node, active, highlighted, finalComplete }: {
   // Subtle activation colors matching Gemini
   const fill   = finalComplete ? "#5A9382" : active ? "#477C6C" : "#F9F8F5";
   const stroke = finalComplete ? "#5A9382" : active ? "#477C6C" : "#95ADA2";
-  const op     = (highlighted || active) ? 1 : 0.6; // Reduced opacity for subtlety
+  
+  // Reduce opacity of outer nodes until activated
+  const baseOp = node.ring === 2 && !active && !finalComplete ? 0.15 : 0.6;
+  const op     = (highlighted || active) ? 1 : baseOp; 
 
   if (node.ring === 0) {
     return (
