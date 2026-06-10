@@ -78,21 +78,21 @@ function NodeMarker({ node, active, highlighted, finalComplete }: {
   highlighted: boolean;
   finalComplete: boolean;
 }) {
-  const fill   = finalComplete ? "#5A9382" : active ? "#405F56" : "#F9F8F5";
-  const stroke = finalComplete ? "#5A9382" : active ? "#477C6C" : "#627B72";
-  const op     = (highlighted || active) ? 1 : 0.66;
+  const fill   = finalComplete ? "#5A9382" : active ? "#477C6C" : "#F9F8F5";
+  const stroke = finalComplete ? "#5A9382" : active ? "#477C6C" : "#95ADA2";
+  const op     = (highlighted || active) ? 1 : 0.8;
 
   if (node.ring === 0) {
     return (
       <motion.g
         initial={false}
-        animate={{ opacity: highlighted ? 1 : 0.82, scale: highlighted ? 1.08 : 1 }}
+        animate={{ opacity: highlighted ? 1 : 0.9, scale: highlighted ? 1.05 : 1 }}
         transition={{ duration: 0.3, ease: EASE }}
         style={{ transformOrigin: `${node.x}px ${node.y}px` }}
       >
-        <circle cx={node.x} cy={node.y} r={10} fill="none" stroke={stroke} strokeWidth="1.5" opacity={op} />
-        <circle cx={node.x} cy={node.y} r={5}  fill={fill}  stroke={stroke} strokeWidth="1.5" opacity={op} />
-        <circle cx={node.x} cy={node.y} r={2}  fill={finalComplete ? "#F9F8F5" : active ? "#F9F8F5" : "#627B72"} opacity={active ? 0.92 : 0.52} />
+        <circle cx={node.x} cy={node.y} r={10} fill="none" stroke={stroke} strokeWidth="2" opacity={op} />
+        <circle cx={node.x} cy={node.y} r={5}  fill={fill}  stroke={stroke} strokeWidth="2" opacity={op} />
+        <circle cx={node.x} cy={node.y} r={2}  fill={finalComplete ? "#F9F8F5" : active ? "#F9F8F5" : "#95ADA2"} opacity={active ? 0.9 : 0.6} />
       </motion.g>
     );
   }
@@ -101,12 +101,11 @@ function NodeMarker({ node, active, highlighted, finalComplete }: {
     return (
       <motion.g
         initial={false}
-        animate={{ opacity: op, scale: highlighted ? 1.15 : 1 }}
+        animate={{ opacity: op, scale: highlighted ? 1.1 : 1 }}
         transition={{ delay: active ? 0.45 : 0, duration: 0.3, ease: EASE }}
         style={{ transformOrigin: `${node.x}px ${node.y}px` }}
       >
-        <circle cx={node.x} cy={node.y} r={5} fill="none" stroke={stroke} strokeWidth="1.5" />
-        <circle cx={node.x} cy={node.y} r={2} fill={fill} opacity={active ? 0.9 : 0.5} />
+        <circle cx={node.x} cy={node.y} r={6} fill={finalComplete ? "#5A9382" : active ? "#477C6C" : "#F9F8F5"} stroke={stroke} strokeWidth="2" />
       </motion.g>
     );
   }
@@ -114,15 +113,16 @@ function NodeMarker({ node, active, highlighted, finalComplete }: {
   return (
     <motion.g
       initial={false}
-      animate={{ opacity: op * 0.85, scale: highlighted ? 1.1 : 1 }}
+      animate={{ opacity: op * 0.9, scale: highlighted ? 1.1 : 1 }}
       transition={{ delay: active ? 0.72 : 0, duration: 0.3, ease: EASE }}
       style={{ transformOrigin: `${node.x}px ${node.y}px` }}
     >
       <rect
-        x={node.x - 3.5} y={node.y - 3.5}
-        width={7} height={7}
+        x={node.x - 5} y={node.y - 5}
+        width={10} height={10}
         transform={`rotate(45 ${node.x} ${node.y})`}
-        fill="none" stroke={stroke} strokeWidth="1.2"
+        fill={finalComplete ? "#5A9382" : active ? "#477C6C" : "#F9F8F5"}
+        stroke={stroke} strokeWidth="2"
       />
     </motion.g>
   );
@@ -133,9 +133,9 @@ function NodeGlow({ node, active, highlighted, finalComplete }: {
   node: { id: number; x: number; y: number; ring: number };
   active: boolean; highlighted: boolean; finalComplete: boolean;
 }) {
-  const color = node.ring === 0 ? "#477C6C" : node.ring === 1 ? "#5A9382" : "#95ADA2";
-  const r     = node.ring === 0 ? 28 : node.ring === 1 ? 18 : 12;
-  const op    = finalComplete ? 0.55 : active ? 0.42 : highlighted ? 0.28 : 0;
+  const color = finalComplete ? "#5A9382" : active ? "#477C6C" : "#95ADA2";
+  const r     = node.ring === 0 ? 24 : node.ring === 1 ? 16 : 10;
+  const op    = finalComplete ? 0.2 : active ? 0.15 : highlighted ? 0.1 : 0;
 
   return (
     <motion.circle
