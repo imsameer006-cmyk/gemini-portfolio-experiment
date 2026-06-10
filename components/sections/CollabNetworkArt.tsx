@@ -212,32 +212,8 @@ function ConnectionLine({ conn, nodeMap, active }: {
   );
 }
 
-// ─── RADIAL SHIMMER WAVE ──────────────────────────────────────────────────────
-function RadialShimmerWave({ active }: { active: boolean }) {
-  if (!active) return null;
-  return (
-    <>
-      {([0, 0.3, 0.65] as const).map((delay, i) => (
-        <motion.circle
-          key={i}
-          cx={CENTER.x} cy={CENTER.y}
-          r={20}
-          fill="none"
-          stroke="url(#collab-radial-shimmer)"
-          // Increased stroke widths and adjusted opacity for better visibility
-          strokeWidth={i === 0 ? 5 : i === 1 ? 4 : 3}
-          filter="url(#collab-shimmer-glow)"
-          initial={{ r: 20, opacity: 0 }}
-          animate={{ r: [20, 500], opacity: [0, 0.9, 0] }}
-          transition={{
-            r:       { duration: 1.4, delay, ease: EASE },
-            opacity: { duration: 1.4, delay, ease: EASE, times: [0, 0.15, 1] },
-          }}
-        />
-      ))}
-    </>
-  );
-}
+// ─── WAVE EASE (matches project 1 completion sweep) ──────────────────────────
+const WAVE_EASE: [number, number, number, number] = [0.4, 0, 0.2, 1];
 
 // ─── MAIN COMPONENT ──────────────────────────────────────────────────────────
 export default function CollabNetworkArt() {
@@ -262,9 +238,33 @@ export default function CollabNetworkArt() {
 
   return (
     <div className="absolute inset-0 flex items-center justify-end z-[20] pointer-events-none">
+      <div className="relative w-[1280px] h-[700px]">
+
+      {/* Radial shimmer — CSS div outside SVG, one-shot, same treatment as P1 completion sweep */}
+      {activated && (
+        <motion.div
+          aria-hidden="true"
+          className="absolute rounded-full pointer-events-none"
+          style={{
+            left: CENTER.x,
+            top: CENTER.y,
+            transform: "translate(-50%, -50%)",
+            background: "radial-gradient(circle, transparent 0%, rgba(192,123,80,0.06) 15%, rgba(255,255,255,1.0) 48%, rgba(192,123,80,0.12) 70%, transparent 100%)",
+            filter: "blur(28px)",
+          }}
+          initial={{ width: 40, height: 40, opacity: 0 }}
+          animate={{ width: 3600, height: 3600, opacity: [0, 0.85, 0] }}
+          transition={{
+            width:   { duration: 2.4, ease: WAVE_EASE },
+            height:  { duration: 2.4, ease: WAVE_EASE },
+            opacity: { duration: 2.4, ease: WAVE_EASE, times: [0, 0.48, 1] },
+          }}
+        />
+      )}
+
       <svg
         viewBox="0 0 1280 700"
-        className="w-[1280px] h-[700px] pointer-events-auto"
+        className="absolute inset-0 w-full h-full pointer-events-auto"
         preserveAspectRatio="xMidYMid meet"
         aria-label="Interactive community network — click to activate"
         role="group"
@@ -289,13 +289,6 @@ export default function CollabNetworkArt() {
             <stop offset="0.58" stopColor="#F0EDE8" stopOpacity="0.88" />
             <stop offset="1"    stopColor="#FFFFFF" stopOpacity="0"    />
           </linearGradient>
-
-          <radialGradient id="collab-radial-shimmer" cx="50%" cy="50%" r="50%">
-            <stop offset="0%" stopColor="#C07B50" stopOpacity="0" />
-            <stop offset="44%" stopColor="#477C6C" stopOpacity="0.4" />
-            <stop offset="58%" stopColor="#C07B50" stopOpacity="0.6" />
-            <stop offset="100%" stopColor="#C07B50" stopOpacity="0" />
-          </radialGradient>
 
           <filter id="collab-node-glow" x="-50%" y="-50%" width="200%" height="200%">
             <feGaussianBlur stdDeviation="10" />
@@ -325,9 +318,6 @@ export default function CollabNetworkArt() {
         {CONNECTIONS.map((conn, i) => (
           <ConnectionLine key={i} conn={conn} nodeMap={nodeMap} active={activated} />
         ))}
-
-        {/* Radial shimmer wave on activate */}
-        <RadialShimmerWave active={activated} />
 
         {/* Ambient topology rings */}
         <circle cx={CENTER.x} cy={CENTER.y} r={R1} fill="none" stroke="#627B72" strokeWidth="0.4" opacity="0.06" strokeDasharray="4 8" />
@@ -384,6 +374,7 @@ export default function CollabNetworkArt() {
           />
         ))}
       </svg>
+      </div>
     </div>
   );
 }
