@@ -304,7 +304,7 @@ function ExplorationCards({
         >
           <div className="flex flex-col gap-4 min-h-[4rem]">
             <h4 className="font-medium text-[#18171A] text-sm leading-snug">{card.heading}</h4>
-            <p className="text-sm text-[#6A6764] leading-relaxed">{card.description}</p>
+            <p className="text-sm text-[#6A6764] leading-relaxed h-6 overflow-hidden">{card.description}</p>
           </div>
           <div className="space-y-2 mt-auto pt-4 border-t border-[#F2F0EB]">
             <div>
