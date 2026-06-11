@@ -80,14 +80,6 @@ export default function CollabspaceThumbnail() {
     }),
   };
 
-  const labelVariants = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 0.45,
-      transition: { delay: 0.8, duration: 0.6 }
-    }
-  };
-
   return (
     <motion.svg
       viewBox="0 0 460 256"
@@ -180,31 +172,6 @@ export default function CollabspaceThumbnail() {
         custom={0}
       />
 
-      {/* Subtle Mono Labels */}
-      <motion.text
-        x={CENTER.x} y={CENTER.y + 36}
-        fontFamily="var(--font-geist-mono), monospace"
-        fontSize="8"
-        fontWeight="500"
-        letterSpacing="0.08em"
-        fill="#9E7E6B"
-        textAnchor="middle"
-        variants={labelVariants}
-      >
-        CORE
-      </motion.text>
-      <motion.text
-        x={CENTER.x} y={CENTER.y - 100}
-        fontFamily="var(--font-geist-mono), monospace"
-        fontSize="8"
-        fontWeight="500"
-        letterSpacing="0.08em"
-        fill="#9E7E6B"
-        textAnchor="middle"
-        variants={labelVariants}
-      >
-        NETWORK
-      </motion.text>
     </motion.svg>
   );
 }
