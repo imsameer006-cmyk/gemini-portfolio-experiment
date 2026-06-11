@@ -302,8 +302,10 @@ function ExplorationCards({
           whileHover={{ y: -2, boxShadow: "0 4px 16px rgba(0,0,0,0.08)" }}
           transition={{ duration: 0.18, ease: "easeOut" }}
         >
-          <h4 className="font-medium text-[#18171A] text-sm leading-snug">{card.heading}</h4>
-          <p className="text-sm text-[#6A6764] leading-relaxed">{card.description}</p>
+          <div className="flex flex-col gap-4 min-h-[4rem]">
+            <h4 className="font-medium text-[#18171A] text-sm leading-snug">{card.heading}</h4>
+            <p className="text-sm text-[#6A6764] leading-relaxed">{card.description}</p>
+          </div>
           <div className="space-y-2 mt-auto pt-4 border-t border-[#F2F0EB]">
             <div>
               <span className="text-[10px] font-semibold tracking-widest uppercase text-[#2E7D52] block mb-0.5">Strength</span>
