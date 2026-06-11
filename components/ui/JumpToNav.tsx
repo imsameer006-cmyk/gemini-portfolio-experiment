@@ -293,7 +293,7 @@ export default function JumpToNav({
               aria-controls={disabled ? undefined : "jumpto-drawer"}
               aria-label={disabled ? "Case study sections — coming soon" : `Jump to section. Current: ${activeLabel}`}
               className={[
-                "w-full h-[52px] flex items-center bg-[#F9F8F5]/80 backdrop-blur-md border-t border-[#E6E3DD]",
+                "w-full h-[52px] flex items-center bg-white/95 backdrop-blur-sm border-t border-[#E6E3DD] shadow-[0_-2px_12px_rgba(0,0,0,0.08)]",
                 disabled ? "pointer-events-none" : "",
               ].join(" ")}
             >
