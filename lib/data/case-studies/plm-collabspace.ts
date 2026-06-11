@@ -55,6 +55,11 @@ export const plmCollabspace: CaseStudyData = {
             ],
           },
         },
+        // TODO: Replace with screenshot of existing intranet / department page
+        {
+          type: "image-placeholder",
+          caption: "Existing internal network — knowledge stored within domains, invisible across them",
+        },
         {
           type: "closing-line",
           text: "The tools weren't missing. The connection between them was.",
@@ -238,10 +243,10 @@ export const plmCollabspace: CaseStudyData = {
           type: "callout",
           text: "This page isn't for your team. It's for everyone else to find you.",
         },
+        // TODO: Replace with screenshot of Global Hub home page
         {
-          // TODO: Replace with architecture diagram asset
           type: "image-placeholder",
-          caption: "Architecture diagram — Global Hub connected to 8 domain nodes",
+          caption: "Global Hub — one entry point, all domains visible",
           tall: true,
         },
       ],
@@ -286,6 +291,17 @@ export const plmCollabspace: CaseStudyData = {
               outcome:
                 "Visitors had a reason to engage from the first visit — and a reason to return.",
             },
+          ],
+        },
+        // TODO: Replace with screenshot of a domain space page
+        {
+          type: "image-placeholder",
+          caption: "Domain space — content present from day one, ownership structure visible in layout",
+        },
+        {
+          type: "decisions-cdo",
+          startIndex: 4,
+          items: [
             {
               heading: "Awareness designed, not assumed",
               challenge: "Valuable platforms still fail if employees don't know they exist.",
@@ -331,6 +347,11 @@ export const plmCollabspace: CaseStudyData = {
             "Review & approval",
             "Publication",
           ],
+        },
+        // TODO: Replace with screenshot of domain reel / featured video in context
+        {
+          type: "image-placeholder",
+          caption: "Short-form content — thirty-second domain reels published across all eight spaces",
         },
       ],
     },
