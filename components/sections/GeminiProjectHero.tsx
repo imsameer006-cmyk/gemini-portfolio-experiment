@@ -505,7 +505,7 @@ interface GeminiProjectHeroProps {
 
 const DEFAULT_METADATA: { label: string; value: string }[] = [
   { label: "Year", value: "2025–2026" },
-  { label: "Role", value: "UX Designer (co-lead)" },
+  { label: "Role", value: "UX Designer" },
   { label: "Product", value: "Gemini – Digital Twin" },
   { label: "Domain", value: "B2B" },
   { label: "Users", value: "FAE, PAE, PMG, PJM" },
@@ -517,7 +517,7 @@ export function GeminiProjectHero({
   title = "Multi-Stakeholder Approval Workflow for a Digital Twin Platform",
   description = "Designed a visible approval workflow that clarified ownership, review state, and next actions across four engineering roles.",
   client,
-  impact = "Launched to 20 FAEs in China",
+  impact = "Launched to 50+ FAEs in China",
   tags = ["Workflow Design", "B2B", "UX Research", "Systems Design"],
   metadata = DEFAULT_METADATA,
 }: GeminiProjectHeroProps) {

@@ -11,7 +11,7 @@ export const projects: Project[] = [
     year: "2025–2026",
     description:
       "Designed a multi-role approval workflow that eliminated status uncertainty across 4 engineering roles on a B2B digital twin platform.",
-    impact: "Launched to 20+ FAEs",
+    impact: "Launched to 50+ FAEs",
     tags: ["Systems Design", "Workflow Design", "Enterprise UX", "B2B SaaS", "UX Research"],
     client: "Infineon Technologies",
     featured: true,
