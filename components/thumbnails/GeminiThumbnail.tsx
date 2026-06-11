@@ -33,8 +33,8 @@ export default function GeminiThumbnail() {
       pathLength: [0, 1],
       opacity: [0, 1, 0],
       transition: {
-        pathLength: { duration: 3, ease: "easeInOut", repeat: Infinity, delay },
-        opacity: { duration: 3, ease: "easeInOut", repeat: Infinity, delay, times: [0, 0.5, 1] },
+        pathLength: { duration: 3, ease: "easeInOut" as const, repeat: Infinity, delay },
+        opacity: { duration: 3, ease: "easeInOut" as const, repeat: Infinity, delay, times: [0, 0.5, 1] as [number, number, number] },
       }
     }
   });

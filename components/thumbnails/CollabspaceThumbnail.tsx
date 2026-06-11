@@ -61,8 +61,8 @@ export default function CollabspaceThumbnail() {
       pathLength: [0, 1],
       opacity: [0, 1, 0],
       transition: {
-        pathLength: { duration: 3.5, ease: "easeInOut", repeat: Infinity, delay: delay + i * 0.4 },
-        opacity:    { duration: 3.5, ease: "easeInOut", repeat: Infinity, delay: delay + i * 0.4, times: [0, 0.5, 1] },
+        pathLength: { duration: 3.5, ease: "easeInOut" as const, repeat: Infinity, delay: delay + i * 0.4 },
+        opacity:    { duration: 3.5, ease: "easeInOut" as const, repeat: Infinity, delay: delay + i * 0.4, times: [0, 0.5, 1] as [number, number, number] },
       },
     }),
   });
