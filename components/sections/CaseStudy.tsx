@@ -306,7 +306,7 @@ function ExplorationCards({
             <h4 className="font-medium text-[#18171A] text-sm leading-snug">{card.heading}</h4>
             <p className="text-sm text-[#6A6764] leading-relaxed h-6 overflow-hidden">{card.description}</p>
           </div>
-          <div className="space-y-2 mt-auto pt-4 border-t border-[#F2F0EB]">
+          <div className="space-y-2 pt-4 border-t border-[#F2F0EB]">
             <div>
               <span className="text-[10px] font-semibold tracking-widest uppercase text-[#2E7D52] block mb-0.5">Strength</span>
               <p className="text-xs text-[#3A3836] leading-relaxed">{card.strength}</p>
