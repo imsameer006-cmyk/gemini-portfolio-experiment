@@ -25,7 +25,7 @@ export default function ProjectCard({ project, index }: ProjectCardProps) {
       >
         {/* Visual panel */}
         <div
-          className="w-full h-52 md:h-64 overflow-hidden shrink-0 lg:transition-transform lg:duration-500 lg:group-hover:scale-[1.02] lg:origin-bottom"
+          className="w-full aspect-[460/256] overflow-hidden shrink-0 lg:transition-transform lg:duration-500 lg:group-hover:scale-[1.02] lg:origin-bottom"
           style={{ backgroundColor: project.coverColor }}
         >
           {project.thumbnail ? (
