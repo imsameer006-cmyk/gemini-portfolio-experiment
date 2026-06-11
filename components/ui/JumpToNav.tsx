@@ -324,6 +324,8 @@ export default function JumpToNav({
                 )}
               </div>
             </button>
+            {/* Fills the safe-area gap below the bar on devices with a home indicator */}
+            <div className="bg-white/95 w-full" style={{ height: "env(safe-area-inset-bottom)" }} />
           </motion.div>
         )}
       </AnimatePresence>
