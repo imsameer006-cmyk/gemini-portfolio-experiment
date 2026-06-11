@@ -46,7 +46,12 @@ export default function Work() {
         </div>
 
         {/* Projects grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+        <div className={[
+          "grid gap-5",
+          featured.length === 1 ? "grid-cols-1 max-w-[420px]" :
+          featured.length === 2 ? "grid-cols-1 md:grid-cols-2" :
+                                  "grid-cols-1 md:grid-cols-2 lg:grid-cols-3",
+        ].join(" ")}>
           {featured.map((project, i) => (
             <ProjectCard key={project.slug} project={project} index={i} />
           ))}
