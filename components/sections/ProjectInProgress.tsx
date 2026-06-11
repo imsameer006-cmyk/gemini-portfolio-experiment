@@ -35,8 +35,10 @@ export function InProgressHero({ project }: { project: Project }) {
         aria-labelledby="project-hero-title"
         className="relative flex min-h-screen flex-col justify-start px-6 pb-[88px] pt-[72px] md:px-10"
       >
-        {/* Hero art — radial community network */}
-        <CollabNetworkArt onInteract={handleInteraction} />
+        {/* Hero art — radial community network, desktop only */}
+        <div className="hidden md:block">
+          <CollabNetworkArt onInteract={handleInteraction} />
+        </div>
 
         <div className="pointer-events-none relative z-10 mx-auto w-full max-w-[1280px]">
           <motion.div
@@ -109,7 +111,7 @@ export function InProgressHero({ project }: { project: Project }) {
                 {!hasInteracted ? (
                   <motion.div
                     aria-hidden="true"
-                    className="pointer-events-none flex items-center gap-2.5 pb-1 opacity-0 md:flex"
+                    className="pointer-events-none hidden md:flex items-center gap-2.5 pb-1 opacity-0"
                     initial={{ opacity: 0, y: 6 }}
                     animate={{ opacity: 0.62, y: 0 }}
                     exit={{ opacity: 0, y: 4 }}
