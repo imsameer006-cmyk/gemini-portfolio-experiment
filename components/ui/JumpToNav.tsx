@@ -3,8 +3,8 @@
 import { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 
-// Must match the section labels in the case study data
-const SECTIONS = [
+// Fallback sections for the Gemini project (used when no sections prop is passed)
+const GEMINI_SECTIONS = [
   { label: "Overview" },
   { label: "Challenge" },
   { label: "Context" },
@@ -36,17 +36,19 @@ function ChevronDown() {
 
 // ── Shared section list used inside the bottom drawer ────────────
 function DrawerList({
+  sections,
   activeId,
   onSelect,
   disabled = false,
 }: {
+  sections: { label: string }[];
   activeId: string;
   onSelect: (label: string) => void;
   disabled?: boolean;
 }) {
   return (
     <>
-      {SECTIONS.map(({ label }) => {
+      {sections.map(({ label }) => {
         const isActive = !disabled && toSectionId(label) === activeId;
         return (
           <button
@@ -80,7 +82,14 @@ function DrawerList({
   );
 }
 
-export default function JumpToNav({ disabled = false }: { disabled?: boolean }) {
+export default function JumpToNav({
+  disabled = false,
+  sections: sectionsProp,
+}: {
+  disabled?: boolean;
+  sections?: { label: string }[];
+}) {
+  const sections = sectionsProp ?? GEMINI_SECTIONS;
   const [isOpen, setIsOpen] = useState(false);
   const [activeId, setActiveId] = useState(toSectionId("Overview"));
   const [isVisible, setIsVisible] = useState(disabled);
@@ -91,7 +100,7 @@ export default function JumpToNav({ disabled = false }: { disabled?: boolean }) 
   // ── Visibility: IntersectionObserver on hero ─────────────────
   useEffect(() => {
     if (disabled) return;
-    const hero = document.querySelector<HTMLElement>("article > div:first-child");
+    const hero = document.querySelector<HTMLElement>("[data-cs-hero], article > div:first-child");
     if (!hero) return;
 
     const obs = new IntersectionObserver(
@@ -125,8 +134,8 @@ export default function JumpToNav({ disabled = false }: { disabled?: boolean }) 
     const OFFSET = 96;
 
     const update = () => {
-      let next = toSectionId("Overview");
-      for (const { label } of SECTIONS) {
+      let next = toSectionId(sections[0]?.label ?? "Overview");
+      for (const { label } of sections) {
         const el = document.getElementById(toSectionId(label));
         if (!el) continue;
         if (el.getBoundingClientRect().top <= OFFSET) {
@@ -141,7 +150,7 @@ export default function JumpToNav({ disabled = false }: { disabled?: boolean }) 
     update();
     window.addEventListener("scroll", update, { passive: true });
     return () => window.removeEventListener("scroll", update);
-  }, []);
+  }, [sections]);
 
   // ── Close drawer on outside click ───────────────────────────
   useEffect(() => {
@@ -182,7 +191,7 @@ export default function JumpToNav({ disabled = false }: { disabled?: boolean }) 
   };
 
   const activeLabel =
-    SECTIONS.find((s) => toSectionId(s.label) === activeId)?.label ?? "Overview";
+    sections.find((s) => toSectionId(s.label) === activeId)?.label ?? sections[0]?.label ?? "Overview";
 
   // ── Transition config ────────────────────────────────────────
   const transition = { duration: 0.5, ease: "easeOut" as const };
@@ -200,12 +209,12 @@ export default function JumpToNav({ disabled = false }: { disabled?: boolean }) 
               aria-label="Jump to section"
               initial={{ opacity: 0, x: -6 }}
               animate={{ opacity: 1, x: 0 }}
-              exit={{ opacity: 0, x: -6 }}
+              exit={{ opacity: 0, x: -6, transition: { duration: 0.35, ease: "easeOut" as const } }}
               transition={transition}
               className="fixed left-8 z-40 top-1/2 -translate-y-1/2"
             >
               <ul className="flex flex-col gap-3 w-[140px]" role="listbox" aria-label="Page sections">
-                {SECTIONS.map(({ label }) => {
+                {sections.map(({ label }) => {
                   const isActive = toSectionId(label) === activeId;
                   return (
                     <li key={label} className="flex items-center gap-2" role="presentation">
@@ -253,7 +262,7 @@ export default function JumpToNav({ disabled = false }: { disabled?: boolean }) 
               ref={bottomBarRef}
               initial={{ opacity: 0, y: 8 }}
               animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: 8 }}
+              exit={{ opacity: 0, y: 8, transition: { duration: 0.35, ease: "easeOut" as const } }}
               transition={transition}
               className="fixed bottom-0 inset-x-0 z-40"
             >
@@ -271,7 +280,7 @@ export default function JumpToNav({ disabled = false }: { disabled?: boolean }) 
                   className="bg-[#F9F8F5] border-t border-[#E6E3DD] rounded-t-[12px] overflow-y-auto"
                   style={{ maxHeight: "60vh" }}
                 >
-                  <DrawerList activeId={activeId} onSelect={scrollTo} disabled={disabled} />
+                  <DrawerList sections={sections} activeId={activeId} onSelect={scrollTo} disabled={disabled} />
                 </motion.div>
               )}
             </AnimatePresence>

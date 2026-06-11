@@ -1,3 +1,4 @@
 # Project Memory Index
 
-- [CollabNetworkArt Geometry & Connection Logic](PROJECT_LOGIC.md)
+- [Portfolio Refinement Strategy & Key Decisions](DECISIONS.md)
+- [CollabNetworkArt Artwork Logic](PROJECT_LOGIC.md)

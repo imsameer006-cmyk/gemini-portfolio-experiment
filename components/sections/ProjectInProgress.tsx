@@ -9,7 +9,7 @@ import type { Project } from "@/lib/types";
 
 const EASE = [0.16, 1, 0.3, 1] as const;
 
-function InProgressHero({ project }: { project: Project }) {
+export function InProgressHero({ project }: { project: Project }) {
   const reduceMotion = useReducedMotion();
   const metadata = project.heroMetadata ?? [];
 
@@ -20,7 +20,7 @@ function InProgressHero({ project }: { project: Project }) {
   };
 
   return (
-    <div className="relative isolate overflow-hidden bg-[#F9F8F5]">
+    <div data-cs-hero="true" className="relative isolate overflow-hidden bg-[#F9F8F5]">
       <div
         aria-hidden="true"
         className="pointer-events-none absolute inset-0"

@@ -63,7 +63,18 @@ export type Block =
     }
   | { type: "image-placeholder"; caption: string; tall?: boolean }
   | { type: "case-study-image"; src: string; caption: string; alt?: string; mobileDetail?: boolean }
-  | { type: "case-study-video"; src: string; caption: string; poster?: string; mobileDetail?: boolean; controls?: boolean };
+  | { type: "case-study-video"; src: string; caption: string; poster?: string; mobileDetail?: boolean; controls?: boolean }
+  | { type: "pull-quote"; text: string }
+  | { type: "closing-line"; text: string }
+  | { type: "context-cards"; items: { heading: string; body: string }[] }
+  | { type: "synthesis-flow"; rows: { label: string; items: string[] }[] }
+  | { type: "synthesis-table"; headers: [string, string]; rows: [string, string][] }
+  | {
+      type: "decisions-cdo";
+      items: { heading: string; challenge: string; decision: string; outcome: string }[];
+      startIndex?: number;
+    }
+  | { type: "publishing-workflow"; steps: string[] };
 
 export interface CaseStudySection {
   label: string;

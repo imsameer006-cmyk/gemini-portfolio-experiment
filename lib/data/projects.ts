@@ -31,7 +31,6 @@ export const projects: Project[] = [
     featured: true,
     coverColor: "#E0E8EC",
     thumbnail: createElement(CollabspaceThumbnail),
-    status: "in-progress",
     heroMetadata: [
       { label: "Year", value: "2023–2024" },
       { label: "Role", value: "UX Research & Product Design" },

@@ -8,6 +8,7 @@ import type { Project, Block, CaseStudySection, CaseStudyData } from "@/lib/type
 import { projects } from "@/lib/data/projects";
 import JumpToNav, { toSectionId } from "@/components/ui/JumpToNav";
 import { GeminiProjectHero } from "@/components/sections/GeminiProjectHero";
+import { InProgressHero } from "@/components/sections/ProjectInProgress";
 
 interface Props {
   project: Project;
@@ -735,6 +736,172 @@ function ImagePlaceholder({ caption, tall }: { caption: string; tall?: boolean }
   );
 }
 
+function PullQuote({ text }: { text: string }) {
+  return (
+    <blockquote className="border-l-[3px] border-[#C07B50]/30 pl-6 my-1">
+      <p className="font-[family-name:var(--font-instrument-serif)] italic text-[clamp(1.1rem,2.5vw,1.3rem)] text-[#18171A] leading-snug max-w-[640px]">
+        &ldquo;{text}&rdquo;
+      </p>
+    </blockquote>
+  );
+}
+
+function ClosingLine({ text }: { text: string }) {
+  return (
+    <p className="font-[family-name:var(--font-instrument-serif)] italic text-base text-[#6A6764]">
+      {text}
+    </p>
+  );
+}
+
+function ContextCards({ items }: { items: { heading: string; body: string }[] }) {
+  return (
+    <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+      {items.map((card, i) => (
+        <div key={i} className="bg-white border border-[#E6E3DD] rounded-2xl p-5 flex flex-col gap-3">
+          <span className="font-[family-name:var(--font-instrument-serif)] italic text-2xl text-[#C07B50]/50 leading-none">
+            {String(i + 1).padStart(2, "0")}
+          </span>
+          <h4 className="font-medium text-[#18171A] text-sm leading-snug">{card.heading}</h4>
+          <p className="text-sm text-[#6A6764] leading-relaxed">{card.body}</p>
+        </div>
+      ))}
+    </div>
+  );
+}
+
+function SynthesisFlow({ rows }: { rows: { label: string; items: string[] }[] }) {
+  return (
+    <div className="flex flex-col">
+      {rows.map((row, i) => (
+        <div key={i} className="flex flex-col">
+          <div className="bg-[#F2F0EB] border border-[#E6E3DD] rounded-xl p-5 flex flex-col sm:flex-row gap-4 sm:items-start">
+            <span className="text-[10px] font-semibold tracking-widest uppercase text-[#74716D] shrink-0 sm:w-[130px] sm:pt-0.5">
+              {row.label}
+            </span>
+            <div className="flex flex-wrap gap-2">
+              {row.items.map((item, j) => (
+                <span
+                  key={j}
+                  className="text-xs text-[#18171A] bg-white border border-[#E6E3DD] rounded-full px-3 py-1 leading-none"
+                >
+                  {item}
+                </span>
+              ))}
+            </div>
+          </div>
+          {i < rows.length - 1 && (
+            <div className="flex justify-center items-center h-7" aria-hidden="true">
+              <span className="text-[#C07B50] text-base select-none">↓</span>
+            </div>
+          )}
+        </div>
+      ))}
+    </div>
+  );
+}
+
+function SynthesisTable({ headers, rows }: { headers: [string, string]; rows: [string, string][] }) {
+  return (
+    <div className="overflow-hidden rounded-xl border border-[#E6E3DD]">
+      <table className="w-full border-collapse">
+        <thead>
+          <tr className="bg-[#F2F0EB]">
+            {headers.map((h, i) => (
+              <th
+                key={i}
+                className="text-left px-5 py-3 text-[10px] font-semibold tracking-widest uppercase text-[#74716D] border-b border-[#E6E3DD]"
+              >
+                {h}
+              </th>
+            ))}
+          </tr>
+        </thead>
+        <tbody className="divide-y divide-[#E6E3DD]">
+          {rows.map(([insight, requirement], i) => (
+            <tr key={i} className="bg-white">
+              <td className="px-5 py-3.5 text-sm text-[#3A3836] leading-snug">{insight}</td>
+              <td className="px-5 py-3.5 text-sm font-medium text-[#18171A] leading-snug">{requirement}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+  );
+}
+
+function DecisionsCDO({
+  items,
+  startIndex = 0,
+}: {
+  items: { heading: string; challenge: string; decision: string; outcome: string }[];
+  startIndex?: number;
+}) {
+  return (
+    <div className="space-y-10">
+      {items.map((item, i) => (
+        <motion.div
+          key={i}
+          className="grid grid-cols-[2rem_1fr] gap-4"
+          initial={{ opacity: 0, y: 12 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, amount: 0.15 }}
+          transition={{ duration: 0.5, delay: i * 0.08, ease: [0.16, 1, 0.3, 1] as [number, number, number, number] }}
+        >
+          <span className="font-[family-name:var(--font-instrument-serif)] italic text-2xl text-[#C07B50]/50 leading-none pt-0.5">
+            {String(startIndex + i + 1).padStart(2, "0")}
+          </span>
+          <div className="space-y-4">
+            <h4 className="font-medium text-[#18171A] text-base">{item.heading}</h4>
+            <div className="space-y-3">
+              <div>
+                <span className="text-[10px] font-semibold tracking-widest uppercase text-[#74716D] block mb-1">
+                  Challenge
+                </span>
+                <p className="text-sm text-[#3A3836] leading-relaxed">{item.challenge}</p>
+              </div>
+              <div>
+                <span className="text-[10px] font-semibold tracking-widest uppercase text-[#C07B50]/70 block mb-1">
+                  Decision
+                </span>
+                <p className="text-sm text-[#3A3836] leading-relaxed">{item.decision}</p>
+              </div>
+              <div>
+                <span className="text-[10px] font-semibold tracking-widest uppercase text-[#2E7D52] block mb-1">
+                  Outcome
+                </span>
+                <p className="text-sm text-[#3A3836] leading-relaxed">{item.outcome}</p>
+              </div>
+            </div>
+          </div>
+        </motion.div>
+      ))}
+    </div>
+  );
+}
+
+function PublishingWorkflow({ steps }: { steps: string[] }) {
+  return (
+    <div className="border border-[#E6E3DD] rounded-xl overflow-hidden bg-[#F2F0EB] px-6 py-5 max-w-[400px]">
+      <div className="flex flex-col">
+        {steps.map((step, i) => (
+          <div key={i} className="flex flex-col">
+            <div className="flex items-center gap-4">
+              <span className="w-6 h-6 rounded-full bg-white border border-[#E6E3DD] flex items-center justify-center text-[10px] font-semibold text-[#74716D] shrink-0">
+                {i + 1}
+              </span>
+              <span className="text-sm font-medium text-[#18171A]">{step}</span>
+            </div>
+            {i < steps.length - 1 && (
+              <div className="ml-[11px] w-px h-5 bg-[#D4D0C8] my-1" aria-hidden="true" />
+            )}
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
 function renderBlock(block: Block, i: number): React.ReactNode {
   switch (block.type) {
     case "paragraph":        return <Paragraph key={i} text={block.text} />;
@@ -751,6 +918,13 @@ function renderBlock(block: Block, i: number): React.ReactNode {
     case "image-placeholder":return <ImagePlaceholder key={i} caption={block.caption} tall={block.tall} />;
     case "case-study-image": return <CaseStudyImage key={i} src={block.src} caption={block.caption} alt={block.alt} mobileDetail={block.mobileDetail} />;
     case "case-study-video": return <CaseStudyVideo key={i} src={block.src} caption={block.caption} poster={block.poster} mobileDetail={block.mobileDetail} controls={block.controls} />;
+    case "pull-quote":       return <PullQuote key={i} text={block.text} />;
+    case "closing-line":     return <ClosingLine key={i} text={block.text} />;
+    case "context-cards":    return <ContextCards key={i} items={block.items} />;
+    case "synthesis-flow":   return <SynthesisFlow key={i} rows={block.rows} />;
+    case "synthesis-table":  return <SynthesisTable key={i} headers={block.headers} rows={block.rows} />;
+    case "decisions-cdo":    return <DecisionsCDO key={i} items={block.items} startIndex={block.startIndex ?? 0} />;
+    case "publishing-workflow": return <PublishingWorkflow key={i} steps={block.steps} />;
     default:                 return null;
   }
 }
@@ -824,6 +998,7 @@ export default function CaseStudy({ project, content }: Props) {
   const currentIndex = projects.findIndex((p) => p.slug === project.slug);
   const next = projects[(currentIndex + 1) % projects.length];
   const isGemini = project.slug === "gemini-digital-twin";
+  const isCollabspace = project.slug === "design-system";
 
   return (
     <MotionConfig reducedMotion="user">
@@ -838,6 +1013,8 @@ export default function CaseStudy({ project, content }: Props) {
           impact={project.impact}
           tags={project.tags}
         />
+      ) : isCollabspace ? (
+        <InProgressHero project={project} />
       ) : (
         <div
           className="min-h-screen flex flex-col justify-center pt-24 pb-16"
@@ -889,8 +1066,8 @@ export default function CaseStudy({ project, content }: Props) {
         </div>
       )}
 
-      {/* Jump-to navigation — only for pages with rich content */}
-      {content && <JumpToNav />}
+      {/* Jump-to navigation — sections derived from content so each project gets its own nav */}
+      {content && <JumpToNav sections={content.sections.map((s) => ({ label: s.label }))} />}
 
       {/* Case study body — pb-[80px] on mobile/tablet clears the fixed 52px bottom bar */}
       {content ? (
