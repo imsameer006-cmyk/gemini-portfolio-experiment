@@ -13,6 +13,7 @@ export interface Project {
   thumbnail?: React.ReactNode;
   client?: string;
   status?: "published" | "in-progress";
+  hidden?: boolean;
   heroMetadata?: { label: string; value: string }[];
 }
 

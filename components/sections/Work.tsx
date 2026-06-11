@@ -5,7 +5,7 @@ import Link from "next/link";
 import ProjectCard from "@/components/ui/ProjectCard";
 import { projects } from "@/lib/data/projects";
 
-const featured = projects.filter((p) => p.featured);
+const featured = projects.filter((p) => p.featured && !p.hidden);
 
 export default function Work() {
   return (

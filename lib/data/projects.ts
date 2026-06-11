@@ -42,6 +42,7 @@ export const projects: Project[] = [
   },
   {
     slug: "mobile-checkout",
+    hidden: true,
     title: "From Zero to Checkout in 3 Taps",
     category: "Mobile UX",
     year: "2023",
