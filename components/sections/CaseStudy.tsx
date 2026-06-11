@@ -951,7 +951,7 @@ function Section({ section }: { section: CaseStudySection }) {
         style={{ originX: 0 }}
       />
 
-      <div className="pt-12">
+      <div className="pt-6 md:pt-12">
         <span className="block text-[10px] text-[#74716D] tracking-widest uppercase font-medium mb-3">
           {section.label}
         </span>
@@ -1071,7 +1071,7 @@ export default function CaseStudy({ project, content }: Props) {
 
       {/* Case study body — pb-[80px] on mobile/tablet clears the fixed 52px bottom bar */}
       {content ? (
-        <div className="max-w-[900px] mx-auto px-6 md:px-10 lg:pl-[150px] xl:pl-10 pt-8 md:pt-16 pb-[80px] xl:pb-16 space-y-0">
+        <div className="max-w-[900px] mx-auto px-6 md:px-10 lg:pl-[150px] xl:pl-10 pt-4 md:pt-16 pb-[80px] xl:pb-16 space-y-0">
           {content.sections.map((section) => (
             <Section key={section.label} section={section} />
           ))}

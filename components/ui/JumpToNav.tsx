@@ -293,7 +293,7 @@ export default function JumpToNav({
               aria-controls={disabled ? undefined : "jumpto-drawer"}
               aria-label={disabled ? "Case study sections — coming soon" : `Jump to section. Current: ${activeLabel}`}
               className={[
-                "w-full h-[52px] flex items-center bg-white/95 backdrop-blur-sm border-t border-[#E6E3DD] shadow-[0_-2px_12px_rgba(0,0,0,0.08)]",
+                "w-full h-[52px] flex items-center bg-white backdrop-blur-sm border-t border-[#E6E3DD] shadow-[0_-2px_12px_rgba(0,0,0,0.08)]",
                 disabled ? "pointer-events-none" : "",
               ].join(" ")}
             >
@@ -325,7 +325,7 @@ export default function JumpToNav({
               </div>
             </button>
             {/* Fills the safe-area gap below the bar on devices with a home indicator */}
-            <div className="bg-white/95 w-full" style={{ height: "env(safe-area-inset-bottom)" }} />
+            <div className="bg-white w-full" style={{ height: "env(safe-area-inset-bottom)" }} />
           </motion.div>
         )}
       </AnimatePresence>

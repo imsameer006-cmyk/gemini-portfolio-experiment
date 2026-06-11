@@ -33,7 +33,7 @@ export function InProgressHero({ project }: { project: Project }) {
 
       <section
         aria-labelledby="project-hero-title"
-        className="relative flex min-h-screen flex-col justify-start px-6 pb-[88px] pt-[72px] md:px-10"
+        className="relative flex md:min-h-screen flex-col justify-start px-6 pb-16 md:pb-[88px] pt-[72px] md:px-10"
       >
         {/* Hero art — radial community network, desktop only */}
         <div className="hidden md:block">

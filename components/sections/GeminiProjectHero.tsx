@@ -600,7 +600,7 @@ export function GeminiProjectHero({
 
       <section
         aria-labelledby="hero-lab-title"
-        className="relative flex min-h-screen flex-col justify-start overflow-x-hidden px-6 pb-[88px] pt-[72px] md:px-10 lg:min-h-screen lg:pt-[72px]"
+        className="relative flex md:min-h-screen flex-col justify-start overflow-x-hidden px-6 pb-16 md:pb-[88px] pt-[72px] md:px-10"
       >
         <InteractiveNetwork
           activated={activated}
