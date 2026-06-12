@@ -1001,8 +1001,11 @@ const MotionLink = motion(Link);
 // ── Main Component ─────────────────────────────────────────────
 
 export default function CaseStudy({ project, content }: Props) {
-  const currentIndex = projects.findIndex((p) => p.slug === project.slug);
-  const next = projects[(currentIndex + 1) % projects.length];
+  const visible = projects.filter((p) => p.featured && !p.hidden);
+  const currentIndex = visible.findIndex((p) => p.slug === project.slug);
+  const isLast = currentIndex === visible.length - 1;
+  const adjacentProject = isLast ? visible[currentIndex - 1] : visible[currentIndex + 1];
+  const adjacentLabel = isLast ? "Previous Project" : "Next Project";
   const isGemini = project.slug === "gemini-digital-twin";
   const isCollabspace = project.slug === "design-system";
 
@@ -1086,18 +1089,18 @@ export default function CaseStudy({ project, content }: Props) {
         <GenericBody />
       )}
 
-      {/* Next project */}
+      {/* Adjacent project */}
       <div className="border-t border-[#E6E3DD] px-6 md:px-10 py-12 bg-[#F9F8F5]">
         <div className="max-w-[1280px] mx-auto flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
           <div>
             <p className="text-xs text-[#74716D] tracking-widest uppercase font-medium mb-1">
-              Next Project
+              {adjacentLabel}
             </p>
-            <p className="text-[#18171A] font-medium">{next.title}</p>
-            <p className="text-sm text-[#6A6764] mt-0.5">{next.category}</p>
+            <p className="text-[#18171A] font-medium">{adjacentProject.title}</p>
+            <p className="text-sm text-[#6A6764] mt-0.5">{adjacentProject.category}</p>
           </div>
           <MotionLink
-            href={`/work/${next.slug}`}
+            href={`/work/${adjacentProject.slug}`}
             whileHover={{ scale: 1.02 }}
             transition={{ duration: 0.15, ease: "easeOut" }}
             className="inline-flex items-center gap-2 bg-[#18171A] text-[#F9F8F5] text-sm font-medium px-5 py-3 rounded-full hover:bg-[#C07B50] transition-colors duration-200 min-h-[44px]"

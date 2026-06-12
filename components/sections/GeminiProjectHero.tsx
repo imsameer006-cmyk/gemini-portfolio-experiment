@@ -178,6 +178,7 @@ function InteractiveNetwork({
   onActivate: (id: number, visibleRadius?: number) => void;
 }) {
   const hoverRadii = useRef<Record<number, number>>({});
+  const anyActive = activated.size > 0;
 
   return (
     <div className="absolute inset-0 z-[1]">
@@ -223,7 +224,7 @@ function InteractiveNetwork({
             <feGaussianBlur stdDeviation="10" />
           </filter>
           <filter id="network-shimmer-glow" x="-50%" y="-50%" width="200%" height="200%">
-            <feGaussianBlur stdDeviation="2.5" />
+            <feGaussianBlur stdDeviation="1.5" />
           </filter>
         </defs>
 
@@ -354,7 +355,7 @@ function InteractiveNetwork({
         );
       })}
 
-      {INTERACTIVE_NODES.map((node) => {
+      {INTERACTIVE_NODES.map((node, nodeIndex) => {
         const active = activated.has(node.id);
         const preview = hovered === node.id;
         const highlighted = active || preview;
@@ -403,6 +404,40 @@ function InteractiveNetwork({
                 }}
               />
             ) : null}
+            <motion.circle
+              cx={node.x}
+              cy={node.y}
+              r="20"
+              fill={node.id === 2 ? "#C07B50" : "#BFA391"}
+              filter="url(#network-node-glow)"
+              pointerEvents="none"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: anyActive ? 0 : [0.05, 0.18, 0.05] }}
+              transition={anyActive
+                ? { duration: 0.4, ease: "easeOut" }
+                : { duration: 3, repeat: Infinity, ease: "easeInOut", delay: nodeIndex * 0.5 }
+              }
+            />
+            <g transform={`rotate(-22, ${node.x}, ${node.y})`} aria-hidden="true">
+              <motion.ellipse
+                cx={node.x}
+                cy={node.y}
+                rx={2}
+                ry={14}
+                fill="white"
+                filter="url(#network-shimmer-glow)"
+                pointerEvents="none"
+                initial={{ opacity: 0, x: -28 }}
+                animate={{
+                  opacity: anyActive ? 0 : [0, 0.65, 0],
+                  x: anyActive ? 0 : [-28, 0, 28],
+                }}
+                transition={anyActive
+                  ? { duration: 0.4, ease: "easeOut" }
+                  : { duration: 4, repeat: Infinity, ease: "easeInOut", delay: nodeIndex * 0.5 }
+                }
+              />
+            </g>
             <motion.circle
               cx={node.x}
               cy={node.y}

@@ -24,7 +24,7 @@ export const projects: Project[] = [
     category: "Enterprise Platform Design",
     year: "2023–2024",
     description:
-      "Building a shared knowledge and collaboration platform that connected 2,000+ employees, communities, and expertise across a global organization.",
+      "Building a shared knowledge and collaboration platform that connected 2,000+ employees, domains, and expertise across a global organization.",
     impact: "Platform Adoption",
     tags: ["UX Research", "Stakeholder Discovery", "Information Architecture", "Knowledge Management"],
     client: "Rohde & Schwarz",

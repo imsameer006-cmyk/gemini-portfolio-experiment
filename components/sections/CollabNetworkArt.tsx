@@ -326,7 +326,7 @@ export default function CollabNetworkArt({ onInteract }: { onInteract?: () => vo
           </filter>
 
           <filter id="collab-shimmer-glow" x="-50%" y="-50%" width="200%" height="200%">
-            <feGaussianBlur stdDeviation="2.5" />
+            <feGaussianBlur stdDeviation="1.5" />
           </filter>
         </defs>
 
@@ -375,6 +375,42 @@ export default function CollabNetworkArt({ onInteract }: { onInteract?: () => vo
             finalComplete={complete}
           />
         ))}
+
+        {/* Idle shimmer on interactive center node */}
+        <motion.circle
+          cx={CENTER.x}
+          cy={CENTER.y}
+          r={24}
+          fill="#9E7E6B"
+          filter="url(#collab-node-glow)"
+          pointerEvents="none"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: activated ? 0 : [0.06, 0.18, 0.06] }}
+          transition={activated
+            ? { duration: 0.4, ease: "easeOut" }
+            : { duration: 3, repeat: Infinity, ease: "easeInOut" }
+          }
+        />
+        <g transform={`rotate(-22, ${CENTER.x}, ${CENTER.y})`} aria-hidden="true">
+          <motion.ellipse
+            cx={CENTER.x}
+            cy={CENTER.y}
+            rx={2}
+            ry={14}
+            fill="white"
+            filter="url(#collab-shimmer-glow)"
+            pointerEvents="none"
+            initial={{ opacity: 0, x: -28 }}
+            animate={{
+              opacity: activated ? 0 : [0, 0.65, 0],
+              x: activated ? 0 : [-28, 0, 28],
+            }}
+            transition={activated
+              ? { duration: 0.4, ease: "easeOut" }
+              : { duration: 4, repeat: Infinity, ease: "easeInOut" }
+            }
+          />
+        </g>
 
         {/* Layer 9: Centre hit target */}
         <circle

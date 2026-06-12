@@ -23,7 +23,7 @@ export const plmCollabspace: CaseStudyData = {
         { type: "subheading", text: "Outcome" },
         {
           type: "callout",
-          text: "Eight domain communities launched. 2,000+ employees reached. Platform remained active after rollout.",
+          text: "Eight domains launched. 2,000+ employees reached. Platform remained active after rollout.",
         },
       ],
     },
