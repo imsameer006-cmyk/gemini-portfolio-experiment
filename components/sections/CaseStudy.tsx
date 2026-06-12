@@ -625,7 +625,9 @@ function CaseStudyImage({ src, caption, alt, mobileDetail = false }: { src: stri
             loading="lazy"
           />
         </div>
-        <figcaption className="text-xs text-[#74716D] text-center leading-snug px-4">{caption}</figcaption>
+        {caption && (
+          <figcaption className="text-xs text-[#74716D] text-center leading-snug px-4">{caption}</figcaption>
+        )}
         {mobileDetail && (
           <button
             type="button"
@@ -695,7 +697,9 @@ function CaseStudyVideo({ src, caption, poster, mobileDetail = false, controls =
             onClick={(e) => controls && e.stopPropagation()}
           />
         </div>
-        <figcaption className="text-xs text-[#74716D] text-center leading-snug px-4">{caption}</figcaption>
+        {caption && (
+          <figcaption className="text-xs text-[#74716D] text-center leading-snug px-4">{caption}</figcaption>
+        )}
         {mobileDetail && (
           <button
             type="button"

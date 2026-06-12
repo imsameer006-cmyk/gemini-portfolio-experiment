@@ -23,7 +23,7 @@ export const plmCollabspace: CaseStudyData = {
         { type: "subheading", text: "Outcome" },
         {
           type: "callout",
-          text: "Eight domain communities launched. 1,000+ employees reached. Platform remained active after rollout.",
+          text: "Eight domain communities launched. 2,000+ employees reached. Platform remained active after rollout.",
         },
       ],
     },
@@ -54,11 +54,6 @@ export const plmCollabspace: CaseStudyData = {
               { label: "A reason to use another platform", detail: "Nobody had answered why this space should exist alongside everything that already did" },
             ],
           },
-        },
-        // TODO: Replace with screenshot of existing intranet / department page
-        {
-          type: "image-placeholder",
-          caption: "Existing internal network — knowledge stored within domains, invisible across them",
         },
         {
           type: "closing-line",
@@ -243,11 +238,12 @@ export const plmCollabspace: CaseStudyData = {
           type: "callout",
           text: "This page isn't for your team. It's for everyone else to find you.",
         },
-        // TODO: Replace with screenshot of Global Hub home page
         {
-          type: "image-placeholder",
-          caption: "Global Hub — one entry point, all domains visible",
-          tall: true,
+          type: "case-study-video",
+          src: "/case-studies/collabspace/global-hub.mp4",
+          caption: "One entry point surfacing knowledge, reels, and ownership across all eight PLM domains.",
+          controls: true,
+          mobileDetail: true,
         },
       ],
     },
@@ -293,10 +289,12 @@ export const plmCollabspace: CaseStudyData = {
             },
           ],
         },
-        // TODO: Replace with screenshot of a domain space page
         {
-          type: "image-placeholder",
-          caption: "Domain space — content present from day one, ownership structure visible in layout",
+          type: "case-study-image",
+          src: "/case-studies/collabspace/domain-space-content.png",
+          caption: "Reels are the platform's primary content unit — the format through which each domain makes its work discoverable to the rest of the organisation.",
+          alt: "PLM Collabspace domain space showing domain reels, network activity, and domain leads with an annotation pointing to content available from day one",
+          mobileDetail: true,
         },
         {
           type: "decisions-cdo",
@@ -337,22 +335,6 @@ export const plmCollabspace: CaseStudyData = {
             items: ["Top of every domain home page. First thing a new visitor sees."],
           },
         },
-        {
-          type: "publishing-workflow",
-          steps: [
-            "Topic selection",
-            "Content owner alignment",
-            "Recording",
-            "Production & editing",
-            "Review & approval",
-            "Publication",
-          ],
-        },
-        // TODO: Replace with screenshot of domain reel / featured video in context
-        {
-          type: "image-placeholder",
-          caption: "Short-form content — thirty-second domain reels published across all eight spaces",
-        },
       ],
     },
 
@@ -380,19 +362,19 @@ export const plmCollabspace: CaseStudyData = {
           before: {
             heading: "Before",
             items: [
-              "Knowledge lived inside domains. Invisible outside them.",
-              "Previous platforms were built, then abandoned.",
-              "Cross-domain discovery depended on knowing the right person.",
-              "No content model. No reason to return.",
+              { label: "Knowledge trapped in silos", detail: "Expertise and initiatives inside each domain remained invisible to the rest of the organisation." },
+              { label: "Previous platforms abandoned", detail: "Pages were built and people were invited — but nobody came back." },
+              { label: "Discovery relied on personal networks", detail: "Finding what other teams were working on depended on knowing the right person." },
+              { label: "No content, no reason to return", detail: "Without a model for sustainable publishing, platforms launched empty and stayed that way." },
             ],
           },
           after: {
             heading: "After",
             items: [
-              "Eight domain communities active across the PLM organisation.",
-              "1,000+ employees reached.",
-              "Initiatives and expertise discoverable through the global hub.",
-              "Sustainable content production established beyond launch.",
+              { label: "Eight domain communities live", detail: "Every major PLM domain launched with its own space — owned, staffed, and active." },
+              { label: "2,000+ employees reached", detail: "The platform scaled across the full PLM organisation in the first rollout phase." },
+              { label: "Cross-domain knowledge discoverable", detail: "Initiatives, expertise, and domain reels surfaced through the global hub for the first time." },
+              { label: "Sustainable content production", detail: "A publishing framework that outlasted launch — content kept coming after the campaign ended." },
             ],
           },
         },

@@ -1,0 +1,666 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>PLM Collabspace — Global Hub</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            enterprise: {
+              50: '#f8fafc',
+              100: '#f1f5f9',
+              200: '#e2e8f0',
+              300: '#cbd5e1',
+              400: '#94a3b8',
+              600: '#475569',
+              800: '#1e293b',
+              900: '#0f172a',
+              accent: '#0284c7',
+              brand: '#9bafc4'
+            }
+          },
+          letterSpacing: { measured: '0.14em' }
+        }
+      }
+    }
+  </script>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Inter:wght@300;400;500;600;700&display=swap');
+    body { font-family: 'Inter', sans-serif; }
+    .font-mono { font-family: 'JetBrains Mono', monospace; }
+
+    /* Hide scrollbar on reel track */
+    .reel-track::-webkit-scrollbar { display: none; }
+    .reel-track { -ms-overflow-style: none; scrollbar-width: none; }
+
+    /* Reel card — near-white, cool-tinted, enterprise-grade */
+    .reel-bg {
+      background: linear-gradient(160deg, #f0f7fa 0%, #f7fbfd 55%, #eef5f8 100%);
+    }
+
+    /* Calendar event dot */
+    .event-dot { width: 5px; height: 5px; border-radius: 50%; display: inline-block; }
+
+    /* Nav tab row — no native scroll */
+    #tab-track { overflow: hidden; }
+  </style>
+</head>
+<body class="bg-slate-50 text-enterprise-900 antialiased min-h-screen selection:bg-enterprise-accent selection:text-white">
+
+  <!-- ═══ HEADER ═══ -->
+  <header class="relative overflow-hidden bg-gradient-to-r from-enterprise-900 via-slate-900 to-sky-950 border-b border-white/10 shadow-sm">
+    <div class="w-full max-w-7xl mx-auto px-6 sm:px-8 lg:px-10 h-28 relative z-10 flex items-center justify-between">
+      <div class="flex items-center gap-5">
+        <svg class="h-11 w-11 flex-shrink-0" viewBox="0 0 160 160" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <path d="M80 12 L148 80 L80 148 L12 80 Z" stroke="#9bafc4" stroke-width="6" stroke-linejoin="miter"/>
+          <path d="M50 123 L62 105" stroke="#9bafc4" stroke-width="6" stroke-linecap="square"/>
+          <path d="M74 88 L86 72" stroke="#9bafc4" stroke-width="6" stroke-linecap="square"/>
+          <path d="M98 55 L110 37" stroke="#9bafc4" stroke-width="6" stroke-linecap="square"/>
+          <path d="M50 53 V91 M50 53 H68 C76 53, 78 60, 78 67 C78 74, 73 79, 65 79 H50 M65 79 L78 92" stroke="#9bafc4" stroke-width="5.5" stroke-linecap="square" stroke-linejoin="miter"/>
+          <path d="M110 68 H100 C94 68, 92 72, 94 76 C96 81, 108 82, 110 88 C112 94, 106 99, 97 99 H85" stroke="#9bafc4" stroke-width="5.5" stroke-linecap="square" stroke-linejoin="miter"/>
+        </svg>
+        <div class="border-l border-white/10 pl-5">
+          <div class="flex items-center gap-3">
+            <div class="bg-enterprise-accent text-white font-mono text-[10px] px-2 py-1 rounded font-bold tracking-measured shadow-sm">PLM</div>
+            <h1 class="text-xl font-semibold tracking-measured text-white uppercase">COLLABSPACE</h1>
+          </div>
+          <p class="mt-1 text-sm text-slate-400 max-w-2xl font-light">The shared knowledge ecosystem connecting eight PLM domains across Rohde &amp; Schwarz.</p>
+        </div>
+      </div>
+      <div class="flex items-center gap-4">
+        <div class="hidden lg:block text-xs bg-slate-950/50 border border-white/10 text-slate-300 px-3 py-1.5 rounded-lg font-mono uppercase tracking-wider">
+          Cross-Functional Discovery Layer
+        </div>
+        <div class="flex items-center gap-2 text-slate-400 text-xs font-mono">
+          <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 opacity-80"></span>
+          <span>2,189 members</span>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- ═══ DOMAIN NAV — prev/next arrows, no scroll ═══ -->
+  <nav class="bg-white border-b border-enterprise-100 h-14">
+    <div class="w-full max-w-7xl mx-auto px-6 sm:px-8 lg:px-10 h-full flex items-center gap-2">
+
+      <!-- Prev arrow -->
+      <button id="tab-prev" aria-label="Previous domains"
+        class="flex-shrink-0 w-7 h-7 flex items-center justify-center rounded border border-enterprise-200 text-enterprise-400 hover:border-enterprise-accent hover:text-enterprise-accent transition-colors duration-150 disabled:opacity-30 disabled:pointer-events-none">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7"/>
+        </svg>
+      </button>
+
+      <!-- Tab viewport -->
+      <div class="flex-1 overflow-hidden">
+        <div id="tab-track" class="flex gap-2.5 transition-transform duration-300 ease-in-out will-change-transform">
+          <a data-tab class="flex-shrink-0 bg-enterprise-accent text-white border border-enterprise-accent text-xs font-medium px-4 py-2 rounded transition-colors duration-150 whitespace-nowrap" href="#">PLM</a>
+          <a data-tab class="flex-shrink-0 bg-white hover:bg-enterprise-accent hover:text-white border border-enterprise-200 text-enterprise-800 text-xs font-medium px-4 py-2 rounded transition-colors duration-150 whitespace-nowrap" href="#">Marketing</a>
+          <a data-tab class="flex-shrink-0 bg-white hover:bg-enterprise-accent hover:text-white border border-enterprise-200 text-enterprise-800 text-xs font-medium px-4 py-2 rounded transition-colors duration-150 whitespace-nowrap" href="#">Research</a>
+          <a data-tab class="flex-shrink-0 bg-white hover:bg-enterprise-accent hover:text-white border border-enterprise-200 text-enterprise-800 text-xs font-medium px-4 py-2 rounded transition-colors duration-150 whitespace-nowrap" href="#">Manufacturing</a>
+          <a data-tab class="flex-shrink-0 bg-white hover:bg-enterprise-accent hover:text-white border border-enterprise-200 text-enterprise-800 text-xs font-medium px-4 py-2 rounded transition-colors duration-150 whitespace-nowrap" href="#">Software Development</a>
+          <a data-tab class="flex-shrink-0 bg-white hover:bg-enterprise-accent hover:text-white border border-enterprise-200 text-enterprise-800 text-xs font-medium px-4 py-2 rounded transition-colors duration-150 whitespace-nowrap" href="#">Hardware Development</a>
+          <a data-tab class="flex-shrink-0 bg-white hover:bg-enterprise-accent hover:text-white border border-enterprise-200 text-enterprise-800 text-xs font-medium px-4 py-2 rounded transition-colors duration-150 whitespace-nowrap" href="#">Electrical Engineering</a>
+          <a data-tab class="flex-shrink-0 bg-white hover:bg-enterprise-accent hover:text-white border border-enterprise-200 text-enterprise-800 text-xs font-medium px-4 py-2 rounded transition-colors duration-150 whitespace-nowrap" href="#">Quality Management</a>
+        </div>
+      </div>
+
+      <!-- Next arrow -->
+      <button id="tab-next" aria-label="Next domains"
+        class="flex-shrink-0 w-7 h-7 flex items-center justify-center rounded border border-enterprise-200 text-enterprise-400 hover:border-enterprise-accent hover:text-enterprise-accent transition-colors duration-150 disabled:opacity-30 disabled:pointer-events-none">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/>
+        </svg>
+      </button>
+
+    </div>
+  </nav>
+
+  <!-- ═══ MAIN ═══ -->
+  <main class="w-full max-w-7xl mx-auto px-6 sm:px-8 lg:px-10 py-8">
+    <div class="grid grid-cols-1 lg:grid-cols-10 gap-10 items-start">
+
+      <!-- ── LEFT COLUMN ── -->
+      <section class="lg:col-span-6 space-y-6">
+
+        <!-- Featured Card -->
+        <div class="bg-slate-950 border border-slate-800 rounded-xl p-8 shadow-xl ring-1 ring-white/10 hover:shadow-2xl transition-shadow duration-200">
+          <div class="flex items-center justify-between border-b border-white/10 pb-4 mb-6">
+            <div class="flex items-center gap-2">
+              <span class="w-1.5 h-1.5 rounded-full bg-sky-400"></span>
+              <span class="text-[10px] font-mono font-bold tracking-widest text-slate-400 uppercase">Featured from the network</span>
+            </div>
+            <span class="text-[10px] font-mono text-slate-500 uppercase tracking-widest">47 views · across 3 domains</span>
+          </div>
+          <h2 class="text-3xl font-semibold text-white tracking-tight leading-tight max-w-2xl">How Research is approaching 6G antenna validation</h2>
+          <p class="mt-4 text-sm leading-7 text-slate-400 max-w-2xl">A cross-domain update from Research, Hardware Development, and Software Development showing how validation knowledge is becoming easier to discover beyond the originating team.</p>
+          <div class="mt-6 flex flex-wrap items-center gap-3">
+            <span class="text-xs bg-sky-400/10 text-sky-300 border border-sky-400/20 px-3 py-1.5 rounded font-medium">Research</span>
+            <span class="text-xs bg-cyan-400/10 text-cyan-300 border border-cyan-400/20 px-3 py-1.5 rounded font-medium">Hardware Dev</span>
+            <span class="text-xs bg-violet-400/10 text-violet-300 border border-violet-400/20 px-3 py-1.5 rounded font-medium">Software Dev</span>
+            <span class="ml-auto text-xs text-white font-semibold hover:underline cursor-pointer">Read more →</span>
+          </div>
+        </div>
+
+        <!-- Domain Reels -->
+        <div class="bg-white border border-enterprise-100 rounded-xl p-6 shadow-sm">
+          <div class="flex items-center justify-between border-b border-enterprise-100 pb-3 mb-5">
+            <h3 class="text-xs uppercase tracking-widest font-bold text-enterprise-600 font-mono">Domain Reels</h3>
+            <span class="text-[10px] font-mono text-enterprise-400 uppercase tracking-wider">6 reels indexed</span>
+          </div>
+          <div class="reel-track flex gap-4 overflow-x-auto pb-2">
+
+            <!-- Reel 1 -->
+            <div class="flex-shrink-0 w-32 border border-slate-200 rounded-lg overflow-hidden hover:border-slate-300 hover:shadow-sm transition-all duration-150 cursor-pointer group">
+              <div class="aspect-[9/16] reel-bg relative flex flex-col justify-between p-3">
+                <div class="flex items-center justify-between">
+                  <span class="text-[8px] font-mono font-bold text-sky-700 bg-white/70 border border-sky-200 px-1.5 py-0.5 rounded uppercase">PLM</span>
+                  <span class="text-[8px] font-mono text-sky-500">2:14</span>
+                </div>
+                <div class="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
+                  <div class="w-9 h-9 rounded-full bg-white/80 shadow-md flex items-center justify-center">
+                    <svg class="w-4 h-4 text-sky-600 ml-0.5" fill="currentColor" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+                  </div>
+                </div>
+                <div>
+                  <p class="text-[10px] font-semibold text-slate-800 leading-tight line-clamp-2">Avionics Test Arrays Injection</p>
+                  <p class="text-[9px] text-slate-500 mt-1 truncate">Dr. Anja Neumann</p>
+                  <p class="text-[8px] font-mono text-sky-600 font-bold mt-1">342 views</p>
+                </div>
+              </div>
+            </div>
+
+            <!-- Reel 2 -->
+            <div class="flex-shrink-0 w-32 border border-slate-200 rounded-lg overflow-hidden hover:border-slate-300 hover:shadow-sm transition-all duration-150 cursor-pointer group">
+              <div class="aspect-[9/16] reel-bg relative flex flex-col justify-between p-3">
+                <div class="flex items-center justify-between">
+                  <span class="text-[8px] font-mono font-bold text-emerald-700 bg-white/70 border border-emerald-200 px-1.5 py-0.5 rounded uppercase">MFG</span>
+                  <span class="text-[8px] font-mono text-sky-500">1:45</span>
+                </div>
+                <div class="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
+                  <div class="w-9 h-9 rounded-full bg-white/80 shadow-md flex items-center justify-center">
+                    <svg class="w-4 h-4 text-sky-600 ml-0.5" fill="currentColor" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+                  </div>
+                </div>
+                <div>
+                  <p class="text-[10px] font-semibold text-slate-800 leading-tight line-clamp-2">Silo Breakdown Strategies</p>
+                  <p class="text-[9px] text-slate-500 mt-1 truncate">Markus Keller</p>
+                  <p class="text-[8px] font-mono text-sky-600 font-bold mt-1">219 views</p>
+                </div>
+              </div>
+            </div>
+
+            <!-- Reel 3 -->
+            <div class="flex-shrink-0 w-32 border border-slate-200 rounded-lg overflow-hidden hover:border-slate-300 hover:shadow-sm transition-all duration-150 cursor-pointer group">
+              <div class="aspect-[9/16] reel-bg relative flex flex-col justify-between p-3">
+                <div class="flex items-center justify-between">
+                  <span class="text-[8px] font-mono font-bold text-amber-700 bg-white/70 border border-amber-200 px-1.5 py-0.5 rounded uppercase">MKT</span>
+                  <span class="text-[8px] font-mono text-sky-500">3:02</span>
+                </div>
+                <div class="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
+                  <div class="w-9 h-9 rounded-full bg-white/80 shadow-md flex items-center justify-center">
+                    <svg class="w-4 h-4 text-sky-600 ml-0.5" fill="currentColor" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+                  </div>
+                </div>
+                <div>
+                  <p class="text-[10px] font-semibold text-slate-800 leading-tight line-clamp-2">RF Telemetry Aggregation</p>
+                  <p class="text-[9px] text-slate-500 mt-1 truncate">Tobias Gruber</p>
+                  <p class="text-[8px] font-mono text-sky-600 font-bold mt-1">512 views</p>
+                </div>
+              </div>
+            </div>
+
+            <!-- Reel 4 -->
+            <div class="flex-shrink-0 w-32 border border-slate-200 rounded-lg overflow-hidden hover:border-slate-300 hover:shadow-sm transition-all duration-150 cursor-pointer group">
+              <div class="aspect-[9/16] reel-bg relative flex flex-col justify-between p-3">
+                <div class="flex items-center justify-between">
+                  <span class="text-[8px] font-mono font-bold text-violet-700 bg-white/70 border border-violet-200 px-1.5 py-0.5 rounded uppercase">R&D</span>
+                  <span class="text-[8px] font-mono text-sky-500">2:38</span>
+                </div>
+                <div class="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
+                  <div class="w-9 h-9 rounded-full bg-white/80 shadow-md flex items-center justify-center">
+                    <svg class="w-4 h-4 text-sky-600 ml-0.5" fill="currentColor" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+                  </div>
+                </div>
+                <div>
+                  <p class="text-[10px] font-semibold text-slate-800 leading-tight line-clamp-2">6G Antenna Validation Overview</p>
+                  <p class="text-[9px] text-slate-500 mt-1 truncate">Dr. Sarah Vance</p>
+                  <p class="text-[8px] font-mono text-sky-600 font-bold mt-1">401 views</p>
+                </div>
+              </div>
+            </div>
+
+            <!-- Reel 5 -->
+            <div class="flex-shrink-0 w-32 border border-slate-200 rounded-lg overflow-hidden hover:border-slate-300 hover:shadow-sm transition-all duration-150 cursor-pointer group">
+              <div class="aspect-[9/16] reel-bg relative flex flex-col justify-between p-3">
+                <div class="flex items-center justify-between">
+                  <span class="text-[8px] font-mono font-bold text-cyan-700 bg-white/70 border border-cyan-200 px-1.5 py-0.5 rounded uppercase">HW</span>
+                  <span class="text-[8px] font-mono text-sky-500">1:55</span>
+                </div>
+                <div class="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
+                  <div class="w-9 h-9 rounded-full bg-white/80 shadow-md flex items-center justify-center">
+                    <svg class="w-4 h-4 text-sky-600 ml-0.5" fill="currentColor" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+                  </div>
+                </div>
+                <div>
+                  <p class="text-[10px] font-semibold text-slate-800 leading-tight line-clamp-2">Node 06 Payload Validation</p>
+                  <p class="text-[9px] text-slate-500 mt-1 truncate">Erik Hoffmann</p>
+                  <p class="text-[8px] font-mono text-sky-600 font-bold mt-1">178 views</p>
+                </div>
+              </div>
+            </div>
+
+            <!-- Reel 6 -->
+            <div class="flex-shrink-0 w-32 border border-slate-200 rounded-lg overflow-hidden hover:border-slate-300 hover:shadow-sm transition-all duration-150 cursor-pointer group">
+              <div class="aspect-[9/16] reel-bg relative flex flex-col justify-between p-3">
+                <div class="flex items-center justify-between">
+                  <span class="text-[8px] font-mono font-bold text-rose-700 bg-white/70 border border-rose-200 px-1.5 py-0.5 rounded uppercase">QM</span>
+                  <span class="text-[8px] font-mono text-sky-500">2:20</span>
+                </div>
+                <div class="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
+                  <div class="w-9 h-9 rounded-full bg-white/80 shadow-md flex items-center justify-center">
+                    <svg class="w-4 h-4 text-sky-600 ml-0.5" fill="currentColor" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+                  </div>
+                </div>
+                <div>
+                  <p class="text-[10px] font-semibold text-slate-800 leading-tight line-clamp-2">Quality Gate Frameworks 2024</p>
+                  <p class="text-[9px] text-slate-500 mt-1 truncate">Lena Brandt</p>
+                  <p class="text-[8px] font-mono text-sky-600 font-bold mt-1">293 views</p>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+        <!-- Activity Feed -->
+        <div class="bg-white border border-enterprise-100 rounded-xl p-6 shadow-sm">
+          <div class="flex items-center justify-between border-b border-enterprise-100 pb-3 mb-2">
+            <h3 class="text-xs uppercase tracking-widest font-bold text-enterprise-600 font-mono">Network Activity</h3>
+            <span class="text-[10px] font-mono text-emerald-500 uppercase tracking-wider font-bold">● Live</span>
+          </div>
+          <div class="divide-y divide-enterprise-100">
+
+            <div class="py-3.5 flex items-start gap-4">
+              <img src="https://i.pravatar.cc/150?img=47" class="w-8 h-8 rounded-full border border-enterprise-200 flex-shrink-0 mt-0.5 object-cover" alt="Dr. Anja Neumann" />
+              <div class="flex-1 min-w-0">
+                <div class="flex items-center gap-2 flex-wrap">
+                  <span class="text-sm font-semibold text-enterprise-900">Dr. Anja Neumann</span>
+                  <span class="text-[9px] font-mono font-bold text-sky-600 bg-sky-50 border border-sky-100 px-1.5 py-0.5 rounded uppercase">PLM</span>
+                </div>
+                <p class="text-sm text-enterprise-600 mt-0.5 leading-snug">Uploaded payload validation data package for the avionics test array series.</p>
+              </div>
+              <span class="text-[10px] font-mono text-enterprise-400 flex-shrink-0">08:42</span>
+            </div>
+
+            <div class="py-3.5 flex items-start gap-4">
+              <img src="https://i.pravatar.cc/150?img=53" class="w-8 h-8 rounded-full border border-enterprise-200 flex-shrink-0 mt-0.5 object-cover" alt="Tobias Gruber" />
+              <div class="flex-1 min-w-0">
+                <div class="flex items-center gap-2 flex-wrap">
+                  <span class="text-sm font-semibold text-enterprise-900">Tobias Gruber</span>
+                  <span class="text-[9px] font-mono font-bold text-amber-600 bg-amber-50 border border-amber-100 px-1.5 py-0.5 rounded uppercase">Marketing</span>
+                </div>
+                <p class="text-sm text-enterprise-600 mt-0.5 leading-snug">Reel #048 encoded and indexed across all cross-functional domains.</p>
+              </div>
+              <span class="text-[10px] font-mono text-enterprise-400 flex-shrink-0">08:15</span>
+            </div>
+
+            <div class="py-3.5 flex items-start gap-4">
+              <img src="https://i.pravatar.cc/150?img=60" class="w-8 h-8 rounded-full border border-enterprise-200 flex-shrink-0 mt-0.5 object-cover" alt="Markus Keller" />
+              <div class="flex-1 min-w-0">
+                <div class="flex items-center gap-2 flex-wrap">
+                  <span class="text-sm font-semibold text-enterprise-900">Markus Keller</span>
+                  <span class="text-[9px] font-mono font-bold text-emerald-600 bg-emerald-50 border border-emerald-100 px-1.5 py-0.5 rounded uppercase">Manufacturing</span>
+                </div>
+                <p class="text-sm text-enterprise-600 mt-0.5 leading-snug">Updated the cross-silo pipeline documentation and shared access with the PLM core team.</p>
+              </div>
+              <span class="text-[10px] font-mono text-enterprise-400 flex-shrink-0">07:58</span>
+            </div>
+
+            <div class="py-3.5 flex items-start gap-4">
+              <img src="https://i.pravatar.cc/150?img=68" class="w-8 h-8 rounded-full border border-enterprise-200 flex-shrink-0 mt-0.5 object-cover" alt="Jürgen Richter" />
+              <div class="flex-1 min-w-0">
+                <div class="flex items-center gap-2 flex-wrap">
+                  <span class="text-sm font-semibold text-enterprise-900">Jürgen Richter</span>
+                  <span class="text-[9px] font-mono font-bold text-violet-600 bg-violet-50 border border-violet-100 px-1.5 py-0.5 rounded uppercase">Software Dev</span>
+                </div>
+                <p class="text-sm text-enterprise-600 mt-0.5 leading-snug">Linked telemetry mapping profiles to core layer schemas — now discoverable from the global hub.</p>
+              </div>
+              <span class="text-[10px] font-mono text-enterprise-400 flex-shrink-0">06:21</span>
+            </div>
+
+            <div class="py-3.5 flex items-start gap-4">
+              <img src="https://i.pravatar.cc/150?img=20" class="w-8 h-8 rounded-full border border-enterprise-200 flex-shrink-0 mt-0.5 object-cover" alt="Dr. Sarah Vance" />
+              <div class="flex-1 min-w-0">
+                <div class="flex items-center gap-2 flex-wrap">
+                  <span class="text-sm font-semibold text-enterprise-900">Dr. Sarah Vance</span>
+                  <span class="text-[9px] font-mono font-bold text-sky-600 bg-sky-50 border border-sky-100 px-1.5 py-0.5 rounded uppercase">Research</span>
+                </div>
+                <p class="text-sm text-enterprise-600 mt-0.5 leading-snug">Published the 6G antenna validation overview reel — 401 views in 12 hours.</p>
+              </div>
+              <span class="text-[10px] font-mono text-enterprise-400 flex-shrink-0">05:11</span>
+            </div>
+
+          </div>
+        </div>
+
+      </section>
+
+      <!-- ── RIGHT COLUMN ── -->
+      <aside class="lg:col-span-4 space-y-6">
+
+        <!-- Head of Department -->
+        <div class="bg-white border border-enterprise-100 border-t-[3px] border-t-sky-500 rounded-xl p-8 shadow-sm hover:shadow-md transition-shadow duration-200">
+          <div class="border-b border-enterprise-100 pb-4 mb-6">
+            <h2 class="text-xs uppercase tracking-widest font-bold text-enterprise-600 font-mono">Head of Department</h2>
+          </div>
+          <div class="flex items-start gap-5">
+            <img src="/case-studies/collabspace/klaus-weber.jpg.png" alt="Dr. Klaus Weber" class="w-24 h-24 rounded-xl border-2 border-enterprise-200 object-cover shadow-md bg-slate-100 flex-shrink-0" />
+            <div class="space-y-2 min-w-0">
+              <h3 class="text-[18px] font-bold text-[#1a2332] leading-tight">Dr. Klaus Weber</h3>
+              <p class="text-[12px] font-semibold uppercase tracking-wider text-sky-600 leading-snug">VP, Product Lifecycle Management</p>
+              <p class="text-[13px] font-normal leading-[1.6] text-slate-600">Platform sponsor and governance lead for PLM Collabspace. Responsible for cross-domain alignment and strategic direction.</p>
+              <div class="pt-1 space-y-1 text-[11px] font-mono text-sky-600">
+                <div>+49 89 4129-7823</div>
+                <a href="mailto:k.weber@rohde-schwarz.com" class="text-sky-600 hover:underline">k.weber@rohde-schwarz.com</a>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Domain Leads -->
+        <div class="bg-white border border-enterprise-100 rounded-xl p-8 shadow-sm hover:shadow-md transition-shadow duration-200">
+          <div class="border-b border-enterprise-100 pb-4 mb-6">
+            <h2 class="text-xs uppercase tracking-widest font-bold text-enterprise-600 font-mono">Domain Leads</h2>
+          </div>
+          <div class="divide-y divide-enterprise-100">
+
+            <div class="py-4 flex items-center justify-between gap-4 hover:bg-slate-50 transition-all duration-200 rounded-md px-1">
+              <div class="flex items-center gap-3 min-w-0">
+                <img src="https://i.pravatar.cc/150?img=47" alt="Dr. Anja Neumann" class="w-10 h-10 rounded-full border border-enterprise-200 shadow-sm hover:ring-2 hover:ring-enterprise-accent hover:ring-offset-1 transition-all object-cover" />
+                <div class="min-w-0">
+                  <div class="text-sm font-bold text-enterprise-900 truncate">Dr. Anja Neumann</div>
+                  <div class="text-xs text-enterprise-400 truncate">PLM Domain Lead</div>
+                  <a href="mailto:a.neumann@rohde-schwarz.com" class="text-[10px] font-mono text-sky-600 hover:underline truncate block">a.neumann@rohde-schwarz.com</a>
+                </div>
+              </div>
+              <span class="text-[9px] font-mono text-enterprise-accent bg-sky-50 px-2 py-1 rounded border border-sky-100 font-bold flex-shrink-0">PLM</span>
+            </div>
+
+            <div class="py-4 flex items-center justify-between gap-4 hover:bg-slate-50 transition-all duration-200 rounded-md px-1">
+              <div class="flex items-center gap-3 min-w-0">
+                <img src="https://i.pravatar.cc/150?img=53" alt="Tobias Gruber" class="w-10 h-10 rounded-full border border-enterprise-200 shadow-sm hover:ring-2 hover:ring-enterprise-accent hover:ring-offset-1 transition-all object-cover" />
+                <div class="min-w-0">
+                  <div class="text-sm font-bold text-enterprise-900 truncate">Tobias Gruber</div>
+                  <div class="text-xs text-enterprise-400 truncate">Marketing Domain Lead</div>
+                  <a href="mailto:t.gruber@rohde-schwarz.com" class="text-[10px] font-mono text-sky-600 hover:underline truncate block">t.gruber@rohde-schwarz.com</a>
+                </div>
+              </div>
+              <span class="text-[9px] font-mono text-amber-600 bg-amber-50 px-2 py-1 rounded border border-amber-100 font-bold flex-shrink-0">Marketing</span>
+            </div>
+
+            <div class="py-4 flex items-center justify-between gap-4 hover:bg-slate-50 transition-all duration-200 rounded-md px-1">
+              <div class="flex items-center gap-3 min-w-0">
+                <img src="https://i.pravatar.cc/150?img=20" alt="Dr. Sarah Vance" class="w-10 h-10 rounded-full border border-enterprise-200 shadow-sm hover:ring-2 hover:ring-enterprise-accent hover:ring-offset-1 transition-all object-cover" />
+                <div class="min-w-0">
+                  <div class="text-sm font-bold text-enterprise-900 truncate">Dr. Sarah Vance</div>
+                  <div class="text-xs text-enterprise-400 truncate">Research Domain Lead</div>
+                  <a href="mailto:s.vance@rohde-schwarz.com" class="text-[10px] font-mono text-sky-600 hover:underline truncate block">s.vance@rohde-schwarz.com</a>
+                </div>
+              </div>
+              <span class="text-[9px] font-mono text-sky-600 bg-sky-50 px-2 py-1 rounded border border-sky-100 font-bold flex-shrink-0">Research</span>
+            </div>
+
+            <div class="py-4 flex items-center justify-between gap-4 hover:bg-slate-50 transition-all duration-200 rounded-md px-1">
+              <div class="flex items-center gap-3 min-w-0">
+                <img src="https://i.pravatar.cc/150?img=60" alt="Markus Keller" class="w-10 h-10 rounded-full border border-enterprise-200 shadow-sm hover:ring-2 hover:ring-enterprise-accent hover:ring-offset-1 transition-all object-cover" />
+                <div class="min-w-0">
+                  <div class="text-sm font-bold text-enterprise-900 truncate">Markus Keller</div>
+                  <div class="text-xs text-enterprise-400 truncate">Manufacturing Domain Lead</div>
+                  <a href="mailto:m.keller@rohde-schwarz.com" class="text-[10px] font-mono text-sky-600 hover:underline truncate block">m.keller@rohde-schwarz.com</a>
+                </div>
+              </div>
+              <span class="text-[9px] font-mono text-emerald-600 bg-emerald-50 px-2 py-1 rounded border border-emerald-100 font-bold flex-shrink-0">Mfg</span>
+            </div>
+
+            <div class="py-4 flex items-center justify-between gap-4 hover:bg-slate-50 transition-all duration-200 rounded-md px-1">
+              <div class="flex items-center gap-3 min-w-0">
+                <img src="https://i.pravatar.cc/150?img=68" alt="Jürgen Richter" class="w-10 h-10 rounded-full border border-enterprise-200 shadow-sm hover:ring-2 hover:ring-enterprise-accent hover:ring-offset-1 transition-all object-cover" />
+                <div class="min-w-0">
+                  <div class="text-sm font-bold text-enterprise-900 truncate">Jürgen Richter</div>
+                  <div class="text-xs text-enterprise-400 truncate">Software Dev Domain Lead</div>
+                  <a href="mailto:j.richter@rohde-schwarz.com" class="text-[10px] font-mono text-sky-600 hover:underline truncate block">j.richter@rohde-schwarz.com</a>
+                </div>
+              </div>
+              <span class="text-[9px] font-mono text-violet-600 bg-violet-50 px-2 py-1 rounded border border-violet-100 font-bold flex-shrink-0">SW Dev</span>
+            </div>
+
+          </div>
+          <div class="pt-4 mt-2 text-center border-t border-enterprise-100">
+            <span class="text-[10px] text-enterprise-400 font-mono uppercase tracking-widest font-medium">3 further domain leads active</span>
+          </div>
+        </div>
+
+        <!-- ── CALENDAR ── -->
+        <div class="bg-white border border-enterprise-100 rounded-xl p-6 shadow-sm hover:shadow-md transition-shadow duration-200">
+          <div class="border-b border-enterprise-100 pb-3 mb-4">
+            <h2 class="text-xs uppercase tracking-widest font-bold text-enterprise-600 font-mono">Upcoming Events</h2>
+          </div>
+
+          <!-- Month header -->
+          <div class="flex items-center justify-between mb-3">
+            <span class="text-sm font-bold text-enterprise-900">June 2026</span>
+            <div class="flex items-center gap-3 text-[10px] font-mono text-enterprise-400">
+              <span class="flex items-center gap-1"><span class="event-dot bg-sky-500"></span> Broadcast</span>
+              <span class="flex items-center gap-1"><span class="event-dot bg-amber-400"></span> Workshop</span>
+              <span class="flex items-center gap-1"><span class="event-dot bg-emerald-500"></span> Review</span>
+            </div>
+          </div>
+
+          <!-- Day labels -->
+          <div class="grid grid-cols-7 mb-1">
+            <div class="text-center text-[9px] font-mono font-bold text-enterprise-400 uppercase py-1">M</div>
+            <div class="text-center text-[9px] font-mono font-bold text-enterprise-400 uppercase py-1">T</div>
+            <div class="text-center text-[9px] font-mono font-bold text-enterprise-400 uppercase py-1">W</div>
+            <div class="text-center text-[9px] font-mono font-bold text-enterprise-400 uppercase py-1">T</div>
+            <div class="text-center text-[9px] font-mono font-bold text-enterprise-400 uppercase py-1">F</div>
+            <div class="text-center text-[9px] font-mono font-bold text-enterprise-400 uppercase py-1">S</div>
+            <div class="text-center text-[9px] font-mono font-bold text-enterprise-300 uppercase py-1">S</div>
+          </div>
+
+          <!-- Calendar grid — June 2026 starts Monday -->
+          <div class="grid grid-cols-7 gap-y-1" id="cal-grid">
+            <!-- Row 1 -->
+            <div class="cal-day">1</div>
+            <div class="cal-day">2</div>
+            <div class="cal-day">3</div>
+            <div class="cal-day">4</div>
+            <div class="cal-day">5</div>
+            <div class="cal-day cal-weekend">6</div>
+            <div class="cal-day cal-weekend">7</div>
+            <!-- Row 2 -->
+            <div class="cal-day">8</div>
+            <div class="cal-day">9</div>
+            <div class="cal-day">10</div>
+            <div class="cal-day">11</div>
+            <div class="cal-day cal-today">12</div>
+            <div class="cal-day cal-weekend">13</div>
+            <div class="cal-day cal-weekend">14</div>
+            <!-- Row 3 -->
+            <div class="cal-day">15</div>
+            <div class="cal-day cal-event-broadcast" title="Cross-domain broadcast: Research × HW Dev">16</div>
+            <div class="cal-day">17</div>
+            <div class="cal-day cal-event-workshop" title="Ownership workshop — all domain leads">18</div>
+            <div class="cal-day">19</div>
+            <div class="cal-day cal-weekend">20</div>
+            <div class="cal-day cal-weekend">21</div>
+            <!-- Row 4 -->
+            <div class="cal-day">22</div>
+            <div class="cal-day">23</div>
+            <div class="cal-day cal-event-review" title="Q2 content review — PLM Core">24</div>
+            <div class="cal-day">25</div>
+            <div class="cal-day cal-event-broadcast" title="Manufacturing reel premiere">26</div>
+            <div class="cal-day cal-weekend">27</div>
+            <div class="cal-day cal-weekend">28</div>
+            <!-- Row 5 -->
+            <div class="cal-day">29</div>
+            <div class="cal-day">30</div>
+            <div class="cal-day cal-empty"></div>
+            <div class="cal-day cal-empty"></div>
+            <div class="cal-day cal-empty"></div>
+            <div class="cal-day cal-empty"></div>
+            <div class="cal-day cal-empty"></div>
+          </div>
+
+          <!-- Upcoming event list -->
+          <div class="mt-4 pt-4 border-t border-enterprise-100 space-y-2.5">
+            <div class="flex items-start gap-3">
+              <span class="event-dot bg-sky-500 mt-1.5 flex-shrink-0"></span>
+              <div>
+                <p class="text-xs font-semibold text-enterprise-900">Jun 16 — Cross-domain broadcast</p>
+                <p class="text-[10px] text-enterprise-400">Research × Hardware Dev · 14:00</p>
+              </div>
+            </div>
+            <div class="flex items-start gap-3">
+              <span class="event-dot bg-amber-400 mt-1.5 flex-shrink-0"></span>
+              <div>
+                <p class="text-xs font-semibold text-enterprise-900">Jun 18 — Ownership workshop</p>
+                <p class="text-[10px] text-enterprise-400">All domain leads · 10:00–12:00</p>
+              </div>
+            </div>
+            <div class="flex items-start gap-3">
+              <span class="event-dot bg-emerald-500 mt-1.5 flex-shrink-0"></span>
+              <div>
+                <p class="text-xs font-semibold text-enterprise-900">Jun 24 — Q2 content review</p>
+                <p class="text-[10px] text-enterprise-400">PLM Core · 09:00</p>
+              </div>
+            </div>
+            <div class="flex items-start gap-3">
+              <span class="event-dot bg-sky-500 mt-1.5 flex-shrink-0"></span>
+              <div>
+                <p class="text-xs font-semibold text-enterprise-900">Jun 26 — Manufacturing reel premiere</p>
+                <p class="text-[10px] text-enterprise-400">Markus Keller · 15:30</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </aside>
+    </div>
+  </main>
+
+  <style>
+    /* Calendar day cells */
+    .cal-day {
+      text-align: center;
+      font-size: 11px;
+      font-family: 'JetBrains Mono', monospace;
+      color: #475569;
+      padding: 4px 2px;
+      border-radius: 6px;
+      cursor: default;
+      position: relative;
+      line-height: 1.6;
+    }
+    .cal-weekend { color: #94a3b8; }
+    .cal-empty { color: transparent; pointer-events: none; }
+    .cal-today {
+      background: #0284c7;
+      color: white;
+      font-weight: 700;
+      border-radius: 6px;
+    }
+    .cal-event-broadcast {
+      font-weight: 700;
+      color: #0284c7;
+      background: #e0f2fe;
+      border-radius: 6px;
+    }
+    .cal-event-broadcast::after {
+      content: '';
+      display: block;
+      width: 4px; height: 4px;
+      border-radius: 50%;
+      background: #0284c7;
+      margin: 1px auto 0;
+    }
+    .cal-event-workshop {
+      font-weight: 700;
+      color: #92400e;
+      background: #fef3c7;
+      border-radius: 6px;
+    }
+    .cal-event-workshop::after {
+      content: '';
+      display: block;
+      width: 4px; height: 4px;
+      border-radius: 50%;
+      background: #f59e0b;
+      margin: 1px auto 0;
+    }
+    .cal-event-review {
+      font-weight: 700;
+      color: #065f46;
+      background: #d1fae5;
+      border-radius: 6px;
+    }
+    .cal-event-review::after {
+      content: '';
+      display: block;
+      width: 4px; height: 4px;
+      border-radius: 50%;
+      background: #10b981;
+      margin: 1px auto 0;
+    }
+  </style>
+
+  <script>
+    // ── Domain tab prev/next arrow navigation ──
+    const track = document.getElementById('tab-track');
+    const prevBtn = document.getElementById('tab-prev');
+    const nextBtn = document.getElementById('tab-next');
+    const tabs = Array.from(track.querySelectorAll('[data-tab]'));
+
+    let offset = 0; // how many tabs are shifted left
+
+    function getVisibleCount() {
+      const viewportW = track.parentElement.offsetWidth;
+      let used = 0, count = 0;
+      for (const tab of tabs) {
+        const w = tab.offsetWidth + 10; // gap-2.5 ≈ 10px
+        if (used + w > viewportW) break;
+        used += w;
+        count++;
+      }
+      return Math.max(count, 1);
+    }
+
+    function applyOffset() {
+      // Shift track by summing widths of hidden tabs
+      let shift = 0;
+      for (let i = 0; i < offset; i++) {
+        shift += tabs[i].offsetWidth + 10;
+      }
+      track.style.transform = `translateX(-${shift}px)`;
+      prevBtn.disabled = offset === 0;
+      nextBtn.disabled = offset >= tabs.length - getVisibleCount();
+    }
+
+    prevBtn.addEventListener('click', () => {
+      if (offset > 0) { offset--; applyOffset(); }
+    });
+
+    nextBtn.addEventListener('click', () => {
+      if (offset < tabs.length - getVisibleCount()) { offset++; applyOffset(); }
+    });
+
+    window.addEventListener('resize', () => { offset = 0; applyOffset(); });
+    applyOffset();
+  </script>
+
+</body>
+</html>
