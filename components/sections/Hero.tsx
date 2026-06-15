@@ -1,6 +1,6 @@
 "use client";
 
-import { ArrowDown, DownloadSimple, MapPin } from "@phosphor-icons/react";
+import { ArrowDown, MapPin } from "@phosphor-icons/react";
 import { motion, useReducedMotion } from "framer-motion";
 import { useEffect, useRef, useState } from "react";
 
@@ -699,15 +699,6 @@ export default function Hero() {
               View work
               <ArrowDown size={14} weight="bold" aria-hidden="true" />
             </button>
-            <a
-              href="/resume.pdf"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex min-h-[44px] items-center gap-2 rounded-full border border-[#E6E3DD] px-5 py-3 text-sm font-medium text-[#6A6764] transition-all duration-200 hover:border-[#C07B50] hover:text-[#18171A]"
-            >
-              Resume
-              <DownloadSimple size={14} weight="bold" aria-hidden="true" />
-            </a>
           </motion.div>
 
           <SignalPanel />

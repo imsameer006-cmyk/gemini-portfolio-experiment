@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { DownloadSimple, LinkedinLogo } from "@phosphor-icons/react";
 
 const links = [
   { label: "Work", href: "#work" },
@@ -125,12 +126,24 @@ export default function Nav() {
           </ul>
 
           {/* CTA — flex-1 + justify-end to balance the wordmark */}
-          <div className="flex-1 flex justify-end">
+          <div className="flex-1 flex items-center justify-end gap-3">
             <a
-              href="mailto:imsameer006@gmail.com"
+              href="/Sameer-Gautam-Resume.pdf"
+              target="_blank"
+              rel="noopener noreferrer"
               className="hidden md:inline-flex items-center gap-1.5 text-sm font-medium text-[#18171A] border border-[#E6E3DD] rounded-full px-4 py-1.5 hover:border-[#C07B50] hover:text-[#C07B50] transition-all duration-200"
             >
-              Get in touch
+              Resume
+              <DownloadSimple size={12} weight="bold" aria-hidden="true" />
+            </a>
+            <a
+              href="https://www.linkedin.com/in/uxd-sameer/"
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="LinkedIn profile"
+              className="hidden md:inline-flex text-[#1C1A16]/50 hover:text-[#C07B50] transition-colors duration-200"
+            >
+              <LinkedinLogo size={18} weight="fill" aria-hidden="true" />
             </a>
 
             {/* Mobile menu toggle */}
@@ -187,10 +200,13 @@ export default function Nav() {
           </ul>
           <div className="mt-auto px-6 pb-12">
             <a
-              href="mailto:imsameer006@gmail.com"
-              className="inline-flex items-center text-sm text-[#6A6764] hover:text-[#C07B50] transition-colors duration-200"
+              href="/Sameer-Gautam-Resume.pdf"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-2 text-sm text-[#6A6764] hover:text-[#C07B50] transition-colors duration-200"
             >
-              imsameer006@gmail.com
+              Resume
+              <DownloadSimple size={13} weight="bold" aria-hidden="true" />
             </a>
           </div>
         </div>

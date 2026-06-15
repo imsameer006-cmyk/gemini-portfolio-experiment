@@ -16,39 +16,49 @@ export default function About() {
   return (
     <section id="about" className="px-6 pb-24 pt-0 md:px-10 md:pb-32 md:pt-0">
       <div className="mx-auto max-w-[1280px] border-t border-[#E6E3DD] pt-16">
-        <div className="grid gap-12 lg:grid-cols-[0.72fr_1.28fr] lg:gap-20">
+        <p className="mb-10 text-xs font-medium uppercase tracking-widest text-[#9C9A95]">
+          About
+        </p>
+
+        <div className="grid gap-12 lg:grid-cols-[0.85fr_1.15fr] lg:items-stretch lg:gap-20">
+          {/* LEFT — image stretches to full content height */}
           <motion.div
+            className="lg:h-full"
             initial={{ opacity: 0, y: 12 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.45, ease: [0.16, 1, 0.3, 1] }}
           >
-            <p className="mb-3 text-xs font-medium uppercase tracking-widest text-[#9C9A95]">
-              About
-            </p>
-            <h2 className="font-[family-name:var(--font-instrument-serif)] text-[clamp(2rem,4.5vw,3.5rem)] italic leading-tight text-[#18171A]">
-              The designer behind the systems.
-            </h2>
-            <div className="mt-10 max-w-[360px] overflow-hidden rounded-lg border border-[#E6E3DD] bg-[#F4F1EC]">
+            <div className="relative aspect-[4/5] overflow-hidden rounded-lg border border-[#E6E3DD] bg-[#F4F1EC] lg:aspect-auto lg:h-full">
               <Image
-                src="/about-portrait.png"
+                src="/about-portrait-2026.jpeg"
                 alt="Sameer Gautam seated in a workspace"
-                width={720}
-                height={900}
-                sizes="(min-width: 1024px) 360px, 100vw"
-                className="aspect-[4/5] h-auto w-full object-cover object-[50%_35%]"
+                fill
+                sizes="(min-width: 1024px) 42vw, 100vw"
+                className="object-cover object-[60%_11%] scale-[1.36] origin-[60%_11%]"
                 priority={false}
               />
             </div>
           </motion.div>
 
-          <div className="lg:mt-[188px] lg:flex lg:min-h-[450px] lg:flex-col lg:justify-center">
+          {/* RIGHT — headline at top, body below */}
+          <div>
+            <motion.h2
+              initial={{ opacity: 0, y: 12 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.45, ease: [0.16, 1, 0.3, 1] }}
+              className="font-[family-name:var(--font-instrument-serif)] text-[clamp(2rem,4.5vw,3.5rem)] italic leading-tight text-[#18171A]"
+            >
+              The designer behind the systems.
+            </motion.h2>
+
             <motion.p
               initial={{ opacity: 0, y: 16 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.55, delay: 0.08, ease: [0.16, 1, 0.3, 1] }}
-              className="max-w-[760px] text-lg leading-relaxed text-[#3A3836] md:text-xl"
+              className="mt-10 max-w-[760px] text-lg leading-relaxed text-[#3A3836] md:text-xl"
             >
               Product Designer with 6+ years of experience designing enterprise products,
               internal tools, D2C experiences, and complex workflow systems. Drawing on 10+
