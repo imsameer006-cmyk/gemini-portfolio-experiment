@@ -99,6 +99,7 @@ export default function Nav() {
           <div className="flex-1">
             <Link
               href="/"
+              onClick={() => setMobileOpen(false)}
               className="font-medium tracking-tight text-sm transition-colors duration-200"
             >
               <span className="text-[#1C1A16]">Sameer Gautam</span>
@@ -198,15 +199,24 @@ export default function Nav() {
               </li>
             ))}
           </ul>
-          <div className="mt-auto px-6 pb-12">
+          <div className="mt-auto border-t border-[#E6E3DD] px-6 py-8 flex items-center gap-3">
             <a
               href="/Sameer-Gautam-Resume.pdf"
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 text-sm text-[#6A6764] hover:text-[#C07B50] transition-colors duration-200"
+              className="inline-flex items-center gap-1.5 text-sm font-medium text-[#18171A] border border-[#E6E3DD] rounded-full px-4 py-1.5 hover:border-[#C07B50] hover:text-[#C07B50] transition-all duration-200"
             >
               Resume
-              <DownloadSimple size={13} weight="bold" aria-hidden="true" />
+              <DownloadSimple size={12} weight="bold" aria-hidden="true" />
+            </a>
+            <a
+              href="https://www.linkedin.com/in/uxd-sameer/"
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="LinkedIn profile"
+              className="text-[#1C1A16]/50 hover:text-[#C07B50] transition-colors duration-200"
+            >
+              <LinkedinLogo size={18} weight="fill" aria-hidden="true" />
             </a>
           </div>
         </div>
