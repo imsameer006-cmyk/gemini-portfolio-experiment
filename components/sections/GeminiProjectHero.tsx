@@ -437,28 +437,6 @@ function ReactiveMeshNetwork({
                     transition={{ duration: 0.3, ease: EASE }}
                     style={{ transformOrigin: `${node.x}px ${node.y}px` }}
                   />
-                ) : node.shape === "flag" ? (
-                  <motion.g
-                    pointerEvents="none"
-                    animate={{ scale: nodeScale }}
-                    transition={{ duration: 0.3, ease: EASE }}
-                    style={{ transformOrigin: `${node.x}px ${node.y}px` }}
-                  >
-                    <path
-                      d={`M ${node.x - 5} ${node.y + 7} V ${node.y - 7}`}
-                      fill="none"
-                      stroke={finalComplete ? "#BFA391" : "#9E7E6B"}
-                      strokeWidth={1.5}
-                      strokeLinecap="square"
-                    />
-                    <path
-                      d={`M ${node.x - 5} ${node.y - 7} H ${node.x + 6} L ${node.x + 2} ${node.y - 2} H ${node.x - 5} Z`}
-                      fill={finalComplete ? "#BFA391" : active ? "#9E7E6B" : "#F9F8F5"}
-                      stroke={finalComplete ? "#BFA391" : "#9E7E6B"}
-                      strokeWidth={1.5}
-                      strokeLinejoin="miter"
-                    />
-                  </motion.g>
                 ) : node.shape === "completion" ? (
                   <motion.g
                     pointerEvents="none"

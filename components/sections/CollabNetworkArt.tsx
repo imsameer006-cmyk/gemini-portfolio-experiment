@@ -1,446 +1,327 @@
 "use client";
 
-import { motion } from "framer-motion";
-import { useState, useCallback, useEffect } from "react";
+import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
+import { useMemo, useState } from "react";
 
-const EASE: [number, number, number, number] = [0.25, 0.46, 0.45, 0.94];
+const MATRIX_COLS = 24;
+const MATRIX_ROWS = 14;
+const CANVAS_WIDTH = 1280;
+const CANVAS_HEIGHT = 700;
 
-// ─── NODE DATA ───────────────────────────────────────────────────────────────
-const CENTER = { x: 940, y: 340 };
-const R1 = 120;
-const R2 = 178; // 120 + 58 (previously 192, reducing distance by 20%)
+const EASE = [0.16, 1, 0.3, 1] as const;
+const RING_COUNT = 5;
+const FIRST_RING_NODES = 8;
+const FIRST_RING_RADIUS = 94.6;
+const RING_RADIUS_GROWTH = 1.56;
+const ART_OFFSET_X = 40;
 
-const calculatePos = (angleDeg: number, radius: number) => {
-  const angleRad = (angleDeg * Math.PI) / 180;
-  return {
-    x: CENTER.x + radius * Math.cos(angleRad),
-    y: CENTER.y + radius * Math.sin(angleRad),
-  };
+const getGridCoords = (col: number, row: number) => ({
+  x: (col / MATRIX_COLS) * CANVAS_WIDTH,
+  y: (row / MATRIX_ROWS) * CANVAS_HEIGHT,
+});
+
+const BASE_CENTER = getGridCoords(17.625, 6.8);
+export const COLLAB_ART_CENTER = { x: BASE_CENTER.x + ART_OFFSET_X, y: BASE_CENTER.y };
+
+type RingNode = {
+  id: string;
+  count: number;
+  index: number;
+  ring: number;
+  x: number;
+  y: number;
 };
 
-// Ring 1: 5 nodes at 72 deg spacing
-const RING1_NODES = Array.from({ length: 5 }).map((_, i) => ({
-  id: i + 1,
-  ...calculatePos(-90 + i * 72, R1),
-  ring: 1,
-}));
-
-// Ring 2: 10 nodes at 36 deg spacing, offset by 18 deg to flank Ring 1 nodes
-const RING2_NODES = Array.from({ length: 10 }).map((_, i) => ({
-  id: i + 6,
-  ...calculatePos(-90 + 18 + i * 36, R2),
-  ring: 2,
-}));
-
-const CENTER_NODE = { id: 0, ...CENTER, ring: 0 };
-const ALL_NODES = [CENTER_NODE, ...RING1_NODES, ...RING2_NODES];
-
-// Connections: Center->Ring1, Ring1->Ring2 (strictly radial)
-const CONNECTIONS = [
-  // Center -> Ring 1 (Sequential around the circle)
-  ...RING1_NODES.map((n, i) => ({ from: 0, to: n.id, layer: 0 as const, delay: 0.1 })),
-
-  // Ring 1 -> Ring 2 (Strictly radial fan, symmetrically aligned)
-  ...RING1_NODES.flatMap((n, i) => [
-    // Connect to the two nodes in Ring 2 that are symmetrical around the radial axis
-    { from: n.id, to: RING2_NODES[(i * 2 + 9) % 10].id, layer: 1 as const, delay: 0.3 },
-    { from: n.id, to: RING2_NODES[(i * 2) % 10].id, layer: 1 as const, delay: 0.3 },
-  ]),
-];
-
-// ─── AMBIENT DOT FIELD ───────────────────────────────────────────────────────
-const AMBIENT_DOTS = [
-  { x: 870, y: 180 }, { x: 1010, y: 165 }, { x: 1090, y: 210 },
-  { x: 1130, y: 350 }, { x: 1120, y: 460 }, { x: 1010, y: 545 },
-  { x: 890, y: 535 }, { x: 775, y: 470 }, { x: 710, y: 360 },
-  { x: 720, y: 220 }, { x: 830, y: 150 }, { x: 1000, y: 90  },
-  { x: 1140, y: 170 }, { x: 1190, y: 280 }, { x: 1200, y: 440 },
-  { x: 1090, y: 570 }, { x: 830, y: 580 }, { x: 690, y: 500 },
-  { x: 650, y: 320 }, { x: 700, y: 170 }, { x: 940, y: 60  },
-  { x: 1060, y: 80  }, { x: 1170, y: 100 }, { x: 1230, y: 340 },
-  { x: 960,  y: 620 }, { x: 760, y: 560 }, { x: 640, y: 250 },
-  { x: 820, y: 100 }, { x: 1100, y: 130 }, { x: 1250, y: 220 },
-];
-
-// ─── MICRO PATHS (ambient texture lines) ────────────────────────────────────
-const MICRO_LINES = [
-  "M700 180 L760 220", "M800 130 L840 160", "M880 100 L910 140",
-  "M960 80  L970 120", "M1030 90 L1040 130","M1100 110 L1120 155",
-  "M1160 160 L1180 200","M1200 250 L1210 290","M1220 350 L1230 390",
-  "M1210 440 L1200 480","M1170 510 L1140 545","M1110 560 L1070 580",
-  "M1020 590 L980 600", "M930 600 L890 590", "M840 570 L810 550",
-  "M770 530 L750 500", "M710 470 L690 440", "M660 400 L650 370",
-  "M650 310 L660 280", "M680 240 L700 210", "M630 340 L670 330",
-  "M1260 300 L1240 330","M1260 400 L1240 380","M620 420 L650 410",
-];
-
-// ─── NODE MARKER ─────────────────────────────────────────────────────────────
-function NodeMarker({ node, active, highlighted, finalComplete }: {
-  node: { id: number; x: number; y: number; ring: number };
-  active: boolean;
-  highlighted: boolean;
-  finalComplete: boolean;
-}) {
-  // Muted Copper-based activation colors (Subtle Copper / Terra Cotta)
-  const fill   = finalComplete ? "#BFA391" : active ? "#BFA391" : "#F9F8F5";
-  const stroke = finalComplete ? "#BFA391" : active ? "#BFA391" : "#9E7E6B";
-  
-  // Healthy inactive visibility: outer nodes need more presence
-  const baseOp = node.ring === 2 && !active && !finalComplete ? 0.32 : 0.65;
-  const op     = (highlighted || active) ? 1 : baseOp; 
-
-  if (node.ring === 0) {
-    return (
-      <motion.g
-        initial={false}
-        animate={{ opacity: highlighted ? 1 : 0.85, scale: highlighted ? 1.05 : 1 }}
-        transition={{ delay: 0.1, duration: 0.3, ease: EASE }}
-        style={{ transformOrigin: `${node.x}px ${node.y}px` }}
-      >
-        <circle cx={node.x} cy={node.y} r={10} fill="none" stroke={stroke} strokeWidth="2" opacity={op} />
-        <circle cx={node.x} cy={node.y} r={5}  fill={finalComplete ? "#BFA391" : active ? "#BFA391" : "#BFA391"}  stroke={stroke} strokeWidth="2" opacity={op} />
-        <circle cx={node.x} cy={node.y} r={2}  fill={finalComplete ? "#F9F8F5" : active ? "#F9F8F5" : "#9E7E6B"} opacity={active ? 0.8 : 0.52} />
-      </motion.g>
-    );
-  }
-
-  if (node.ring === 1) {
-    return (
-      <motion.g
-        initial={false}
-        animate={{ opacity: op, scale: highlighted ? 1.1 : 1 }}
-        transition={{ delay: active ? 0.3 : 0, duration: 0.3, ease: EASE }}
-        style={{ transformOrigin: `${node.x}px ${node.y}px` }}
-      >
-        <circle cx={node.x} cy={node.y} r={6} fill={finalComplete ? "#BFA391" : active ? "#BFA391" : "#F9F8F5"} stroke={stroke} strokeWidth="2" />
-      </motion.g>
-    );
-  }
-
-  return (
-    <motion.g
-      initial={false}
-      animate={{ opacity: op * 0.8, scale: highlighted ? 1.1 : 1 }}
-      transition={{ delay: active ? 0.5 : 0, duration: 0.3, ease: EASE }}
-      style={{ transformOrigin: `${node.x}px ${node.y}px` }}
-    >
-      <circle
-        cx={node.x} cy={node.y}
-        r={5}
-        fill="transparent"
-        stroke={stroke}
-        strokeWidth="2"
-      />
-    </motion.g>
-  );
-  }
-
-// ─── GLOW HALO ───────────────────────────────────────────────────────────────
-function NodeGlow({ node, active, highlighted, finalComplete }: {
-  node: { id: number; x: number; y: number; ring: number };
-  active: boolean; highlighted: boolean; finalComplete: boolean;
-}) {
-  const color = finalComplete ? "#BFA391" : active ? "#BFA391" : "#CECAC2";
-  const r     = node.ring === 0 ? 24 : node.ring === 1 ? 16 : 10;
-  // Subtler glow opacity with ring-based delay for sequential reveal
-  const op    = finalComplete ? 0.08 : active ? 0.06 : highlighted ? 0.05 : 0;
-  const delay = node.ring * 0.15;
-
-  return (
-    <motion.circle
-      cx={node.x} cy={node.y} r={r}
-      fill={color}
-      filter="url(#collab-node-glow)"
-      initial={false}
-      animate={{ opacity: op }}
-      transition={{ delay, duration: 0.4, ease: EASE }}
-    />
-  );
-}
-
-// ─── CONNECTION LINE ──────────────────────────────────────────────────────────
-function ConnectionLine({ conn, nodeMap, active, index }: {
-  conn: typeof CONNECTIONS[0];
-  nodeMap: Record<number, { x: number; y: number; ring: number }>;
-  active: boolean;
+type Ring = {
   index: number;
+  nodes: RingNode[];
+  radius: number;
+};
+
+const getDistance = (a: { x: number; y: number }, b: { x: number; y: number }) => {
+  const dx = a.x - b.x;
+  const dy = a.y - b.y;
+  return Math.sqrt(dx * dx + dy * dy);
+};
+
+export default function CollabNetworkArt({
+  onActivate,
+  onInteract,
+}: {
+  onActivate?: () => void;
+  onInteract?: () => void;
 }) {
-  const a = nodeMap[conn.from];
-  const b = nodeMap[conn.to];
-  if (!a || !b) return null;
-
-  const d       = `M${a.x} ${a.y}L${b.x} ${b.y}`;
-  const strokeW = conn.layer === 0 ? 1.2 : 0.9;
-  const baseOp  = conn.layer === 0 ? 0.38 : 0.28;
-
-  // Staggering logic: base delay + a small offset per connection index for organic flow
-  const staggerDelay = conn.delay + (index * 0.04);
-
-  return (
-    <g>
-      <path d={d} stroke="url(#collab-base-fade)" strokeWidth={strokeW} fill="none" opacity={baseOp} />
-
-      <motion.path
-        d={d}
-        stroke="url(#collab-active-route)"
-        strokeWidth={strokeW + 0.3}
-        fill="none"
-        pathLength={1}
-        initial={false}
-        animate={active
-          ? { opacity: 1, strokeDasharray: "1 0", strokeDashoffset: 0 }
-          : { opacity: 0, strokeDasharray: "0 1", strokeDashoffset: 0 }
-        }
-        transition={{
-          opacity:         { duration: 0.25, delay: staggerDelay, ease: EASE },
-          strokeDasharray: { duration: 0.7,  delay: staggerDelay, ease: EASE },
-        }}
-      />
-
-      {active && (
-        <motion.path
-          d={d}
-          stroke="url(#collab-shimmer)"
-          strokeWidth={(strokeW + 0.3) * 2.2}
-          fill="none"
-          filter="url(#collab-shimmer-glow)"
-          initial={{ opacity: 0, pathLength: 1, strokeDasharray: "0.06 1", strokeDashoffset: 0.08 }}
-          animate={{ opacity: [0, 1, 0], strokeDashoffset: [0.08, -1] }}
-          transition={{
-            opacity:          { duration: 0.9, delay: staggerDelay + 0.35, ease: EASE, times: [0, 0.3, 1] },
-            strokeDashoffset: { duration: 0.9, delay: staggerDelay + 0.35, ease: EASE },
-          }}
-        />
-      )}
-    </g>
-  );
-}
-
-// ─── WAVE EASE (matches project 1 completion sweep) ──────────────────────────
-const WAVE_EASE: [number, number, number, number] = [0.4, 0, 0.2, 1];
-
-// ─── MAIN COMPONENT ──────────────────────────────────────────────────────────
-export default function CollabNetworkArt({ onInteract }: { onInteract?: () => void }) {
-  const [isMounted, setMounted] = useState(false);
+  const reduceMotion = useReducedMotion();
   const [activated, setActivated] = useState(false);
-  const [hovered,   setHovered]   = useState(false);
-  const [complete,  setComplete]  = useState(false);
+  const [hovered, setHovered] = useState(false);
 
-  useEffect(() => {
-    setMounted(true);
+  const rings = useMemo<Ring[]>(() => {
+    return Array.from({ length: RING_COUNT }, (_, ringIndex) => {
+      const index = ringIndex + 1;
+      const count = FIRST_RING_NODES * 2 ** ringIndex;
+      const radius = FIRST_RING_RADIUS * RING_RADIUS_GROWTH ** ringIndex;
+      const offset = index % 2 === 0 ? 180 / count : 0;
+
+      const nodes = Array.from({ length: count }, (_, nodeIndex) => {
+        const angle = -90 + offset + (nodeIndex / count) * 360;
+        const radians = (angle * Math.PI) / 180;
+
+        return {
+          id: `collab-ring-${index}-${nodeIndex}`,
+          count,
+          index: nodeIndex,
+          ring: index,
+          x: COLLAB_ART_CENTER.x + radius * Math.cos(radians),
+          y: COLLAB_ART_CENTER.y + radius * Math.sin(radians),
+        };
+      });
+
+      return { index, nodes, radius };
+    });
   }, []);
 
-  const nodeMap = Object.fromEntries(ALL_NODES.map(n => [n.id, n])) as Record<number, { x: number; y: number; ring: number }>;
+  const allNodes = useMemo(() => rings.flatMap((ring) => ring.nodes), [rings]);
 
-  const handleClick = useCallback(() => {
+  const getRingOpacity = (ringIndex: number) => {
+    const distanceWeight = 1 - (ringIndex - 1) / RING_COUNT;
+    const resting = 0.055 + distanceWeight * 0.075;
+    const hoverBoost = hovered ? 0.18 + distanceWeight * 0.22 : 0;
+    const activeBoost = activated ? 0.3 + distanceWeight * 0.16 : 0;
+
+    return Math.min(0.72, resting + hoverBoost + activeBoost);
+  };
+
+  const getNodeOpacity = (node: RingNode) => {
+    const centerDistance = getDistance(node, COLLAB_ART_CENTER);
+    const hoverRadius = rings[Math.min(2, rings.length - 1)]?.radius ?? 240;
+    const proximity = Math.max(0, 1 - centerDistance / hoverRadius);
+    const resting = node.ring <= 2 ? 0.32 : 0.16;
+    const hoverBoost = hovered ? proximity * 0.55 : 0;
+    const activeBoost = activated ? 0.42 : 0;
+
+    return Math.min(0.88, resting + hoverBoost + activeBoost);
+  };
+
+  const handleActivate = () => {
     if (activated) return;
     setActivated(true);
-    if (onInteract) onInteract();
-    setTimeout(() => setComplete(true), 2450);
-  }, [activated, onInteract]);
+    onActivate?.();
+  };
 
-  const handleMouseEnter = useCallback(() => {
-    setHovered(true);
-    if (onInteract) onInteract();
-  }, [onInteract]);
-
-  if (!isMounted) return <div className="hidden md:absolute md:inset-0 md:flex md:items-center md:justify-end z-[1] pointer-events-none" />;
+  const handleHover = (nextHovered: boolean) => {
+    setHovered(nextHovered);
+    if (nextHovered) onInteract?.();
+  };
 
   return (
-    <div className="hidden md:absolute md:inset-0 md:flex md:items-center md:justify-end z-[1] pointer-events-none">
-      {/* Content Protection Mask: Fades the art out as it approaches the left content column */}
-      <div 
-        className="absolute inset-0 z-[2] pointer-events-none"
+    <div className="absolute inset-0 z-[1] flex items-stretch justify-center pointer-events-none">
+      <div
+        className="absolute inset-x-0 inset-y-0 z-[20] pointer-events-none"
         style={{
-          background: "linear-gradient(to right, #F9F8F5 0%, #F9F8F5 25%, transparent 50%)",
+          background:
+            "linear-gradient(to right, #F9F8F5 0%, #F9F8F5 28%, rgba(249,248,245,0.82) 42%, transparent 52%)",
         }}
       />
+      <div
+        className="absolute inset-y-0 right-0 z-[20] w-[6%] pointer-events-none"
+        style={{ background: "linear-gradient(90deg, rgba(249,248,245,0), #F9F8F5)" }}
+      />
+      <div
+        className="absolute inset-x-0 bottom-0 z-[20] h-16 pointer-events-none"
+        style={{ background: "linear-gradient(180deg, rgba(249,248,245,0), #F9F8F5)" }}
+      />
 
-      <div className="relative w-full lg:w-[1280px] h-[700px]">
+      <div className="relative h-full w-full">
+        <svg
+          viewBox={`0 0 ${CANVAS_WIDTH} ${CANVAS_HEIGHT}`}
+          preserveAspectRatio="xMidYMid slice"
+          className="absolute inset-0 h-full w-full pointer-events-none opacity-[0.55] md:opacity-100"
+          aria-label="Interactive Collabspace radial network"
+          role="group"
+        >
+          <defs>
+            <filter id="collab-radial-glow" x="-200%" y="-200%" width="500%" height="500%">
+              <feGaussianBlur stdDeviation="7" />
+            </filter>
+            <filter id="collab-hub-glow" x="-200%" y="-200%" width="500%" height="500%">
+              <feGaussianBlur stdDeviation="3" />
+            </filter>
+          </defs>
 
-      {/* Radial shimmer — CSS div outside SVG, one-shot, same treatment as P1 completion sweep */}
-      {activated && (
-        <motion.div
-          aria-hidden="true"
-          className="absolute rounded-full pointer-events-none z-[3]"
-          style={{
-            left: CENTER.x,
-            top: CENTER.y,
-            transform: "translate(-50%, -50%)",
-            background: "radial-gradient(circle, transparent 20%, rgba(192,123,80,0.3) 45%, rgba(255,255,255,1.0) 50%, transparent 70%)",
-            filter: "blur(40px)",
-          }}
-          initial={{ width: 40, height: 40, opacity: 0.08 }}
-          animate={{ width: 3600, height: 3600, opacity: [0, 0.52, 0] }}
-          transition={{
-            width:   { duration: 2.4, ease: [0.4, 0, 0.2, 1] },
-            height:  { duration: 2.4, ease: [0.4, 0, 0.2, 1] },
-            opacity: { duration: 2.4, ease: [0.4, 0, 0.2, 1], times: [0, 0.48, 1] },
-          }}
-        />
-      )}
+          <g fill="none">
+            {rings.map((ring) => {
+              const delay = reduceMotion ? 0 : ring.index * 0.16;
 
-      <svg
-        viewBox="0 0 1280 700"
-        className="absolute inset-0 w-full h-full pointer-events-auto"
-        preserveAspectRatio="xMidYMid meet"
-        aria-label="Interactive community network — click to activate"
-        role="group"
-        style={{ 
-          opacity: complete ? 0.48 : 0.24, 
-          transition: "opacity 1200ms ease",
-          // On tablets, the art is slightly more centered to avoid being cut off
-          transform: "scale(var(--art-scale, 1)) translateX(var(--art-x-offset, 0))"
-        }}
-      >
-        <style>{`
-          @media (min-width: 768px) and (max-width: 1023px) {
-            svg {
-              --art-scale: 0.85;
-              --art-x-offset: -120px;
-            }
-          }
-        `}</style>
-        <defs>
-          <radialGradient id="collab-base-fade" cx={CENTER.x} cy={CENTER.y} r="240" gradientUnits="userSpaceOnUse">
-            <stop offset="0"   stopColor="#9E7E6B" stopOpacity="0.45" />
-            <stop offset="0.5" stopColor="#9E7E6B" stopOpacity="0.25" />
-            <stop offset="1"   stopColor="#9E7E6B" stopOpacity="0.12" />
-          </radialGradient>
+              return (
+                <motion.circle
+                  key={`ring-path-${ring.index}`}
+                  cx={COLLAB_ART_CENTER.x}
+                  cy={COLLAB_ART_CENTER.y}
+                  r={ring.radius}
+                  stroke={activated ? "#C07B50" : "#9E7E6B"}
+                  strokeWidth={ring.index === 1 ? 0.72 : 0.52}
+                  strokeDasharray={ring.index % 2 === 0 ? "4 14" : "1 11"}
+                  initial={false}
+                  animate={{ opacity: getRingOpacity(ring.index) }}
+                  transition={{ duration: reduceMotion ? 0 : 0.46, delay, ease: EASE }}
+                />
+              );
+            })}
+          </g>
 
-          <radialGradient id="collab-active-route" cx={CENTER.x} cy={CENTER.y} r="230" gradientUnits="userSpaceOnUse">
-            <stop offset="0"    stopColor="#BFA391" stopOpacity="0.72" />
-            <stop offset="0.55" stopColor="#BFA391" stopOpacity="0.52" />
-            <stop offset="1"    stopColor="#9E7E6B" stopOpacity="0.32" />
-          </radialGradient>
+          <g stroke="#9E7E6B" strokeWidth="0.45" fill="none">
+            {allNodes.map((node) => {
+              if (node.index % 4 !== 0) return null;
 
-          <linearGradient id="collab-shimmer" x1="0" y1="0" x2="1" y2="0">
-            <stop offset="0"    stopColor="#FFFFFF" stopOpacity="0"    />
-            <stop offset="0.44" stopColor="#F9F8F5" stopOpacity="0.72" />
-            <stop offset="0.58" stopColor="#F5E8DC" stopOpacity="0.88" />
-            <stop offset="1"    stopColor="#FFFFFF" stopOpacity="0"    />
-          </linearGradient>
+              return (
+                <motion.path
+                  key={`radial-spoke-${node.id}`}
+                  d={`M ${COLLAB_ART_CENTER.x} ${COLLAB_ART_CENTER.y} L ${node.x} ${node.y}`}
+                  initial={false}
+                  animate={{
+                    opacity: activated ? 0.14 : hovered && node.ring <= 3 ? 0.12 : 0.035,
+                  }}
+                  transition={{
+                    duration: reduceMotion ? 0 : 0.5,
+                    delay: reduceMotion ? 0 : node.ring * 0.12,
+                    ease: EASE,
+                  }}
+                />
+              );
+            })}
+          </g>
 
-          <filter id="collab-node-glow" x="-50%" y="-50%" width="200%" height="200%">
-            <feGaussianBlur stdDeviation="10" />
-          </filter>
+          <g fill="#9E7E6B">
+            {allNodes.map((node) => {
+              const sequenceDelay = reduceMotion
+                ? 0
+                : node.ring * 0.17 + (node.index / node.count) * 0.1;
+              const innerNode = node.ring <= 2;
 
-          <filter id="collab-shimmer-glow" x="-50%" y="-50%" width="200%" height="200%">
-            <feGaussianBlur stdDeviation="1.5" />
-          </filter>
-        </defs>
+              return (
+                <motion.circle
+                  key={node.id}
+                  cx={node.x}
+                  cy={node.y}
+                  r={innerNode ? 1.85 : 1.15}
+                  initial={false}
+                  animate={{
+                    fill: activated ? (node.ring <= 2 ? "#C07B50" : "#BFA391") : "#9E7E6B",
+                    opacity: getNodeOpacity(node),
+                    scale: activated ? 1.18 : hovered && node.ring <= 2 ? 1.14 : 1,
+                  }}
+                  transition={{ duration: reduceMotion ? 0 : 0.44, delay: sequenceDelay, ease: EASE }}
+                  style={{ transformOrigin: `${node.x}px ${node.y}px` }}
+                />
+              );
+            })}
+          </g>
 
-        {/* Layer 1: Micro texture lines (Standardized healthy visibility) */}
-        <g stroke="#9E7E6B" strokeWidth="0.5" fill="none"
-           opacity={complete ? 0.28 : 0.18} style={{ transition: "opacity 1200ms ease" }}>
-          {MICRO_LINES.map((d, i) => (
-            <path key={i} d={d} strokeDasharray={i % 3 === 0 ? "2 10" : i % 3 === 1 ? "8 12" : undefined} />
-          ))}
-        </g>
+          <AnimatePresence>
+            {activated && (
+              <motion.g aria-hidden="true" exit={{ opacity: 0 }}>
+                <motion.g
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: [0, 0.42, 0] }}
+                  transition={{ duration: reduceMotion ? 0 : 2.1, ease: EASE, times: [0, 0.42, 1] }}
+                >
+                  {rings.map((ring) => (
+                    <motion.circle
+                      key={`ripple-wash-${ring.index}`}
+                      cx={COLLAB_ART_CENTER.x}
+                      cy={COLLAB_ART_CENTER.y}
+                      r={ring.radius}
+                      fill="none"
+                      stroke="#F5E8DC"
+                      strokeWidth={8}
+                      filter="url(#collab-radial-glow)"
+                      initial={{ opacity: 0, scale: 0.96 }}
+                      animate={{ opacity: [0, 0.72, 0], scale: [0.96, 1, 1.02] }}
+                      transition={{
+                        duration: reduceMotion ? 0 : 0.72,
+                        delay: reduceMotion ? 0 : ring.index * 0.24,
+                        ease: EASE,
+                        times: [0, 0.45, 1],
+                      }}
+                      style={{ transformOrigin: `${COLLAB_ART_CENTER.x}px ${COLLAB_ART_CENTER.y}px` }}
+                    />
+                  ))}
+                </motion.g>
+              </motion.g>
+            )}
+          </AnimatePresence>
 
-        {/* Layer 2: Ambient dot field (Standardized healthy visibility) */}
-        <g fill="#9E7E6B" opacity="0.14">
-          {AMBIENT_DOTS.map((dot, i) => (
-            <circle key={i} cx={dot.x} cy={dot.y} r={i % 4 === 0 ? 1.5 : 1} />
-          ))}
-        </g>
+          <g className="pointer-events-none lg:pointer-events-auto">
+            <motion.circle
+              cx={COLLAB_ART_CENTER.x}
+              cy={COLLAB_ART_CENTER.y}
+              r={8}
+              fill="#9E7E6B"
+              filter="url(#collab-hub-glow)"
+              pointerEvents="none"
+              initial={{ opacity: 0 }}
+              animate={{
+                opacity: activated ? 0 : hovered ? 0.18 : [0.06, 0.3, 0.06],
+              }}
+              transition={
+                activated || hovered
+                  ? { duration: reduceMotion ? 0 : 0.35, ease: EASE }
+                  : { duration: reduceMotion ? 0 : 3, repeat: Infinity, ease: "easeInOut" }
+              }
+            />
 
-        {/* Layers 3–5: Connections (radial spokes only) */}
-        {CONNECTIONS.map((conn, i) => (
-          <ConnectionLine key={i} conn={conn} nodeMap={nodeMap} active={activated} index={i} />
-        ))}
-
-        {/* Ambient topology rings */}
-        <circle cx={CENTER.x} cy={CENTER.y} r={R1} fill="none" stroke="#9E7E6B" strokeWidth="0.4" opacity="0.12" strokeDasharray="4 8" />
-        <circle cx={CENTER.x} cy={CENTER.y} r={R2} fill="none" stroke="#9E7E6B" strokeWidth="0.4" opacity="0.08" strokeDasharray="3 10" />
-
-        {/* Layer 7: Node glows */}
-        {ALL_NODES.map(node => (
-          <NodeGlow
-            key={node.id}
-            node={node}
-            active={activated}
-            highlighted={node.id === 0 ? hovered : false}
-            finalComplete={complete}
-          />
-        ))}
-
-        {/* Layer 8: Node markers */}
-        {ALL_NODES.map(node => (
-          <NodeMarker
-            key={node.id}
-            node={node}
-            active={activated}
-            highlighted={node.id === 0 ? hovered : false}
-            finalComplete={complete}
-          />
-        ))}
-
-        {/* Idle shimmer on interactive center node */}
-        <motion.circle
-          cx={CENTER.x}
-          cy={CENTER.y}
-          r={24}
-          fill="#9E7E6B"
-          filter="url(#collab-node-glow)"
-          pointerEvents="none"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: activated ? 0 : [0.06, 0.18, 0.06] }}
-          transition={activated
-            ? { duration: 0.4, ease: "easeOut" }
-            : { duration: 3, repeat: Infinity, ease: "easeInOut" }
-          }
-        />
-        <g transform={`rotate(-22, ${CENTER.x}, ${CENTER.y})`} aria-hidden="true">
-          <motion.ellipse
-            cx={CENTER.x}
-            cy={CENTER.y}
-            rx={2}
-            ry={14}
-            fill="white"
-            filter="url(#collab-shimmer-glow)"
-            pointerEvents="none"
-            initial={{ opacity: 0, x: -28 }}
-            animate={{
-              opacity: activated ? 0 : [0, 0.65, 0],
-              x: activated ? 0 : [-28, 0, 28],
-            }}
-            transition={activated
-              ? { duration: 0.4, ease: "easeOut" }
-              : { duration: 4, repeat: Infinity, ease: "easeInOut" }
-            }
-          />
-        </g>
-
-        {/* Layer 9: Centre hit target */}
-        <circle
-          cx={CENTER.x} cy={CENTER.y} r={36}
-          fill="transparent"
-          className="cursor-pointer"
-          style={{ pointerEvents: "auto", outline: "none" }}
-          tabIndex={0}
-          aria-label={activated ? "Network activated" : "Activate collaboration network"}
-          onMouseEnter={handleMouseEnter}
-          onMouseLeave={() => setHovered(false)}
-          onFocus={handleMouseEnter}
-          onBlur={() => setHovered(false)}
-          onClick={handleClick}
-          onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") handleClick(); }}
-        />
-
-        {/* Ring 1 pre-pulse on hover preview */}
-        {!activated && RING1_NODES.map(node => (
-          <motion.circle
-            key={`prepulse-${node.id}`}
-            cx={node.x} cy={node.y} r={16}
-            fill="#9E7E6B"
-            filter="url(#collab-node-glow)"
-            initial={false}
-            animate={{ opacity: hovered ? 0.15 : 0 }}
-            transition={{ duration: 0.5, ease: EASE }}
-          />
-        ))}
-      </svg>
+            <g
+              role="button"
+              tabIndex={0}
+              aria-label={
+                activated ? "Collabspace radial network activated" : "Activate Collabspace radial network"
+              }
+              style={{ cursor: "pointer", outline: "none" }}
+              onMouseEnter={() => handleHover(true)}
+              onMouseLeave={() => handleHover(false)}
+              onFocus={() => handleHover(true)}
+              onBlur={() => handleHover(false)}
+              onClick={handleActivate}
+              onKeyDown={(event) => {
+                if (event.key === "Enter" || event.key === " ") {
+                  event.preventDefault();
+                  handleActivate();
+                }
+              }}
+            >
+              <circle
+                cx={COLLAB_ART_CENTER.x}
+                cy={COLLAB_ART_CENTER.y}
+                r={34}
+                fill="transparent"
+                pointerEvents="auto"
+              />
+              <motion.circle
+                cx={COLLAB_ART_CENTER.x}
+                cy={COLLAB_ART_CENTER.y}
+                r={9}
+                fill={activated ? "#C07B50" : "#F9F8F5"}
+                stroke={activated ? "#C07B50" : "#9E7E6B"}
+                strokeWidth={1.5}
+                pointerEvents="none"
+                animate={{ scale: hovered || activated ? 1.16 : 1 }}
+                transition={{ duration: reduceMotion ? 0 : 0.28, ease: EASE }}
+                style={{ transformOrigin: `${COLLAB_ART_CENTER.x}px ${COLLAB_ART_CENTER.y}px` }}
+              />
+              <motion.circle
+                cx={COLLAB_ART_CENTER.x}
+                cy={COLLAB_ART_CENTER.y}
+                r={2.5}
+                fill={activated ? "#F9F8F5" : "#9E7E6B"}
+                opacity={activated ? 0.95 : 0.58}
+                pointerEvents="none"
+                animate={{ scale: hovered ? 1.22 : 1 }}
+                transition={{ duration: reduceMotion ? 0 : 0.28, ease: EASE }}
+                style={{ transformOrigin: `${COLLAB_ART_CENTER.x}px ${COLLAB_ART_CENTER.y}px` }}
+              />
+            </g>
+          </g>
+        </svg>
       </div>
     </div>
   );

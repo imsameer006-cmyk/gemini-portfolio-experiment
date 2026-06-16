@@ -11,7 +11,7 @@ The portfolio direction is warm, premium, minimal, and enterprise-oriented. Ever
 - **Primary narrative:** clarity emerging from complex workflow governance.
 - **Hero Principle:** Every hero must communicate hierarchy, progression, and completion. All hero art must strictly follow the "Brand-Aligned Unity" palette (Neutral Taupe Foundation + Brand Copper Accent), avoiding project-specific product colors (like Teal/Sage) in hero art diagrams.
 - **Status color logic:** Green/Red reserved for completion/rejection.
-- **Motion:** Subtle, purposeful, and state-driven. Radial completion sweeps must use a continuous "atmospheric river" flow.
+- **Motion:** Subtle, purposeful, and state-driven. Gemini uses a linear completion sweep and local mesh illumination; radial atmospheric-river motion is reserved for Collabspace/network art.
 - **Headlines:** High-prominence display font at scale with tight leading, two-line constraint.
 
 ## 1. Typography
@@ -55,5 +55,26 @@ All interactive hero art must follow this unified semantic system:
 
 - **Inactive/Ghost State:** Use `#9E7E6B` (Taupe) for structural lines, rings, and dots.
 - **Active State:** Use Brand Copper (`#C07B50` / `#BFA391`) for active paths and triggered nodes.
-- **Completion Sweep:** Use the unified radial "Atmospheric River" gradient (Copper-to-White-to-Copper).
+- **Completion Sweep:** Use Copper-to-White-to-Copper atmospheric light. Gemini uses a linear sweep; Collabspace may use radial atmospheric-river motion.
 - **No project-specific product accent colors (e.g., Green/Teal) are permitted in hero art.**
+
+### Gemini Reactive Mesh Grammar
+
+The Gemini hero is the canonical mesh-based workflow art direction.
+
+- **Grid as source of truth:** Nodes, labels, dots, route lines, and hit targets must share one SVG coordinate system.
+- **Grid-locked nodes:** Interactive nodes sit exactly on matrix intersections, not approximate HTML overlays.
+- **Reactive fabric:** Mesh lines are split into per-cell segments so proximity illumination stays local to hovered/active nodes.
+- **Progression route:** Workflow progression follows orthogonal stepped paths along the mesh only. No freeform connector paths.
+- **Sequential interaction:** Nodes activate in numbered left-to-right order. Step numbers are quiet annotations below nodes, not primary badges.
+- **State hierarchy:** The newest active node carries emphasis; earlier activated nodes settle into a quieter state.
+- **Completion:** Final state resolves into subtle copper/platinum tones with a soft linear sweep.
+- **Responsive behavior:** On mobile/tablet, the art becomes ambient. Reduce density/opacity and avoid relying on interaction.
+
+### Collabspace Radial Network Grammar
+
+Collabspace art should remain distinct from Gemini by using radial network logic.
+
+- **Radial structure:** Hub-and-spoke or concentric network arrangements are appropriate.
+- **Motion:** Radial atmospheric-river shimmer/sweep belongs here, not in the Gemini mesh.
+- **Narrative:** Use radial motion to communicate knowledge flow, collaboration, and connected domains.

@@ -2,6 +2,14 @@
 
 This document details the geometric and procedural logic used for the `CollabNetworkArt` component.
 
+## Direction Note
+
+Collabspace should remain the portfolio's radial network art system. The radial
+"Atmospheric River" shimmer/sweep language belongs here, not in the Gemini hero.
+Gemini is now the ordered reactive mesh workflow system; Collabspace should
+communicate collaboration, knowledge flow, and connected domains through radial
+hub-and-spoke logic.
+
 ## Radial Layout Logic
 
 - **Center Point:** `{ x: 940, y: 340 }`

@@ -1,8 +1,11 @@
 import type { Metadata } from "next";
+import { GeminiHeroSandbox } from "./_sandbox/GeminiHeroSandbox";
+import { CollabHeroSandbox } from "./_sandbox/CollabHeroSandbox";
 
 export const metadata: Metadata = {
   title: "Hero Banner Lab | Sameer Gautam",
   description: "LinkedIn profile banner compositions for the portfolio hero.",
+  robots: { index: false, follow: false },
 };
 
 const COMPLEXITY_PATHS = [
@@ -353,6 +356,29 @@ export default function HeroLabPage() {
           <p className="mt-3 text-[11px] font-mono tracking-wider text-[#4A484D] uppercase">
             Canvas 3 — Silver / Platinum&nbsp;&nbsp;·&nbsp;&nbsp;1584 × 396 px&nbsp;&nbsp;·&nbsp;&nbsp;Art left, copy right
           </p>
+        </div>
+
+        {/* ── Project hero sandboxes ───────────────────────────────────────
+            Isolated copies — see app/hero-lab/_sandbox/. Editing these files
+            cannot affect production (no production page imports this folder).
+            Structure/layers/IDs are 1:1 with the real components so a working
+            change can be ported back verbatim. ────────────────────────────── */}
+        <div>
+          <p className="mb-3 text-[11px] font-mono tracking-wider text-[#4A484D] uppercase">
+            Sandbox — Gemini Hero (Project 1)&nbsp;&nbsp;·&nbsp;&nbsp;isolated copy, safe to edit
+          </p>
+          <div className="overflow-hidden rounded-lg border border-[#2E2C27]">
+            <GeminiHeroSandbox />
+          </div>
+        </div>
+
+        <div>
+          <p className="mb-3 text-[11px] font-mono tracking-wider text-[#4A484D] uppercase">
+            Sandbox — Collabspace Hero (Project 2)&nbsp;&nbsp;·&nbsp;&nbsp;isolated copy, safe to edit
+          </p>
+          <div className="overflow-hidden rounded-lg border border-[#2E2C27]">
+            <CollabHeroSandbox />
+          </div>
         </div>
 
       </div>

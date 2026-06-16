@@ -1,0 +1,620 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Hero Art Lab — Collabspace (Project 2)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@1&display=swap" rel="stylesheet" />
+<script src="https://unpkg.com/react@18/umd/react.development.js"></script>
+<script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+<script src="https://unpkg.com/framer-motion@11/dist/framer-motion.js"></script>
+<script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+<style>
+  :root { --font-instrument-serif: 'Instrument Serif', serif; }
+  html, body { margin: 0; background: #F9F8F5; }
+.absolute{position:absolute;}
+.relative{position:relative;}
+.isolate{isolation:isolate;}
+.inset-0{top:0;right:0;bottom:0;left:0;}
+.inset-x-0{left:0;right:0;}
+.inset-y-0{top:0;bottom:0;}
+.bottom-0{bottom:0;}
+.right-0{right:0;}
+.-inset-y-\[18\%\]{top:-18%;bottom:-18%;}
+.-left-\[68\%\]{left:-68%;}
+.z-\[1\]{z-index:1;}
+.z-\[2\]{z-index:2;}
+.z-\[3\]{z-index:3;}
+.z-10{z-index:10;}
+.z-\[10\]{z-index:10;}
+.block{display:block;}
+.hidden{display:none;}
+.flex{display:flex;}
+.grid{display:grid;}
+.flex-col{flex-direction:column;}
+.flex-wrap{flex-wrap:wrap;}
+.items-center{align-items:center;}
+.items-end{align-items:flex-end;}
+.justify-between{justify-content:space-between;}
+.justify-start{justify-content:flex-start;}
+.gap-1\.5{gap:0.375rem;}
+.gap-2\.5{gap:0.625rem;}
+.gap-px{gap:1px;}
+.gap-\[10px\]{gap:10px;}
+.grid-cols-\[auto_auto\]{grid-template-columns:auto auto;}
+.w-fit{width:fit-content;}
+.w-full{width:100%;}
+.w-2\.5{width:0.625rem;}
+.w-\[7\%\]{width:7%;}
+.w-\[72\%\]{width:72%;}
+.h-full{height:100%;}
+.h-2\.5{height:0.625rem;}
+.h-24{height:6rem;}
+.h-\[700px\]{height:700px;}
+.max-w-\[1280px\]{max-width:1280px;}
+.max-w-\[560px\]{max-width:560px;}
+.max-w-\[583px\]{max-width:583px;}
+.max-w-\[670px\]{max-width:670px;}
+.max-w-\[720px\]{max-width:720px;}
+.mx-auto{margin-left:auto;margin-right:auto;}
+.mb-8{margin-bottom:2rem;}
+.mb-\[28px\]{margin-bottom:28px;}
+.mb-\[32px\]{margin-bottom:32px;}
+.mt-\[20px\]{margin-top:20px;}
+.pb-1{padding-bottom:0.25rem;}
+.pb-16{padding-bottom:4rem;}
+.pt-\[72px\]{padding-top:72px;}
+.px-3{padding-left:0.75rem;padding-right:0.75rem;}
+.px-6{padding-left:1.5rem;padding-right:1.5rem;}
+.py-1\.5{padding-top:0.375rem;padding-bottom:0.375rem;}
+.py-3{padding-top:0.75rem;padding-bottom:0.75rem;}
+.rounded-full{border-radius:9999px;}
+.rounded-xl{border-radius:0.75rem;}
+.border{border-width:1px;border-style:solid;border-color:currentColor;}
+.border-\[\#E6E3DD\]{border-color:#E6E3DD;}
+.border-\[\#C8BFB2\]{border-color:#C8BFB2;}
+.border-\[\#C07B50\]\/75{border-color:rgba(192,123,80,0.75);}
+.bg-white{background-color:#fff;}
+.bg-\[\#F9F8F5\]{background-color:#F9F8F5;}
+.bg-\[\#E6E3DD\]{background-color:#E6E3DD;}
+.bg-\[\#1C1A16\]\/\[0\.09\]{background-color:rgba(28,26,22,0.09);}
+.text-\[\#1C1A16\]{color:#1C1A16;}
+.text-\[\#1C1A16\]\/40{color:rgba(28,26,22,0.40);}
+.text-\[\#1C1A16\]\/55{color:rgba(28,26,22,0.55);}
+.text-\[\#1C1A16\]\/60{color:rgba(28,26,22,0.60);}
+.text-\[\#1C1A16\]\/85{color:rgba(28,26,22,0.85);}
+.text-\[\#1C1A16\]\/\[0\.38\]{color:rgba(28,26,22,0.38);}
+.text-\[\#C07B50\]\/85{color:rgba(192,123,80,0.85);}
+.text-\[10px\]{font-size:10px;}
+.text-\[12px\]{font-size:12px;}
+.text-\[12\.5px\]{font-size:12.5px;}
+.text-\[15px\]{font-size:15px;}
+.text-sm{font-size:0.875rem;}
+.text-base{font-size:1rem;}
+.text-\[clamp\(2\.50rem\,3\.74vw\,4\.06rem\)\]{font-size:clamp(2.50rem,3.74vw,4.06rem);}
+.font-medium{font-weight:500;}
+.font-normal{font-weight:400;}
+.font-semibold{font-weight:600;}
+.font-\[525\]{font-weight:525;}
+.font-\[family-name\:var\(--font-instrument-serif\)\]{font-family:var(--font-instrument-serif);}
+.italic{font-style:italic;}
+.leading-relaxed{line-height:1.625;}
+.leading-snug{line-height:1.375;}
+.leading-tight{line-height:1.25;}
+.tracking-widest{letter-spacing:0.1em;}
+.tracking-\[0\.16em\]{letter-spacing:0.16em;}
+.uppercase{text-transform:uppercase;}
+.opacity-0{opacity:0;}
+.outline-none{outline:none;}
+.overflow-hidden{overflow:hidden;}
+.overflow-x-hidden{overflow-x:hidden;}
+.pointer-events-auto{pointer-events:auto;}
+.pointer-events-none{pointer-events:none;}
+.cursor-pointer{cursor:pointer;}
+.shadow-\[0_0_0_1px_rgba\(192\,123\,80\,0\.08\)\]{box-shadow:0 0 0 1px rgba(192,123,80,0.08);}
+.skew-x-\[-26deg\]{transform:skewX(-26deg);}
+.blur-\[28px\]{filter:blur(28px);}
+@media (min-width:640px){
+  .sm\:grid-cols-\[auto_auto_auto\]{grid-template-columns:auto auto auto!important;}
+}
+@media (min-width:768px){
+  .md\:absolute{position:absolute!important;}
+  .md\:block{display:block!important;}
+  .md\:flex{display:flex!important;}
+  .md\:inset-0{top:0;right:0;bottom:0;left:0;}
+  .md\:items-center{align-items:center;}
+  .md\:justify-end{justify-content:flex-end;}
+  .md\:min-h-screen{min-height:100vh;}
+  .md\:pb-\[88px\]{padding-bottom:88px;}
+  .md\:px-10{padding-left:2.5rem;padding-right:2.5rem;}
+}
+@media (min-width:1024px){
+  .lg\:cursor-pointer{cursor:pointer;}
+  .lg\:flex{display:flex!important;}
+  .lg\:pointer-events-auto{pointer-events:auto!important;}
+  .lg\:w-\[1280px\]{width:1280px;}
+}
+</style>
+</head>
+<body>
+<div id="root"></div>
+
+<script type="text/plain" id="app-source">
+const { useState, useCallback, useEffect } = React;
+const { motion, AnimatePresence, useReducedMotion } = Motion;
+
+const EASE = [0.25, 0.46, 0.45, 0.94];
+const HERO_EASE = [0.16, 1, 0.3, 1];
+
+const CENTER = { x: 940, y: 340 };
+const R1 = 120;
+const R2 = 178;
+
+const calculatePos = (angleDeg, radius) => {
+  const angleRad = (angleDeg * Math.PI) / 180;
+  return { x: CENTER.x + radius * Math.cos(angleRad), y: CENTER.y + radius * Math.sin(angleRad) };
+};
+
+const RING1_NODES = Array.from({ length: 5 }).map((_, i) => ({ id: i + 1, ...calculatePos(-90 + i * 72, R1), ring: 1 }));
+const RING2_NODES = Array.from({ length: 10 }).map((_, i) => ({ id: i + 6, ...calculatePos(-90 + 18 + i * 36, R2), ring: 2 }));
+const CENTER_NODE = { id: 0, ...CENTER, ring: 0 };
+const ALL_NODES = [CENTER_NODE, ...RING1_NODES, ...RING2_NODES];
+
+const CONNECTIONS = [
+  ...RING1_NODES.map((n) => ({ from: 0, to: n.id, layer: 0, delay: 0.1 })),
+  ...RING1_NODES.flatMap((n, i) => [
+    { from: n.id, to: RING2_NODES[(i * 2 + 9) % 10].id, layer: 1, delay: 0.3 },
+    { from: n.id, to: RING2_NODES[(i * 2) % 10].id, layer: 1, delay: 0.3 },
+  ]),
+];
+
+const AMBIENT_DOTS = [
+  { x: 870, y: 180 }, { x: 1010, y: 165 }, { x: 1090, y: 210 }, { x: 1130, y: 350 },
+  { x: 1120, y: 460 }, { x: 1010, y: 545 }, { x: 890, y: 535 }, { x: 775, y: 470 },
+  { x: 710, y: 360 }, { x: 720, y: 220 }, { x: 830, y: 150 }, { x: 1000, y: 90 },
+  { x: 1140, y: 170 }, { x: 1190, y: 280 }, { x: 1200, y: 440 }, { x: 1090, y: 570 },
+  { x: 830, y: 580 }, { x: 690, y: 500 }, { x: 650, y: 320 }, { x: 700, y: 170 },
+  { x: 940, y: 60 }, { x: 1060, y: 80 }, { x: 1170, y: 100 }, { x: 1230, y: 340 },
+  { x: 960, y: 620 }, { x: 760, y: 560 }, { x: 640, y: 250 }, { x: 820, y: 100 },
+  { x: 1100, y: 130 }, { x: 1250, y: 220 },
+];
+
+const MICRO_LINES = [
+  "M700 180 L760 220", "M800 130 L840 160", "M880 100 L910 140", "M960 80  L970 120",
+  "M1030 90 L1040 130","M1100 110 L1120 155","M1160 160 L1180 200","M1200 250 L1210 290",
+  "M1220 350 L1230 390","M1210 440 L1200 480","M1170 510 L1140 545","M1110 560 L1070 580",
+  "M1020 590 L980 600", "M930 600 L890 590", "M840 570 L810 550", "M770 530 L750 500",
+  "M710 470 L690 440", "M660 400 L650 370", "M650 310 L660 280", "M680 240 L700 210",
+  "M630 340 L670 330", "M1260 300 L1240 330","M1260 400 L1240 380","M620 420 L650 410",
+];
+
+function NodeMarker({ node, active, highlighted, finalComplete }) {
+  const fill   = finalComplete ? "#BFA391" : active ? "#BFA391" : "#F9F8F5";
+  const stroke = finalComplete ? "#BFA391" : active ? "#BFA391" : "#9E7E6B";
+  const baseOp = node.ring === 2 && !active && !finalComplete ? 0.32 : 0.65;
+  const op     = (highlighted || active) ? 1 : baseOp;
+
+  if (node.ring === 0) {
+    return (
+      <motion.g
+        initial={false}
+        animate={{ opacity: highlighted ? 1 : 0.85, scale: highlighted ? 1.05 : 1 }}
+        transition={{ delay: 0.1, duration: 0.3, ease: EASE }}
+        style={{ transformOrigin: `${node.x}px ${node.y}px` }}
+      >
+        <circle cx={node.x} cy={node.y} r={10} fill="none" stroke={stroke} strokeWidth="2" opacity={op} />
+        <circle cx={node.x} cy={node.y} r={5} fill={finalComplete ? "#BFA391" : active ? "#BFA391" : "#BFA391"} stroke={stroke} strokeWidth="2" opacity={op} />
+        <circle cx={node.x} cy={node.y} r={2} fill={finalComplete ? "#F9F8F5" : active ? "#F9F8F5" : "#9E7E6B"} opacity={active ? 0.8 : 0.52} />
+      </motion.g>
+    );
+  }
+
+  if (node.ring === 1) {
+    return (
+      <motion.g
+        initial={false}
+        animate={{ opacity: op, scale: highlighted ? 1.1 : 1 }}
+        transition={{ delay: active ? 0.3 : 0, duration: 0.3, ease: EASE }}
+        style={{ transformOrigin: `${node.x}px ${node.y}px` }}
+      >
+        <circle cx={node.x} cy={node.y} r={6} fill={finalComplete ? "#BFA391" : active ? "#BFA391" : "#F9F8F5"} stroke={stroke} strokeWidth="2" />
+      </motion.g>
+    );
+  }
+
+  return (
+    <motion.g
+      initial={false}
+      animate={{ opacity: op * 0.8, scale: highlighted ? 1.1 : 1 }}
+      transition={{ delay: active ? 0.5 : 0, duration: 0.3, ease: EASE }}
+      style={{ transformOrigin: `${node.x}px ${node.y}px` }}
+    >
+      <circle cx={node.x} cy={node.y} r={5} fill="transparent" stroke={stroke} strokeWidth="2" />
+    </motion.g>
+  );
+}
+
+function NodeGlow({ node, active, highlighted, finalComplete }) {
+  const color = finalComplete ? "#BFA391" : active ? "#BFA391" : "#CECAC2";
+  const r     = node.ring === 0 ? 24 : node.ring === 1 ? 16 : 10;
+  const op    = finalComplete ? 0.08 : active ? 0.06 : highlighted ? 0.05 : 0;
+  const delay = node.ring * 0.15;
+
+  return (
+    <motion.circle
+      cx={node.x} cy={node.y} r={r}
+      fill={color}
+      filter="url(#collab-node-glow)"
+      initial={false}
+      animate={{ opacity: op }}
+      transition={{ delay, duration: 0.4, ease: EASE }}
+    />
+  );
+}
+
+function ConnectionLine({ conn, nodeMap, active, index }) {
+  const a = nodeMap[conn.from];
+  const b = nodeMap[conn.to];
+  if (!a || !b) return null;
+
+  const d       = `M${a.x} ${a.y}L${b.x} ${b.y}`;
+  const strokeW = conn.layer === 0 ? 1.2 : 0.9;
+  const baseOp  = conn.layer === 0 ? 0.38 : 0.28;
+  const staggerDelay = conn.delay + (index * 0.04);
+
+  return (
+    <g>
+      <path d={d} stroke="url(#collab-base-fade)" strokeWidth={strokeW} fill="none" opacity={baseOp} />
+
+      <motion.path
+        d={d}
+        stroke="url(#collab-active-route)"
+        strokeWidth={strokeW + 0.3}
+        fill="none"
+        pathLength={1}
+        initial={false}
+        animate={active
+          ? { opacity: 1, strokeDasharray: "1 0", strokeDashoffset: 0 }
+          : { opacity: 0, strokeDasharray: "0 1", strokeDashoffset: 0 }
+        }
+        transition={{
+          opacity:         { duration: 0.25, delay: staggerDelay, ease: EASE },
+          strokeDasharray: { duration: 0.7,  delay: staggerDelay, ease: EASE },
+        }}
+      />
+
+      {active && (
+        <motion.path
+          d={d}
+          stroke="url(#collab-shimmer)"
+          strokeWidth={(strokeW + 0.3) * 2.2}
+          fill="none"
+          filter="url(#collab-shimmer-glow)"
+          initial={{ opacity: 0, pathLength: 1, strokeDasharray: "0.06 1", strokeDashoffset: 0.08 }}
+          animate={{ opacity: [0, 1, 0], strokeDashoffset: [0.08, -1] }}
+          transition={{
+            opacity:          { duration: 0.9, delay: staggerDelay + 0.35, ease: EASE, times: [0, 0.3, 1] },
+            strokeDashoffset: { duration: 0.9, delay: staggerDelay + 0.35, ease: EASE },
+          }}
+        />
+      )}
+    </g>
+  );
+}
+
+function CollabNetworkArt({ onInteract }) {
+  const [isMounted, setMounted] = useState(false);
+  const [activated, setActivated] = useState(false);
+  const [hovered,   setHovered]   = useState(false);
+  const [complete,  setComplete]  = useState(false);
+
+  useEffect(() => { setMounted(true); }, []);
+
+  const nodeMap = Object.fromEntries(ALL_NODES.map(n => [n.id, n]));
+
+  const handleClick = useCallback(() => {
+    if (activated) return;
+    setActivated(true);
+    if (onInteract) onInteract();
+    setTimeout(() => setComplete(true), 2450);
+  }, [activated, onInteract]);
+
+  const handleMouseEnter = useCallback(() => {
+    setHovered(true);
+    if (onInteract) onInteract();
+  }, [onInteract]);
+
+  if (!isMounted) return <div className="hidden md:absolute md:inset-0 md:flex md:items-center md:justify-end z-[1] pointer-events-none" />;
+
+  return (
+    <div className="hidden md:absolute md:inset-0 md:flex md:items-center md:justify-end z-[1] pointer-events-none">
+      <div
+        className="absolute inset-0 z-[2] pointer-events-none"
+        style={{ background: "linear-gradient(to right, #F9F8F5 0%, #F9F8F5 25%, transparent 50%)" }}
+      />
+
+      <div className="relative w-full lg:w-[1280px] h-[700px]">
+
+      {activated && (
+        <motion.div
+          aria-hidden="true"
+          className="absolute rounded-full pointer-events-none z-[3]"
+          style={{
+            left: CENTER.x, top: CENTER.y,
+            transform: "translate(-50%, -50%)",
+            background: "radial-gradient(circle, transparent 20%, rgba(192,123,80,0.3) 45%, rgba(255,255,255,1.0) 50%, transparent 70%)",
+            filter: "blur(40px)",
+          }}
+          initial={{ width: 40, height: 40, opacity: 0.08 }}
+          animate={{ width: 3600, height: 3600, opacity: [0, 0.52, 0] }}
+          transition={{
+            width:   { duration: 2.4, ease: [0.4, 0, 0.2, 1] },
+            height:  { duration: 2.4, ease: [0.4, 0, 0.2, 1] },
+            opacity: { duration: 2.4, ease: [0.4, 0, 0.2, 1], times: [0, 0.48, 1] },
+          }}
+        />
+      )}
+
+      <svg
+        viewBox="0 0 1280 700"
+        className="absolute inset-0 w-full h-full pointer-events-auto"
+        preserveAspectRatio="xMidYMid meet"
+        aria-label="Interactive community network — click to activate"
+        role="group"
+        style={{
+          opacity: complete ? 0.48 : 0.24,
+          transition: "opacity 1200ms ease",
+          transform: "scale(var(--art-scale, 1)) translateX(var(--art-x-offset, 0))"
+        }}
+      >
+        <style>{`
+          @media (min-width: 768px) and (max-width: 1023px) {
+            svg { --art-scale: 0.85; --art-x-offset: -120px; }
+          }
+        `}</style>
+        <defs>
+          <radialGradient id="collab-base-fade" cx={CENTER.x} cy={CENTER.y} r="240" gradientUnits="userSpaceOnUse">
+            <stop offset="0" stopColor="#9E7E6B" stopOpacity="0.45" />
+            <stop offset="0.5" stopColor="#9E7E6B" stopOpacity="0.25" />
+            <stop offset="1" stopColor="#9E7E6B" stopOpacity="0.12" />
+          </radialGradient>
+
+          <radialGradient id="collab-active-route" cx={CENTER.x} cy={CENTER.y} r="230" gradientUnits="userSpaceOnUse">
+            <stop offset="0" stopColor="#BFA391" stopOpacity="0.72" />
+            <stop offset="0.55" stopColor="#BFA391" stopOpacity="0.52" />
+            <stop offset="1" stopColor="#9E7E6B" stopOpacity="0.32" />
+          </radialGradient>
+
+          <linearGradient id="collab-shimmer" x1="0" y1="0" x2="1" y2="0">
+            <stop offset="0" stopColor="#FFFFFF" stopOpacity="0" />
+            <stop offset="0.44" stopColor="#F9F8F5" stopOpacity="0.72" />
+            <stop offset="0.58" stopColor="#F5E8DC" stopOpacity="0.88" />
+            <stop offset="1" stopColor="#FFFFFF" stopOpacity="0" />
+          </linearGradient>
+
+          <filter id="collab-node-glow" x="-50%" y="-50%" width="200%" height="200%">
+            <feGaussianBlur stdDeviation="10" />
+          </filter>
+
+          <filter id="collab-shimmer-glow" x="-50%" y="-50%" width="200%" height="200%">
+            <feGaussianBlur stdDeviation="1.5" />
+          </filter>
+        </defs>
+
+        <g stroke="#9E7E6B" strokeWidth="0.5" fill="none"
+           opacity={complete ? 0.28 : 0.18} style={{ transition: "opacity 1200ms ease" }}>
+          {MICRO_LINES.map((d, i) => (
+            <path key={i} d={d} strokeDasharray={i % 3 === 0 ? "2 10" : i % 3 === 1 ? "8 12" : undefined} />
+          ))}
+        </g>
+
+        <g fill="#9E7E6B" opacity="0.14">
+          {AMBIENT_DOTS.map((dot, i) => (
+            <circle key={i} cx={dot.x} cy={dot.y} r={i % 4 === 0 ? 1.5 : 1} />
+          ))}
+        </g>
+
+        {CONNECTIONS.map((conn, i) => (
+          <ConnectionLine key={i} conn={conn} nodeMap={nodeMap} active={activated} index={i} />
+        ))}
+
+        <circle cx={CENTER.x} cy={CENTER.y} r={R1} fill="none" stroke="#9E7E6B" strokeWidth="0.4" opacity="0.12" strokeDasharray="4 8" />
+        <circle cx={CENTER.x} cy={CENTER.y} r={R2} fill="none" stroke="#9E7E6B" strokeWidth="0.4" opacity="0.08" strokeDasharray="3 10" />
+
+        {ALL_NODES.map(node => (
+          <NodeGlow key={node.id} node={node} active={activated} highlighted={node.id === 0 ? hovered : false} finalComplete={complete} />
+        ))}
+
+        {ALL_NODES.map(node => (
+          <NodeMarker key={node.id} node={node} active={activated} highlighted={node.id === 0 ? hovered : false} finalComplete={complete} />
+        ))}
+
+        <motion.circle
+          cx={CENTER.x} cy={CENTER.y} r={24}
+          fill="#9E7E6B"
+          filter="url(#collab-node-glow)"
+          pointerEvents="none"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: activated ? 0 : [0.06, 0.18, 0.06] }}
+          transition={activated ? { duration: 0.4, ease: "easeOut" } : { duration: 3, repeat: Infinity, ease: "easeInOut" }}
+        />
+        <g transform={`rotate(-22, ${CENTER.x}, ${CENTER.y})`} aria-hidden="true">
+          <motion.ellipse
+            cx={CENTER.x} cy={CENTER.y} rx={2} ry={14}
+            fill="white"
+            filter="url(#collab-shimmer-glow)"
+            pointerEvents="none"
+            initial={{ opacity: 0, x: -28 }}
+            animate={{ opacity: activated ? 0 : [0, 0.65, 0], x: activated ? 0 : [-28, 0, 28] }}
+            transition={activated ? { duration: 0.4, ease: "easeOut" } : { duration: 4, repeat: Infinity, ease: "easeInOut" }}
+          />
+        </g>
+
+        <circle
+          cx={CENTER.x} cy={CENTER.y} r={36}
+          fill="transparent"
+          className="cursor-pointer"
+          style={{ pointerEvents: "auto", outline: "none" }}
+          tabIndex={0}
+          aria-label={activated ? "Network activated" : "Activate collaboration network"}
+          onMouseEnter={handleMouseEnter}
+          onMouseLeave={() => setHovered(false)}
+          onFocus={handleMouseEnter}
+          onBlur={() => setHovered(false)}
+          onClick={handleClick}
+          onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") handleClick(); }}
+        />
+
+        {!activated && RING1_NODES.map(node => (
+          <motion.circle
+            key={`prepulse-${node.id}`}
+            cx={node.x} cy={node.y} r={16}
+            fill="#9E7E6B"
+            filter="url(#collab-node-glow)"
+            initial={false}
+            animate={{ opacity: hovered ? 0.15 : 0 }}
+            transition={{ duration: 0.5, ease: EASE }}
+          />
+        ))}
+      </svg>
+      </div>
+    </div>
+  );
+}
+
+const PROJECT = {
+  category: "Enterprise Platform Design",
+  title: "Driving Adoption of an Enterprise Collaboration Platform",
+  description: "Building a shared knowledge and collaboration platform that connected 2,000+ employees, domains, and expertise across a global organization.",
+  client: "Rohde & Schwarz",
+  impact: "Platform Adoption",
+  tags: ["UX Research", "Stakeholder Discovery", "Information Architecture", "Knowledge Management"],
+  heroMetadata: [
+    { label: "Year", value: "2023–2024" },
+    { label: "Role", value: "UX Research & Product Design" },
+    { label: "Product", value: "PLM Collabspace" },
+    { label: "Domain", value: "B2B Enterprise" },
+    { label: "Users", value: "2,000+ Global Employees" },
+    { label: "Scope", value: "Knowledge Ecosystem" },
+  ],
+};
+
+function InProgressHero({ project }) {
+  const reduceMotion = useReducedMotion();
+  const metadata = project.heroMetadata ?? [];
+  const [hasInteracted, setHasInteracted] = useState(false);
+  const handleInteraction = () => setHasInteracted(true);
+
+  return (
+    <div className="relative isolate overflow-hidden bg-[#F9F8F5]">
+      <div
+        aria-hidden="true"
+        className="pointer-events-none absolute inset-0"
+        style={{ backgroundImage: "radial-gradient(circle at 1px 1px, #E6E3DD 1px, transparent 0)", backgroundSize: "40px 40px", opacity: 0.5 }}
+      />
+
+      <section
+        aria-labelledby="project-hero-title"
+        className="relative flex md:min-h-screen flex-col justify-start px-6 pb-16 md:pb-[88px] pt-[72px] md:px-10"
+      >
+        <div className="hidden md:block">
+          <CollabNetworkArt onInteract={handleInteraction} />
+        </div>
+
+        <div className="pointer-events-none relative z-10 mx-auto w-full max-w-[1280px]">
+          <motion.div
+            initial={{ opacity: 0, y: 18 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: reduceMotion ? 0 : 0.55, ease: HERO_EASE }}
+            className="mb-8"
+          >
+            <p className="mb-[28px] text-[12px] font-[525] uppercase tracking-widest text-[#1C1A16]/40">{project.category}</p>
+            <h1
+              id="project-hero-title"
+              className="font-[family-name:var(--font-instrument-serif)] text-[clamp(2.50rem,3.74vw,4.06rem)] italic leading-tight text-[#1C1A16] max-w-[670px]"
+            >
+              {project.title}
+            </h1>
+          </motion.div>
+
+          <motion.div
+            initial={{ opacity: 0, y: 18 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: reduceMotion ? 0 : 0.55, delay: 0.1, ease: HERO_EASE }}
+          >
+            <p className="mb-[32px] max-w-[560px] text-base leading-relaxed text-[#1C1A16]/60">{project.description}</p>
+
+            {metadata.length > 0 && (
+              <div
+                className="grid w-fit grid-cols-[auto_auto] sm:grid-cols-[auto_auto_auto] overflow-hidden rounded-xl border border-[#E6E3DD] bg-[#E6E3DD] gap-px"
+                style={{ boxShadow: "0 2px 8px rgba(0,0,0,0.05)" }}
+              >
+                {metadata.map(({ label, value }) => (
+                  <div key={label} className="flex flex-col gap-1.5 bg-white px-6 py-3">
+                    <span className="text-[10px] font-medium uppercase tracking-widest text-[#1C1A16]/[0.38]">{label}</span>
+                    <span className="text-[15px] font-normal text-[#1C1A16]/85 leading-snug">{value}</span>
+                  </div>
+                ))}
+              </div>
+            )}
+
+            <div className="mt-[20px] flex max-w-[1280px] items-end justify-between">
+              <div className="flex max-w-[720px] flex-wrap gap-[10px]">
+                {project.client && (
+                  <span className="rounded-full bg-[#1C1A16]/[0.09] px-3 py-1.5 text-sm font-medium text-[#1C1A16]">{project.client}</span>
+                )}
+                {project.impact && (
+                  <span className="rounded-full border border-[#C8BFB2] px-3 py-1.5 text-[12.5px] text-[#1C1A16]/55">{project.impact}</span>
+                )}
+                {project.tags?.map((tag) => (
+                  <span key={tag} className="rounded-full border border-[#C8BFB2] px-3 py-1.5 text-[12.5px] text-[#1C1A16]/55">{tag}</span>
+                ))}
+              </div>
+
+              <AnimatePresence>
+                {!hasInteracted ? (
+                  <motion.div
+                    aria-hidden="true"
+                    className="pointer-events-none hidden md:flex items-center gap-2.5 pb-1 opacity-0"
+                    initial={{ opacity: 0, y: 6 }}
+                    animate={{ opacity: 0.62, y: 0 }}
+                    exit={{ opacity: 0, y: 4 }}
+                    transition={{ duration: 0.45, delay: 1.1, ease: HERO_EASE }}
+                  >
+                    <motion.span
+                      className="block h-2.5 w-2.5 rounded-full border border-[#C07B50]/75 bg-[#F9F8F5] shadow-[0_0_0_1px_rgba(192,123,80,0.08)]"
+                      animate={{
+                        boxShadow: [
+                          "0 0 0 1px rgba(192,123,80,0.18), 0 0 0 0 rgba(192,123,80,0.18)",
+                          "0 0 0 1px rgba(192,123,80,0.22), 0 0 0 8px rgba(192,123,80,0.12)",
+                          "0 0 0 1px rgba(192,123,80,0.16), 0 0 0 15px rgba(192,123,80,0)",
+                        ],
+                        scale: [1, 1.12, 1],
+                      }}
+                      transition={{ duration: 2.2, repeat: Infinity, ease: "easeOut" }}
+                    />
+                    <span className="text-[10px] font-semibold uppercase tracking-[0.16em] text-[#C07B50]/85">Explore the network</span>
+                  </motion.div>
+                ) : null}
+              </AnimatePresence>
+            </div>
+          </motion.div>
+        </div>
+      </section>
+    </div>
+  );
+}
+
+ReactDOM.createRoot(document.getElementById("root")).render(<InProgressHero project={PROJECT} />);
+</script>
+<script>
+  var __code = document.getElementById("app-source").textContent;
+  var __out = Babel.transform(__code, { presets: [["react", { runtime: "classic" }]] }).code;
+  var __s = document.createElement("script");
+  __s.textContent = __out;
+  document.body.appendChild(__s);
+</script>
+</body>
+</html>
