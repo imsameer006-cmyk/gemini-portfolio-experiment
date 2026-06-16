@@ -984,7 +984,7 @@ function GenericBody() {
       <div className="border-t border-[#E6E3DD] pt-12 space-y-6">
         <p className="text-[#6A6764] text-base leading-relaxed">
           Full case study coming soon. In the meantime, feel free to{" "}
-          <a href="mailto:imsameer006@gmail.com" className="text-[#C07B50] underline underline-offset-2">
+          <a href="mailto:hi@withsameer.design" className="text-[#C07B50] underline underline-offset-2">
             reach out
           </a>{" "}
           to discuss this project in detail.
