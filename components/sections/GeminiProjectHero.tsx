@@ -1,529 +1,506 @@
 "use client";
 
+/**
+ * Gemini case-study hero art.
+ *
+ * The copy and metadata stay data-driven through GeminiProjectHero props. The
+ * visual layer is the finalized reactive mesh: nodes, labels, and stepped
+ * progression all share the same SVG grid coordinate system.
+ */
+
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
-import { useRef, useState } from "react";
+import { useMemo, useState } from "react";
+
+const MATRIX_COLS = 24;
+const MATRIX_ROWS = 14;
+const CANVAS_WIDTH = 1280;
+const CANVAS_HEIGHT = 700;
 
 const EASE = [0.16, 1, 0.3, 1] as const;
 
-const INTERACTIVE_NODES = [
-  { id: 0, x: 700, y: 270, shape: "circle", halo: "#BFA391" },
-  { id: 1, x: 860, y: 330, shape: "square", halo: "#9E7E6B" },
-  { id: 2, x: 1045, y: 300, shape: "diamond", halo: "#C07B50" },
-  { id: 3, x: 640, y: 390, shape: "completion", halo: "#BFA391" },
+const getGridCoords = (col: number, row: number) => ({
+  x: (col / MATRIX_COLS) * CANVAS_WIDTH,
+  y: (row / MATRIX_ROWS) * CANVAS_HEIGHT,
+});
+
+const seededRandom = (seed: number) => {
+  let x = (seed * 1597334677) >>> 0;
+  x = (x ^ (x >>> 15)) >>> 0;
+  x = (x * 2246822519) >>> 0;
+  x = (x ^ (x >>> 13)) >>> 0;
+  x = (x * 3266489917) >>> 0;
+  x = (x ^ (x >>> 16)) >>> 0;
+  return x / 4294967296;
+};
+
+const starPath = (cx: number, cy: number, size: number) => {
+  const inner = size * 0.28;
+  return `M ${cx} ${cy - size} L ${cx + inner} ${cy - inner} L ${cx + size} ${cy} L ${cx + inner} ${cy + inner} L ${cx} ${cy + size} L ${cx - inner} ${cy + inner} L ${cx - size} ${cy} L ${cx - inner} ${cy - inner} Z`;
+};
+
+const GRID_NODES = [
+  { id: 0, col: 14, row: 5, shape: "circle" },
+  { id: 1, col: 17, row: 7, shape: "square" },
+  { id: 2, col: 21, row: 6, shape: "diamond" },
+  { id: 3, col: 13, row: 9, shape: "circle" },
+  { id: 4, col: 22, row: 9, shape: "completion" },
 ] as const;
 
-const NETWORK_PATHS = [
-  { id: "p01", owner: 0, delay: 0, d: "M620 270H700" },
-  { id: "p02", owner: 0, delay: 0.1, d: "M700 270H760C792 270 806 284 806 306V330H860" },
-  { id: "p03", owner: 0, delay: 0.18, d: "M700 270V170H766" },
-  { id: "p04", owner: 1, delay: 0, d: "M860 330H922C954 330 968 316 968 300H1045" },
-  { id: "p05", owner: 1, delay: 0.1, d: "M860 330V438H944" },
-  { id: "p06", owner: 1, delay: 0.18, d: "M860 330V220H916" },
-  { id: "p07", owner: 2, delay: 0, d: "M1045 300H820C800 300 790 310 790 340V390H640" },
-  { id: "p08", owner: 2, delay: 0.08, d: "M1045 300V190H1118" },
-  { id: "p09", owner: 2, delay: 0.16, d: "M1045 300V430H1130" },
-  { id: "p10", owner: 2, delay: 0.24, d: "M1045 300H1100V246H1170" },
-  { id: "p11", owner: 3, delay: 0, d: "M640 390H770" },
-  { id: "p12", owner: 3, delay: 0.08, d: "M640 390V510H736" },
-  { id: "p13", owner: 3, delay: 0.16, d: "M640 390V284H730" },
-  { id: "p14", owner: 3, delay: 0.24, d: "M640 390H694V446H782" },
-] as const;
+const INTERACTIVE_NODES = GRID_NODES.map((node) => ({
+  ...node,
+  ...getGridCoords(node.col, node.row),
+}));
 
-const SECONDARY_PATHS = [
-  "M620 270V214H660",
-  "M700 170V112H766",
-  "M766 170H820V120",
-  "M806 330V410H748",
-  "M860 220V150H916",
-  "M916 220H954V166",
-  "M860 438V522H944",
-  "M944 438H986V486",
-  "M1045 190V118H1118",
-  "M1118 190H1164V136",
-  "M1045 430V520H1130",
-  "M1130 430H1180V486",
-  "M1170 246V194H1222",
-  "M640 284V204H730",
-  "M640 510V590H736",
-  "M736 510H792",
-  "M694 446V540H782",
-  "M770 390V340H810",
-  "M770 390V434H810",
-] as const;
+const WORKFLOW_NODE_ORDER = [3, 0, 1, 2, 4] as const;
 
-const DECORATIVE_NODES = [
-  { x: 620, y: 270, r: 2 },
-  { x: 520, y: 410, r: 4 },
-  { x: 660, y: 214, r: 3 },
-  { x: 700, y: 112, r: 3 },
-  { x: 766, y: 112, r: 4 },
-  { x: 820, y: 120, r: 3 },
-  { x: 748, y: 410, r: 3 },
-  { x: 916, y: 150, r: 3 },
-  { x: 954, y: 166, r: 2 },
-  { x: 944, y: 522, r: 4 },
-  { x: 986, y: 486, r: 3 },
-  { x: 1118, y: 118, r: 4 },
-  { x: 1164, y: 136, r: 3 },
-  { x: 1130, y: 520, r: 4 },
-  { x: 1180, y: 486, r: 3 },
-  { x: 1222, y: 194, r: 3 },
-  { x: 730, y: 204, r: 3 },
-  { x: 736, y: 590, r: 4 },
-  { x: 792, y: 510, r: 3 },
-  { x: 782, y: 540, r: 3 },
-  { x: 810, y: 340, r: 3 },
-  { x: 810, y: 434, r: 3 },
-  { x: 770, y: 390, r: 4 },
-  { x: 736, y: 510, r: 3 },
-  { x: 730, y: 284, r: 3 },
-  { x: 782, y: 446, r: 3 },
-  { x: 900, y: 746, r: 2 },
-  { x: 738, y: 752, r: 4 },
-  { x: 700, y: 470, r: 3 },
-  { x: 606, y: 538, r: 3 },
-  { x: 520, y: 694, r: 4 },
-] as const;
+const getStepNumber = (id: number) => WORKFLOW_NODE_ORDER.findIndex((nodeId) => nodeId === id) + 1;
 
-const MICRO_PATHS = [
-  "M382 118H472V176H548",
-  "M430 260H536V214H606",
-  "M360 548H458V602H548",
-  "M486 744V676H570",
-  "M566 76V148H622",
-  "M666 52V112H726",
-  "M792 70H860V122H934",
-  "M980 62V136H1048",
-  "M1102 72H1178V122H1282",
-  "M694 194H782",
-  "M658 284H770",
-  "M740 370V470H796",
-  "M696 506H798",
-  "M638 588H744V634H810",
-  "M1184 672H1276V744",
-  "M1036 756H1104V692H1172",
-  "M842 778V716H900",
-  "M646 772H706V714",
-  "M466 650H552V710",
-  "M520 342H574",
-  "M736 328H804",
-  "M1014 324H1084",
-  "M1106 512H1184",
-  "M766 112V76H830V48",
-  "M748 410H686V458H626",
-  "M944 522V574H1004V618",
-  "M1118 118V82H1192V52",
-  "M1130 520V584H1206V626",
-  "M730 204H780V156H828",
-  "M736 590V656H798V708",
-  "M792 510H832V562",
-  "M782 540V608H830",
-  "M810 340H842V298",
-  "M810 434H844V470",
-  "M598 528H678V588",
-  "M678 528V588H758",
-  "M758 588H838V648",
-  "M838 588V648H906",
-  "M678 588V648H738",
-  "M758 648V718H818",
-  "M818 648H898V718",
-  "M898 648V718H956",
-  "M618 648V718H678",
-  "M738 648V718H798",
-  "M678 718V792H738",
-  "M818 718V798H878",
-  "M758 718V802",
-  "M898 718V790H958",
-] as const;
+function getSteppedPath(fromId: number, toId: number, turn: "horizontal" | "vertical" = "horizontal") {
+  const from = INTERACTIVE_NODES.find((node) => node.id === fromId);
+  const to = INTERACTIVE_NODES.find((node) => node.id === toId);
 
-const MICRO_NODES = [
-  { x: 382, y: 118 }, { x: 472, y: 176 }, { x: 430, y: 260 },
-  { x: 536, y: 214 }, { x: 360, y: 548 }, { x: 458, y: 602 },
-  { x: 486, y: 744 }, { x: 566, y: 76 }, { x: 666, y: 52 },
-  { x: 792, y: 70 }, { x: 860, y: 122 }, { x: 980, y: 62 },
-  { x: 1102, y: 72 }, { x: 1178, y: 122 }, { x: 694, y: 194 },
-  { x: 770, y: 284 }, { x: 740, y: 370 }, { x: 798, y: 506 },
-  { x: 744, y: 634 }, { x: 1276, y: 744 }, { x: 1104, y: 692 },
-  { x: 1036, y: 756 }, { x: 842, y: 778 }, { x: 646, y: 772 },
-  { x: 552, y: 710 }, { x: 520, y: 342 }, { x: 736, y: 328 },
-  { x: 1014, y: 324 }, { x: 1106, y: 512 },
-  { x: 830, y: 48 }, { x: 686, y: 458 }, { x: 626, y: 458 },
-  { x: 1004, y: 618 }, { x: 1192, y: 52 }, { x: 1206, y: 626 },
-  { x: 828, y: 156 }, { x: 798, y: 708 }, { x: 832, y: 562 },
-  { x: 830, y: 608 }, { x: 842, y: 298 }, { x: 844, y: 470 },
-  { x: 598, y: 528 }, { x: 678, y: 528 }, { x: 758, y: 588 },
-  { x: 838, y: 588 }, { x: 906, y: 588 }, { x: 678, y: 648 },
-  { x: 758, y: 648 }, { x: 838, y: 648 }, { x: 898, y: 648 },
-  { x: 618, y: 648 }, { x: 738, y: 648 }, { x: 818, y: 718 },
-  { x: 898, y: 718 }, { x: 678, y: 718 }, { x: 758, y: 718 },
-  { x: 738, y: 792 }, { x: 818, y: 798 }, { x: 758, y: 802 },
-  { x: 878, y: 718 }, { x: 956, y: 718 }, { x: 958, y: 790 },
-] as const;
+  if (!from || !to) return "";
 
-function InteractiveNetwork({
+  if (turn === "vertical") {
+    return `M ${from.x} ${from.y} V ${to.y} H ${to.x}`;
+  }
+
+  return `M ${from.x} ${from.y} H ${to.x} V ${to.y}`;
+}
+
+const WORKFLOW_STEP_PATHS = [
+  { id: "step-1-2", from: 3, to: 0, d: getSteppedPath(3, 0, "vertical") },
+  { id: "step-2-3", from: 0, to: 1, d: getSteppedPath(0, 1) },
+  { id: "step-3-4", from: 1, to: 2, d: getSteppedPath(1, 2) },
+  { id: "step-4-5", from: 2, to: 4, d: getSteppedPath(2, 4) },
+];
+
+const BACKDROP_FABRIC = (() => {
+  const meshLines: { id: string; d: string; col: number; row: number }[] = [];
+  const dots: { id: string; cx: number; cy: number; col: number; row: number }[] = [];
+
+  for (let c = 0; c <= MATRIX_COLS; c++) {
+    const x = (c / MATRIX_COLS) * CANVAS_WIDTH;
+
+    for (let r = 0; r <= MATRIX_ROWS; r++) {
+      const y = (r / MATRIX_ROWS) * CANVAS_HEIGHT;
+
+      dots.push({
+        id: `dot-mesh-${c}-${r}`,
+        cx: x,
+        cy: y,
+        col: c,
+        row: r,
+      });
+
+      if (r < MATRIX_ROWS) {
+        const nextY = ((r + 1) / MATRIX_ROWS) * CANVAS_HEIGHT;
+        meshLines.push({
+          id: `v-seg-${c}-${r}`,
+          d: `M ${x} ${y} V ${nextY}`,
+          col: c,
+          row: r + 0.5,
+        });
+      }
+
+      if (c < MATRIX_COLS) {
+        const nextX = ((c + 1) / MATRIX_COLS) * CANVAS_WIDTH;
+        meshLines.push({
+          id: `h-seg-${c}-${r}`,
+          d: `M ${x} ${y} H ${nextX}`,
+          col: c + 0.5,
+          row: r,
+        });
+      }
+    }
+  }
+
+  return { meshLines, dots };
+})();
+
+const MICRO_STARS = (() => {
+  const stars: { id: string; x: number; y: number; size: number; delay: number; duration: number }[] = [];
+
+  for (let c = 0; c <= MATRIX_COLS; c++) {
+    const xRatio = c / MATRIX_COLS;
+    if (xRatio < 0.15) continue;
+
+    const rightBias = (xRatio - 0.15) / 0.85;
+    const probability = 0.03 + 0.32 * rightBias;
+
+    for (let r = 0; r <= MATRIX_ROWS; r++) {
+      const seed = c * 1000 + r;
+      if (seededRandom(seed) >= probability) continue;
+
+      stars.push({
+        id: `star-${c}-${r}`,
+        x: (c / MATRIX_COLS) * CANVAS_WIDTH,
+        y: (r / MATRIX_ROWS) * CANVAS_HEIGHT,
+        size: 2 + seededRandom(seed + 1) * 1.5,
+        delay: seededRandom(seed + 2) * 4,
+        duration: 2.5 + seededRandom(seed + 3) * 2,
+      });
+    }
+  }
+
+  return stars;
+})();
+
+function ReactiveMeshNetwork({
   activated,
-  frozenHalos,
   hovered,
-  complete,
+  lastActivated,
+  nextNodeId,
   completionArrived,
   onHover,
   onActivate,
 }: {
   activated: Set<number>;
-  frozenHalos: Record<number, { captured: number; target: number }>;
   hovered: number | null;
-  complete: boolean;
+  lastActivated: number | null;
+  nextNodeId: number | undefined;
   completionArrived: boolean;
   onHover: (id: number | null) => void;
-  onActivate: (id: number, visibleRadius?: number) => void;
+  onActivate: (id: number) => void;
 }) {
-  const hoverRadii = useRef<Record<number, number>>({});
-  const anyActive = activated.size > 0;
+  const focusPoints = useMemo(() => {
+    const points = Array.from(activated).map((id) => ({
+      id,
+      col: GRID_NODES[id].col,
+      row: GRID_NODES[id].row,
+      weight: id === lastActivated ? 0.56 : 0.34,
+    }));
+
+    if (hovered !== null && !activated.has(hovered)) {
+      points.push({
+        id: hovered,
+        col: GRID_NODES[hovered].col,
+        row: GRID_NODES[hovered].row,
+        weight: 0.58,
+      });
+    }
+
+    return points;
+  }, [activated, hovered, lastActivated]);
+
+  const getProximityOpacity = (itemCol: number, itemRow: number, baseWeight: number) => {
+    const xRatio = itemCol / MATRIX_COLS;
+    const globalFade = xRatio < 0.15 ? 0 : Math.pow((xRatio - 0.15) / 0.85, 1.6);
+
+    if (globalFade === 0) return 0;
+
+    let maxBoost = 0;
+    for (const focus of focusPoints) {
+      const dCol = itemCol - focus.col;
+      const dRow = itemRow - focus.row;
+      const gridDistance = Math.sqrt(dCol * dCol + dRow * dRow);
+
+      if (gridDistance <= 4.5) {
+        const structuralBoost = (1 - gridDistance / 4.5) * focus.weight;
+        if (structuralBoost > maxBoost) maxBoost = structuralBoost;
+      }
+    }
+
+    return Math.min(0.9, (baseWeight + maxBoost) * globalFade);
+  };
 
   return (
-    <div className="absolute inset-0 z-[1]">
-      {/* Content Protection Mask: Fades the art out as it approaches the left content column */}
-      <div 
-        className="absolute inset-0 z-[2] pointer-events-none"
+    <div className="absolute inset-0 z-[1] pointer-events-none">
+      <div
+        aria-hidden="true"
+        className="absolute inset-x-0 inset-y-0 z-[20] pointer-events-none"
         style={{
-          background: "linear-gradient(to right, #F9F8F5 0%, #F9F8F5 25%, transparent 50%)",
+          background:
+            "linear-gradient(to right, #F9F8F5 0%, #F9F8F5 28%, rgba(249,248,245,0.82) 42%, transparent 52%)",
         }}
+      />
+      <div
+        aria-hidden="true"
+        className="absolute inset-y-0 right-0 z-[20] w-[6%] pointer-events-none"
+        style={{ background: "linear-gradient(90deg, rgba(249,248,245,0), #F9F8F5)" }}
+      />
+      <div
+        aria-hidden="true"
+        className="absolute inset-x-0 bottom-0 z-[20] h-16 pointer-events-none"
+        style={{ background: "linear-gradient(180deg, rgba(249,248,245,0), #F9F8F5)" }}
       />
 
       <svg
         viewBox="0 0 1280 700"
         preserveAspectRatio="xMidYMid slice"
-        className="pointer-events-none absolute inset-0 h-full w-full lg:pointer-events-auto"
-        aria-label="Interactive abstract workflow network"
-        role="group"
-        style={{ opacity: complete ? 0.48 : 0.24, transition: "opacity 1200ms ease" }}
+        className="absolute inset-0 h-full w-full pointer-events-none opacity-[0.58] lg:opacity-100"
+        aria-hidden="true"
       >
         <defs>
-          <linearGradient id="micro-network-fade" x1="284" y1="0" x2="1245" y2="0" gradientUnits="userSpaceOnUse">
-            <stop stopColor="#C8BFB2" stopOpacity="0.12" />
-            <stop offset="0.5" stopColor="#C8BFB2" stopOpacity="0.12" />
-            <stop offset="1" stopColor="#C8BFB2" stopOpacity="0.12" />
-          </linearGradient>
-          <linearGradient id="base-network-fade" x1="320" y1="0" x2="1173" y2="0" gradientUnits="userSpaceOnUse">
-            <stop stopColor="#C8BFB2" stopOpacity="0.08" />
-            <stop offset="0.5" stopColor="#C8BFB2" stopOpacity="0.16" />
-            <stop offset="1" stopColor="#C8BFB2" stopOpacity="0.25" />
-          </linearGradient>
-          <linearGradient id="active-network-route" x1="498" y1="0" x2="1173" y2="0" gradientUnits="userSpaceOnUse">
-            <stop stopColor="#C07B50" stopOpacity="0.85" />
-            <stop offset="0.72" stopColor="#C07B50" stopOpacity="0.75" />
-            <stop offset="1" stopColor="#BFA391" stopOpacity="0.45" />
-          </linearGradient>
-          <linearGradient id="network-shimmer" x1="0" y1="0" x2="1" y2="0">
-            <stop stopColor="#FFFFFF" stopOpacity="0" />
-            <stop offset="0.44" stopColor="#F9F8F5" stopOpacity="0.72" />
-            <stop offset="0.58" stopColor="#F0EDE8" stopOpacity="0.88" />
-            <stop offset="1" stopColor="#FFFFFF" stopOpacity="0" />
-          </linearGradient>
-          <filter id="network-node-glow" x="-180%" y="-180%" width="460%" height="460%">
-            <feGaussianBlur stdDeviation="10" />
-          </filter>
-          <filter id="network-shimmer-glow" x="-50%" y="-50%" width="200%" height="200%">
-            <feGaussianBlur stdDeviation="1.5" />
+          <filter id="gemini-node-glow" x="-200%" y="-200%" width="500%" height="500%">
+            <feGaussianBlur stdDeviation="3" />
           </filter>
         </defs>
 
-        <g transform="translate(80, 0)">
-
-        {/* Layer 1: Micro texture lines (Standardized) */}
-        <motion.g
-          data-micro-paths="true"
-          fill="none"
-          stroke="#C8BFB2"
-          strokeWidth="0.5"
-          initial={false}
-          animate={{ opacity: complete ? 0.2 : 0.12 }}
-          transition={{ duration: 1.2, ease: EASE }}
-        >
-          {MICRO_PATHS.map((path, index) => (
-            <path
-              key={path}
-              d={path}
-              strokeDasharray={index % 3 === 0 ? "2 12" : index % 3 === 1 ? "12 14" : undefined}
+        <g className="hidden lg:block" fill="#9E7E6B">
+          {MICRO_STARS.map((star) => (
+            <motion.path
+              key={star.id}
+              d={starPath(star.x, star.y, star.size)}
+              initial={{ opacity: 0.05 }}
+              animate={{ opacity: [0.05, 0.2, 0.05] }}
+              transition={{
+                duration: star.duration,
+                repeat: Infinity,
+                ease: "easeInOut",
+                delay: star.delay,
+              }}
             />
-          ))}
-        </motion.g>
-
-        {/* Layer 2: Ambient dot field (Standardized) */}
-        <motion.g
-          data-micro-nodes="true"
-          fill="#9E7E6B"
-          initial={false}
-          animate={{ opacity: complete ? 0.22 : 0.14 }}
-          transition={{ duration: 1.2, ease: EASE }}
-        >
-          {MICRO_NODES.map((node, index) => (
-            <circle key={`${node.x}-${node.y}`} cx={node.x} cy={node.y} r={index % 4 === 0 ? 1.5 : 1} />
-          ))}
-        </motion.g>
-
-        <g fill="none" stroke="url(#base-network-fade)" strokeWidth="0.65">
-          {NETWORK_PATHS.map((path) => (
-            <path key={path.id} d={path.d} />
-          ))}
-          {SECONDARY_PATHS.map((path) => (
-            <path key={path} d={path} strokeDasharray="6 10" />
           ))}
         </g>
 
-      {NETWORK_PATHS.map((path) => {
-        const active = activated.has(path.owner);
-        const preview = hovered === path.owner;
+        <g fill="none" stroke="#9E7E6B" strokeWidth="0.5">
+          {BACKDROP_FABRIC.meshLines.map((line) => {
+            const currentOpacity = getProximityOpacity(line.col, line.row, 0.1);
 
-        return (
-          <motion.path
-            key={`active-${path.id}`}
-            data-route-layer="settled"
-            data-route-owner={path.owner}
-            d={path.d}
-            fill="none"
-            stroke="url(#active-network-route)"
-            strokeWidth={active ? 1.6 : 1.2}
-            strokeLinecap="round"
-            initial={false}
-            animate={{
-              opacity: active ? 0.82 : preview ? 0.25 : 0,
-              pathLength: active || preview ? 1 : 0,
-            }}
-            transition={{
-              duration: active ? 0.65 : 0.35,
-              delay: active ? 0.72 + path.delay : 0,
-              ease: EASE,
-            }}
-          />
-        );
-      })}
+            return (
+              <motion.path
+                key={line.id}
+                d={line.d}
+                initial={{ opacity: currentOpacity }}
+                animate={{ opacity: currentOpacity }}
+                transition={{ duration: 0.4, ease: EASE }}
+              />
+            );
+          })}
+        </g>
 
-      {NETWORK_PATHS.map((path) => {
-        const active = activated.has(path.owner);
+        <g fill="#9E7E6B">
+          {BACKDROP_FABRIC.dots.map((dot) => {
+            const currentOpacity = getProximityOpacity(dot.col, dot.row, 0.24);
+            const focusedPoint = focusPoints.find(
+              (focus) => dot.col === focus.col && dot.row === focus.row
+            );
+            const isFocused = Boolean(focusedPoint);
+            const focusedFill = completionArrived && focusedPoint?.id !== hovered ? "#BFA391" : "#C07B50";
 
-        return (
-          <motion.path
-            key={`shimmer-${path.id}`}
-            data-route-layer="shimmer"
-            data-route-owner={path.owner}
-            d={path.d}
-            fill="none"
-            stroke="url(#network-shimmer)"
-            strokeWidth="2.8"
-            strokeLinecap="round"
-            strokeDasharray="54 920"
-            filter="url(#network-shimmer-glow)"
-            initial={false}
-            animate={{
-              opacity: active ? [0, 0.82, 0] : 0,
-              strokeDashoffset: active ? [80, -920] : 80,
-            }}
-            transition={{
-              duration: 0.92,
-              delay: active ? path.delay : 0,
-              ease: "easeInOut",
-              times: [0, 0.48, 1],
-            }}
-          />
-        );
-      })}
-
-      <g fill="#9E7E6B">
-        {DECORATIVE_NODES.map((node) => (
-          <circle key={`${node.x}-${node.y}`} cx={node.x} cy={node.y} r={node.r} opacity="0.32" />
-        ))}
-      </g>
-
-      {INTERACTIVE_NODES.map((node) => {
-        const frozenHalo = frozenHalos[node.id];
-        if (!frozenHalo) return null;
-
-        return (
-          <motion.circle
-            key={`frozen-halo-${node.id}`}
-            data-frozen-halo={node.id}
-            cx={node.x}
-            cy={node.y}
-            fill={node.id === 2 ? "#C07B50" : "#BFA391"}
-            filter="url(#network-node-glow)"
-            pointerEvents="none"
-            initial={{ opacity: 0.055, r: frozenHalo.captured }}
-            animate={{ opacity: 0.03, r: frozenHalo.target }}
-            transition={{ duration: 1.35, ease: EASE }}
-          />
-        );
-      })}
-
-      {INTERACTIVE_NODES.map((node, nodeIndex) => {
-        const active = activated.has(node.id);
-        const preview = hovered === node.id;
-        const highlighted = active || preview;
-        const finalComplete = completionArrived;
-
-        return (
-          <g
-            key={node.id}
-            data-interactive-node={node.id}
-            role="button"
-            tabIndex={0}
-            aria-label={`${active ? "Activated" : "Activate"} network node ${node.id + 1}`}
-            onMouseEnter={() => onHover(node.id)}
-            onMouseLeave={() => onHover(null)}
-            onFocus={() => onHover(node.id)}
-            onBlur={() => onHover(null)}
-            onClick={() => onActivate(node.id, hoverRadii.current[node.id])}
-            onKeyDown={(event) => {
-              if (event.key === "Enter" || event.key === " ") {
-                event.preventDefault();
-                onActivate(node.id);
-              }
-            }}
-            className="pointer-events-none outline-none lg:pointer-events-auto lg:cursor-pointer"
-          >
-            <circle cx={node.x} cy={node.y} r="28" fill="transparent" />
-            {preview && !active ? (
+            return (
               <motion.circle
-                key={`hover-halo-${node.id}`}
-                data-node-hover-halo={node.id}
-                cx={node.x}
-                cy={node.y}
-                r="22"
-                fill={node.id === 2 ? "#C07B50" : "#BFA391"}
-                filter="url(#network-node-glow)"
-                pointerEvents="none"
-                initial={{ opacity: 0.055, r: 22 }}
-                animate={{ opacity: 0.055, r: 420 }}
-                exit={{ opacity: 0.03 }}
-                onUpdate={(latest) => {
-                  if (typeof latest.r === "number") hoverRadii.current[node.id] = latest.r;
+                key={dot.id}
+                cx={dot.cx}
+                cy={dot.cy}
+                r={isFocused ? "1.75" : "0.85"}
+                initial={{
+                  opacity: currentOpacity,
+                  fill: isFocused ? focusedFill : "#9E7E6B",
                 }}
-                transition={{
-                  r: { duration: 4.8, ease: "linear" },
-                  opacity: { duration: 0.65, ease: EASE },
-                }}
-              />
-            ) : null}
-            <motion.circle
-              cx={node.x}
-              cy={node.y}
-              r="20"
-              fill={node.id === 2 ? "#C07B50" : "#BFA391"}
-              filter="url(#network-node-glow)"
-              pointerEvents="none"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: anyActive ? 0 : [0.05, 0.18, 0.05] }}
-              transition={anyActive
-                ? { duration: 0.4, ease: "easeOut" }
-                : { duration: 3, repeat: Infinity, ease: "easeInOut", delay: nodeIndex * 0.5 }
-              }
-            />
-            <g transform={`rotate(-22, ${node.x}, ${node.y})`} aria-hidden="true">
-              <motion.ellipse
-                cx={node.x}
-                cy={node.y}
-                rx={2}
-                ry={14}
-                fill="white"
-                filter="url(#network-shimmer-glow)"
-                pointerEvents="none"
-                initial={{ opacity: 0, x: -28 }}
                 animate={{
-                  opacity: anyActive ? 0 : [0, 0.65, 0],
-                  x: anyActive ? 0 : [-28, 0, 28],
+                  opacity: currentOpacity,
+                  fill: isFocused ? focusedFill : "#9E7E6B",
                 }}
-                transition={anyActive
-                  ? { duration: 0.4, ease: "easeOut" }
-                  : { duration: 4, repeat: Infinity, ease: "easeInOut", delay: nodeIndex * 0.5 }
-                }
+                transition={{ duration: 0.4, ease: EASE }}
               />
-            </g>
-            <motion.circle
-              cx={node.x}
-              cy={node.y}
-              r="22"
-              fill={finalComplete ? "#BFA391" : node.id === 2 ? "#C07B50" : "#BFA391"}
-              filter="url(#network-node-glow)"
-              initial={false}
-              animate={{ opacity: active ? 0.08 : 0 }}
-              transition={{ duration: 0.35 }}
-            />
-            {node.shape === "square" ? (
-              <motion.rect
-                x={node.x - 7}
-                y={node.y - 7}
-                width="14"
-                height="14"
-                fill={finalComplete ? "#BFA391" : active ? "#9E7E6B" : "#F9F8F5"}
-                stroke={finalComplete ? "#BFA391" : active ? "#9E7E6B" : "#9E7E6B"}
-                strokeWidth="2"
-                initial={false}
-                animate={{ opacity: highlighted ? 1 : 0.72, scale: highlighted ? 1.12 : 1 }}
-                transition={{ delay: active ? 0.72 : 0, duration: 0.35, ease: EASE }}
-                style={{ transformOrigin: `${node.x}px ${node.y}px` }}
-              />
-            ) : node.shape === "diamond" ? (
-              <motion.rect
-                x={node.x - 6.5}
-                y={node.y - 6.5}
-                width="13"
-                height="13"
-                rx="1"
-                fill={finalComplete ? "#BFA391" : active ? "#9E7E6B" : "#F9F8F5"}
-                stroke={finalComplete ? "#BFA391" : active ? "#9E7E6B" : "#9E7E6B"}
-                strokeWidth="2"
-                initial={false}
-                animate={{
-                  opacity: highlighted ? 1 : 0.72,
-                  scale: highlighted ? 1.14 : 1,
-                  rotate: 45,
+            );
+          })}
+        </g>
+
+        <g className="hidden lg:block" fill="none" strokeLinecap="square" strokeLinejoin="miter">
+          {WORKFLOW_STEP_PATHS.map((path) => {
+            const settled = activated.has(path.from) && activated.has(path.to);
+            const preview =
+              hovered === path.to && activated.has(path.from) && !activated.has(path.to);
+            const visible = settled || preview;
+
+            return (
+              <g key={path.id}>
+                <path d={path.d} stroke="#9E7E6B" strokeWidth={0.65} opacity={0.18} />
+                <motion.path
+                  d={path.d}
+                  stroke="#C07B50"
+                  strokeWidth={1.15}
+                  initial={{ opacity: 0, pathLength: 0 }}
+                  animate={{
+                    opacity: completionArrived ? 0.34 : settled ? 0.5 : preview ? 0.34 : 0,
+                    pathLength: visible ? 1 : 0,
+                  }}
+                  transition={{ duration: 0.55, ease: EASE }}
+                />
+              </g>
+            );
+          })}
+        </g>
+
+        <g className="pointer-events-none lg:pointer-events-auto">
+          {INTERACTIVE_NODES.map((node, nodeIndex) => {
+            const active = activated.has(node.id);
+            const preview = hovered === node.id;
+            const available = active || node.id === nextNodeId;
+            const finalComplete = completionArrived;
+            const accent = node.id === 2 ? "#C07B50" : "#9E7E6B";
+            const isLatest = lastActivated === node.id;
+            const nodeScale = finalComplete ? 1 : preview || isLatest ? 1.2 : active ? 1.06 : 1;
+            const stepNumber = getStepNumber(node.id);
+
+            return (
+              <g
+                key={node.id}
+                role="button"
+                tabIndex={0}
+                aria-disabled={!available}
+                aria-label={`${active ? "Activated" : "Activate"} workflow step ${stepNumber}`}
+                style={{ cursor: available ? "pointer" : "default", outline: "none" }}
+                onMouseEnter={() => onHover(available ? node.id : null)}
+                onMouseLeave={() => onHover(null)}
+                onFocus={() => onHover(available ? node.id : null)}
+                onBlur={() => onHover(null)}
+                onClick={() => {
+                  if (available) onActivate(node.id);
                 }}
-                transition={{ delay: active ? 0.72 : 0, duration: 0.35, ease: EASE }}
-                style={{ transformOrigin: `${node.x}px ${node.y}px` }}
-              />
-            ) : node.shape === "completion" ? (
-              <motion.g
-                initial={false}
-                animate={{ opacity: highlighted ? 1 : 0.72, scale: highlighted ? 1.12 : 1 }}
-                transition={{ delay: active ? 0.72 : 0, duration: 0.35, ease: EASE }}
-                style={{ transformOrigin: `${node.x}px ${node.y}px` }}
+                onKeyDown={(event) => {
+                  if (available && (event.key === "Enter" || event.key === " ")) {
+                    event.preventDefault();
+                    onActivate(node.id);
+                  }
+                }}
               >
-                <circle
-                  cx={node.x}
-                  cy={node.y}
-                  r="8"
-                  fill={finalComplete ? "#BFA391" : active ? "#9E7E6B" : "#F9F8F5"}
-                  stroke={finalComplete ? "#BFA391" : active ? "#9E7E6B" : "#9E7E6B"}
-                  strokeWidth="2"
-                />
-                <circle
-                  cx={node.x}
-                  cy={node.y}
-                  r="3"
-                  fill={finalComplete ? "#F9F8F5" : active ? "#F9F8F5" : "#9E7E6B"}
-                  opacity={finalComplete || active ? 0.92 : 0.52}
-                />
-              </motion.g>
-            ) : (
-              <motion.circle
-                cx={node.x}
-                cy={node.y}
-                r="4"
-                fill={finalComplete ? "#BFA391" : active ? "#9E7E6B" : "#F9F8F5"}
-                stroke={finalComplete ? "#BFA391" : active ? "#9E7E6B" : "#9E7E6B"}
-                strokeWidth="2"
-                initial={false}
-                animate={{ opacity: highlighted ? 1 : 0.72, scale: highlighted ? 1.18 : 1 }}
-                transition={{ delay: active ? 0.72 : 0, duration: 0.35, ease: EASE }}
-                style={{ transformOrigin: `${node.x}px ${node.y}px` }}
-              />
-            )}
-          </g>
-        );
-      })}
+                <circle cx={node.x} cy={node.y} r={18} fill="transparent" pointerEvents="auto" />
 
-      </g>
-    </svg>
+                <motion.g
+                  pointerEvents="none"
+                  initial={false}
+                  animate={{
+                    opacity: finalComplete ? 0.36 : active || preview ? 0.48 : available ? 0.38 : 0.22,
+                  }}
+                  transition={{ duration: 0.3, ease: EASE }}
+                >
+                  <text
+                    x={node.x}
+                    y={node.y + 24}
+                    textAnchor="middle"
+                    className="fill-[#1C1A16] text-[9px] font-semibold"
+                    letterSpacing="0.08em"
+                  >
+                    {stepNumber}
+                  </text>
+                </motion.g>
+
+                <motion.circle
+                  cx={node.x}
+                  cy={node.y}
+                  r={8}
+                  fill={accent}
+                  filter="url(#gemini-node-glow)"
+                  pointerEvents="none"
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: active ? 0 : [0.06, 0.3, 0.06] }}
+                  transition={
+                    active
+                      ? { duration: 0.4, ease: "easeOut" }
+                      : { duration: 3, repeat: Infinity, ease: "easeInOut", delay: nodeIndex * 0.5 }
+                  }
+                />
+
+                <motion.circle
+                  cx={node.x}
+                  cy={node.y}
+                  r={12}
+                  fill={accent}
+                  filter="url(#gemini-node-glow)"
+                  pointerEvents="none"
+                  initial={{ opacity: 0 }}
+                  animate={{
+                    opacity: finalComplete ? 0.05 : isLatest ? 0.12 : active ? 0.055 : 0,
+                  }}
+                  transition={{ duration: 0.35, ease: EASE }}
+                />
+
+                {node.shape === "square" ? (
+                  <motion.rect
+                    x={node.x - 5}
+                    y={node.y - 5}
+                    width={10}
+                    height={10}
+                    fill={finalComplete ? "#BFA391" : active ? "#9E7E6B" : "#F9F8F5"}
+                    stroke={finalComplete ? "#BFA391" : "#9E7E6B"}
+                    strokeWidth={1.5}
+                    pointerEvents="none"
+                    animate={{ scale: nodeScale }}
+                    transition={{ duration: 0.3, ease: EASE }}
+                    style={{ transformOrigin: `${node.x}px ${node.y}px` }}
+                  />
+                ) : node.shape === "diamond" ? (
+                  <motion.rect
+                    x={node.x - 5}
+                    y={node.y - 5}
+                    width={10}
+                    height={10}
+                    fill={finalComplete ? "#BFA391" : active ? "#C07B50" : "#F9F8F5"}
+                    stroke={finalComplete ? "#BFA391" : "#C07B50"}
+                    strokeWidth={1.5}
+                    pointerEvents="none"
+                    animate={{ scale: nodeScale, rotate: 45 }}
+                    transition={{ duration: 0.3, ease: EASE }}
+                    style={{ transformOrigin: `${node.x}px ${node.y}px` }}
+                  />
+                ) : node.shape === "flag" ? (
+                  <motion.g
+                    pointerEvents="none"
+                    animate={{ scale: nodeScale }}
+                    transition={{ duration: 0.3, ease: EASE }}
+                    style={{ transformOrigin: `${node.x}px ${node.y}px` }}
+                  >
+                    <path
+                      d={`M ${node.x - 5} ${node.y + 7} V ${node.y - 7}`}
+                      fill="none"
+                      stroke={finalComplete ? "#BFA391" : "#9E7E6B"}
+                      strokeWidth={1.5}
+                      strokeLinecap="square"
+                    />
+                    <path
+                      d={`M ${node.x - 5} ${node.y - 7} H ${node.x + 6} L ${node.x + 2} ${node.y - 2} H ${node.x - 5} Z`}
+                      fill={finalComplete ? "#BFA391" : active ? "#9E7E6B" : "#F9F8F5"}
+                      stroke={finalComplete ? "#BFA391" : "#9E7E6B"}
+                      strokeWidth={1.5}
+                      strokeLinejoin="miter"
+                    />
+                  </motion.g>
+                ) : node.shape === "completion" ? (
+                  <motion.g
+                    pointerEvents="none"
+                    animate={{ scale: nodeScale }}
+                    transition={{ duration: 0.3, ease: EASE }}
+                    style={{ transformOrigin: `${node.x}px ${node.y}px` }}
+                  >
+                    <circle
+                      cx={node.x}
+                      cy={node.y}
+                      r={7}
+                      fill={finalComplete ? "#BFA391" : active ? "#9E7E6B" : "#F9F8F5"}
+                      stroke={finalComplete ? "#BFA391" : "#9E7E6B"}
+                      strokeWidth={1.5}
+                    />
+                    <circle
+                      cx={node.x}
+                      cy={node.y}
+                      r={2}
+                      fill={finalComplete || active ? "#F9F8F5" : "#9E7E6B"}
+                      opacity={finalComplete || active ? 0.95 : 0.52}
+                    />
+                  </motion.g>
+                ) : (
+                  <motion.circle
+                    cx={node.x}
+                    cy={node.y}
+                    r={5}
+                    fill={finalComplete ? "#BFA391" : active ? "#9E7E6B" : "#F9F8F5"}
+                    stroke={finalComplete ? "#BFA391" : "#9E7E6B"}
+                    strokeWidth={1.5}
+                    pointerEvents="none"
+                    animate={{ scale: nodeScale }}
+                    transition={{ duration: 0.3, ease: EASE }}
+                    style={{ transformOrigin: `${node.x}px ${node.y}px` }}
+                  />
+                )}
+              </g>
+            );
+          })}
+        </g>
+      </svg>
     </div>
   );
 }
@@ -558,32 +535,26 @@ export function GeminiProjectHero({
 }: GeminiProjectHeroProps) {
   const reduceMotion = useReducedMotion();
   const [activated, setActivated] = useState<Set<number>>(() => new Set());
-  const [frozenHalos, setFrozenHalos] = useState<
-    Record<number, { captured: number; target: number }>
-  >({});
   const [hovered, setHovered] = useState<number | null>(null);
+  const [lastActivated, setLastActivated] = useState<number | null>(null);
   const [hasInteracted, setHasInteracted] = useState(false);
-  const complete = activated.size === INTERACTIVE_NODES.length;
   const [showCompletionSweep, setShowCompletionSweep] = useState(false);
   const [completionArrived, setCompletionArrived] = useState(false);
+  const nextNodeId = WORKFLOW_NODE_ORDER[activated.size];
 
-  const activateNode = (id: number, visibleRadius?: number) => {
+  const activateNode = (id: number) => {
     if (activated.has(id)) return;
+    if (id !== nextNodeId) return;
 
     setHasInteracted(true);
-    const capturedRadius = Math.min(420, Math.max(110, visibleRadius ?? 110));
-    const targetRadius = capturedRadius < 190 ? 130 : capturedRadius < 310 ? 240 : 360;
     const next = new Set(activated);
     next.add(id);
     setActivated(next);
-    setFrozenHalos((current) => ({
-      ...current,
-      [id]: { captured: capturedRadius, target: targetRadius },
-    }));
+    setLastActivated(id);
 
-    if (next.size === INTERACTIVE_NODES.length) {
+    if (next.size === GRID_NODES.length) {
       setShowCompletionSweep(true);
-      window.setTimeout(() => setCompletionArrived(true), 2450);
+      window.setTimeout(() => setCompletionArrived(true), 1200);
     }
   };
 
@@ -594,39 +565,22 @@ export function GeminiProjectHero({
 
   return (
     <div className="relative isolate overflow-hidden bg-[#F9F8F5]">
-      <div
-        aria-hidden="true"
-        className="pointer-events-none absolute inset-y-0 right-0 z-[2] w-[7%]"
-        style={{
-          background:
-            "linear-gradient(90deg, rgba(249,248,245,0), rgba(249,248,245,0.72))",
-        }}
-      />
-      <div
-        aria-hidden="true"
-        className="pointer-events-none absolute inset-x-0 bottom-0 z-[2] h-24"
-        style={{
-          background:
-            "linear-gradient(180deg, rgba(249,248,245,0), rgba(249,248,245,0.52))",
-        }}
-      />
-
       <AnimatePresence>
         {showCompletionSweep ? (
           <motion.div
             aria-hidden="true"
             data-completion-sweep="true"
-            className="pointer-events-none absolute -inset-y-[18%] -left-[68%] z-[3] w-[72%] skew-x-[-26deg] blur-[28px]"
+            className="pointer-events-none absolute -inset-y-[18%] -left-[62%] z-[3] w-[56%] skew-x-[-26deg] blur-[22px]"
             style={{
               background:
-                "linear-gradient(90deg, transparent 0%, rgba(192,123,80,0.06) 15%, rgba(255,255,255,1.0) 48%, rgba(192,123,80,0.12) 70%, transparent 100%)",
+                "linear-gradient(90deg, transparent 0%, rgba(192,123,80,0.05) 15%, rgba(255,255,255,0.92) 48%, rgba(192,123,80,0.1) 70%, transparent 100%)",
             }}
             initial={{ x: "0%", opacity: 0.08 }}
             animate={{ x: "225%", opacity: [0, 0.85, 0] }}
             exit={{ opacity: 0 }}
             transition={{
-              duration: reduceMotion ? 0 : 2.4,
-              ease: [0.4, 0, 0.2, 1],
+              duration: reduceMotion ? 0 : 1.85,
+              ease: EASE,
               times: [0, 0.48, 1],
             }}
           />
@@ -637,18 +591,17 @@ export function GeminiProjectHero({
         aria-labelledby="hero-lab-title"
         className="relative flex md:min-h-screen flex-col justify-start overflow-x-hidden px-6 pb-16 md:pb-[88px] pt-[72px] md:px-10"
       >
-        <InteractiveNetwork
+        <ReactiveMeshNetwork
           activated={activated}
-          frozenHalos={frozenHalos}
           hovered={hovered}
-          complete={complete}
+          lastActivated={lastActivated}
+          nextNodeId={nextNodeId}
           completionArrived={completionArrived}
           onHover={handleHover}
           onActivate={activateNode}
         />
 
         <div className="pointer-events-none relative z-[10] mx-auto w-full max-w-[1280px]">
-          {/* Full-width headline */}
           <motion.div
             initial={{ opacity: 0, y: 18 }}
             animate={{ opacity: 1, y: 0 }}
@@ -668,7 +621,6 @@ export function GeminiProjectHero({
             </h1>
           </motion.div>
 
-          {/* Content — full width */}
           <motion.div
             initial={{ opacity: 0, y: 18 }}
             animate={{ opacity: 1, y: 0 }}
@@ -679,15 +631,18 @@ export function GeminiProjectHero({
               {description}
             </p>
 
-            {/* Metadata grid — full content width */}
-            <div 
+            <div
               className="grid w-fit grid-cols-[auto_auto] sm:grid-cols-[auto_auto_auto] overflow-hidden rounded-xl border border-[#E6E3DD] bg-[#E6E3DD] gap-px"
               style={{ boxShadow: "0 2px 8px rgba(0,0,0,0.05)" }}
             >
               {metadata.map(({ label, value }) => (
                 <div key={label} className="flex flex-col gap-1.5 bg-white px-6 py-3">
-                  <span className="text-[10px] font-medium uppercase tracking-widest text-[#1C1A16]/[0.38]">{label}</span>
-                  <span className="text-[15px] font-normal text-[#1C1A16]/85 leading-snug">{value}</span>
+                  <span className="text-[10px] font-medium uppercase tracking-widest text-[#1C1A16]/[0.38]">
+                    {label}
+                  </span>
+                  <span className="text-[15px] font-normal text-[#1C1A16]/85 leading-snug">
+                    {value}
+                  </span>
                 </div>
               ))}
             </div>
@@ -746,8 +701,4 @@ export function GeminiProjectHero({
       </section>
     </div>
   );
-}
-
-export default function GeminiProjectHeroPreview() {
-  return <GeminiProjectHero />;
 }
