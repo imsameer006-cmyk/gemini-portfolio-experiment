@@ -61,7 +61,7 @@ export default function ProjectCard({ project, index }: ProjectCardProps) {
           <div className="mt-auto">
             <div className="flex flex-wrap items-center gap-2 mb-4">
               {project.client && (
-                <span className="whitespace-nowrap text-xs font-medium text-[#18171A] bg-[#F2F0EB] px-2.5 py-1 rounded-full">
+                <span className="basis-full md:basis-auto whitespace-nowrap text-xs font-medium text-[#18171A] bg-[#F2F0EB] px-2.5 py-1 rounded-full w-fit">
                   {project.client}
                 </span>
               )}

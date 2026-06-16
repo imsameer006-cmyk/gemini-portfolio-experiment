@@ -52,17 +52,6 @@ export default function GeminiThumbnail() {
     })
   };
 
-  const labelVariants = {
-    hidden: { opacity: 0 },
-    visible: (i: number) => ({
-      opacity: 1,
-      transition: {
-        delay: 0.5 + i * 0.12,
-        duration: 0.6
-      }
-    })
-  };
-
   const yPos = 145;
 
   return (
@@ -141,20 +130,6 @@ export default function GeminiThumbnail() {
           variants={nodeVariants}
           custom={0}
         />
-        <motion.text 
-          x="80" y={yPos+36} 
-          fontFamily="var(--font-geist-mono), monospace" 
-          fontSize="9" 
-          fontWeight="500" 
-          letterSpacing="0.05em" 
-          fill="#C07B50" 
-          opacity="0.85"
-          textAnchor="middle"
-          variants={labelVariants}
-          custom={0}
-        >
-          DRAFT
-        </motion.text>
       </g>
 
       {/* Node 2: PRE-CHECK */}
@@ -182,19 +157,6 @@ export default function GeminiThumbnail() {
           variants={nodeVariants}
           custom={1}
         />
-        <motion.text 
-          x="220" y={yPos+36} 
-          fontFamily="var(--font-geist-mono), monospace" 
-          fontSize="9" 
-          fontWeight="500" 
-          letterSpacing="0.05em" 
-          fill="#C07B50" 
-          textAnchor="middle"
-          variants={labelVariants}
-          custom={1}
-        >
-          PRE-CHECK
-        </motion.text>
       </g>
 
       {/* Node 3: FEASIBILITY */}
@@ -218,20 +180,6 @@ export default function GeminiThumbnail() {
           variants={nodeVariants}
           custom={2}
         />
-        <motion.text 
-          x="360" y={yPos+36} 
-          fontFamily="var(--font-geist-mono), monospace" 
-          fontSize="9" 
-          fontWeight="500" 
-          letterSpacing="0.05em" 
-          fill="#9E7E6B" 
-          opacity="0.45"
-          textAnchor="middle"
-          variants={labelVariants}
-          custom={2}
-        >
-          FEASIBILITY
-        </motion.text>
       </g>
     </motion.svg>
   );

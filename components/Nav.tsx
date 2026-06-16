@@ -99,7 +99,13 @@ export default function Nav() {
           <div className="flex-1">
             <Link
               href="/"
-              onClick={() => setMobileOpen(false)}
+              onClick={(e) => {
+                setMobileOpen(false);
+                if (pathname === "/") {
+                  e.preventDefault();
+                  window.scrollTo({ top: 0, behavior: "smooth" });
+                }
+              }}
               className="font-medium tracking-tight text-sm transition-colors duration-200"
             >
               <span className="text-[#1C1A16]">Sameer Gautam</span>
