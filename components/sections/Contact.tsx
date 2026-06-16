@@ -48,10 +48,10 @@ export default function Contact() {
           className="flex flex-wrap gap-4"
         >
           <a
-            href="mailto:imsameer006@gmail.com"
+            href="mailto:hi@withsameer.design"
             className="inline-flex items-center gap-2 bg-[#EDEBE3] text-[#18171A] text-sm font-medium px-6 py-3.5 rounded-full hover:bg-[#C07B50] hover:text-white transition-all duration-200 min-h-[44px]"
           >
-            imsameer006@gmail.com
+            hi@withsameer.design
             <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true">
               <path d="M2.5 7h9M7.5 3l4 4-4 4" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round" />
             </svg>
