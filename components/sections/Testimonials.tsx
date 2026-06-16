@@ -19,7 +19,7 @@ const TESTIMONIALS = [
   },
   {
     quote:
-      "We valued Sameer for his ability to take ownership, learn quickly, and translate challenges into practical solutions. He approached his work with initiative, operated independently, and consistently delivered under pressure while maintaining strong relationships with colleagues and stakeholders.",
+      "Sameer stood out for his adaptability, independent mindset, and ability to transform challenges into practical outcomes. He learned quickly, navigated demanding situations with composure, and earned the trust of colleagues and stakeholders through his collaborative and solution-oriented approach.",
     name: "14PL Team",
     role: "",
     company: "Rohde & Schwarz, Munich",
