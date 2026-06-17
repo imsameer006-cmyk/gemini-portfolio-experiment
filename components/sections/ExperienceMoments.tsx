@@ -85,15 +85,15 @@ function ExperiencePhotoCard({
         )}
       </div>
 
-      <div className="flex min-h-[104px] flex-col justify-start border-t border-[#E6E3DD] px-5 py-4">
+      <div className="flex min-h-[88px] flex-col justify-start border-t border-[#E6E3DD] px-4 py-4">
         {moment.title && (
-          <p className="line-clamp-2 min-h-[36px] text-[13px] font-medium leading-[1.35] text-[#18171A]">
+          <p className="overflow-hidden text-ellipsis whitespace-nowrap text-[13px] font-medium leading-[1.35] text-[#18171A] lg:text-[12px]">
             {moment.title}
           </p>
         )}
         <p
           className={[
-            "text-xs font-medium uppercase tracking-[0.08em]",
+            "overflow-hidden text-ellipsis whitespace-nowrap text-[11px] font-medium uppercase tracking-[0.06em]",
             moment.title ? "mt-2 text-[#9C9A95]" : "text-[#C07B50]",
           ].join(" ")}
         >
