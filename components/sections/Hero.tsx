@@ -158,6 +158,18 @@ function ClarityThreadVisual({
                 <line x1="-22.5" y1="13" x2="22.5" y2="-13" />
               </g>
             </motion.svg>
+            <span
+              aria-hidden="true"
+              className="pointer-events-none absolute left-1/2 top-1/2"
+              style={{
+                width: 2.8,
+                height: 2.8,
+                borderRadius: "50%",
+                background: "#fff",
+                transform: "translate(-50%, -50%)",
+                boxShadow: "0 0 2px 1px rgba(192,123,80,0.85), 0 0 5px 2px rgba(192,123,80,0.45)",
+              }}
+            />
           </motion.div>
         )}
       </button>

@@ -1,6 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
+import Image from "next/image";
 
 const TESTIMONIALS = [
   {
@@ -9,6 +10,7 @@ const TESTIMONIALS = [
     name: "Yeva Lalayan",
     role: "Research & Design Lead",
     company: "Infineon Technologies",
+    avatar: "/yeva.png",
   },
   {
     quote:
@@ -16,6 +18,7 @@ const TESTIMONIALS = [
     name: "Gemini Digital Twin Team",
     role: "",
     company: "Infineon Technologies, Munich",
+    logo: "/Infineon-logo.png",
   },
   {
     quote:
@@ -23,6 +26,7 @@ const TESTIMONIALS = [
     name: "14PL Team",
     role: "",
     company: "Rohde & Schwarz, Munich",
+    logo: "/rohde-logo.png",
   },
   {
     quote:
@@ -30,6 +34,7 @@ const TESTIMONIALS = [
     name: "Jürgen Engelbrecht",
     role: "Agile Coach",
     company: "",
+    avatar: "/Jurgen.png",
   },
 ];
 
@@ -76,17 +81,39 @@ export default function Testimonials() {
               <p className="flex-1 font-[family-name:var(--font-instrument-serif)] text-lg italic leading-relaxed text-[#3A3836]">
                 {t.quote}
               </p>
-              <div className="mt-6 border-t border-[#E6E3DD] pt-5">
-                <p className="text-sm font-medium text-[#18171A]">{t.name}</p>
-                <p className="mt-0.5 text-xs text-[#6A6764]">
-                  {t.role && (
-                    <>
-                      {t.role}
-                      <span className="mx-1.5 text-[#CECAC2]">·</span>
-                    </>
-                  )}
-                  {t.company}
-                </p>
+              <div className="mt-6 border-t border-[#E6E3DD] pt-5 flex items-center gap-3">
+                {"avatar" in t && t.avatar && (
+                  <Image
+                    src={t.avatar}
+                    alt={t.name}
+                    width={39}
+                    height={39}
+                    unoptimized
+                    className="rounded-full object-cover shrink-0"
+                  />
+                )}
+                {"logo" in t && t.logo && (
+                  <Image
+                    src={t.logo}
+                    alt={t.company}
+                    width={39}
+                    height={39}
+                    unoptimized
+                    className="shrink-0"
+                  />
+                )}
+                <div>
+                  <p className="text-sm font-medium text-[#18171A]">{t.name}</p>
+                  <p className="mt-0.5 text-xs text-[#6A6764]">
+                    {t.role && (
+                      <>
+                        {t.role}
+                        <span className="mx-1.5 text-[#CECAC2]">·</span>
+                      </>
+                    )}
+                    {t.company}
+                  </p>
+                </div>
               </div>
             </motion.div>
           ))}
