@@ -1,6 +1,7 @@
 import Hero from "@/components/sections/Hero";
 import Work from "@/components/sections/Work";
 import About from "@/components/sections/About";
+import ExperienceMoments from "@/components/sections/ExperienceMoments";
 import Philosophy from "@/components/sections/Philosophy";
 import Process from "@/components/sections/Process";
 import Testimonials from "@/components/sections/Testimonials";
@@ -12,6 +13,7 @@ export default function HomePage() {
       <Hero />
       <Work />
       <About />
+      <ExperienceMoments />
       <Philosophy />
       <Process />
       <Testimonials />
