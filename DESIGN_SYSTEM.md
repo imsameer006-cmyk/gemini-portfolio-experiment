@@ -1071,7 +1071,7 @@ Global metadata is defined in `app/layout.tsx`. Project metadata is generated in
 - Site title: Sameer Gautam - Product Designer
 - Description: Product designer who builds clarity out of complexity, systems thinker, interaction designer, UX researcher.
 - Open Graph title and description mirror the brand positioning.
-- Open Graph sharing image is generated through `app/opengraph-image.tsx` and uses the black favicon-style asterisk mark instead of page photography.
+- Open Graph sharing image is served as the static, versioned asset `public/og-image-v2.png` and uses the black favicon-style asterisk mark instead of page photography.
 
 ### Project Metadata
 
@@ -1259,7 +1259,7 @@ Use this checklist before shipping future changes:
 - In Practice card captions are constrained to two visual rows: one title row and one metadata row.
 - Treated gallery assets live in `public/Gallery/editorial`.
 - Editorial gallery treatment script lives at `scripts/apply-editorial-gallery-treatment.mjs`.
-- Open Graph sharing image is generated from `app/opengraph-image.tsx` using the black favicon-style asterisk mark.
+- Open Graph sharing image is served from `public/og-image-v2.png` using the black favicon-style asterisk mark.
 
 ### Partially Implemented
 

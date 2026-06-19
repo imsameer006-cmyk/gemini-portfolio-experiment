@@ -33,7 +33,29 @@ export const metadata: Metadata = {
     title: "Sameer Gautam — Product Designer",
     description:
       "Product designer who builds clarity out of complexity.",
+    url: "https://www.withsameer.design",
+    siteName: "Sameer Gautam Portfolio",
+    images: [
+      {
+        url: "/og-image-v2.png",
+        width: 1200,
+        height: 630,
+        alt: "Sameer Gautam portfolio share image with a black asterisk mark",
+      },
+    ],
     type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Sameer Gautam — Product Designer",
+    description:
+      "Product designer who builds clarity out of complexity.",
+    images: [
+      {
+        url: "/og-image-v2.png",
+        alt: "Sameer Gautam portfolio share image with a black asterisk mark",
+      },
+    ],
   },
 };
 
