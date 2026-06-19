@@ -25,6 +25,7 @@ const instrumentSerif = Instrument_Serif({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL("https://gemini-portfolio-experiment.vercel.app"),
   title: "Sameer Gautam — Product Designer",
   description:
     "Product designer who builds clarity out of complexity. Systems thinker, interaction designer, and UX researcher.",
