@@ -6,7 +6,7 @@ import { useRef, useState } from "react";
 
 type ExperienceMoment = {
   title?: string;
-  company: string;
+  company?: string;
   location: string;
   imageSrc?: string;
   imageAlt?: string;
@@ -48,6 +48,12 @@ const MOMENTS: ExperienceMoment[] = [
     imageSrc: "/Gallery/editorial/5.webp",
     imageAlt: "Work moment at Infineon Technologies in Munich",
   },
+  {
+    title: "Eye-Tracking Debrief",
+    location: "Technische Hochschule Augsburg",
+    imageSrc: "/Gallery/editorial/6-v2.webp",
+    imageAlt: "Reviewing an interface with colleagues during an eye-tracking debrief at Technische Hochschule Augsburg",
+  },
 ];
 
 const EASE = [0.16, 1, 0.3, 1] as const;
@@ -71,7 +77,7 @@ function ExperiencePhotoCard({
         {moment.imageSrc ? (
           <Image
             src={moment.imageSrc}
-            alt={moment.imageAlt ?? `${moment.company}, ${moment.location}`}
+            alt={moment.imageAlt ?? [moment.company, moment.location].filter(Boolean).join(", ")}
             fill
             sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
             className="object-cover"
@@ -98,9 +104,11 @@ function ExperiencePhotoCard({
           ].join(" ")}
         >
           {moment.company}
-          <span className="mx-1.5 text-[#CECAC2]" aria-hidden="true">
-            ·
-          </span>
+          {moment.company ? (
+            <span className="mx-1.5 text-[#CECAC2]" aria-hidden="true">
+              ·
+            </span>
+          ) : null}
           {moment.location}
         </p>
       </div>
@@ -110,10 +118,15 @@ function ExperiencePhotoCard({
 
 export default function ExperienceMoments() {
   const [activeMoment, setActiveMoment] = useState(0);
-  const scrollerRef = useRef<HTMLDivElement>(null);
+  const [activeDesktopPage, setActiveDesktopPage] = useState(0);
+  const mobileScrollerRef = useRef<HTMLDivElement>(null);
+  const desktopScrollerRef = useRef<HTMLDivElement>(null);
+  const desktopPageStartIndexes = [0, Math.max(0, MOMENTS.length - 4)];
 
-  const scrollToMoment = (index: number) => {
-    const scroller = scrollerRef.current;
+  const scrollToMoment = (
+    index: number,
+    scroller: HTMLDivElement | null,
+  ) => {
     const target = scroller?.children[index] as HTMLElement | undefined;
 
     if (!scroller || !target) {
@@ -126,11 +139,9 @@ export default function ExperienceMoments() {
     });
   };
 
-  const updateActiveMoment = () => {
-    const scroller = scrollerRef.current;
-
+  const findClosestChildIndex = (scroller: HTMLDivElement | null) => {
     if (!scroller) {
-      return;
+      return 0;
     }
 
     const viewportCenter = scroller.scrollLeft + scroller.clientWidth / 2;
@@ -148,7 +159,44 @@ export default function ExperienceMoments() {
       }
     });
 
-    setActiveMoment(closestIndex);
+    return closestIndex;
+  };
+
+  const updateActiveMoment = () => {
+    setActiveMoment(findClosestChildIndex(mobileScrollerRef.current));
+  };
+
+  const updateActiveDesktopPage = () => {
+    const scroller = desktopScrollerRef.current;
+
+    if (!scroller) {
+      return;
+    }
+
+    const closestIndex = findClosestChildIndex(scroller);
+    const closestPageIndex = desktopPageStartIndexes.reduce(
+      (closestPage, pageStart, pageIndex) => {
+        const closestDistance = Math.abs(desktopPageStartIndexes[closestPage] - closestIndex);
+        const pageDistance = Math.abs(pageStart - closestIndex);
+
+        return pageDistance < closestDistance ? pageIndex : closestPage;
+      },
+      0,
+    );
+
+    setActiveDesktopPage(closestPageIndex);
+  };
+
+  const scrollToDesktopPage = (index: number) => {
+    const scroller = desktopScrollerRef.current;
+
+    if (!scroller) {
+      return;
+    }
+
+    const scrollLeft = index === 0 ? 0 : scroller.scrollWidth - scroller.clientWidth;
+    scroller.scrollTo({ left: scrollLeft, behavior: "smooth" });
+    setActiveDesktopPage(index);
   };
 
   return (
@@ -182,7 +230,7 @@ export default function ExperienceMoments() {
 
         <div className="lg:hidden">
           <div
-            ref={scrollerRef}
+            ref={mobileScrollerRef}
             onScroll={updateActiveMoment}
             className="-mx-6 flex snap-x snap-mandatory gap-4 overflow-x-auto scroll-smooth px-6 pb-2 [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
             aria-label="Selected work moments"
@@ -206,7 +254,7 @@ export default function ExperienceMoments() {
                 <button
                   key={`${moment.company}-${index}-dot`}
                   type="button"
-                  onClick={() => scrollToMoment(index)}
+                  onClick={() => scrollToMoment(index, mobileScrollerRef.current)}
                   aria-label={`Show ${moment.title ?? `moment ${index + 1}`}`}
                   aria-current={activeMoment === index ? "true" : undefined}
                   className={[
@@ -219,12 +267,46 @@ export default function ExperienceMoments() {
           </div>
         </div>
 
-        <div className="hidden gap-5 lg:grid lg:grid-cols-5">
-          {MOMENTS.map((moment, index) => (
-            <div key={`${moment.company}-${moment.location}-${index}`}>
-              <ExperiencePhotoCard moment={moment} index={index} />
+        <div className="hidden lg:block">
+          <div
+            ref={desktopScrollerRef}
+            onScroll={updateActiveDesktopPage}
+            className="flex snap-x snap-mandatory gap-5 overflow-x-auto scroll-smooth pb-2 [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
+            aria-label="Selected work moments"
+          >
+            {MOMENTS.map((moment, index) => (
+              <div
+                key={`${moment.company}-${moment.location}-${index}`}
+                className="basis-[calc(25%_-_0.9375rem)] shrink-0 snap-start"
+              >
+                <ExperiencePhotoCard moment={moment} index={index} />
+              </div>
+            ))}
+          </div>
+
+          <div
+            className="mt-5 flex justify-center"
+            aria-label="Selected moment navigation"
+          >
+            <div className="inline-flex items-center gap-3 rounded-full bg-[#F2F0EB] px-6 py-4">
+              {desktopPageStartIndexes.map((startIndex, index) => (
+                <button
+                  key={`desktop-moment-page-${index}`}
+                  type="button"
+                  onClick={() => scrollToDesktopPage(index)}
+                  aria-label={`Show selected moments ${startIndex + 1} through ${Math.min(
+                    startIndex + 4,
+                    MOMENTS.length,
+                  )}`}
+                  aria-current={activeDesktopPage === index ? "true" : undefined}
+                  className={[
+                    "h-2 w-2 rounded-full border border-[#18171A] transition-colors duration-200",
+                    activeDesktopPage === index ? "bg-[#18171A]" : "bg-transparent",
+                  ].join(" ")}
+                />
+              ))}
             </div>
-          ))}
+          </div>
         </div>
       </div>
     </section>

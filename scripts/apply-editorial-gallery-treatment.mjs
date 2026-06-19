@@ -1,7 +1,7 @@
 import fs from "node:fs/promises";
 import sharp from "sharp";
 
-const sources = [1, 2, 3, 4, 5];
+const sources = [1, 2, 3, 4, 5, 6];
 const sourceDir = "public/Gallery";
 const outputDir = "public/Gallery/editorial";
 

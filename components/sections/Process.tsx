@@ -3,6 +3,12 @@
 import { motion } from "framer-motion";
 import { processSteps } from "@/lib/data/projects";
 
+const PROCESS_CONNECTOR_BACKGROUNDS = [
+  "linear-gradient(90deg, #F2F0EB 0%, #EEEAE5 55%, #E9E5DF 100%)",
+  "linear-gradient(90deg, #E9E5DF 0%, #E2DED8 50%, #DAD6CE 100%)",
+  "linear-gradient(90deg, #DAD6CE 0%, #D4D0C8 45%, #CECAC2 100%)",
+] as const;
+
 export default function Process() {
   return (
     <section id="process" className="px-6 md:px-10 py-24 md:py-36 bg-[#F2F0EB]">
@@ -44,7 +50,8 @@ export default function Process() {
               {i < processSteps.length - 1 && (
                 <span
                   aria-hidden="true"
-                  className="hidden lg:block absolute top-5 left-full w-full h-px bg-[#E6E3DD] -translate-x-2"
+                  className="hidden lg:block absolute top-[18px] left-[4.25rem] h-px w-[calc(100%-4.625rem)]"
+                  style={{ background: PROCESS_CONNECTOR_BACKGROUNDS[i] }}
                 />
               )}
 
