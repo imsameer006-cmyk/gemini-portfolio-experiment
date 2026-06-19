@@ -9,6 +9,9 @@ const PROCESS_CONNECTOR_BACKGROUNDS = [
   "linear-gradient(90deg, #DAD6CE 0%, #D4D0C8 45%, #CECAC2 100%)",
 ] as const;
 
+const PROCESS_TERMINAL_CONNECTOR =
+  "linear-gradient(90deg, #CECAC2 0%, #DAD6CE 45%, #F2F0EB 100%)";
+
 export default function Process() {
   return (
     <section id="process" className="px-6 md:px-10 py-24 md:py-36 bg-[#F2F0EB]">
@@ -52,6 +55,14 @@ export default function Process() {
                   aria-hidden="true"
                   className="hidden lg:block absolute top-[18px] left-[4.25rem] h-px w-[calc(100%-4.625rem)]"
                   style={{ background: PROCESS_CONNECTOR_BACKGROUNDS[i] }}
+                />
+              )}
+
+              {i === processSteps.length - 1 && (
+                <span
+                  aria-hidden="true"
+                  className="hidden lg:block absolute top-[18px] left-[4.25rem] h-px w-[calc(100%-4.625rem)]"
+                  style={{ background: PROCESS_TERMINAL_CONNECTOR }}
                 />
               )}
 
