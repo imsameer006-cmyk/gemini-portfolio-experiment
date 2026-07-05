@@ -10,12 +10,15 @@
   --color-border-strong:  #CECAC2;
 
   --color-text:           #18171A;
+  --color-text-body:      #3A3836;
   --color-text-secondary: #6A6764;
-  --color-text-muted:     #9C9A95;
+  --color-text-muted:     #6E6D69; /* was #9C9A95 — failed WCAG AA (2.47–2.81:1); remediated 2026-07 */
+  --color-text-accent:    #96552F; /* copper at body/label sizes — #C07B50 fails 4.5:1 below display sizes */
 
-  --color-accent:         #C07B50;
+  --color-accent:         #C07B50; /* display sizes, decoration, dark surfaces only — not body text */
   --color-accent-light:   #F5E8DC;
   --color-accent-hover:   #A8643C;
+  --color-focus-ring:     var(--color-accent-hover); /* was var(--color-accent) — failed 3:1 on tinted surface */
 
   /* Colors — Dark sections */
   --color-dark:           #141310;
@@ -23,7 +26,7 @@
   --color-dark-border:    #2E2C27;
   --color-dark-text:      #EDEBE3;
   --color-dark-secondary: #9A9890;
-  --color-dark-muted:     #6A6860;
+  --color-dark-muted:     #847F76; /* was #6A6860 — failed WCAG AA at actual 12–16px usage (3.33:1); remediated 2026-07 */
 
   /* Typography */
   --font-sans:    var(--font-geist-sans), ui-sans-serif, system-ui, sans-serif;
@@ -67,7 +70,7 @@ body {
 
 /* ── Focus Styles ───────────────────────────────────────────── */
 :focus-visible {
-  outline: 2px solid var(--color-accent);
+  outline: 2px solid var(--color-focus-ring);
   outline-offset: 3px;
   border-radius: 2px;
 }
@@ -172,7 +175,7 @@ body {
   font-size: 10px;
   font-weight: 700;
   letter-spacing: 0.08em;
-  color: #C07B50;
+  color: var(--color-text-accent); /* was #C07B50 — 10px bold fails 4.5:1 (3.14:1); remediated 2026-07 */
 }
 
 @media (min-width: 1024px) {
@@ -222,7 +225,7 @@ body {
   .role-pill:hover {
     background: #F5EAE0;
     border-color: #C07B50;
-    color: #A0622E;
+    color: var(--color-text-accent); /* was #A0622E — same remediation as resting state */
   }
 
   /* Hover — reveal tooltip + arrow */

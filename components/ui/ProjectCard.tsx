@@ -47,7 +47,7 @@ export default function ProjectCard({ project, index }: ProjectCardProps) {
             <span className="text-xs font-medium text-[#C07B50] tracking-wide uppercase">
               {project.category}
             </span>
-            <span className="text-xs text-[#9C9A95]">{project.year}</span>
+            <span className="text-xs text-[#6E6D69]">{project.year}</span>
           </div>
 
           <h3 className="text-lg md:text-xl font-medium text-[#18171A] leading-snug mb-2 group-hover:text-[#C07B50] transition-colors duration-200">

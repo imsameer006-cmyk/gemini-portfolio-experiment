@@ -24,7 +24,7 @@ export function CaseStudyInProgress() {
                 className="h-1.5 w-1.5 rounded-full bg-[#C07B50]"
                 aria-hidden="true"
               />
-              <span className="text-xs font-medium uppercase tracking-[0.12em] text-[#9C9A95]">
+              <span className="text-xs font-medium uppercase tracking-[0.12em] text-[#6E6D69]">
                 Case Study In Progress
               </span>
             </div>

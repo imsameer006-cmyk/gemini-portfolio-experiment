@@ -23,7 +23,7 @@ export default function Process() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.45, ease: [0.16, 1, 0.3, 1] }}
-            className="text-xs text-[#9C9A95] tracking-widest uppercase font-medium mb-3"
+            className="text-xs text-[var(--color-text-accent)] tracking-widest uppercase font-medium mb-3"
           >
             How I Work
           </motion.p>
@@ -81,7 +81,7 @@ export default function Process() {
           whileInView={{ opacity: 1 }}
           viewport={{ once: true }}
           transition={{ duration: 0.4, delay: 0.4 }}
-          className="mt-16 text-xs text-[#9C9A95] max-w-[48ch] leading-relaxed border-t border-[#E6E3DD] pt-8"
+          className="mt-16 text-xs text-[#6E6D69] max-w-[48ch] leading-relaxed border-t border-[#E6E3DD] pt-8"
         >
           The process is not linear. Real design work is recursive — each step
           sends you back to re-examine earlier assumptions with sharper clarity.

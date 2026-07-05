@@ -1,7 +1,7 @@
 import type { CaseStudyData } from "@/lib/types";
 
 export const plmCollabspace: CaseStudyData = {
-  projectSlug: "design-system",
+  projectSlug: "plm-collabspace",
   sections: [
     {
       label: "Overview",

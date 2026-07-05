@@ -12,7 +12,7 @@ export default function DemoPage() {
       <div style={{ maxWidth: "780px", margin: "0 auto", padding: "0 40px" }}>
 
         {/* Header */}
-        <p style={{ fontSize: "10px", fontWeight: 700, letterSpacing: "0.12em", textTransform: "uppercase", color: "#9C9A95", marginBottom: "12px" }}>
+        <p style={{ fontSize: "10px", fontWeight: 700, letterSpacing: "0.12em", textTransform: "uppercase", color: "#6E6D69", marginBottom: "12px" }}>
           Component Demo
         </p>
         <h1

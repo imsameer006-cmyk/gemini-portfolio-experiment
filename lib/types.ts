@@ -75,7 +75,40 @@ export type Block =
       items: { heading: string; challenge: string; decision: string; outcome: string }[];
       startIndex?: number;
     }
-  | { type: "publishing-workflow"; steps: string[] };
+  | { type: "publishing-workflow"; steps: string[] }
+  | {
+      type: "drift-audit";
+      groups: {
+        label: string;
+        swatches: { hex: string; count?: number }[];
+        resolved: { hex: string; label: string }[];
+      }[];
+      stats: { n: string; label: string }[];
+    }
+  | {
+      type: "token-chain";
+      steps: { tier: string; token: string; why: string }[];
+    }
+  | {
+      type: "contrast-matrix";
+      rows: {
+        pairing: string;
+        swatchBg: string;
+        swatchFg: string;
+        ratio: string;
+        verdict: "pass-aaa" | "pass" | "fail";
+        fix?: string;
+      }[];
+    }
+  | {
+      type: "component-anatomy";
+      componentName: string;
+      annotations: { label: string; token: string }[];
+    }
+  | {
+      type: "benchmark-matrix";
+      rows: { category: string; m3: boolean; carbon: boolean; self: boolean | "roadmap"; note?: string }[];
+    };
 
 export interface CaseStudySection {
   label: string;

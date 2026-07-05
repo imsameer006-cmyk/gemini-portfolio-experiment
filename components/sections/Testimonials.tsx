@@ -54,7 +54,7 @@ export default function Testimonials() {
           transition={{ duration: 0.45, ease: EASE }}
           className="mb-12"
         >
-          <p className="mb-3 text-xs font-medium uppercase tracking-widest text-[#9C9A95]">
+          <p className="mb-3 text-xs font-medium uppercase tracking-widest text-[var(--color-text-accent)]">
             Testimonials
           </p>
           <h2 className="font-[family-name:var(--font-instrument-serif)] text-[clamp(2rem,4.5vw,3.5rem)] italic leading-tight text-[#18171A]">

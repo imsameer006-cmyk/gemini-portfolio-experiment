@@ -2,6 +2,7 @@ import type { Project, ProcessStep, Belief } from "@/lib/types";
 import { createElement } from "react";
 import GeminiThumbnail from "@/components/thumbnails/GeminiThumbnail";
 import CollabspaceThumbnail from "@/components/thumbnails/CollabspaceThumbnail";
+import DesignSystemThumbnail from "@/components/thumbnails/DesignSystemThumbnail";
 
 export const projects: Project[] = [
   {
@@ -19,7 +20,7 @@ export const projects: Project[] = [
     thumbnail: createElement(GeminiThumbnail),
   },
   {
-    slug: "design-system",
+    slug: "plm-collabspace",
     title: "Driving Adoption of an Enterprise Collaboration Platform",
     category: "Enterprise Platform Design",
     year: "2023–2024",
@@ -41,25 +42,24 @@ export const projects: Project[] = [
     ],
   },
   {
-    slug: "mobile-checkout",
-    hidden: true,
-    title: "From Zero to Checkout in 3 Taps",
-    category: "Mobile UX",
-    year: "2023",
+    slug: "design-system",
+    title: "The System Behind the Site",
+    category: "Design Systems",
+    year: "2026",
     description:
-      "Streamlined a 12-step mobile purchase flow into a single contextual sheet — without removing a single required field.",
-    impact: "↑ 22% conversion rate",
-    tags: ["Mobile Design", "UX Research", "Prototyping"],
+      "A three-tier token architecture, WCAG-audited and machine-readable — built to stop my own portfolio from disagreeing with itself, in an AI-native workflow.",
+    impact: "4 WCAG failures found & fixed",
+    tags: ["Design Systems", "Accessibility", "AI-Native Workflow", "Component Architecture"],
     featured: true,
-    coverColor: "#E8E0ED",
-    status: "in-progress",
+    coverColor: "#F5E8DC",
+    thumbnail: createElement(DesignSystemThumbnail),
     heroMetadata: [
-      { label: "Year", value: "2023" },
-      { label: "Role", value: "Lead UX Designer" },
-      { label: "Product", value: "Mobile Commerce" },
-      { label: "Domain", value: "B2C" },
-      { label: "Users", value: "Mobile shoppers" },
-      { label: "Scope", value: "Full redesign" },
+      { label: "Year", value: "2026" },
+      { label: "Role", value: "Design & Architecture" },
+      { label: "Stack", value: "Next.js · Tailwind" },
+      { label: "Scope", value: "50 tokens audited" },
+      { label: "Components", value: "26 block types" },
+      { label: "Fixes", value: "4 WCAG issues resolved" },
     ],
   },
   {

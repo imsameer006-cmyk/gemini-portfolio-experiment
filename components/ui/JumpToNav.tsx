@@ -60,7 +60,7 @@ function DrawerList({
             className={[
               "w-full flex items-center gap-3 px-6 h-[48px] text-sm text-left",
               disabled
-                ? "text-[#9C9A95] opacity-35 pointer-events-none cursor-default"
+                ? "text-[#6E6D69] opacity-35 pointer-events-none cursor-default"
                 : [
                     "transition-colors duration-150 focus-visible:outline-none focus-visible:bg-[#F2F0EB]",
                     isActive ? "text-[#18171A] font-medium" : "text-[#6A6764] hover:text-[#18171A]",
@@ -231,12 +231,12 @@ export default function JumpToNav({
                           "text-left text-[11px] tracking-[0.08em] uppercase leading-snug",
                           "focus-visible:outline-none",
                           disabled
-                            ? "text-[#9C9A95] opacity-35 pointer-events-none cursor-default"
+                            ? "text-[#6E6D69] opacity-35 pointer-events-none cursor-default"
                             : [
                                 "transition-colors duration-200",
                                 isActive
                                   ? "text-[#18171A] font-medium"
-                                  : "text-[#9C9A95] hover:text-[#6A6764]",
+                                  : "text-[#6E6D69] hover:text-[#6A6764]",
                               ].join(" "),
                         ].join(" ")}
                       >
@@ -301,14 +301,14 @@ export default function JumpToNav({
                 <div className="flex items-center gap-3 min-w-0">
                   <span className={[
                     "text-[11px] font-medium tracking-[0.08em] uppercase shrink-0",
-                    disabled ? "text-[#9C9A95] opacity-50" : "text-[#9C9A95]",
+                    disabled ? "text-[#6E6D69] opacity-50" : "text-[#6E6D69]",
                   ].join(" ")}>
                     {disabled ? "Case study" : "Jump to"}
                   </span>
                   <span className="text-[#D4D0C8] shrink-0 select-none">|</span>
                   <span className={[
                     "text-sm truncate",
-                    disabled ? "text-[#9C9A95] opacity-50" : "font-medium text-[#18171A]",
+                    disabled ? "text-[#6E6D69] opacity-50" : "font-medium text-[#18171A]",
                   ].join(" ")}>
                     {disabled ? "In progress" : activeLabel}
                   </span>
@@ -317,7 +317,7 @@ export default function JumpToNav({
                   <motion.span
                     animate={{ rotate: isOpen ? 180 : 0 }}
                     transition={{ duration: 0.2 }}
-                    className="text-[#9C9A95] shrink-0 ml-4"
+                    className="text-[#6E6D69] shrink-0 ml-4"
                   >
                     <ChevronDown />
                   </motion.span>

@@ -140,7 +140,7 @@ export function AnnotatedImage({ src, alt, annotations = [], caption }: Props) {
           style={{
             marginTop: "10px",
             fontSize: "11px",
-            color: "#9C9A95",
+            color: "#6E6D69",
             textAlign: "center",
             lineHeight: 1.5,
             letterSpacing: "0.01em",

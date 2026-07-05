@@ -19,7 +19,7 @@ export default function Work() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.45, ease: [0.16, 1, 0.3, 1] }}
-              className="text-xs text-[#9C9A95] tracking-widest uppercase font-medium mb-3"
+              className="text-xs text-[var(--color-text-accent)] tracking-widest uppercase font-medium mb-3"
             >
               Selected Work
             </motion.p>
@@ -39,7 +39,7 @@ export default function Work() {
             whileInView={{ opacity: 1 }}
             viewport={{ once: true }}
             transition={{ duration: 0.45, delay: 0.15 }}
-            className="text-sm text-[#9C9A95] md:text-right max-w-[28ch] leading-relaxed"
+            className="text-sm text-[#6E6D69] md:text-right max-w-[28ch] leading-relaxed"
           >
             Each project is a case study in systems thinking and human-centered design.
           </motion.p>

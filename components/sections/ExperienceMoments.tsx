@@ -100,7 +100,7 @@ function ExperiencePhotoCard({
         <p
           className={[
             "overflow-hidden text-ellipsis whitespace-nowrap text-[11px] font-medium uppercase tracking-[0.06em]",
-            moment.title ? "mt-2 text-[#9C9A95]" : "text-[#C07B50]",
+            moment.title ? "mt-2 text-[#6E6D69]" : "text-[#C07B50]",
           ].join(" ")}
         >
           {moment.company}
@@ -213,7 +213,7 @@ export default function ExperienceMoments() {
           className="mb-12 grid gap-5 lg:grid-cols-[0.7fr_1fr] lg:items-end"
         >
           <div>
-            <p className="mb-3 text-xs font-medium uppercase tracking-widest text-[#9C9A95]">
+            <p className="mb-3 text-xs font-medium uppercase tracking-widest text-[var(--color-text-accent)]">
               Selected Moments
             </p>
             <h2 className="font-[family-name:var(--font-instrument-serif)] text-[clamp(2rem,4.5vw,3.5rem)] italic leading-tight text-[#18171A]">

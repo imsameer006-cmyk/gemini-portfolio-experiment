@@ -53,6 +53,7 @@ Primary surfaces:
 | --- | --- | --- |
 | Homepage | `app/page.tsx` | Main narrative overview |
 | Work detail pages | `app/work/[slug]/page.tsx` | Case-study pages generated from project data |
+| Token Atlas | `app/system/page.tsx` + `app/system/layout.tsx` | Standalone, real reference of every color/type/spacing/motion/component/governance token, generated from a 2026-07-05 audit. Linked from the design-system case study. |
 | Hero lab | `app/hero-lab/page.tsx` | Experimental/internal art exploration surface |
 | Demo page | `app/demo/page.tsx` | Internal/simple preview surface |
 | Global layout | `app/layout.tsx` | Fonts, metadata, nav, footer, shell |
@@ -189,6 +190,7 @@ Future implementation can gradually consolidate repeated colors, spacing, and ty
 | In Practice section | Provide evidence of facilitation and collaboration | See how the designer works with people | Evaluate collaboration, workshops, execution context | Documentary image cards with dot-controlled carousel behavior |
 | Contact section | Convert interest into contact | Find email / LinkedIn | Start conversation | Dark CTA section, email button, LinkedIn link |
 | Internal lab pages | Explore visual directions | Not primary user-facing | Validate art concepts | May contain experiments; do not treat as canonical unless promoted |
+| Token Atlas (`/system`) | Real, complete reference of every token/component/governance rule | Browse the full system behind a specific claim in the case study | Verify the case study's claims are real, not marketing | Cover page (not full-height), 9 chapters, left-sidebar chapter nav (shared `JumpToNav`), footer link back to the case study |
 
 ### Homepage
 
@@ -384,7 +386,7 @@ Whitespace carries the brand. The site feels calm because section spacing is gen
 | `type.case.heading` | Instrument Serif italic, `clamp(1.5rem,3vw,2.25rem)` | Case-study sections | Section story points | Card titles |
 | `type.body.standard` | Geist, `text-base`, relaxed line-height | Paragraphs | Explanatory content | Labels |
 | `type.body.large` | Geist, `text-lg md:text-xl`, relaxed | About lead copy | Important identity copy | Metadata |
-| `type.label.section` | Geist, `text-xs`, uppercase, `tracking-widest`, medium | Section labels | Orientation | Long phrases |
+| `type.label.section` | Geist, `text-xs`, uppercase, `tracking-widest`, medium, **color `var(--color-text-accent)` on light sections / `var(--color-accent)` on dark sections (changed 2026-07-05, was `color.text.muted`)** | Section labels, project-hero category labels, case-study section labels | Orientation | Long phrases, dense metadata (still `color.text.muted`) |
 | `type.label.micro` | Geist, `text-[10px]`, uppercase, wide tracking | Metadata labels, role labels | Dense structured info | Main copy |
 | `type.card.title` | Geist, `text-lg md:text-xl`, medium, `leading-snug` | Project cards | Project names | Long prose |
 | `type.caption` | Geist, `text-xs` or `text-[11px]`, muted | Captions, metadata | Supporting info | Primary statements |
@@ -423,19 +425,19 @@ The typography feels editorial because Instrument Serif is used for narrative mo
 | `primitive.warm.100` | `#F2F0EB` | Tinted surface, process background |
 | `primitive.border.100` | `#E6E3DD` | Borders, dividers |
 | `primitive.border.200` | `#CECAC2` | Stronger dividers |
-| `primitive.text.900` | `#18171A` | Primary text |
-| `primitive.text.800` | `#1C1A16` | Alternate primary in nav/heroes |
-| `primitive.text.650` | `#3A3836` | Rich paragraph text |
+| `primitive.text.900` | `#18171A` | Primary text. `#1C1A16` (a near-duplicate formerly used in Nav/GeminiProjectHero/ProjectInProgress) was consolidated into this value 2026-07-05 — do not reintroduce `#1C1A16`. |
+| `primitive.text.650` | `#3A3836` | Rich paragraph/body-copy text. Now named `color.text.body` (added 2026-07-05 — this value already existed in code, it just wasn't tokenized). |
 | `primitive.text.500` | `#6A6764` | Secondary text |
-| `primitive.text.400` | `#9C9A95` | Muted labels |
-| `primitive.accent.copper` | `#C07B50` | Primary accent/action |
-| `primitive.accent.copperDark` | `#A8643C` | Hover accent |
+| `primitive.text.400` | `#6E6D69` | Muted labels/captions. **Changed 2026-07-05** from `#9C9A95` (2.47–2.81:1, failed WCAG AA) — also absorbed a second undocumented muted-gray, `#74716D`, that existed only in `CaseStudy.tsx`. See `DECISIONS.md` #15. |
+| `primitive.accent.copper` | `#C07B50` | Primary accent/action. Display sizes, decoration, dark surfaces only — **not** body/label-size text (fails 4.5:1 below display sizes; see `primitive.accent.copperText` below). |
+| `primitive.accent.copperDark` | `#A8643C` | Hover accent. Also now the source for `color.focus.ring` (2026-07-05) — was previously defined but never actually consumed anywhere in the codebase. |
+| `primitive.accent.copperText` | `#96552F` | **New 2026-07-05.** Copper at body/label text sizes — passes 4.7–5.9:1 on every light surface. Also now the color for every page-level eyebrow/section label on light backgrounds (see `DECISIONS.md` #17). |
 | `primitive.accent.copperLight` | `#F5E8DC` | Selection, glow |
 | `primitive.dark.900` | `#141310` | Dark section background |
 | `primitive.dark.800` | `#1C1B17` | Dark surface |
 | `primitive.dark.border` | `#2E2C27` | Dark borders |
 | `primitive.dark.text` | `#EDEBE3` | Dark-section text |
-| `primitive.dark.muted` | `#6A6860` | Dark muted text |
+| `primitive.dark.muted` | `#847F76` | Dark muted text. **Changed 2026-07-05** from `#6A6860` (measured 3.33:1 at its actual 12–16px usage in Footer/Contact/Philosophy — a real fail; the assumption that it only rendered at large-text sizes was wrong). See `DECISIONS.md` #15. |
 | `primitive.success` | `#3A7A54` | Open-to-work dot, positive states |
 | `primitive.warning` | `#B85A48` | Warning / before states |
 | `primitive.diagram.taupe` | `#9E7E6B` | Diagram inactive lines |
@@ -449,8 +451,11 @@ The typography feels editorial because Instrument Serif is used for narrative mo
 | `color.surface.card` | `#FFFFFF` | Cards | Keeps cards legible |
 | `color.surface.tinted` | `#F2F0EB` | Process band, placeholders | Must pair with primary/secondary text |
 | `color.text.primary` | `#18171A` | Primary text | Strong contrast |
+| `color.text.body` | `#3A3836` | Body/quote copy (About, CaseStudy, Testimonials) | 10.99:1 — passes comfortably |
 | `color.text.secondary` | `#6A6764` | Body support | Check contrast on tinted backgrounds |
-| `color.text.muted` | `#9C9A95` | Labels | Use for non-critical text |
+| `color.text.muted` | `#6E6D69` | Labels, dense metadata | Changed 2026-07-05 from `#9C9A95`; now 4.55–5.18:1, passes AA |
+| `color.text.accent` | `#96552F` | Copper at body/label size: eyebrows, section labels, role-pill text | Not for large decorative moments (use `color.accent` instead) |
+| `color.focus.ring` | `var(--color-accent-hover)` (`#A8643C`) | `:focus-visible` outline, sitewide | Changed 2026-07-05 from `color.accent`, which measured 2.98:1 on tinted surfaces (fails 3:1 non-text minimum) |
 | `color.border.subtle` | `#E6E3DD` | Cards/dividers | Visual separation without heaviness |
 | `color.action.primary` | `#18171A` | Primary CTA background | High contrast with warm background |
 | `color.action.hover` | `#C07B50` | CTA hover and links | Accent; avoid overuse |
@@ -491,9 +496,12 @@ The color system is warm-neutral and understated. Copper is used as a meaningful
 | `color.surface.tinted` | `#F2F0EB` | Process, placeholders, carousel dots surface | Quiet contrast | `Process`, `ExperienceMoments`, placeholders | Primary text |
 | `color.border.subtle` | `#E6E3DD` | Borders/dividers | Editorial hairline structure | Most components | Heavy separation |
 | `color.text.primary` | `#18171A` | Main text | Readability | All pages | Muted metadata |
+| `color.text.body` | `#3A3836` | Body/quote copy | Softer than headings, still 10.99:1 | About, CaseStudy, Testimonials | Headings |
 | `color.text.secondary` | `#6A6764` | Supporting body | Softer hierarchy | Body paragraphs | Primary headings |
-| `color.text.muted` | `#9C9A95` | Labels and captions | Orientation without dominance | Section labels | Essential content on low contrast |
-| `color.accent.copper` | `#C07B50` | Actions, active states | Brand action and warmth | CTAs, nav active, diagrams | Large backgrounds |
+| `color.text.muted` | `#6E6D69` | Labels, captions, dense metadata | Orientation without dominance; changed 2026-07-05, now passes AA (4.55–5.18:1) | Metadata-grid fields, table headers | Page-level eyebrows (use `color.text.accent`) |
+| `color.text.accent` | `#96552F` | Eyebrows, section labels, role-pill text | Copper at body/label size, passes 4.7–5.9:1 | Every page-level eyebrow on light sections (added 2026-07-05) | Large decorative moments, dark sections (use `color.accent` — this fails 3.22:1 on dark) |
+| `color.focus.ring` | `var(--color-accent-hover)` / `#A8643C` | `:focus-visible` outline | Changed 2026-07-05; old value (`color.accent`) failed 3:1 on tinted surfaces | Global base `:focus-visible` rule | — |
+| `color.accent.copper` | `#C07B50` | Actions, active states, dark-section eyebrows | Brand action and warmth | CTAs, nav active, diagrams, Philosophy/Contact eyebrows | Large backgrounds, body/label text on light surfaces |
 | `color.status.success` | `#3A7A54` | Positive status | Semantic green | Open-to-work dot, positive cards | Decoration |
 | `color.status.warning` | `#B85A48` | Warning/before state | Semantic contrast | Case-study warning cards | Non-status accents |
 
@@ -536,12 +544,14 @@ The color system is warm-neutral and understated. Copper is used as a meaningful
 
 | Token | Raw Value | Usage | Reasoning |
 | --- | --- | --- | --- |
-| `motion.ease.primary` | `[0.16, 1, 0.3, 1]` | Entrances and section reveals | Calm, refined ease-out |
+| `motion.ease.primary` | `[0.16, 1, 0.3, 1]` | Entrances and section reveals | Calm, refined ease-out. This is the only easing actually consumed in code (19 occurrences) — always as a literal JS array, since Framer Motion transitions can't read a CSS variable at animation time. |
 | `motion.duration.fast` | `150ms-200ms` | Links/buttons | Immediate feedback |
 | `motion.duration.card` | `300ms` | Card hover border/shadow | Smooth but restrained |
 | `motion.duration.section` | `450ms-600ms` | Section reveal | Editorial entry |
 | `motion.duration.caseSection` | `900ms` | Case-study section reveal | Slower reading rhythm |
 | `motion.reduced` | `MotionConfig reducedMotion="user"` and CSS media query | Accessibility | Honors user preference |
+
+**Audit note (2026-07-05):** durations above are used consistently in real code but are **not** tokenized as CSS custom properties in `app/globals.css` — only the easing curves are (`--ease-out-expo`, `--ease-in-out-soft`, `--ease-spring`). Of those three, only `--ease-out-expo` is ever actually consumed; `--ease-in-out-soft` and `--ease-spring` are defined but unused anywhere in the codebase. Tokenizing durations and either wiring up or removing the two dead easings is an open item (see `NEXT_STEPS.md`).
 
 ---
 
@@ -675,6 +685,8 @@ The art direction reinforces systems thinking. It shows relationships, flows, pr
 | `AnnotatedImage` | `components/ui/AnnotatedImage.tsx` | Numbered image annotation and legend |
 | `GeminiThumbnail` | `components/thumbnails/GeminiThumbnail.tsx` | Project card workflow thumbnail |
 | `CollabspaceThumbnail` | `components/thumbnails/CollabspaceThumbnail.tsx` | Project card network thumbnail |
+| `DesignSystemThumbnail` | `components/thumbnails/DesignSystemThumbnail.tsx` | Project card thumbnail (added 2026-07-05): scattered "drift" swatches converging into 3 resolved token swatches, last one copper-accented |
+| `SystemPage` | `app/system/page.tsx` + `app/system/layout.tsx` | Standalone Token Atlas reference page (added 2026-07-05), reuses `JumpToNav` for its chapter navigation |
 
 ### Navigation
 
@@ -690,6 +702,12 @@ Provide persistent orientation and conversion access without overwhelming the pa
 - LinkedIn icon
 - Mobile hamburger
 - Mobile full-screen menu
+
+**Wordmark (redesigned 2026-07-05)**
+
+The wordmark is a solid rectangular band, not plain text: `rounded-none`, background `var(--color-text-muted)` at 70% opacity, "Sameer Gautam" in white at `font-weight: 350`. "- Product Designer" was removed entirely. Vertically centered with the rest of the nav.
+
+**Known issue:** at 70% opacity the band's effective color (blended with the page background) only gives white text ~2.92:1 contrast — a real WCAG AA failure. This was computed and explicitly flagged to the user before shipping; they chose to proceed anyway. See `DECISIONS.md` #18. Do not silently change the opacity/color to "fix" this without checking with the user first.
 
 **States**
 
@@ -795,6 +813,13 @@ Convert structured case-study data into a consistent narrative page.
 | `synthesis-table` | Insight-to-requirement mapping |
 | `decisions-cdo` | Challenge/decision/outcome structure |
 | `publishing-workflow` | Step sequence |
+| `drift-audit` | **Added 2026-07-05.** Before/after color-swatch groups plus stat tiles; shows raw hex values converging into named tokens. |
+| `token-chain` | **Added 2026-07-05.** Primitive → semantic → component tier chain, with a live-hover demo card. |
+| `contrast-matrix` | **Added 2026-07-05.** Table of color pairings with swatch, measured ratio, pass/fail verdict, and remediation. |
+| `component-anatomy` | **Added 2026-07-05.** A real rendered component (e.g. ProjectCard) with numbered annotations mapping each visual property to its token. |
+| `benchmark-matrix` | **Added 2026-07-05.** Capability comparison table (e.g. against Material 3 / Carbon) with pass/fail/roadmap cells. |
+
+These 5 were added specifically for the design-system case study (`lib/data/case-studies/design-system.ts`) and use `var(--color-...)` CSS custom properties directly rather than hardcoded hex, unlike most of the pre-existing block components.
 
 **Rules**
 
@@ -1072,6 +1097,22 @@ Global metadata is defined in `app/layout.tsx`. Project metadata is generated in
 - Description: Product designer who builds clarity out of complexity, systems thinker, interaction designer, UX researcher.
 - Open Graph title and description mirror the brand positioning.
 - Open Graph sharing image is served as the static, versioned asset `public/og-image-v2.png` and uses the black favicon-style asterisk mark instead of page photography.
+- `metadataBase` is `https://www.withsameer.design`.
+- `og:url` is `https://www.withsameer.design`.
+- Twitter card metadata mirrors the Open Graph title, description, and image.
+
+### Social Preview Rules
+
+- Use a single canonical homepage share image unless a route-specific preview is intentionally designed.
+- Prefer static, versioned PNG assets for crawler-facing social previews.
+- Do not restore dynamic `app/opengraph-image.tsx` casually; it was replaced to make LinkedIn debugging and cache busting more predictable.
+- Do not use the About portrait or documentary gallery photos as the default social preview without a metadata strategy review.
+- If LinkedIn shows an old image, verify the live source before changing code:
+  - Open the image URL directly.
+  - View page source and search for `og:image`.
+  - Confirm there is only one correct image URL.
+  - Use LinkedIn Post Inspector.
+  - Share a cache-busted URL such as `https://www.withsameer.design/?v=3` when needed.
 
 ### Project Metadata
 
@@ -1260,6 +1301,13 @@ Use this checklist before shipping future changes:
 - Treated gallery assets live in `public/Gallery/editorial`.
 - Editorial gallery treatment script lives at `scripts/apply-editorial-gallery-treatment.mjs`.
 - Open Graph sharing image is served from `public/og-image-v2.png` using the black favicon-style asterisk mark.
+- **(2026-07-05)** Project 3 is a real, shipped case study — "The System Behind the Site" (slug `design-system`) — auditing this portfolio's own design-token architecture. `mobile-checkout` was permanently removed, not hidden.
+- **(2026-07-05)** PLM Collabspace's slug changed from `design-system` to `plm-collabspace`.
+- **(2026-07-05)** A real sitewide color/contrast audit (50 hex values, 20 files) found and fixed 4 genuine WCAG AA failures and 1 dead token. New tokens: `color.text.body`, `color.text.accent`, `color.focus.ring`. Changed values: `color.text.muted`, `color.dark.muted`. Full detail in `DECISIONS.md` #15.
+- **(2026-07-05)** Token Atlas ships at `/system`, a full real reference generated from the same audit, chapter-navigated via the shared `JumpToNav` component.
+- **(2026-07-05)** 5 new case-study block types added (`drift-audit`, `token-chain`, `contrast-matrix`, `component-anatomy`, `benchmark-matrix`), bringing the total to 26.
+- **(2026-07-05)** Every page-level eyebrow/section label sitewide changed from muted gray to copper (`color.text.accent` on light sections, `color.accent` on dark sections).
+- **(2026-07-05)** Nav wordmark redesigned into a solid band; currently fails WCAG AA contrast by deliberate, flagged, user-approved choice (see Known Risks below and `DECISIONS.md` #18).
 
 ### Partially Implemented
 
@@ -1274,6 +1322,10 @@ Use this checklist before shipping future changes:
 - Documentary image sections can start feeling like a personal album if future photos are not work-context specific.
 - Long card labels can break rhythm if future contributors remove the two-row caption rule.
 - Generated visual design-system artifacts can become misleading if they are not regenerated from this document.
+- LinkedIn and other social platforms may cache old previews. Do not assume the site metadata is wrong until the live HTML and image URL are checked directly.
+- **The nav wordmark currently fails WCAG AA contrast (~2.92:1, needs 4.5:1)** — a deliberate, flagged, user-approved choice made 2026-07-05, not an oversight. See `DECISIONS.md` #18 before changing it.
+- If the old `/work/design-system` URL (now `/work/plm-collabspace`) was ever shared externally, it 404s post-rename. No redirect exists as of 2026-07-05.
+- Motion durations are used consistently but not tokenized; two of the three defined easing tokens are entirely unused in code. See the Motion Tokens section above.
 
 ### Not Canonical
 
@@ -1298,7 +1350,12 @@ These decisions should not be casually overwritten. Revisit them only with an ex
 | Collabspace art | Radial network / atmospheric river | Matches collaboration and connected domains |
 | In Practice cards | Two caption rows with ellipsis | Preserves grid rhythm and prevents caption spill |
 | Images | Editorial documentary treatment for work-context photos | Keeps photo evidence cohesive and brand-aligned |
+| Social preview image | Static versioned `public/og-image-v2.png` | Keeps LinkedIn/Open Graph sharing predictable and avoids About portrait fallback |
 | Motion | Motion as meaning, not decoration | Supports clarity and avoids spectacle |
+| Project roster | 3 visible projects: Gemini, PLM Collabspace (`plm-collabspace`), design-system audit case study | `mobile-checkout` permanently removed 2026-07-05; do not resume without explicit request |
+| Eyebrow/label color | Copper (`color.text.accent` light / `color.accent` dark), not muted gray | Sitewide convention change 2026-07-05; see `DECISIONS.md` #17 for exact scope |
+| Token remediation values | `color.text.muted` (#6E6D69), `color.dark.muted` (#847F76), `color.text.body`, `color.text.accent`, `color.focus.ring` | These fixed real, measured WCAG AA failures 2026-07-05; do not revert without re-running the contrast math |
+| Nav wordmark contrast | Intentionally fails WCAG AA (~2.92:1) | Deliberate, flagged, user-approved 2026-07-05 choice; do not silently "fix" — loop the user in first |
 
 ---
 

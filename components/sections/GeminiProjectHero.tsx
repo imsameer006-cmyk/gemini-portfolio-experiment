@@ -372,7 +372,7 @@ function ReactiveMeshNetwork({
                     x={node.x}
                     y={node.y + 24}
                     textAnchor="middle"
-                    className="fill-[#1C1A16] text-[9px] font-semibold"
+                    className="fill-[#18171A] text-[9px] font-semibold"
                     letterSpacing="0.08em"
                   >
                     {stepNumber}
@@ -587,13 +587,13 @@ export function GeminiProjectHero({
             className="mb-8"
           >
             <div className="mb-[28px] w-fit">
-              <p className="text-[12px] font-[525] uppercase tracking-widest text-[#1C1A16]/40">
+              <p className="text-[12px] font-[525] uppercase tracking-widest text-[var(--color-text-accent)]">
                 {category}
               </p>
             </div>
             <h1
               id="hero-lab-title"
-              className="font-[family-name:var(--font-instrument-serif)] text-[clamp(2.50rem,3.74vw,4.06rem)] italic leading-tight text-[#1C1A16] max-w-[670px]"
+              className="font-[family-name:var(--font-instrument-serif)] text-[clamp(2.50rem,3.74vw,4.06rem)] italic leading-tight text-[#18171A] max-w-[670px]"
             >
               {title}
             </h1>
@@ -605,7 +605,7 @@ export function GeminiProjectHero({
             transition={{ duration: reduceMotion ? 0 : 0.55, delay: 0.1, ease: EASE }}
             className="pointer-events-none"
           >
-            <p className="mb-[32px] max-w-[560px] text-base leading-relaxed text-[#1C1A16]/60">
+            <p className="mb-[32px] max-w-[560px] text-base leading-relaxed text-[#18171A]/60">
               {description}
             </p>
 
@@ -615,10 +615,10 @@ export function GeminiProjectHero({
             >
               {metadata.map(({ label, value }) => (
                 <div key={label} className="flex flex-col gap-1.5 bg-white px-6 py-3">
-                  <span className="text-[10px] font-medium uppercase tracking-widest text-[#1C1A16]/[0.38]">
+                  <span className="text-[10px] font-medium uppercase tracking-widest text-[#18171A]/[0.38]">
                     {label}
                   </span>
-                  <span className="text-[15px] font-normal text-[#1C1A16]/85 leading-snug">
+                  <span className="text-[15px] font-normal text-[#18171A]/85 leading-snug">
                     {value}
                   </span>
                 </div>
@@ -628,17 +628,17 @@ export function GeminiProjectHero({
             <div className="mt-[20px] flex max-w-[1280px] items-end justify-between">
               <div className="flex max-w-[583px] flex-wrap gap-[10px]">
                 {client && (
-                  <span className="rounded-full bg-[#1C1A16]/[0.09] px-3 py-1.5 text-sm font-medium text-[#1C1A16]">
+                  <span className="rounded-full bg-[#18171A]/[0.09] px-3 py-1.5 text-sm font-medium text-[#18171A]">
                     {client}
                   </span>
                 )}
-                <span className="rounded-full border border-[#C8BFB2] px-3 py-1.5 text-[12.5px] text-[#1C1A16]/55">
+                <span className="rounded-full border border-[#C8BFB2] px-3 py-1.5 text-[12.5px] text-[#18171A]/55">
                   {impact}
                 </span>
                 {tags.map((tag) => (
                   <span
                     key={tag}
-                    className="rounded-full border border-[#C8BFB2] px-3 py-1.5 text-[12.5px] text-[#1C1A16]/55"
+                    className="rounded-full border border-[#C8BFB2] px-3 py-1.5 text-[12.5px] text-[#18171A]/55"
                   >
                     {tag}
                   </span>

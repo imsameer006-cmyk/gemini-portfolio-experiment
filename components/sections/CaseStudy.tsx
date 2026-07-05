@@ -70,7 +70,7 @@ function MetaGrid({ fields }: { fields: { label: string; value: string }[] }) {
           key={label}
           className="px-5 py-5 bg-white flex flex-col gap-2"
         >
-          <span className="text-[10px] text-[#74716D] tracking-widest uppercase font-medium">{label}</span>
+          <span className="text-[10px] text-[#6E6D69] tracking-widest uppercase font-medium">{label}</span>
           <span className="text-sm font-medium text-[#18171A] leading-snug">{value}</span>
         </div>
       ))}
@@ -142,7 +142,7 @@ function ColCard({
                 <span className="text-sm font-medium text-[#18171A] leading-snug">
                   {item.label}
                 </span>
-                <span className="text-xs text-[#74716D] leading-relaxed">
+                <span className="text-xs text-[#6E6D69] leading-relaxed">
                   {item.detail}
                 </span>
               </li>
@@ -211,7 +211,7 @@ function RoleList({ items }: { items: { abbr: string; fullName: string; descript
                     fontSize:     "10px",
                     fontWeight:   700,
                     letterSpacing:"0.08em",
-                    color:        active ? "#A0622E" : "#C07B50",
+                    color:        "var(--color-text-accent)",
                     cursor:       canInteract ? "default" : undefined,
                     transition:   canInteract
                       ? "background 150ms ease, border-color 150ms ease, color 150ms ease"
@@ -312,7 +312,7 @@ function ExplorationCards({
               <p className="text-xs text-[#3A3836] leading-relaxed">{card.strength}</p>
             </div>
             <div>
-              <span className="text-[10px] font-semibold tracking-widest uppercase text-[#74716D] block mb-0.5">Limitation</span>
+              <span className="text-[10px] font-semibold tracking-widest uppercase text-[#6E6D69] block mb-0.5">Limitation</span>
               <p className="text-xs text-[#3A3836] leading-relaxed">{card.limitation}</p>
             </div>
           </div>
@@ -504,7 +504,7 @@ function BACard({
                 <span className="text-sm font-medium text-[#18171A] leading-snug">
                   {item.label}
                 </span>
-                <span className="text-xs text-[#74716D] leading-relaxed">
+                <span className="text-xs text-[#6E6D69] leading-relaxed">
                   {item.detail}
                 </span>
               </li>
@@ -626,7 +626,7 @@ function CaseStudyImage({ src, caption, alt, mobileDetail = false }: { src: stri
           />
         </div>
         {caption && (
-          <figcaption className="text-xs text-[#74716D] text-center leading-snug px-4">{caption}</figcaption>
+          <figcaption className="text-xs text-[#6E6D69] text-center leading-snug px-4">{caption}</figcaption>
         )}
         {mobileDetail && (
           <button
@@ -698,7 +698,7 @@ function CaseStudyVideo({ src, caption, poster, mobileDetail = false, controls =
           />
         </div>
         {caption && (
-          <figcaption className="text-xs text-[#74716D] text-center leading-snug px-4">{caption}</figcaption>
+          <figcaption className="text-xs text-[#6E6D69] text-center leading-snug px-4">{caption}</figcaption>
         )}
         {mobileDetail && (
           <button
@@ -736,7 +736,7 @@ function ImagePlaceholder({ caption, tall }: { caption: string; tall?: boolean }
       style={{ boxShadow: "inset 0 2px 8px rgba(0,0,0,0.05)" }}
     >
       <div className="p-4 border-t border-[#E6E3DD] bg-white/60 backdrop-blur-sm">
-        <figcaption className="text-xs text-[#74716D] leading-snug">{caption}</figcaption>
+        <figcaption className="text-xs text-[#6E6D69] leading-snug">{caption}</figcaption>
       </div>
     </figure>
   );
@@ -782,7 +782,7 @@ function SynthesisFlow({ rows }: { rows: { label: string; items: string[] }[] })
       {rows.map((row, i) => (
         <div key={i} className="flex flex-col">
           <div className="bg-[#F2F0EB] border border-[#E6E3DD] rounded-xl p-5 flex flex-col sm:flex-row gap-4 sm:items-start">
-            <span className="text-[10px] font-semibold tracking-widest uppercase text-[#74716D] shrink-0 sm:w-[130px] sm:pt-0.5">
+            <span className="text-[10px] font-semibold tracking-widest uppercase text-[#6E6D69] shrink-0 sm:w-[130px] sm:pt-0.5">
               {row.label}
             </span>
             <div className="flex flex-wrap gap-2">
@@ -816,7 +816,7 @@ function SynthesisTable({ headers, rows }: { headers: [string, string]; rows: [s
             {headers.map((h, i) => (
               <th
                 key={i}
-                className="text-left px-5 py-3 text-[10px] font-semibold tracking-widest uppercase text-[#74716D] border-b border-[#E6E3DD]"
+                className="text-left px-5 py-3 text-[10px] font-semibold tracking-widest uppercase text-[#6E6D69] border-b border-[#E6E3DD]"
               >
                 {h}
               </th>
@@ -861,7 +861,7 @@ function DecisionsCDO({
             <h4 className="font-medium text-[#18171A] text-base">{item.heading}</h4>
             <div className="space-y-3">
               <div>
-                <span className="text-[10px] font-semibold tracking-widest uppercase text-[#74716D] block mb-1">
+                <span className="text-[10px] font-semibold tracking-widest uppercase text-[#6E6D69] block mb-1">
                   Challenge
                 </span>
                 <p className="text-sm text-[#3A3836] leading-relaxed">{item.challenge}</p>
@@ -893,7 +893,7 @@ function PublishingWorkflow({ steps }: { steps: string[] }) {
         {steps.map((step, i) => (
           <div key={i} className="flex flex-col">
             <div className="flex items-center gap-4">
-              <span className="w-6 h-6 rounded-full bg-white border border-[#E6E3DD] flex items-center justify-center text-[10px] font-semibold text-[#74716D] shrink-0">
+              <span className="w-6 h-6 rounded-full bg-white border border-[#E6E3DD] flex items-center justify-center text-[10px] font-semibold text-[#6E6D69] shrink-0">
                 {i + 1}
               </span>
               <span className="text-sm font-medium text-[#18171A]">{step}</span>
@@ -904,6 +904,256 @@ function PublishingWorkflow({ steps }: { steps: string[] }) {
           </div>
         ))}
       </div>
+    </div>
+  );
+}
+
+function DriftAudit({
+  groups,
+  stats,
+}: {
+  groups: { label: string; swatches: { hex: string; count?: number }[]; resolved: { hex: string; label: string }[] }[];
+  stats: { n: string; label: string }[];
+}) {
+  return (
+    <div className="mt-8 grid gap-5 lg:grid-cols-[1.2fr_0.8fr]">
+      <div className="border border-[#E6E3DD] rounded-2xl bg-white p-7 space-y-6">
+        {groups.map((g, gi) => (
+          <div key={gi} className="flex flex-wrap items-center gap-2.5">
+            <span className="w-full text-[10px] font-medium uppercase tracking-widest text-[var(--color-text-muted)] mb-1">
+              {g.label}
+            </span>
+            {g.swatches.map((s, si) => (
+              <span key={si} className="inline-flex flex-col items-center">
+                <span
+                  className="w-8 h-8 rounded-lg border border-black/[0.06]"
+                  style={{ background: s.hex }}
+                  aria-hidden="true"
+                />
+                <span className="mt-1 font-[family-name:var(--font-geist-mono)] text-[9px] text-[var(--color-text-muted)]">
+                  {s.hex}
+                  {s.count ? ` ×${s.count}` : ""}
+                </span>
+              </span>
+            ))}
+            <span className="mx-1 text-[var(--color-text-muted)]" aria-hidden="true">→</span>
+            {g.resolved.map((r, ri) => (
+              <span key={ri} className="inline-flex flex-col items-center">
+                <span
+                  className="w-8 h-8 rounded-lg border border-black/[0.06]"
+                  style={{ background: r.hex }}
+                  aria-hidden="true"
+                />
+                <span className="mt-1 font-[family-name:var(--font-geist-mono)] text-[9px] text-[var(--color-text-accent)]">
+                  {r.label}
+                </span>
+              </span>
+            ))}
+          </div>
+        ))}
+      </div>
+      <div className="flex flex-col gap-px bg-[#E6E3DD] border border-[#E6E3DD] rounded-2xl overflow-hidden">
+        {stats.map((s, i) => (
+          <div key={i} className="bg-white px-6 py-5 flex items-baseline justify-between gap-4">
+            <span className="font-[family-name:var(--font-instrument-serif)] italic text-4xl text-[var(--color-text-accent)] leading-none">
+              {s.n}
+            </span>
+            <span className="text-xs text-[#6A6764] text-right max-w-[170px]">{s.label}</span>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+function TokenChain({ steps }: { steps: { tier: string; token: string; why: string }[] }) {
+  const [hovered, setHovered] = useState(false);
+  return (
+    <div className="mt-8 grid gap-px bg-[#E6E3DD] border border-[#E6E3DD] rounded-2xl overflow-hidden md:grid-cols-4">
+      {steps.map((s, i) => (
+        <div key={i} className="bg-white px-6 py-6">
+          <p className="text-[10px] font-medium uppercase tracking-widest text-[var(--color-text-accent)] mb-2.5">
+            {s.tier}
+          </p>
+          <span className="inline-block font-[family-name:var(--font-geist-mono)] text-[13px] bg-[#F2F0EB] rounded-lg px-3 py-2">
+            {s.token}
+          </span>
+          <p className="mt-3 text-xs text-[var(--color-text-muted)] leading-relaxed">{s.why}</p>
+        </div>
+      ))}
+      <div className="bg-white px-6 py-6 flex items-center justify-center">
+        <button
+          type="button"
+          onMouseEnter={() => setHovered(true)}
+          onMouseLeave={() => setHovered(false)}
+          onFocus={() => setHovered(true)}
+          onBlur={() => setHovered(false)}
+          aria-label="Live demo: token chain rendered as a project card hover state"
+          className="w-full max-w-[170px] rounded-xl border bg-white p-4 text-left transition-[border-color,box-shadow] duration-300"
+          style={{
+            borderColor: hovered ? "var(--color-accent)" : "#E6E3DD",
+            boxShadow: hovered ? "0 8px 40px -8px rgba(0,0,0,0.12)" : "none",
+          }}
+        >
+          <span className="block h-12 rounded-lg bg-[#F2F0EB] mb-2.5" aria-hidden="true" />
+          <span className="block text-[13px] font-medium text-[#18171A]">Hover me</span>
+          <span className="block text-[10px] text-[var(--color-text-muted)] mt-0.5">The chain, rendered</span>
+        </button>
+      </div>
+    </div>
+  );
+}
+
+function ContrastMatrix({
+  rows,
+}: {
+  rows: { pairing: string; swatchBg: string; swatchFg: string; ratio: string; verdict: "pass-aaa" | "pass" | "fail"; fix?: string }[];
+}) {
+  const verdictStyle: Record<string, string> = {
+    "pass-aaa": "text-[#3A7A54] border-[#3A7A54]/40",
+    pass: "text-[#3A7A54] border-[#3A7A54]/40",
+    fail: "text-[#B95A48] border-[#B95A48]/40",
+  };
+  const verdictLabel: Record<string, string> = {
+    "pass-aaa": "Pass · AAA",
+    pass: "Pass",
+    fail: "Fail",
+  };
+  return (
+    <div className="mt-8 border border-[#E6E3DD] rounded-2xl bg-white overflow-hidden overflow-x-auto">
+      <table className="w-full text-sm border-collapse min-w-[560px]">
+        <thead>
+          <tr className="bg-[#F2F0EB]">
+            {["Pairing", "Measured", "WCAG AA", "Remediation"].map((h) => (
+              <th
+                key={h}
+                className="text-left text-[10px] font-medium uppercase tracking-widest text-[var(--color-text-muted)] px-4 py-3 border-b border-[#E6E3DD]"
+              >
+                {h}
+              </th>
+            ))}
+          </tr>
+        </thead>
+        <tbody>
+          {rows.map((r, i) => (
+            <tr key={i} className={i < rows.length - 1 ? "border-b border-[#E6E3DD]" : ""}>
+              <td className="px-4 py-3">
+                <div className="flex items-center gap-2.5">
+                  <span
+                    className="w-9 h-6 rounded-md border border-black/[0.06] flex items-center justify-center text-[9px] font-medium shrink-0"
+                    style={{ background: r.swatchBg, color: r.swatchFg }}
+                  >
+                    Aa
+                  </span>
+                  <span className="font-[family-name:var(--font-geist-mono)] text-[11px] text-[#3A3836]">{r.pairing}</span>
+                </div>
+              </td>
+              <td className="px-4 py-3 font-[family-name:var(--font-geist-mono)] text-[12px] text-[#3A3836]">{r.ratio}</td>
+              <td className="px-4 py-3">
+                <span className={`inline-block text-[10px] font-medium uppercase tracking-wide rounded-full border px-2.5 py-0.5 ${verdictStyle[r.verdict]}`}>
+                  {verdictLabel[r.verdict]}
+                </span>
+              </td>
+              <td className="px-4 py-3 text-xs text-[#6A6764]">{r.fix ?? "—"}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+  );
+}
+
+function ComponentAnatomy({
+  componentName,
+  annotations,
+}: {
+  componentName: string;
+  annotations: { label: string; token: string }[];
+}) {
+  return (
+    <div className="mt-8 grid gap-7 lg:grid-cols-[0.9fr_1.1fr] lg:items-center">
+      <div className="rounded-2xl bg-[#F2F0EB] border border-[#E6E3DD] p-9 flex justify-center">
+        <div className="w-full max-w-[280px] bg-white border border-[#E6E3DD] rounded-2xl overflow-hidden hover:border-[#C07B50]/40 hover:shadow-[0_8px_40px_-8px_rgba(0,0,0,0.12)] transition-[border-color,box-shadow] duration-300">
+          <div className="h-[100px]" style={{ background: "linear-gradient(135deg, #F2F0EB, #F5E8DC)" }} aria-hidden="true" />
+          <div className="p-5">
+            <div className="flex items-center justify-between mb-2.5">
+              <span className="text-[10px] font-medium uppercase tracking-wide text-[#C07B50]">Enterprise UX</span>
+              <span className="text-[10px] text-[var(--color-text-muted)]">2025</span>
+            </div>
+            <h4 className="text-[15px] font-medium text-[#18171A] mb-1.5">{componentName}</h4>
+            <p className="text-xs text-[#6A6764] leading-relaxed">Approval workflow for a multi-stakeholder platform.</p>
+          </div>
+        </div>
+      </div>
+      <div className="flex flex-col">
+        {annotations.map((a, i) => (
+          <div
+            key={i}
+            className={`grid grid-cols-[24px_1fr] gap-3.5 py-3 items-baseline ${i > 0 ? "border-t border-[#E6E3DD]" : ""}`}
+          >
+            <span className="font-[family-name:var(--font-geist-mono)] text-[11px] text-[var(--color-text-accent)]">
+              {String(i + 1).padStart(2, "0")}
+            </span>
+            <div>
+              <span className="text-[13px] text-[#18171A]">{a.label}</span>
+              <span className="block font-[family-name:var(--font-geist-mono)] text-[11px] text-[var(--color-text-muted)] mt-0.5">
+                {a.token}
+              </span>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+function BenchmarkMatrix({
+  rows,
+}: {
+  rows: { category: string; m3: boolean; carbon: boolean; self: boolean | "roadmap"; note?: string }[];
+}) {
+  const Cell = ({ v }: { v: boolean | "roadmap" }) => {
+    if (v === "roadmap")
+      return (
+        <span className="text-[10px] font-medium uppercase tracking-wide text-[var(--color-text-accent)] border border-[var(--color-accent)]/45 rounded-full px-2.5 py-0.5">
+          Roadmap
+        </span>
+      );
+    return v ? (
+      <span className="text-[#3A7A54] font-medium" aria-label="Yes">✓</span>
+    ) : (
+      <span className="text-[var(--color-text-muted)]" aria-label="No">—</span>
+    );
+  };
+  return (
+    <div className="mt-8 border border-[#E6E3DD] rounded-2xl bg-white overflow-hidden overflow-x-auto">
+      <table className="w-full text-sm border-collapse min-w-[520px]">
+        <thead>
+          <tr className="bg-[#F2F0EB]">
+            {["Capability", "Material 3", "Carbon", "This system"].map((h, i) => (
+              <th
+                key={h}
+                className={`text-[10px] font-medium uppercase tracking-widest text-[var(--color-text-muted)] px-4 py-3 border-b border-[#E6E3DD] ${i === 0 ? "text-left" : "text-center"}`}
+              >
+                {h}
+              </th>
+            ))}
+          </tr>
+        </thead>
+        <tbody>
+          {rows.map((r, i) => (
+            <tr key={i} className={i < rows.length - 1 ? "border-b border-[#E6E3DD]" : ""}>
+              <td className="px-4 py-3 text-sm font-medium text-[#18171A]">
+                {r.category}
+                {r.note && <span className="block text-xs font-normal text-[#6A6764] mt-0.5">{r.note}</span>}
+              </td>
+              <td className="px-4 py-3 text-center"><Cell v={r.m3} /></td>
+              <td className="px-4 py-3 text-center"><Cell v={r.carbon} /></td>
+              <td className="px-4 py-3 text-center"><Cell v={r.self} /></td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
     </div>
   );
 }
@@ -931,6 +1181,11 @@ function renderBlock(block: Block, i: number): React.ReactNode {
     case "synthesis-table":  return <SynthesisTable key={i} headers={block.headers} rows={block.rows} />;
     case "decisions-cdo":    return <DecisionsCDO key={i} items={block.items} startIndex={block.startIndex ?? 0} />;
     case "publishing-workflow": return <PublishingWorkflow key={i} steps={block.steps} />;
+    case "drift-audit":      return <DriftAudit key={i} groups={block.groups} stats={block.stats} />;
+    case "token-chain":      return <TokenChain key={i} steps={block.steps} />;
+    case "contrast-matrix":  return <ContrastMatrix key={i} rows={block.rows} />;
+    case "component-anatomy":return <ComponentAnatomy key={i} componentName={block.componentName} annotations={block.annotations} />;
+    case "benchmark-matrix": return <BenchmarkMatrix key={i} rows={block.rows} />;
     default:                 return null;
   }
 }
@@ -958,7 +1213,7 @@ function Section({ section }: { section: CaseStudySection }) {
       />
 
       <div className="pt-6 md:pt-12">
-        <span className="block text-[10px] text-[#74716D] tracking-widest uppercase font-medium mb-3">
+        <span className="block text-[10px] text-[var(--color-text-accent)] tracking-widest uppercase font-medium mb-3">
           {section.label}
         </span>
 
@@ -1007,7 +1262,8 @@ export default function CaseStudy({ project, content }: Props) {
   const adjacentProject = isLast ? visible[currentIndex - 1] : visible[currentIndex + 1];
   const adjacentLabel = isLast ? "Previous Project" : "Next Project";
   const isGemini = project.slug === "gemini-digital-twin";
-  const isCollabspace = project.slug === "design-system";
+  const isCollabspace = project.slug === "plm-collabspace";
+  const isDesignSystem = project.slug === "design-system";
 
   return (
     <MotionConfig reducedMotion="user">
@@ -1024,6 +1280,88 @@ export default function CaseStudy({ project, content }: Props) {
         />
       ) : isCollabspace ? (
         <InProgressHero project={project} />
+      ) : isDesignSystem ? (
+        <div className="relative isolate overflow-hidden bg-[#F9F8F5]">
+          <section className="relative flex md:min-h-screen flex-col justify-start px-6 pb-16 md:pb-[88px] pt-[72px] md:px-10">
+            <div className="pointer-events-none relative z-10 mx-auto w-full max-w-[1280px]">
+              <motion.p
+                initial={{ opacity: 0, y: 12 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.45, ease: [0.16, 1, 0.3, 1] }}
+                className="text-xs text-[var(--color-text-accent)] tracking-widest uppercase font-medium mb-4"
+              >
+                {project.category}
+              </motion.p>
+              <motion.h1
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.55, delay: 0.08, ease: [0.16, 1, 0.3, 1] }}
+                className="font-[family-name:var(--font-instrument-serif)] text-[clamp(2.50rem,3.74vw,4.06rem)] italic leading-tight text-[#18171A] max-w-[670px]"
+              >
+                {project.title}
+              </motion.h1>
+              <motion.p
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ duration: 0.4, delay: 0.2 }}
+                className="mt-5 text-base text-[#18171A]/65 max-w-[48ch] leading-relaxed mb-8 pointer-events-auto"
+              >
+                {project.description}
+              </motion.p>
+              {project.heroMetadata && project.heroMetadata.length > 0 && (
+                <motion.div
+                  initial={{ opacity: 0, y: 12 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.45, delay: 0.25, ease: [0.16, 1, 0.3, 1] }}
+                  className="grid w-fit grid-cols-[auto_auto] sm:grid-cols-[auto_auto_auto] overflow-hidden rounded-xl border border-[#E6E3DD] bg-[#E6E3DD] gap-px mb-8 pointer-events-auto"
+                  style={{ boxShadow: "0 2px 8px rgba(0,0,0,0.05)" }}
+                >
+                  {project.heroMetadata.map(({ label, value }) => (
+                    <div key={label} className="flex flex-col gap-1.5 bg-white px-6 py-3">
+                      <span className="text-[10px] font-medium uppercase tracking-widest text-[#18171A]/[0.38]">
+                        {label}
+                      </span>
+                      <span className="text-[15px] font-normal text-[#18171A]/85 leading-snug">
+                        {value}
+                      </span>
+                    </div>
+                  ))}
+                </motion.div>
+              )}
+              <motion.div
+                initial={{ opacity: 0, y: 8 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.4, delay: 0.3, ease: [0.16, 1, 0.3, 1] }}
+                className="flex flex-wrap gap-2 pointer-events-auto max-w-[640px]"
+              >
+                <span className="text-sm font-medium text-[#18171A] bg-[#18171A]/8 px-3 py-1.5 rounded-full">
+                  {project.impact}
+                </span>
+                {project.tags.map((tag) => (
+                  <span key={tag} className="text-xs text-[#18171A]/50 border border-[#18171A]/15 px-3 py-1.5 rounded-full">
+                    {tag}
+                  </span>
+                ))}
+              </motion.div>
+              <motion.div
+                initial={{ opacity: 0, y: 8 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.4, delay: 0.4, ease: [0.16, 1, 0.3, 1] }}
+                className="mt-6 pointer-events-auto flex justify-end max-w-[587px]"
+              >
+                <Link
+                  href="/system"
+                  className="inline-flex items-center gap-1.5 text-sm font-medium text-[var(--color-text-accent)] hover:text-[var(--color-accent-hover)] transition-colors duration-200"
+                >
+                  Browse the full Token Atlas
+                  <svg width="12" height="12" viewBox="0 0 14 14" fill="none" aria-hidden="true">
+                    <path d="M2.5 7h9M7.5 3l4 4-4 4" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round" />
+                  </svg>
+                </Link>
+              </motion.div>
+            </div>
+          </section>
+        </div>
       ) : (
         <div
           className="min-h-screen flex flex-col justify-center pt-24 pb-16"
@@ -1035,7 +1373,7 @@ export default function CaseStudy({ project, content }: Props) {
                 initial={{ opacity: 0, y: 12 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.45, ease: [0.16, 1, 0.3, 1] }}
-                className="text-xs text-[#18171A]/50 tracking-widest uppercase font-medium mb-4"
+                className="text-xs text-[var(--color-text-accent)] tracking-widest uppercase font-medium mb-4"
               >
                 {project.category}
               </motion.p>
@@ -1055,6 +1393,25 @@ export default function CaseStudy({ project, content }: Props) {
               >
                 {project.description}
               </motion.p>
+              {project.heroMetadata && project.heroMetadata.length > 0 && (
+                <motion.div
+                  initial={{ opacity: 0, y: 12 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.45, delay: 0.25, ease: [0.16, 1, 0.3, 1] }}
+                  className="grid w-fit grid-cols-[auto_auto] sm:grid-cols-[auto_auto_auto] overflow-hidden rounded-xl border border-[#18171A]/10 bg-[#18171A]/10 gap-px mb-8"
+                >
+                  {project.heroMetadata.map(({ label, value }) => (
+                    <div key={label} className="flex flex-col gap-1.5 bg-white/70 px-6 py-3">
+                      <span className="text-[10px] font-medium uppercase tracking-widest text-[#18171A]/40">
+                        {label}
+                      </span>
+                      <span className="text-[15px] font-normal text-[#18171A]/85 leading-snug">
+                        {value}
+                      </span>
+                    </div>
+                  ))}
+                </motion.div>
+              )}
               <motion.div
                 initial={{ opacity: 0, y: 8 }}
                 animate={{ opacity: 1, y: 0 }}
@@ -1089,11 +1446,31 @@ export default function CaseStudy({ project, content }: Props) {
         <GenericBody />
       )}
 
+      {project.slug === "design-system" && (
+        <div className="max-w-[900px] mx-auto px-6 md:px-10 lg:pl-[150px] xl:pl-10 pb-16">
+          <div className="border-t border-[#E6E3DD] pt-10 flex flex-wrap items-center justify-between gap-4">
+            <div>
+              <p className="text-xs text-[var(--color-text-accent)] tracking-widest uppercase font-medium mb-1">Go deeper</p>
+              <p className="text-[#18171A] font-medium">Every token, every rule, in one reference.</p>
+            </div>
+            <Link
+              href="/system"
+              className="inline-flex items-center gap-2 bg-[#18171A] text-[#F9F8F5] text-sm font-medium px-5 py-3 rounded-full hover:bg-[#C07B50] transition-colors duration-200 min-h-[44px]"
+            >
+              View the Token Atlas
+              <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true">
+                <path d="M2.5 7h9M7.5 3l4 4-4 4" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round" />
+              </svg>
+            </Link>
+          </div>
+        </div>
+      )}
+
       {/* Adjacent project */}
       <div className="border-t border-[#E6E3DD] px-6 md:px-10 py-12 bg-[#F9F8F5]">
         <div className="max-w-[1280px] mx-auto flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
           <div>
-            <p className="text-xs text-[#74716D] tracking-widest uppercase font-medium mb-1">
+            <p className="text-xs text-[var(--color-text-accent)] tracking-widest uppercase font-medium mb-1">
               {adjacentLabel}
             </p>
             <p className="text-[#18171A] font-medium">{adjacentProject.title}</p>

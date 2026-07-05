@@ -4,7 +4,7 @@ export default function Footer() {
   return (
     <footer className="bg-[#141310] border-t border-[#2E2C27]">
       <div className="max-w-[1280px] mx-auto px-6 md:px-10 py-10 flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
-        <p className="text-[#6A6860] text-sm">
+        <p className="text-[#847F76] text-sm">
           © {year} Sameer Gautam. All rights reserved.
         </p>
         <div className="flex items-center gap-6">
@@ -12,13 +12,13 @@ export default function Footer() {
             href="https://www.linkedin.com/in/uxd-sameer/"
             target="_blank"
             rel="noopener noreferrer"
-            className="text-[#6A6860] text-sm hover:text-[#EDEBE3] transition-colors duration-200"
+            className="text-[#847F76] text-sm hover:text-[#EDEBE3] transition-colors duration-200"
           >
             LinkedIn
           </a>
           <a
             href="mailto:hi@withsameer.design"
-            className="text-[#6A6860] text-sm hover:text-[#EDEBE3] transition-colors duration-200"
+            className="text-[#847F76] text-sm hover:text-[#EDEBE3] transition-colors duration-200"
           >
             Email
           </a>

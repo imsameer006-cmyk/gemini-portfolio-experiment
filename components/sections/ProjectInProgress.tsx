@@ -83,12 +83,12 @@ export function InProgressHero({ project }: { project: Project }) {
             transition={{ duration: reduceMotion ? 0 : 0.55, ease: EASE }}
             className="mb-8"
           >
-            <p className="mb-[28px] text-[12px] font-[525] uppercase tracking-widest text-[#1C1A16]/40">
+            <p className="mb-[28px] text-[12px] font-[525] uppercase tracking-widest text-[var(--color-text-accent)]">
               {project.category}
             </p>
             <h1
               id="project-hero-title"
-              className="font-[family-name:var(--font-instrument-serif)] text-[clamp(2.50rem,3.74vw,4.06rem)] italic leading-tight text-[#1C1A16] max-w-[670px]"
+              className="font-[family-name:var(--font-instrument-serif)] text-[clamp(2.50rem,3.74vw,4.06rem)] italic leading-tight text-[#18171A] max-w-[670px]"
             >
               {project.title}
             </h1>
@@ -99,7 +99,7 @@ export function InProgressHero({ project }: { project: Project }) {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: reduceMotion ? 0 : 0.55, delay: 0.1, ease: EASE }}
           >
-            <p className="mb-[32px] max-w-[560px] text-base leading-relaxed text-[#1C1A16]/60">
+            <p className="mb-[32px] max-w-[560px] text-base leading-relaxed text-[#18171A]/60">
               {project.description}
             </p>
 
@@ -110,10 +110,10 @@ export function InProgressHero({ project }: { project: Project }) {
               >
                 {metadata.map(({ label, value }) => (
                   <div key={label} className="flex flex-col gap-1.5 bg-white px-6 py-3">
-                    <span className="text-[10px] font-medium uppercase tracking-widest text-[#1C1A16]/[0.38]">
+                    <span className="text-[10px] font-medium uppercase tracking-widest text-[#18171A]/[0.38]">
                       {label}
                     </span>
-                    <span className="text-[15px] font-normal text-[#1C1A16]/85 leading-snug">
+                    <span className="text-[15px] font-normal text-[#18171A]/85 leading-snug">
                       {value}
                     </span>
                   </div>
@@ -124,19 +124,19 @@ export function InProgressHero({ project }: { project: Project }) {
             <div className="mt-[20px] flex max-w-[1280px] items-end justify-between">
               <div className="flex max-w-[720px] flex-wrap gap-[10px]">
                 {project.client && (
-                  <span className="rounded-full bg-[#1C1A16]/[0.09] px-3 py-1.5 text-sm font-medium text-[#1C1A16]">
+                  <span className="rounded-full bg-[#18171A]/[0.09] px-3 py-1.5 text-sm font-medium text-[#18171A]">
                     {project.client}
                   </span>
                 )}
                 {project.impact && (
-                  <span className="rounded-full border border-[#C8BFB2] px-3 py-1.5 text-[12.5px] text-[#1C1A16]/55">
+                  <span className="rounded-full border border-[#C8BFB2] px-3 py-1.5 text-[12.5px] text-[#18171A]/55">
                     {project.impact}
                   </span>
                 )}
                 {project.tags?.map((tag) => (
                   <span
                     key={tag}
-                    className="rounded-full border border-[#C8BFB2] px-3 py-1.5 text-[12.5px] text-[#1C1A16]/55"
+                    className="rounded-full border border-[#C8BFB2] px-3 py-1.5 text-[12.5px] text-[#18171A]/55"
                   >
                     {tag}
                   </span>

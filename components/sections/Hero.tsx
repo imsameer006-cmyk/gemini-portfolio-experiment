@@ -562,7 +562,7 @@ function SignalPanel() {
           <div className="font-display text-lg italic leading-none text-[#18171A] md:text-xl">
             {signal.value}
           </div>
-          <div className="mt-1 text-[9px] font-medium uppercase tracking-[0.08em] text-[#9C9A95] md:text-[10px]">
+          <div className="mt-1 text-[9px] font-medium uppercase tracking-[0.08em] text-[#6E6D69] md:text-[10px]">
             {signal.label}
           </div>
         </div>

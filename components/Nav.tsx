@@ -96,7 +96,7 @@ export default function Nav() {
       >
         <nav className="max-w-[1360px] mx-auto px-6 md:px-10 h-16 flex items-center">
           {/* Wordmark — flex-1 to balance the CTA on the right */}
-          <div className="flex-1">
+          <div className="flex-1 flex items-center">
             <Link
               href="/"
               onClick={(e) => {
@@ -106,10 +106,9 @@ export default function Nav() {
                   window.scrollTo({ top: 0, behavior: "smooth" });
                 }
               }}
-              className="font-medium tracking-tight text-sm transition-colors duration-200"
+              className="inline-flex items-center rounded-none bg-[var(--color-text-muted)]/70 px-4 py-1.5 font-[350] tracking-tight text-sm text-white transition-opacity duration-200 hover:opacity-85"
             >
-              <span className="text-[#1C1A16]">Sameer Gautam</span>
-              <span className="hidden text-[#1C1A16]/35 sm:inline"> - Product Designer</span>
+              Sameer Gautam
             </Link>
           </div>
 
@@ -122,8 +121,8 @@ export default function Nav() {
                   className={[
                     "text-sm transition-colors duration-200 cursor-pointer relative",
                     isActive(href)
-                      ? "text-[#1C1A16] font-[450] after:absolute after:-bottom-0.5 after:left-0 after:w-full after:h-px after:bg-[#C07B50] after:content-['']"
-                      : "text-[#1C1A16]/50 hover:text-[#1C1A16]",
+                      ? "text-[#18171A] font-[450] after:absolute after:-bottom-0.5 after:left-0 after:w-full after:h-px after:bg-[#C07B50] after:content-['']"
+                      : "text-[#18171A]/50 hover:text-[#18171A]",
                   ].join(" ")}
                 >
                   {label}
@@ -148,7 +147,7 @@ export default function Nav() {
               target="_blank"
               rel="noopener noreferrer"
               aria-label="LinkedIn profile"
-              className="hidden md:inline-flex text-[#1C1A16]/50 hover:text-[#C07B50] transition-colors duration-200"
+              className="hidden md:inline-flex text-[#18171A]/50 hover:text-[#C07B50] transition-colors duration-200"
             >
               <LinkedinLogo size={18} weight="fill" aria-hidden="true" />
             </a>
@@ -220,7 +219,7 @@ export default function Nav() {
               target="_blank"
               rel="noopener noreferrer"
               aria-label="LinkedIn profile"
-              className="text-[#1C1A16]/50 hover:text-[#C07B50] transition-colors duration-200"
+              className="text-[#18171A]/50 hover:text-[#C07B50] transition-colors duration-200"
             >
               <LinkedinLogo size={18} weight="fill" aria-hidden="true" />
             </a>
