@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { DownloadSimple, LinkedinLogo } from "@phosphor-icons/react";
+import PixelBand from "@/components/ui/PixelBand";
 
 const links = [
   { label: "Work", href: "#work" },
@@ -17,6 +18,7 @@ export default function Nav() {
   const [scrolled, setScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
   const [activeSection, setActiveSection] = useState<string | null>(null);
+  const [navMarkLit, setNavMarkLit] = useState(false);
   const pathname = usePathname();
 
   const isWorkPage = pathname.startsWith("/work/");
@@ -99,6 +101,10 @@ export default function Nav() {
           <div className="flex-1 flex items-center">
             <Link
               href="/"
+              onMouseEnter={() => setNavMarkLit(true)}
+              onMouseLeave={() => setNavMarkLit(false)}
+              onFocus={() => setNavMarkLit(true)}
+              onBlur={() => setNavMarkLit(false)}
               onClick={(e) => {
                 setMobileOpen(false);
                 if (pathname === "/") {
@@ -106,9 +112,9 @@ export default function Nav() {
                   window.scrollTo({ top: 0, behavior: "smooth" });
                 }
               }}
-              className="inline-flex items-center rounded-none bg-[var(--color-text-muted)]/70 px-4 py-1.5 font-[350] tracking-tight text-sm text-white transition-opacity duration-200 hover:opacity-85"
+              className="pixel-band-link inline-flex min-h-11 items-center justify-center text-[#18171A] pr-3 md:pr-2"
             >
-              Sameer Gautam
+              <PixelBand variant="nav" mode="smart" lit={navMarkLit} />
             </Link>
           </div>
 
