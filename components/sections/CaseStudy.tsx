@@ -2,7 +2,7 @@
 
 import { useRef, useState, useEffect } from "react";
 import { motion, MotionConfig } from "framer-motion";
-import { CheckCircle, MinusCircle } from "@phosphor-icons/react";
+import { CheckCircle, MinusCircle, ArrowsLeftRight } from "@phosphor-icons/react";
 import Link from "next/link";
 import type { Project, Block, CaseStudySection, CaseStudyData } from "@/lib/types";
 import { projects } from "@/lib/data/projects";
@@ -533,6 +533,9 @@ function BeforeAfter({
 }
 
 function Lightbox({ type = "image", src, alt, caption, controls = false, mobileDetail = false, onClose }: { type?: "image" | "video"; src: string; alt?: string; caption: string; controls?: boolean; mobileDetail?: boolean; onClose: () => void }) {
+  const [panHintDismissed, setPanHintDismissed] = useState(false);
+  const dismissPanHint = () => setPanHintDismissed(true);
+
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => { if (e.key === "Escape") onClose(); };
     document.addEventListener("keydown", onKey);
@@ -575,6 +578,8 @@ function Lightbox({ type = "image", src, alt, caption, controls = false, mobileD
         exit={{ scale: 0.96, opacity: 0 }}
         transition={{ duration: 0.22 }}
         onClick={(e) => e.stopPropagation()}
+        onScroll={dismissPanHint}
+        onTouchStart={dismissPanHint}
       >
         {type === "video" ? (
           <video
@@ -599,6 +604,23 @@ function Lightbox({ type = "image", src, alt, caption, controls = false, mobileD
           <p className="text-xs text-white/50 text-center leading-snug">{caption}</p>
         )}
       </motion.div>
+
+      <AnimatePresence>
+        {mobileDetail && type === "image" && !panHintDismissed && (
+          <motion.div
+            className="absolute bottom-8 left-1/2 z-10 -translate-x-1/2 sm:hidden"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.3 }}
+          >
+            <span className="inline-flex items-center gap-1.5 rounded-full border border-white/20 bg-white/10 px-3 py-1.5 text-xs font-medium text-white/50 backdrop-blur-sm">
+              <ArrowsLeftRight size={12} weight="bold" aria-hidden="true" />
+              Drag to explore
+            </span>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </motion.div>
   );
 }
@@ -1252,7 +1274,7 @@ function GenericBody() {
 
 // ── Animated Link ──────────────────────────────────────────────
 
-const MotionLink = motion(Link);
+const MotionLink = motion.create(Link);
 
 // ── Main Component ─────────────────────────────────────────────
 
