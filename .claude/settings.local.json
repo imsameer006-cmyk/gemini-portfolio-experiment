@@ -57,7 +57,8 @@
       "mcp__Claude_in_Chrome__find",
       "Bash(node scripts/screenshot-visualizing-ownership.js)",
       "Bash(node scripts/screenshot-rejection-feedback.js)",
-      "Bash(node scripts/screenshot-architecture.js)"
+      "Bash(node scripts/screenshot-architecture.js)",
+      "WebFetch(domain:withsameer.design)"
     ]
   }
 }

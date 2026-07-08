@@ -9,6 +9,7 @@ import { projects } from "@/lib/data/projects";
 import JumpToNav, { toSectionId } from "@/components/ui/JumpToNav";
 import { GeminiProjectHero } from "@/components/sections/GeminiProjectHero";
 import { InProgressHero } from "@/components/sections/ProjectInProgress";
+import DesignSystemThumbnail from "@/components/thumbnails/DesignSystemThumbnail";
 
 interface Props {
   project: Project;
@@ -1283,6 +1284,16 @@ export default function CaseStudy({ project, content }: Props) {
       ) : isDesignSystem ? (
         <div className="relative isolate overflow-hidden bg-[#F9F8F5]">
           <section className="relative flex md:min-h-screen flex-col justify-start px-6 pb-16 md:pb-[88px] pt-[72px] md:px-10">
+            <motion.div
+              initial={{ opacity: 0, y: 24, scale: 0.98 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.65, delay: 0.16, ease: [0.16, 1, 0.3, 1] }}
+              className="pointer-events-none absolute right-8 top-1/2 hidden aspect-[460/256] w-[43vw] max-w-[620px] -translate-y-1/2 lg:block"
+              aria-hidden="true"
+            >
+              <DesignSystemThumbnail />
+            </motion.div>
+
             <div className="pointer-events-none relative z-10 mx-auto w-full max-w-[1280px]">
               <motion.p
                 initial={{ opacity: 0, y: 12 }}
@@ -1304,10 +1315,26 @@ export default function CaseStudy({ project, content }: Props) {
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 transition={{ duration: 0.4, delay: 0.2 }}
-                className="mt-5 text-base text-[#18171A]/65 max-w-[48ch] leading-relaxed mb-8 pointer-events-auto"
+                className="mt-5 text-base text-[#18171A]/65 max-w-[48ch] leading-relaxed mb-6 pointer-events-auto"
               >
                 {project.description}
               </motion.p>
+              <motion.div
+                initial={{ opacity: 0, y: 8 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.4, delay: 0.25, ease: [0.16, 1, 0.3, 1] }}
+                className="mb-8 pointer-events-auto"
+              >
+                <Link
+                  href="/system"
+                  className="inline-flex items-center gap-1.5 text-sm font-medium text-[var(--color-text-accent)] hover:text-[var(--color-accent-hover)] transition-colors duration-200"
+                >
+                  Browse the full Token Atlas
+                  <svg width="12" height="12" viewBox="0 0 14 14" fill="none" aria-hidden="true">
+                    <path d="M2.5 7h9M7.5 3l4 4-4 4" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round" />
+                  </svg>
+                </Link>
+              </motion.div>
               {project.heroMetadata && project.heroMetadata.length > 0 && (
                 <motion.div
                   initial={{ opacity: 0, y: 12 }}
@@ -1342,22 +1369,6 @@ export default function CaseStudy({ project, content }: Props) {
                     {tag}
                   </span>
                 ))}
-              </motion.div>
-              <motion.div
-                initial={{ opacity: 0, y: 8 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.4, delay: 0.4, ease: [0.16, 1, 0.3, 1] }}
-                className="mt-6 pointer-events-auto flex justify-end max-w-[587px]"
-              >
-                <Link
-                  href="/system"
-                  className="inline-flex items-center gap-1.5 text-sm font-medium text-[var(--color-text-accent)] hover:text-[var(--color-accent-hover)] transition-colors duration-200"
-                >
-                  Browse the full Token Atlas
-                  <svg width="12" height="12" viewBox="0 0 14 14" fill="none" aria-hidden="true">
-                    <path d="M2.5 7h9M7.5 3l4 4-4 4" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round" />
-                  </svg>
-                </Link>
               </motion.div>
             </div>
           </section>
