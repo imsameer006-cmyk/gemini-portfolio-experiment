@@ -2,8 +2,6 @@
 
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import { useState } from "react";
-import { CaseStudyInProgress } from "./CaseStudyInProgress";
-import JumpToNav from "@/components/ui/JumpToNav";
 import CollabNetworkArt, { COLLAB_ART_CENTER } from "@/components/sections/CollabNetworkArt";
 import type { Project } from "@/lib/types";
 
@@ -176,19 +174,5 @@ export function InProgressHero({ project }: { project: Project }) {
         </div>
       </section>
     </div>
-  );
-}
-
-interface Props {
-  project: Project;
-}
-
-export default function ProjectInProgress({ project }: Props) {
-  return (
-    <>
-      <InProgressHero project={project} />
-      <CaseStudyInProgress />
-      <JumpToNav disabled />
-    </>
   );
 }

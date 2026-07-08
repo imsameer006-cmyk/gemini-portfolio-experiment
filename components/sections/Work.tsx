@@ -1,7 +1,6 @@
 "use client";
 
 import { motion } from "framer-motion";
-import Link from "next/link";
 import ProjectCard from "@/components/ui/ProjectCard";
 import { projects } from "@/lib/data/projects";
 import { reveal, revealFade } from "@/lib/motion";

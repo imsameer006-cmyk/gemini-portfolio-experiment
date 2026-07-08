@@ -12,7 +12,6 @@ export interface Project {
   coverColor: string;
   thumbnail?: React.ReactNode;
   client?: string;
-  status?: "published" | "in-progress";
   hidden?: boolean;
   heroMetadata?: { label: string; value: string }[];
 }

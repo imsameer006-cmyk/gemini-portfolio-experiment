@@ -334,13 +334,13 @@ export default function SystemPage() {
       </Chapter>
 
       {/* ── 07 Components ──────────────────────────────────────── */}
-      <Chapter num="07" eyebrow="Components" heading="Twenty components," headingItalic="twenty-six blocks."
+      <Chapter num="07" eyebrow="Components" heading="Eighteen components," headingItalic="twenty-six blocks."
         description="Every React component in the site (excluding the internal hero-lab sandbox), plus every typed Block variant the case-study renderer understands.">
         <div className="mt-8 grid gap-5 md:grid-cols-2">
           <Reveal className="border border-[#E6E3DD] rounded-2xl bg-white p-6">
-            <p className="text-[10px] uppercase tracking-widest text-[var(--color-text-muted)] mb-3">React components (20)</p>
+            <p className="text-[10px] uppercase tracking-widest text-[var(--color-text-muted)] mb-3">React components (18)</p>
             <div className="flex flex-wrap gap-1.5">
-              {["Nav", "Footer", "Hero", "Work", "About", "ExperienceMoments", "Philosophy", "Process", "Testimonials", "Contact", "CaseStudy", "CaseStudyInProgress", "ProjectInProgress", "GeminiProjectHero", "CollabNetworkArt", "ProjectCard", "JumpToNav", "AnnotatedImage", "GeminiThumbnail", "CollabspaceThumbnail / DesignSystemThumbnail"].map((c) => (
+              {["Nav", "Footer", "Hero", "Work", "About", "ExperienceMoments", "Philosophy", "Process", "Testimonials", "Contact", "CaseStudy", "GeminiProjectHero", "CollabNetworkArt", "ProjectCard", "JumpToNav", "AnnotatedImage", "GeminiThumbnail", "CollabspaceThumbnail / DesignSystemThumbnail"].map((c) => (
                 <span key={c} className="text-[11px] font-[family-name:var(--font-geist-mono)] border border-[#E6E3DD] rounded-full px-2.5 py-1 text-[#3A3836]">{c}</span>
               ))}
             </div>
