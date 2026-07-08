@@ -60,11 +60,11 @@ export default function About() {
               transition={{ duration: 0.55, delay: 0.08, ease: [0.16, 1, 0.3, 1] }}
               className="mt-10 max-w-[760px] text-lg leading-relaxed text-[#3A3836] md:text-xl"
             >
-              Product Designer with 6+ years of experience designing enterprise products,
-              internal tools, D2C experiences, and complex workflow systems. Drawing on 10+
-              years across digital products and design, I translate complexity into intuitive,
-              scalable experiences that balance user needs, business goals, and technical
-              constraints.
+              Product Designer with 10+ years across digital products — engineering, customer
+              research, and business — specialising in enterprise UX for complex workflows. At
+              Infineon and Rohde & Schwarz, I&apos;ve designed multi-stakeholder systems that
+              translate complexity into intuitive, scalable experiences balancing user needs,
+              business goals, and technical constraints.
             </motion.p>
 
             <motion.p
