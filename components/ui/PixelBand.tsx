@@ -27,6 +27,35 @@ const HERO_GLYPH_WIDTH = 7;
 const HERO_GLYPH_HEIGHT = 9;
 const SMART_NOISE_SCALE = CELL - 1;
 
+const NAV_SIGNAL_REST = 0.85;
+const NAV_SIGNAL_LIT = 1;
+const NAV_QUIET_ZONE_RADIUS = 1;
+const NAV_FLOW_PEAK_MULTIPLIER = 2.0;
+const NAV_FLOW_PEAK_CAP = 0.13;
+
+function navFlowPeak(rest: number) {
+  return Math.min(rest * NAV_FLOW_PEAK_MULTIPLIER, NAV_FLOW_PEAK_CAP);
+}
+
+function isNearSignal(
+  wordCol: number,
+  wordRow: number,
+  wordColumns: boolean[][],
+  glyphHeight: number,
+  radius: number,
+) {
+  for (let dc = -radius; dc <= radius; dc += 1) {
+    for (let dr = -radius; dr <= radius; dr += 1) {
+      const c = wordCol + dc;
+      const r = wordRow + dr;
+      if (c >= 0 && c < wordColumns.length && r >= 0 && r < glyphHeight && wordColumns[c][r]) {
+        return true;
+      }
+    }
+  }
+  return false;
+}
+
 const HERO_GLYPHS: Record<string, string[]> = {
   G: [
     "0111110",
@@ -174,7 +203,7 @@ export default function PixelBand({
   const [activePad, setActivePad] = useState(requestedPad);
   const [animate, setAnimate] = useState(false);
   const [resolved, setResolved] = useState(true);
-  const [allowsMotion, setAllowsMotion] = useState(false);
+  const [canFancyHover, setCanFancyHover] = useState(false);
 
   useEffect(() => {
     if (variant !== "hero" || pad !== undefined) return;
@@ -219,12 +248,14 @@ export default function PixelBand({
   }, [variant]);
 
   useEffect(() => {
-    const motionQuery = window.matchMedia("(prefers-reduced-motion: no-preference)");
-    const update = () => setAllowsMotion(motionQuery.matches);
+    const fancyHoverQuery = window.matchMedia(
+      "(prefers-reduced-motion: no-preference) and (hover: hover) and (pointer: fine)",
+    );
+    const update = () => setCanFancyHover(fancyHoverQuery.matches);
     update();
 
-    motionQuery.addEventListener("change", update);
-    return () => motionQuery.removeEventListener("change", update);
+    fancyHoverQuery.addEventListener("change", update);
+    return () => fancyHoverQuery.removeEventListener("change", update);
   }, []);
 
   const geometry = useMemo(() => {
@@ -253,10 +284,12 @@ export default function PixelBand({
 
         const noiseOpacity = NOISE_OPACITIES[Math.floor(random() * NOISE_OPACITIES.length)];
         const baseOpacity = signal
-          ? variant === "nav" ? 0.7 : 0.9
-          : variant === "nav"
-            ? noiseOpacity / 2
-            : noiseOpacity;
+          ? variant === "nav" ? NAV_SIGNAL_REST : 0.9
+          : noiseOpacity;
+        const quiet =
+          !signal &&
+          variant === "nav" &&
+          isNearSignal(wordCol, wordRow, wordColumns, glyphHeight, NAV_QUIET_ZONE_RADIUS);
         const flowDelay = ((col + row * 0.35) % 8) * 80;
         const delay = signal
           ? 400 + Math.max(wordCol, 0) * 18 + Math.max(wordRow, 0) * 8
@@ -264,9 +297,12 @@ export default function PixelBand({
 
         return {
           key: `${row}-${col}`,
+          row,
+          col,
           x: col * PITCH,
           y: row * PITCH,
           signal,
+          quiet,
           baseOpacity,
           delay,
           flowDelay,
@@ -287,6 +323,7 @@ export default function PixelBand({
   return (
     <div
       ref={rootRef}
+      data-lit={variant === "nav" && lit && canFancyHover ? "true" : undefined}
       className={`${wrapperClass} ${resolved ? "is-resolved" : ""} ${className}`.trim()}
       style={{
         aspectRatio: `${geometry.viewWidth} / ${geometry.viewHeight}`,
@@ -304,45 +341,16 @@ export default function PixelBand({
         viewBox={`0 0 ${geometry.viewWidth} ${geometry.viewHeight}`}
         preserveAspectRatio="xMidYMid meet"
       >
-        {isSmart && (
-          <style>
-            {`
-              /* Base / Idle State (On Page Load) */
-              .pixel-noise {
-                fill-opacity: 0.06 !important;
-                transition: fill-opacity 0.4s cubic-bezier(0.25, 1, 0.5, 1);
-              }
-
-              .pixel-text {
-                fill-opacity: 0.85 !important;
-                transition: fill-opacity 0.3s cubic-bezier(0.25, 1, 0.5, 1), fill 0.3s ease;
-              }
-
-              /* Interactive Hover State */
-              svg:hover .pixel-text {
-                fill-opacity: 1 !important;
-              }
-
-              svg:hover .pixel-noise {
-                fill-opacity: 0.015 !important;
-              }
-            `}
-          </style>
-        )}
         <g fill="currentColor">
           {geometry.cells.map((cell) => {
-            if (isSmart && !cell.signal) {
-              const [row, col] = cell.key.split("-").map(Number);
-              if (!shouldKeepSmartNoise(row, col, seed)) return null;
+            if (isSmart && !cell.signal && !shouldKeepSmartNoise(cell.row, cell.col, seed)) {
+              return null;
             }
 
-            const navOpacity = lit
-              ? cell.baseOpacity
-              : cell.signal
-                ? cell.baseOpacity * 0.72
-                : cell.baseOpacity * 0.8;
             const opacity = variant === "nav"
-              ? navOpacity
+              ? cell.signal
+                ? lit ? NAV_SIGNAL_LIT : NAV_SIGNAL_REST
+                : cell.baseOpacity
               : isAnimating && !resolved
               ? cell.signal ? 0.08 : 0
               : cell.baseOpacity;
@@ -356,40 +364,40 @@ export default function PixelBand({
               : undefined;
 
             const navStyle = variant === "nav"
-              ? {
-                  "--pixel-rest-opacity": opacity.toString(),
-                  "--pixel-flow-opacity": (Math.min(cell.baseOpacity * 1.7, 0.16)).toString(),
-                  ...(lit && allowsMotion && !cell.signal
-                    ? {
-                        animationName: "pixel-noise-flow",
-                        animationDuration: "960ms",
-                        animationTimingFunction: "linear",
-                        animationIterationCount: "infinite",
-                        animationDelay: `${cell.flowDelay.toFixed(0)}ms`,
-                      }
-                    : undefined),
+              ? ({
                   transition: "fill-opacity 200ms ease",
-                } as CSSProperties
+                  ...(cell.signal
+                    ? undefined
+                    : {
+                        "--pixel-rest-opacity": cell.baseOpacity.toString(),
+                        "--pixel-flow-opacity": navFlowPeak(cell.baseOpacity).toString(),
+                        ...(lit && canFancyHover && !cell.quiet
+                          ? {
+                              animationName: "pixel-noise-flow",
+                              animationDuration: "960ms",
+                              animationTimingFunction: "linear",
+                              animationIterationCount: "infinite",
+                              animationDelay: `${cell.flowDelay.toFixed(0)}ms`,
+                            }
+                          : undefined),
+                      }),
+                } as CSSProperties)
               : undefined;
 
             return (
               <rect
                 key={cell.key}
-                className={
-                  isSmart
-                    ? cell.signal ? "pixel-text" : "pixel-noise"
-                    : [
-                        "pixel-band__cell",
-                        cell.signal ? "pixel-band__cell--signal" : "pixel-band__cell--noise",
-                      ].join(" ")
-                }
+                className={[
+                  "pixel-band__cell",
+                  cell.signal ? "pixel-band__cell--signal" : "pixel-band__cell--noise",
+                ].join(" ")}
                 x={cell.x}
                 y={cell.y}
                 width={isSmart && !cell.signal ? SMART_NOISE_SCALE : CELL}
                 height={isSmart && !cell.signal ? SMART_NOISE_SCALE : CELL}
                 rx={isSmart ? "3" : "2"}
-                fillOpacity={isSmart ? undefined : opacity}
-                style={isSmart ? undefined : variant === "nav" ? navStyle : animationStyle}
+                fillOpacity={opacity}
+                style={variant === "nav" ? navStyle : animationStyle}
               />
             );
           })}
