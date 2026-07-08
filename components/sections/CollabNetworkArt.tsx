@@ -44,6 +44,13 @@ const getDistance = (a: { x: number; y: number }, b: { x: number; y: number }) =
   return Math.sqrt(dx * dx + dy * dy);
 };
 
+// Math.cos/Math.sin are not guaranteed bit-identical across JS engines, so the
+// server (Node/SSR) and the client (browser) can compute a last-digit-different
+// float from the same input, which React flags as a hydration mismatch.
+// Rounding to a fixed precision here makes the two renders produce the same
+// number without any perceptible change to node position.
+const roundCoord = (value: number) => Math.round(value * 1e4) / 1e4;
+
 export default function CollabNetworkArt({
   onActivate,
   onInteract,
@@ -71,8 +78,8 @@ export default function CollabNetworkArt({
           count,
           index: nodeIndex,
           ring: index,
-          x: COLLAB_ART_CENTER.x + radius * Math.cos(radians),
-          y: COLLAB_ART_CENTER.y + radius * Math.sin(radians),
+          x: roundCoord(COLLAB_ART_CENTER.x + radius * Math.cos(radians)),
+          y: roundCoord(COLLAB_ART_CENTER.y + radius * Math.sin(radians)),
         };
       });
 

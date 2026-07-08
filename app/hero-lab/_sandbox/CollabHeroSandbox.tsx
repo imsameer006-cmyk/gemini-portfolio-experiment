@@ -3,8 +3,10 @@
 /**
  * SANDBOX COPY - isolated from components/sections/CollabNetworkArt.tsx
  * and the InProgressHero wrapper in components/sections/ProjectInProgress.tsx.
- * Edit freely. This file is not imported by any production page.
- * To ship a change: port the diff back into those two files manually.
+ * Edit freely. This IS imported by app/hero-lab/page.tsx, a real (noindex)
+ * production route, so changes here are live at /hero-lab.
+ * To ship a change to the actual case study: port the diff back into those
+ * two files manually.
  */
 
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
@@ -50,6 +52,13 @@ const getDistance = (a: { x: number; y: number }, b: { x: number; y: number }) =
   const dy = a.y - b.y;
   return Math.sqrt(dx * dx + dy * dy);
 };
+
+// Math.cos/Math.sin are not guaranteed bit-identical across JS engines, so the
+// server (Node/SSR) and the client (browser) can compute a last-digit-different
+// float from the same input, which React flags as a hydration mismatch.
+// Rounding to a fixed precision here makes the two renders produce the same
+// number without any perceptible change to node position.
+const roundCoord = (value: number) => Math.round(value * 1e4) / 1e4;
 
 const SANDBOX_PROJECT = {
   category: "Enterprise Platform Design",
@@ -98,8 +107,8 @@ function CollabRadialArt({
           count,
           index: nodeIndex,
           ring: index,
-          x: CENTER.x + radius * Math.cos(radians),
-          y: CENTER.y + radius * Math.sin(radians),
+          x: roundCoord(CENTER.x + radius * Math.cos(radians)),
+          y: roundCoord(CENTER.y + radius * Math.sin(radians)),
         };
       });
 
