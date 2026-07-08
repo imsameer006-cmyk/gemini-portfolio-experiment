@@ -3,6 +3,7 @@
 import { motion } from "framer-motion";
 import Link from "next/link";
 import type { Project } from "@/lib/types";
+import { reveal, staggerDelay } from "@/lib/motion";
 
 interface ProjectCardProps {
   project: Project;
@@ -12,10 +13,7 @@ interface ProjectCardProps {
 export default function ProjectCard({ project, index }: ProjectCardProps) {
   return (
     <motion.article
-      initial={{ opacity: 0, y: 24 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, margin: "-60px" }}
-      transition={{ duration: 0.5, delay: index * 0.1, ease: [0.16, 1, 0.3, 1] }}
+      {...reveal(staggerDelay(index))}
       className="h-full"
     >
       <Link

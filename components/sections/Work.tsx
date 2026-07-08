@@ -4,6 +4,7 @@ import { motion } from "framer-motion";
 import Link from "next/link";
 import ProjectCard from "@/components/ui/ProjectCard";
 import { projects } from "@/lib/data/projects";
+import { reveal, revealFade } from "@/lib/motion";
 
 const featured = projects.filter((p) => p.featured && !p.hidden);
 
@@ -15,19 +16,13 @@ export default function Work() {
         <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-14">
           <div>
             <motion.p
-              initial={{ opacity: 0, y: 12 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.45, ease: [0.16, 1, 0.3, 1] }}
+              {...reveal()}
               className="text-xs text-[var(--color-text-accent)] tracking-widest uppercase font-medium mb-3"
             >
               Selected Work
             </motion.p>
             <motion.h2
-              initial={{ opacity: 0, y: 16 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.5, delay: 0.06, ease: [0.16, 1, 0.3, 1] }}
+              {...reveal(0.06)}
               className="font-[family-name:var(--font-instrument-serif)] italic text-[clamp(2rem,4.5vw,3.5rem)] leading-tight text-[#18171A]"
             >
               What I&apos;ve shipped.
@@ -35,10 +30,7 @@ export default function Work() {
           </div>
 
           <motion.p
-            initial={{ opacity: 0 }}
-            whileInView={{ opacity: 1 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.45, delay: 0.15 }}
+            {...revealFade(0.15)}
             className="text-sm text-[#6E6D69] md:text-right max-w-[28ch] leading-relaxed"
           >
             Each project is a case study in systems thinking and human-centered design.

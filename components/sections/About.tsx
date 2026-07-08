@@ -2,6 +2,7 @@
 
 import { motion } from "framer-motion";
 import Image from "next/image";
+import { reveal } from "@/lib/motion";
 
 const FACTS = [
   "Systems Design",
@@ -24,10 +25,7 @@ export default function About() {
           {/* LEFT — image stretches to full content height */}
           <motion.div
             className="lg:h-full"
-            initial={{ opacity: 0, y: 12 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.45, ease: [0.16, 1, 0.3, 1] }}
+            {...reveal()}
           >
             <div className="relative aspect-[4/5] overflow-hidden rounded-lg border border-[#E6E3DD] bg-[#F4F1EC] lg:aspect-auto lg:h-full">
               <Image
@@ -44,20 +42,14 @@ export default function About() {
           {/* RIGHT — headline at top, body below */}
           <div>
             <motion.h2
-              initial={{ opacity: 0, y: 12 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.45, ease: [0.16, 1, 0.3, 1] }}
+              {...reveal()}
               className="font-[family-name:var(--font-instrument-serif)] text-[clamp(2rem,4.5vw,3.5rem)] italic leading-tight text-[#18171A]"
             >
               The designer behind the systems.
             </motion.h2>
 
             <motion.p
-              initial={{ opacity: 0, y: 16 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.55, delay: 0.08, ease: [0.16, 1, 0.3, 1] }}
+              {...reveal(0.08)}
               className="mt-10 max-w-[760px] text-lg leading-relaxed text-[#3A3836] md:text-xl"
             >
               Product Designer with 10+ years across digital products — engineering, customer
@@ -68,10 +60,7 @@ export default function About() {
             </motion.p>
 
             <motion.p
-              initial={{ opacity: 0, y: 12 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.45, delay: 0.14, ease: [0.16, 1, 0.3, 1] }}
+              {...reveal(0.14)}
               className="mt-10 max-w-[420px] font-[family-name:var(--font-instrument-serif)] text-[clamp(1.2rem,1.6vw,1.5rem)] italic leading-[1.45] text-[#5F5A54]"
             >
               Think in systems.
@@ -84,10 +73,7 @@ export default function About() {
             </motion.p>
 
             <motion.div
-              initial={{ opacity: 0, y: 14 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.45, delay: 0.18, ease: [0.16, 1, 0.3, 1] }}
+              {...reveal(0.18)}
               className="mt-12 flex flex-wrap gap-2"
             >
               {FACTS.map((fact) => (

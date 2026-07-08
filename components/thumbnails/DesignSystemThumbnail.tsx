@@ -1,6 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
+import { REVEAL_VIEWPORT } from "@/lib/motion";
 
 const DRIFT_SWATCHES = [
   { x: 62, y: 96, size: 9, rotate: -8 },
@@ -71,7 +72,7 @@ export default function DesignSystemThumbnail() {
       aria-hidden="true"
       initial="hidden"
       whileInView="visible"
-      viewport={{ once: true }}
+      viewport={REVEAL_VIEWPORT}
     >
       <defs>
         <pattern id="grid-ds" width="40" height="40" patternUnits="userSpaceOnUse">

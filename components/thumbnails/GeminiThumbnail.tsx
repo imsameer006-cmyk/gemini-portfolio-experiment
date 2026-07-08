@@ -1,6 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
+import { REVEAL_VIEWPORT } from "@/lib/motion";
 
 export default function GeminiThumbnail() {
   const draw = {
@@ -64,7 +65,7 @@ export default function GeminiThumbnail() {
       aria-hidden="true"
       initial="hidden"
       whileInView="visible"
-      viewport={{ once: true }}
+      viewport={REVEAL_VIEWPORT}
     >
       {/* Subtle grid background */}
       <defs>

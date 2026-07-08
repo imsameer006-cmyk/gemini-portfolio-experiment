@@ -2,6 +2,7 @@
 
 import { motion } from "framer-motion";
 import { beliefs } from "@/lib/data/projects";
+import { reveal, revealFade, staggerDelay } from "@/lib/motion";
 
 export default function Philosophy() {
   return (
@@ -12,10 +13,7 @@ export default function Philosophy() {
       <div className="max-w-[1280px] mx-auto">
         {/* Section label */}
         <motion.p
-          initial={{ opacity: 0, y: 12 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.45, ease: [0.16, 1, 0.3, 1] }}
+          {...reveal()}
           className="text-xs text-[var(--color-accent)] tracking-widest uppercase font-medium mb-10"
         >
           My Design Philosophy
@@ -23,20 +21,14 @@ export default function Philosophy() {
 
         {/* Core statement */}
         <motion.blockquote
-          initial={{ opacity: 0, y: 24 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6, delay: 0.08, ease: [0.16, 1, 0.3, 1] }}
+          {...reveal(0.08)}
           className="font-[family-name:var(--font-instrument-serif)] italic text-[clamp(1.75rem,4vw,3.25rem)] leading-[1.2] text-[#EDEBE3] mb-6 max-w-[26ch]"
         >
           &ldquo;Design is the practice of understanding complexity, uncovering what matters, and shaping it into experiences people can understand and use.&rdquo;
         </motion.blockquote>
 
         <motion.p
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.4, delay: 0.2 }}
+          {...revealFade(0.2)}
           className="text-[#847F76] text-sm mb-20 max-w-[36ch] leading-relaxed"
         >
           Over the years, I&apos;ve learned that good design isn&apos;t about adding more&mdash;it&apos;s
@@ -51,10 +43,7 @@ export default function Philosophy() {
           {beliefs.map((belief, i) => (
             <motion.div
               key={belief.heading}
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: "-40px" }}
-              transition={{ duration: 0.5, delay: i * 0.1, ease: [0.16, 1, 0.3, 1] }}
+              {...reveal(staggerDelay(i))}
               className="grid h-full grid-rows-[auto_auto_1fr] content-start"
             >
               <span className="mb-5 block text-xs font-medium uppercase tracking-widest text-[#847F76]">

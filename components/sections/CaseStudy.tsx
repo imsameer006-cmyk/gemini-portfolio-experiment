@@ -2,6 +2,7 @@
 
 import { useRef, useState, useEffect } from "react";
 import { motion, MotionConfig } from "framer-motion";
+import { reveal, staggerDelay, REVEAL_VIEWPORT, REVEAL_DURATION, REVEAL_EASE } from "@/lib/motion";
 import { CheckCircle, MinusCircle, ArrowsLeftRight } from "@phosphor-icons/react";
 import Link from "next/link";
 import type { Project, Block, CaseStudySection, CaseStudyData } from "@/lib/types";
@@ -35,8 +36,8 @@ function Callout({ text }: { text: string }) {
     <motion.div
       initial={{ opacity: 0, x: -8 }}
       whileInView={{ opacity: 1, x: 0 }}
-      viewport={{ once: true, amount: 0.15 }}
-      transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
+      viewport={REVEAL_VIEWPORT}
+      transition={{ duration: REVEAL_DURATION, ease: REVEAL_EASE }}
       className="border-l-[3px] border-[#C07B50] bg-[#F9F4EF] px-6 py-5 rounded-r-xl max-w-[640px]"
     >
       <p className="text-[#18171A] text-base leading-relaxed">{text}</p>
@@ -60,10 +61,7 @@ function BulletList({ items }: { items: string[] }) {
 function MetaGrid({ fields }: { fields: { label: string; value: string }[] }) {
   return (
     <motion.div
-      initial={{ opacity: 0, y: 32 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, amount: 0.1 }}
-      transition={{ duration: 1.0, ease: [0.16, 1, 0.3, 1] }}
+      {...reveal()}
       className="grid grid-cols-2 sm:grid-cols-3 border border-[#E6E3DD] rounded-2xl overflow-hidden bg-[#E6E3DD] gap-px"
     >
       {fields.map(({ label, value }) => (
@@ -412,10 +410,7 @@ function Decisions({
         <motion.div
           key={i}
           className="grid grid-cols-[2rem_1fr] gap-4"
-          initial={{ opacity: 0, y: 12 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, amount: 0.15 }}
-          transition={{ duration: 0.5, delay: i * 0.1, ease: [0.16, 1, 0.3, 1] }}
+          {...reveal(staggerDelay(i))}
         >
           <span className="font-[family-name:var(--font-instrument-serif)] italic text-2xl text-[#C07B50]/50 leading-none pt-0.5">
             {String(startIndex + i + 1).padStart(2, "0")}
@@ -466,13 +461,13 @@ function BACard({
       style={{ padding: "28px", boxShadow: "0 2px 8px rgba(0,0,0,0.05)" }}
       initial={{ opacity: 0, x: slideDir }}
       whileInView={{ opacity: 1, x: 0 }}
-      viewport={{ once: true, amount: 0.15 }}
+      viewport={REVEAL_VIEWPORT}
       whileHover={{
         y: -2,
         boxShadow: "0 6px 24px rgba(0,0,0,0.07)",
         transition: { duration: 0.25, ease: "easeOut" },
       }}
-      transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
+      transition={{ duration: REVEAL_DURATION, ease: REVEAL_EASE }}
     >
       {/* Shimmer — z-2, clipped by overflow-hidden */}
       {isAfter
@@ -872,10 +867,7 @@ function DecisionsCDO({
         <motion.div
           key={i}
           className="grid grid-cols-[2rem_1fr] gap-4"
-          initial={{ opacity: 0, y: 12 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, amount: 0.15 }}
-          transition={{ duration: 0.5, delay: i * 0.08, ease: [0.16, 1, 0.3, 1] as [number, number, number, number] }}
+          {...reveal(staggerDelay(i))}
         >
           <span className="font-[family-name:var(--font-instrument-serif)] italic text-2xl text-[#C07B50]/50 leading-none pt-0.5">
             {String(startIndex + i + 1).padStart(2, "0")}
@@ -1219,10 +1211,7 @@ function Section({ section }: { section: CaseStudySection }) {
   return (
     <motion.section
       id={toSectionId(section.label)}
-      initial={{ opacity: 0, y: 48 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, amount: 0.05 }}
-      transition={{ duration: 0.9, ease: [0.16, 1, 0.3, 1] }}
+      {...reveal()}
       className="pb-8"
     >
       {/* Animated divider — grows left-to-right on scroll */}
@@ -1230,8 +1219,8 @@ function Section({ section }: { section: CaseStudySection }) {
         className="h-px bg-[#E6E3DD]"
         initial={{ scaleX: 0 }}
         whileInView={{ scaleX: 1 }}
-        viewport={{ once: true, amount: 0 }}
-        transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
+        viewport={REVEAL_VIEWPORT}
+        transition={{ duration: REVEAL_DURATION, ease: REVEAL_EASE }}
         style={{ originX: 0 }}
       />
 

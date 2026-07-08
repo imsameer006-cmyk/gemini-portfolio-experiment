@@ -1,6 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
+import { reveal, revealFade } from "@/lib/motion";
 
 export default function Contact() {
   return (
@@ -10,30 +11,21 @@ export default function Contact() {
     >
       <div className="max-w-[1280px] mx-auto">
         <motion.p
-          initial={{ opacity: 0, y: 12 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.45, ease: [0.16, 1, 0.3, 1] }}
+          {...reveal()}
           className="text-xs text-[var(--color-accent)] tracking-widest uppercase font-medium mb-8"
         >
           Get in Touch
         </motion.p>
 
         <motion.h2
-          initial={{ opacity: 0, y: 24 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6, delay: 0.08, ease: [0.16, 1, 0.3, 1] }}
+          {...reveal(0.08)}
           className="font-[family-name:var(--font-instrument-serif)] italic text-[clamp(2.5rem,6vw,5rem)] leading-[1.1] text-[#EDEBE3] mb-6 max-w-[18ch]"
         >
           Let&apos;s build something good.
         </motion.h2>
 
         <motion.p
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.4, delay: 0.2 }}
+          {...revealFade(0.2)}
           className="text-[#847F76] text-base mb-12 max-w-[40ch] leading-relaxed"
         >
           Whether you&apos;re building a product from scratch, rethinking an existing
@@ -41,10 +33,7 @@ export default function Contact() {
         </motion.p>
 
         <motion.div
-          initial={{ opacity: 0, y: 12 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.45, delay: 0.3, ease: [0.16, 1, 0.3, 1] }}
+          {...reveal(0.3)}
           className="flex flex-wrap gap-4"
         >
           <a

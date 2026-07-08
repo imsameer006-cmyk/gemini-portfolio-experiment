@@ -3,6 +3,7 @@
 import { motion } from "framer-motion";
 import Image from "next/image";
 import { useRef, useState } from "react";
+import { reveal, staggerDelay } from "@/lib/motion";
 
 type ExperienceMoment = {
   title?: string;
@@ -56,8 +57,6 @@ const MOMENTS: ExperienceMoment[] = [
   },
 ];
 
-const EASE = [0.16, 1, 0.3, 1] as const;
-
 function ExperiencePhotoCard({
   moment,
   index,
@@ -67,10 +66,7 @@ function ExperiencePhotoCard({
 }) {
   return (
     <motion.article
-      initial={{ opacity: 0, y: 18 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, margin: "-40px" }}
-      transition={{ duration: 0.5, delay: index * 0.08, ease: EASE }}
+      {...reveal(staggerDelay(index))}
       className="group flex h-full flex-col overflow-hidden rounded-2xl border border-[#E6E3DD] bg-white transition-[border-color,box-shadow] duration-300 hover:border-[#C07B50]/35 hover:shadow-[0_8px_40px_-8px_rgba(0,0,0,0.1)]"
     >
       <div className="relative aspect-[4/3] w-full overflow-hidden bg-[#F2F0EB]">
@@ -206,10 +202,7 @@ export default function ExperienceMoments() {
     >
       <div className="mx-auto max-w-[1280px] border-t border-[#E6E3DD] pt-16">
         <motion.div
-          initial={{ opacity: 0, y: 12 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.45, ease: EASE }}
+          {...reveal()}
           className="mb-12 grid gap-5 lg:grid-cols-[0.7fr_1fr] lg:items-end"
         >
           <div>

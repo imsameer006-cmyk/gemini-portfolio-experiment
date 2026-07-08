@@ -1,6 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
+import { REVEAL_VIEWPORT } from "@/lib/motion";
 
 const CENTER = { x: 230, y: 128 };
 
@@ -90,7 +91,7 @@ export default function CollabspaceThumbnail() {
       aria-hidden="true"
       initial="hidden"
       whileInView="visible"
-      viewport={{ once: true }}
+      viewport={REVEAL_VIEWPORT}
     >
       <defs>
         <pattern id="grid-collab" width="40" height="40" patternUnits="userSpaceOnUse">

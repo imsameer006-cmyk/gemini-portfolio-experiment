@@ -2,6 +2,7 @@
 
 import { motion } from "framer-motion";
 import { processSteps } from "@/lib/data/projects";
+import { reveal, revealFade, staggerDelay } from "@/lib/motion";
 
 const PROCESS_CONNECTOR_BACKGROUNDS = [
   "linear-gradient(90deg, #F2F0EB 0%, #EEEAE5 55%, #E9E5DF 100%)",
@@ -19,19 +20,13 @@ export default function Process() {
         {/* Section header */}
         <div className="mb-16">
           <motion.p
-            initial={{ opacity: 0, y: 12 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.45, ease: [0.16, 1, 0.3, 1] }}
+            {...reveal()}
             className="text-xs text-[var(--color-text-accent)] tracking-widest uppercase font-medium mb-3"
           >
             How I Work
           </motion.p>
           <motion.h2
-            initial={{ opacity: 0, y: 16 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.5, delay: 0.06, ease: [0.16, 1, 0.3, 1] }}
+            {...reveal(0.06)}
             className="font-[family-name:var(--font-instrument-serif)] italic text-[clamp(2rem,4.5vw,3.5rem)] leading-tight text-[#18171A] max-w-[20ch]"
           >
             Process as a design tool.
@@ -43,10 +38,7 @@ export default function Process() {
           {processSteps.map((step, i) => (
             <motion.div
               key={step.number}
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: "-40px" }}
-              transition={{ duration: 0.5, delay: i * 0.1, ease: [0.16, 1, 0.3, 1] }}
+              {...reveal(staggerDelay(i))}
               className="relative"
             >
               {/* Connector line (desktop only) */}
@@ -77,10 +69,7 @@ export default function Process() {
 
         {/* Bottom note */}
         <motion.p
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.4, delay: 0.4 }}
+          {...revealFade(0.4)}
           className="mt-16 text-xs text-[#6E6D69] max-w-[48ch] leading-relaxed border-t border-[#E6E3DD] pt-8"
         >
           The process is not linear. Real design work is recursive — each step

@@ -2,6 +2,7 @@
 
 import { motion } from "framer-motion";
 import Image from "next/image";
+import { reveal, staggerDelay } from "@/lib/motion";
 
 const TESTIMONIALS = [
   {
@@ -38,8 +39,6 @@ const TESTIMONIALS = [
   },
 ];
 
-const EASE = [0.16, 1, 0.3, 1] as const;
-
 export default function Testimonials() {
   return (
     <section
@@ -48,10 +47,7 @@ export default function Testimonials() {
     >
       <div className="mx-auto max-w-[1280px] border-t border-[#E6E3DD] pt-16">
         <motion.div
-          initial={{ opacity: 0, y: 12 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.45, ease: EASE }}
+          {...reveal()}
           className="mb-12"
         >
           <p className="mb-3 text-xs font-medium uppercase tracking-widest text-[var(--color-text-accent)]">
@@ -66,10 +62,7 @@ export default function Testimonials() {
           {TESTIMONIALS.map((t, i) => (
             <motion.div
               key={t.name}
-              initial={{ opacity: 0, y: 18 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.5, delay: i * 0.1, ease: EASE }}
+              {...reveal(staggerDelay(i))}
               className="flex flex-col rounded-2xl border border-[#E6E3DD] bg-white p-7 transition-shadow duration-300 hover:shadow-[0_8px_40px_-8px_rgba(0,0,0,0.12)]"
             >
               <span
