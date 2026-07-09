@@ -328,8 +328,55 @@ export const designSystem: CaseStudyData = {
     },
 
     {
+      label: "07 — Round 2",
+      heading: "Auditing the audit.",
+      blocks: [
+        {
+          type: "paragraph",
+          text: "Two months after launch, I ran a second audit — browser agent reviewing the live site, code agent reviewing the source simultaneously. The browser flagged a critical layout bug: a project card orphaned in a two-column grid. The code review refuted it — the agent's viewport was stuck at 894px, the tablet breakpoint. The grid was fine. The lesson: observations aren't findings until verified against source. The browser sees symptoms; the code holds the truth.",
+        },
+        {
+          type: "decisions",
+          items: [
+            {
+              heading: "What the first audit missed · Finding 01 — A hydration bug.",
+              body: "SVG coordinates computed with Math.sin/cos aren't bit-identical between Node and browser engines. Server and client rendered values differing in the last decimal — React flagged the mismatch. Fixed by rounding to deterministic precision in both affected components.",
+            },
+            {
+              heading: "What the first audit missed · Finding 02 — An accessibility claim that was only half true.",
+              body: "The CSS reduced-motion override can't touch Framer Motion's animations, which run through the Web Animations API. Case-study pages worked; the homepage silently ignored the setting. Fix: moved the logic into the motion hooks themselves, verified instant across all 42 animated elements.",
+            },
+            {
+              heading: "Round 2 finding — Motion had the same drift as color.",
+              body: "Fifteen hand-written animation configs across nine components — durations ranging 0.4–1.0s, offsets from 12 to 48px, three different trigger mechanisms. The same failure mode that produced near-identical blacks produced near-identical durations. Now: one module, five constants, every scroll reveal through shared hooks. Colors were Round 1. Motion was Round 2.",
+            },
+          ],
+        },
+        {
+          type: "before-after",
+          before: {
+            heading: "Before Round 2",
+            items: [
+              { label: "15 animation configs", detail: "motion token module" },
+              { label: "9 components", detail: "scroll reveal" },
+              { label: "homepage reduced-motion", detail: "accessibility" },
+            ],
+          },
+          after: {
+            heading: "After Round 2",
+            items: [
+              { label: "5 constants", detail: "motion token module" },
+              { label: "1 shared hook", detail: "scroll reveal" },
+              { label: "verified · 42 elements", detail: "accessibility" },
+            ],
+          },
+        },
+      ],
+    },
+
+    {
       label: "Reflection",
-      heading: "A design system is a decision-making system.",
+      heading: "A design system isn't something you ship. It's something you keep true.",
       blocks: [
         {
           type: "pull-quote",
