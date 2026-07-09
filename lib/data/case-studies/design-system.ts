@@ -328,7 +328,7 @@ export const designSystem: CaseStudyData = {
     },
 
     {
-      label: "07 — Round 2",
+      label: "The Re-Audit",
       heading: "Auditing the audit.",
       blocks: [
         {
