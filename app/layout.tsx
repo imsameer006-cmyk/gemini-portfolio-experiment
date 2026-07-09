@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono, Instrument_Serif } from "next/font/google";
 import Nav from "@/components/Nav";
 import Footer from "@/components/Footer";
+import MotionProvider from "@/components/providers/MotionProvider";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -69,9 +70,11 @@ export default function RootLayout({
       className={`${geistSans.variable} ${geistMono.variable} ${instrumentSerif.variable}`}
     >
       <body className="bg-[#F9F8F5] text-[#18171A] antialiased min-h-screen flex flex-col">
-        <Nav />
-        <main className="flex-1">{children}</main>
-        <Footer />
+        <MotionProvider>
+          <Nav />
+          <main className="flex-1">{children}</main>
+          <Footer />
+        </MotionProvider>
       </body>
     </html>
   );

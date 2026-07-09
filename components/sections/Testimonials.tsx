@@ -2,7 +2,7 @@
 
 import { motion } from "framer-motion";
 import Image from "next/image";
-import { reveal, staggerDelay } from "@/lib/motion";
+import { useReveal, staggerDelay } from "@/lib/motion";
 
 const TESTIMONIALS = [
   {
@@ -40,6 +40,8 @@ const TESTIMONIALS = [
 ];
 
 export default function Testimonials() {
+  const reveal = useReveal();
+
   return (
     <section
       id="testimonials"

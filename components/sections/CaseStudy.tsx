@@ -1,8 +1,8 @@
 "use client";
 
 import { useRef, useState, useEffect } from "react";
-import { motion, MotionConfig } from "framer-motion";
-import { reveal, staggerDelay, REVEAL_VIEWPORT, REVEAL_DURATION, REVEAL_EASE } from "@/lib/motion";
+import { motion, useReducedMotion } from "framer-motion";
+import { useReveal, staggerDelay, REVEAL_VIEWPORT, REVEAL_DURATION, REVEAL_EASE } from "@/lib/motion";
 import { CheckCircle, MinusCircle, ArrowsLeftRight } from "@phosphor-icons/react";
 import Link from "next/link";
 import type { Project, Block, CaseStudySection, CaseStudyData } from "@/lib/types";
@@ -32,12 +32,14 @@ function Subheading({ text }: { text: string }) {
 }
 
 function Callout({ text }: { text: string }) {
+  const prefersReducedMotion = useReducedMotion();
+
   return (
     <motion.div
-      initial={{ opacity: 0, x: -8 }}
+      initial={{ opacity: 0, x: prefersReducedMotion ? 0 : -8 }}
       whileInView={{ opacity: 1, x: 0 }}
       viewport={REVEAL_VIEWPORT}
-      transition={{ duration: REVEAL_DURATION, ease: REVEAL_EASE }}
+      transition={{ duration: prefersReducedMotion ? 0 : REVEAL_DURATION, ease: REVEAL_EASE }}
       className="border-l-[3px] border-[#C07B50] bg-[#F9F4EF] px-6 py-5 rounded-r-xl max-w-[640px]"
     >
       <p className="text-[#18171A] text-base leading-relaxed">{text}</p>
@@ -59,6 +61,8 @@ function BulletList({ items }: { items: string[] }) {
 }
 
 function MetaGrid({ fields }: { fields: { label: string; value: string }[] }) {
+  const reveal = useReveal();
+
   return (
     <motion.div
       {...reveal()}
@@ -404,6 +408,8 @@ function Decisions({
   items: { heading: string; body: string; bullets?: string[] }[];
   startIndex?: number;
 }) {
+  const reveal = useReveal();
+
   return (
     <div className="space-y-10">
       {items.map((decision, i) => (
@@ -451,6 +457,7 @@ function BACard({
   slideDir: number;
 }) {
   const isAfter = variant === "after";
+  const prefersReducedMotion = useReducedMotion();
 
   return (
     <motion.div
@@ -459,7 +466,7 @@ function BACard({
         isAfter ? "card-green" : "card-red",
       ].join(" ")}
       style={{ padding: "28px", boxShadow: "0 2px 8px rgba(0,0,0,0.05)" }}
-      initial={{ opacity: 0, x: slideDir }}
+      initial={{ opacity: 0, x: prefersReducedMotion ? 0 : slideDir }}
       whileInView={{ opacity: 1, x: 0 }}
       viewport={REVEAL_VIEWPORT}
       whileHover={{
@@ -467,7 +474,7 @@ function BACard({
         boxShadow: "0 6px 24px rgba(0,0,0,0.07)",
         transition: { duration: 0.25, ease: "easeOut" },
       }}
-      transition={{ duration: REVEAL_DURATION, ease: REVEAL_EASE }}
+      transition={{ duration: prefersReducedMotion ? 0 : REVEAL_DURATION, ease: REVEAL_EASE }}
     >
       {/* Shimmer — z-2, clipped by overflow-hidden */}
       {isAfter
@@ -861,6 +868,8 @@ function DecisionsCDO({
   items: { heading: string; challenge: string; decision: string; outcome: string }[];
   startIndex?: number;
 }) {
+  const reveal = useReveal();
+
   return (
     <div className="space-y-10">
       {items.map((item, i) => (
@@ -1208,6 +1217,9 @@ function renderBlock(block: Block, i: number): React.ReactNode {
 // ── Section Component ──────────────────────────────────────────
 
 function Section({ section }: { section: CaseStudySection }) {
+  const reveal = useReveal();
+  const prefersReducedMotion = useReducedMotion();
+
   return (
     <motion.section
       id={toSectionId(section.label)}
@@ -1220,7 +1232,7 @@ function Section({ section }: { section: CaseStudySection }) {
         initial={{ scaleX: 0 }}
         whileInView={{ scaleX: 1 }}
         viewport={REVEAL_VIEWPORT}
-        transition={{ duration: REVEAL_DURATION, ease: REVEAL_EASE }}
+        transition={{ duration: prefersReducedMotion ? 0 : REVEAL_DURATION, ease: REVEAL_EASE }}
         style={{ originX: 0 }}
       />
 
@@ -1278,7 +1290,6 @@ export default function CaseStudy({ project, content }: Props) {
   const isDesignSystem = project.slug === "design-system";
 
   return (
-    <MotionConfig reducedMotion="user">
     <article>
       {/* Hero — full-bleed bg, text anchored to shared 900px grid origin */}
       {isGemini ? (
@@ -1512,6 +1523,5 @@ export default function CaseStudy({ project, content }: Props) {
         </div>
       </div>
     </article>
-    </MotionConfig>
   );
 }

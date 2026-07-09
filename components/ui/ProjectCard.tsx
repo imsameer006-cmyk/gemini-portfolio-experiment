@@ -3,7 +3,7 @@
 import { motion } from "framer-motion";
 import Link from "next/link";
 import type { Project } from "@/lib/types";
-import { reveal, staggerDelay } from "@/lib/motion";
+import { useReveal, staggerDelay } from "@/lib/motion";
 
 interface ProjectCardProps {
   project: Project;
@@ -11,6 +11,8 @@ interface ProjectCardProps {
 }
 
 export default function ProjectCard({ project, index }: ProjectCardProps) {
+  const reveal = useReveal();
+
   return (
     <motion.article
       {...reveal(staggerDelay(index))}

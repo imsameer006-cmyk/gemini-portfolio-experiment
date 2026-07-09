@@ -2,7 +2,7 @@
 
 import { motion } from "framer-motion";
 import { processSteps } from "@/lib/data/projects";
-import { reveal, revealFade, staggerDelay } from "@/lib/motion";
+import { useReveal, useRevealFade, staggerDelay } from "@/lib/motion";
 
 const PROCESS_CONNECTOR_BACKGROUNDS = [
   "linear-gradient(90deg, #F2F0EB 0%, #EEEAE5 55%, #E9E5DF 100%)",
@@ -14,6 +14,9 @@ const PROCESS_TERMINAL_CONNECTOR =
   "linear-gradient(90deg, #CECAC2 0%, #DAD6CE 45%, #F2F0EB 100%)";
 
 export default function Process() {
+  const reveal = useReveal();
+  const revealFade = useRevealFade();
+
   return (
     <section id="process" className="px-6 md:px-10 py-24 md:py-36 bg-[#F2F0EB]">
       <div className="max-w-[1280px] mx-auto">

@@ -3,7 +3,7 @@
 import { motion } from "framer-motion";
 import Image from "next/image";
 import { useRef, useState } from "react";
-import { reveal, staggerDelay } from "@/lib/motion";
+import { useReveal, staggerDelay } from "@/lib/motion";
 
 type ExperienceMoment = {
   title?: string;
@@ -64,6 +64,8 @@ function ExperiencePhotoCard({
   moment: ExperienceMoment;
   index: number;
 }) {
+  const reveal = useReveal();
+
   return (
     <motion.article
       {...reveal(staggerDelay(index))}
@@ -113,6 +115,7 @@ function ExperiencePhotoCard({
 }
 
 export default function ExperienceMoments() {
+  const reveal = useReveal();
   const [activeMoment, setActiveMoment] = useState(0);
   const [activeDesktopPage, setActiveDesktopPage] = useState(0);
   const mobileScrollerRef = useRef<HTMLDivElement>(null);

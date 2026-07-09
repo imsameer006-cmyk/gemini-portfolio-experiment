@@ -2,7 +2,7 @@
 
 import { motion } from "framer-motion";
 import Image from "next/image";
-import { reveal } from "@/lib/motion";
+import { useReveal } from "@/lib/motion";
 
 const FACTS = [
   "Systems Design",
@@ -14,6 +14,8 @@ const FACTS = [
 ];
 
 export default function About() {
+  const reveal = useReveal();
+
   return (
     <section id="about" className="px-6 pb-24 pt-0 md:px-10 md:pb-32 md:pt-0">
       <div className="mx-auto max-w-[1280px] border-t border-[#E6E3DD] pt-16">

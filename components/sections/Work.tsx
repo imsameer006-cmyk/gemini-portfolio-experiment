@@ -3,11 +3,14 @@
 import { motion } from "framer-motion";
 import ProjectCard from "@/components/ui/ProjectCard";
 import { projects } from "@/lib/data/projects";
-import { reveal, revealFade } from "@/lib/motion";
+import { useReveal, useRevealFade } from "@/lib/motion";
 
 const featured = projects.filter((p) => p.featured && !p.hidden);
 
 export default function Work() {
+  const reveal = useReveal();
+  const revealFade = useRevealFade();
+
   return (
     <section id="work" className="px-6 pb-16 pt-10 md:px-10 md:pb-24 md:pt-36">
       <div className="max-w-[1280px] mx-auto">

@@ -1,9 +1,12 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { reveal, revealFade } from "@/lib/motion";
+import { useReveal, useRevealFade } from "@/lib/motion";
 
 export default function Contact() {
+  const reveal = useReveal();
+  const revealFade = useRevealFade();
+
   return (
     <section
       id="contact"

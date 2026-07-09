@@ -2,9 +2,12 @@
 
 import { motion } from "framer-motion";
 import { beliefs } from "@/lib/data/projects";
-import { reveal, revealFade, staggerDelay } from "@/lib/motion";
+import { useReveal, useRevealFade, staggerDelay } from "@/lib/motion";
 
 export default function Philosophy() {
+  const reveal = useReveal();
+  const revealFade = useRevealFade();
+
   return (
     <section
       id="philosophy"
