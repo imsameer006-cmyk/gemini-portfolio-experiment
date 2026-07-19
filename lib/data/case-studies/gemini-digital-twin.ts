@@ -16,7 +16,7 @@ export const geminiDigitalTwin: CaseStudyData = {
         },
         {
           type: "paragraph",
-          text: "The project was originated by a project director, based on his firsthand observation of friction in the approval and customization process. The team included a PM, 3 data engineers, 2 frontend developers, 1 QA engineer, and an external UI designer who executed agreed-upon design decisions. Infineon is a traditional, engineering-first company that was culturally cautious about digital initiatives, which made the hard November 2025 launch deadline especially high-stakes. The deadline was driven by the need to present a solid use case to the board to secure further funding for the platform.",
+          text: "Solving that fragmentation became Gemini's mandate, pursued by a small team under real organizational pressure. The project was originated by a project director, based on his firsthand observation of friction in the approval and customization process. The team included a PM, 3 data engineers, 2 frontend developers, 1 QA engineer, and an external UI designer who executed agreed-upon design decisions. Infineon is a traditional, engineering-first company that was culturally cautious about digital initiatives, which made the hard November 2025 launch deadline especially high-stakes. The deadline was driven by the need to present a solid use case to the board to secure further funding for the platform.",
         },
         { type: "subheading", text: "My Role" },
         {
@@ -83,7 +83,7 @@ export const geminiDigitalTwin: CaseStudyData = {
       blocks: [
         {
           type: "paragraph",
-          text: "The approval process involved several engineering roles, creating governance complexity around ownership, feedback, permissions, and next steps. Approvals happened at the module level rather than the project level. This module-level approval structure was inherited from decades-old organizational architecture at Infineon, not a decision made by the design team, which had no standing to contest it as a new project.",
+          text: "The approval process involved several engineering roles, creating governance complexity around ownership, feedback, permissions, and next steps. Approvals happened at the module level rather than the project level. This module-level approval structure was inherited from decades-old organizational architecture at Infineon — not something a new project team could contest.",
         },
         {
           type: "role-list",
@@ -136,7 +136,7 @@ export const geminiDigitalTwin: CaseStudyData = {
       blocks: [
         {
           type: "paragraph",
-          text: "Interviews in Germany, Austria, and Japan supported early discovery and needs assessment. China was the explicit priority market, the platform was localized into Chinese, and the demand driving Short Flow specifically came from Chinese FAEs. The primary challenge was not module customization — it was status uncertainty.",
+          text: "What the interviews actually showed was that the primary challenge wasn't module customization at all — it was status uncertainty. (Discovery interviews ran in Germany, Austria, and Japan; China was the priority market, the platform was localized into Chinese, and Short Flow specifically was driven by demand from Chinese FAEs.)",
         },
         { type: "subheading", text: "After submission, FAEs often lost clarity on:" },
         {
@@ -188,11 +188,11 @@ export const geminiDigitalTwin: CaseStudyData = {
         },
         {
           type: "paragraph",
-          text: "During discovery interviews, Chinese FAEs specifically wanted a detailed activity-feed-style solution with granular notifications. Engineering, manufacturing, and feasibility leads refused this direction because it would expose internal operational processes they did not want made visible. Separately, the design team's original proposals for restructuring the approval workflow itself, not just its visual representation, were rejected outright. The mandate was to digitize the existing physical workflow as-is first, and improve it in a later phase, which constrained design freedom to interaction, labeling, and staging rather than process reinvention.",
+          text: "During discovery interviews, Chinese FAEs specifically wanted a detailed activity-feed-style solution with granular notifications. Much of that activity involved messy internal lab processes that constituted sensitive engineering IP, with explicit sensitivity around visibility across country borders — even between Infineon's own sites — so engineering, manufacturing, and feasibility leads refused this direction. That refusal reinforced the same conclusion as the Activity Feed's usability limitation above: a detailed, history-based view wasn't viable here, whether for scannability or for what it would expose. Separately, the design team's original proposals for restructuring the approval workflow itself, not just its visual representation, were rejected outright. The mandate was to digitize the existing physical workflow as-is first, and improve it in a later phase, which constrained design freedom to interaction, labeling, and staging rather than process reinvention.",
         },
         {
           type: "callout",
-          text: "The final direction combined compact workflow states with contextual ownership, editability, and feedback cues — helping users understand module progress, responsibility, allowed actions, and next steps without leaving the module view.",
+          text: "The final interaction pattern — chosen from the three options above — combined compact workflow states with contextual ownership, editability, and feedback cues, helping users understand module progress, responsibility, allowed actions, and next steps without leaving the module view.",
         },
       ],
     },
@@ -220,7 +220,7 @@ export const geminiDigitalTwin: CaseStudyData = {
         },
         {
           type: "paragraph",
-          text: "Each state mapped to a specific review stage and appeared directly in the module interface, helping users understand progress without relying on email or manual follow-ups.",
+          text: "Each state mapped to a specific review stage and appeared directly in the module interface, helping users understand progress without relying on email or manual follow-ups. RS and DS are the requirement specification and design specification — the documents whose generation and acceptance gate the middle stages of the flow.",
         },
         {
           type: "callout",
@@ -235,7 +235,7 @@ export const geminiDigitalTwin: CaseStudyData = {
         },
         {
           type: "paragraph",
-          text: "On the Gemini homepage, project-band thumbnails showing modules within a project clipped module names illegibly, and this became worse when a project contained more than 3 modules. The author proposed showing full module names instead of the clipped thumbnail view. Manufacturing engineering preferred keeping the existing view, and the team was resource- and time-constrained under the November 2025 MVP deadline. The proposal was not accepted, and the existing clipped view shipped as-is.",
+          text: "Not every visibility gap could be solved inside the module view itself — similar trade-offs surfaced elsewhere on the platform. On the Gemini homepage, project-band thumbnails showing modules within a project clipped module names illegibly, and this became worse when a project contained more than 3 modules. I proposed showing full module names instead of the clipped thumbnails. Manufacturing engineering preferred the existing view, we were out of runway before the November deadline, and I lost that one. The clipped view shipped as-is.",
         },
       ],
     },
@@ -267,7 +267,7 @@ export const geminiDigitalTwin: CaseStudyData = {
           items: [
             {
               heading: "Role-Based Self-Assignment",
-              body: "During Pre-check and Feasibility, progress depended on input from both PAE and PMG. When roles were not assigned, ownership became unclear and modules stalled. To reduce this ambiguity, the author proposed self-assignment inside Short Flow. This formalized an existing informal analog already used in the organization, where reviewers self-selected modules on a first-come basis via email, with FAEs guessing at who currently owned a module. The author also proposed real-time notifications for workflow activity, including module status changes, assignments, and feedback. The team responded positively to the idea, but it was shelved for a future phase because the backend, feasibility, and manufacturing team was small, specialized, and not resourced or ready for that level of process exposure within the MVP timeline.",
+              body: "During Pre-check and Feasibility, progress depended on input from both PAE and PMG. When roles were not assigned, ownership became unclear and modules stalled. To reduce this ambiguity, I proposed self-assignment inside Short Flow. This formalized an existing informal analog already used in the organization, where reviewers self-selected modules on a first-come basis via email, with FAEs guessing at who currently owned a module.",
               bullets: [
                 "If no assignee exists, the primary CTA is “Assign to me”",
                 "Once assigned, the module state updates to Assigned",
@@ -289,7 +289,7 @@ export const geminiDigitalTwin: CaseStudyData = {
           items: [
             {
               heading: "Parallel Pre-check Decision Rule",
-              body: "Pre-check required both technical input from PAE and commercial input from PMG. This translated an existing organizational process and vocabulary into the product, using stakeholder workshops, a full permission matrix, and Miro workflow mapping rather than an invented UI pattern. The workflow made their parallel decisions visible and converted the combined result into one clear module-level outcome.",
+              body: "Pre-check required both technical input from PAE and commercial input from PMG. The workflow made their parallel decisions visible and converted the combined result into one clear module-level outcome.",
               bullets: [
                 "PAE and PMG reviewed the module in parallel",
                 "Two positive results allowed the module to progress",
@@ -306,7 +306,7 @@ export const geminiDigitalTwin: CaseStudyData = {
           items: [
             {
               heading: "Designing State Clarity",
-              body: "This decision was a 50/50 collaboration between the author and their UX colleague, decided in a joint workshop. To make module progress scannable, each module displayed a persistent status badge combining color, icon, and text label. This made the state understandable without relying only on color, and kept status indicators consistent across module pages, project overview tables, and workflow notifications.",
+              body: "This decision was a 50/50 collaboration between me and my UX colleague, decided in a joint workshop. To make module progress scannable, each module displayed a persistent status badge combining color, icon, and text label. This made the state understandable without relying only on color, and kept status indicators consistent across module pages, project overview tables, and workflow notifications.",
             },
           ],
         },
@@ -323,7 +323,7 @@ export const geminiDigitalTwin: CaseStudyData = {
           items: [
             {
               heading: "Visualizing Ownership and Editability",
-              body: "During review, editing needed to be restricted to prevent version conflicts. The decision reflected pre-existing organizational vocabulary and process surfaced through stakeholder workshops, a full permission matrix, and workflow mapping in Miro, rather than a newly invented UI pattern. Instead of silently disabling controls, the interface explained why the module was read-only and who currently owned the next action.",
+              body: "During review, editing needed to be restricted to prevent version conflicts. Instead of silently disabling controls, the interface explained why the module was read-only and who currently owned the next action.",
               bullets: [
                 "Editing became read-only",
                 "A lock icon appeared in the interface",
@@ -346,7 +346,7 @@ export const geminiDigitalTwin: CaseStudyData = {
           items: [
             {
               heading: "Structured Rejection Feedback",
-              body: "Previously, rejection feedback arrived through email conversations, forcing FAEs to interpret comments and track required changes manually. In Gemini, rejection was integrated directly into the module workflow. Structured Rejection Feedback began as the author's original proposal and was developed further in a workshop with the PM, a data engineer, and the engineering director. The engineering director and PM initially pushed back, questioning why every workflow stage needed its own feedback and resubmit record. The argument for the record was that it had value beyond the immediate decision: as a reference if the module was later approved, and as a diagnostic record if it failed. It also removed the burden on individuals to privately maintain their own notes to recall context, and after time spent building alignment, the team ultimately adopted it.",
+              body: "Previously, rejection feedback arrived through email conversations, forcing FAEs to interpret comments and track required changes manually. In Gemini, rejection was integrated directly into the module workflow. Structured Rejection Feedback began as my original proposal and was developed further in a workshop with the PM, a data engineer, and the engineering director. The engineering director and PM pushed back: why does every stage need its own feedback and resubmit record? My argument was that the record outlived the decision — a reference if the module was later approved, a diagnostic if it failed, and one less thing engineers had to keep in private notes. It took one workshop: I presented the idea, they pushed back, I walked through the reasoning, and they accepted it.",
               bullets: [
                 "The module state changed to Rejected",
                 "Feedback appeared inside the module view",
@@ -364,7 +364,7 @@ export const geminiDigitalTwin: CaseStudyData = {
         },
         {
           type: "callout",
-          text: "Together, these decisions turned Short Flow into an actionable workflow layer — making state, ownership, editability, and rejection feedback visible inside the module interface.",
+          text: "Together, these decisions turned Short Flow into an actionable workflow layer — making state, ownership, editability, and rejection feedback visible inside the module interface. A further proposal — real-time notifications for workflow activity such as status changes, assignments, and feedback — was well received but set aside for a later phase, as the backend, feasibility, and manufacturing team was small, specialized, and not yet resourced for that level of process exposure within the MVP timeline.",
         },
       ],
     },
@@ -423,11 +423,7 @@ export const geminiDigitalTwin: CaseStudyData = {
         },
         {
           type: "paragraph",
-          text: "Participants completed core Short Flow tasks, including creating module drafts, customizing module parameters, attaching modules to a project, and submitting modules for review.",
-        },
-        {
-          type: "paragraph",
-          text: "The sessions helped validate whether users could understand the workflow state, identify their responsibilities, and complete review-related actions without relying on external email updates. The real UAT finding was that FAEs took too long navigating to find options; the fix, including iconography improvements and guide overlays, was scoped but pushed to the backlog, not shipped before the MVP launch.",
+          text: "FAEs completed the core tasks — drafting, customizing, attaching, submitting — without falling back to email, which was the thing we most needed to confirm. But the real finding surfaced while I sat in on a session with Gemini's PM: we watched an FAE hesitate, cursor drifting across the screen, murmuring about what to do next. The workflow states were understandable — finding the options was the problem. We scoped a fix — iconography improvements and guide overlays — and it went to the backlog, not the launch.",
         },
       ],
     },
@@ -463,7 +459,7 @@ export const geminiDigitalTwin: CaseStudyData = {
         },
         {
           type: "paragraph",
-          text: "This reduced coordination overhead, made ownership clearer, and removed the need for manual status inquiries during the review process.",
+          text: "The concrete change: an FAE who used to email engineering and wait weeks — sometimes months — for a status reply now opens the module and sees the stage, the owner, and the next action in one view. After launch, status-inquiry emails dropped to nearly zero, surfacing only in exceptional cases.",
         },
       ],
     },
