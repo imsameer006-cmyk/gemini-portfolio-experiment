@@ -14,6 +14,10 @@ export const geminiDigitalTwin: CaseStudyData = {
           type: "paragraph",
           text: "Before Gemini, this process was fragmented across local tools, Excel sheets, email approvals, and long stakeholder conversations.",
         },
+        {
+          type: "paragraph",
+          text: "The project was originated by a project director, based on his firsthand observation of friction in the approval and customization process. The team included a PM, 3 data engineers, 2 frontend developers, 1 QA engineer, and an external UI designer who executed agreed-upon design decisions. Infineon is a traditional, engineering-first company that was culturally cautious about digital initiatives, which made the hard November 2025 launch deadline especially high-stakes. The deadline was driven by the need to present a solid use case to the board to secure further funding for the platform.",
+        },
         { type: "subheading", text: "My Role" },
         {
           type: "bullet-list",
@@ -79,7 +83,7 @@ export const geminiDigitalTwin: CaseStudyData = {
       blocks: [
         {
           type: "paragraph",
-          text: "The approval process involved several engineering roles, creating governance complexity around ownership, feedback, permissions, and next steps. Approvals happened at the module level rather than the project level.",
+          text: "The approval process involved several engineering roles, creating governance complexity around ownership, feedback, permissions, and next steps. Approvals happened at the module level rather than the project level. This module-level approval structure was inherited from decades-old organizational architecture at Infineon, not a decision made by the design team, which had no standing to contest it as a new project.",
         },
         {
           type: "role-list",
@@ -132,7 +136,7 @@ export const geminiDigitalTwin: CaseStudyData = {
       blocks: [
         {
           type: "paragraph",
-          text: "Interviews with FAEs across China, Germany, Austria, and Japan revealed the same pattern. The primary challenge was not module customization — it was status uncertainty.",
+          text: "Interviews in Germany, Austria, and Japan supported early discovery and needs assessment. China was the explicit priority market, the platform was localized into Chinese, and the demand driving Short Flow specifically came from Chinese FAEs. The primary challenge was not module customization — it was status uncertainty.",
         },
         { type: "subheading", text: "After submission, FAEs often lost clarity on:" },
         {
@@ -183,6 +187,10 @@ export const geminiDigitalTwin: CaseStudyData = {
           ],
         },
         {
+          type: "paragraph",
+          text: "During discovery interviews, Chinese FAEs specifically wanted a detailed activity-feed-style solution with granular notifications. Engineering, manufacturing, and feasibility leads refused this direction because it would expose internal operational processes they did not want made visible. Separately, the design team's original proposals for restructuring the approval workflow itself, not just its visual representation, were rejected outright. The mandate was to digitize the existing physical workflow as-is first, and improve it in a later phase, which constrained design freedom to interaction, labeling, and staging rather than process reinvention.",
+        },
+        {
           type: "callout",
           text: "The final direction combined compact workflow states with contextual ownership, editability, and feedback cues — helping users understand module progress, responsibility, allowed actions, and next steps without leaving the module view.",
         },
@@ -225,6 +233,10 @@ export const geminiDigitalTwin: CaseStudyData = {
           controls: true,
           caption: "Expanded Short Flow view showing how approval stages were surfaced inside the module interface.",
         },
+        {
+          type: "paragraph",
+          text: "On the Gemini homepage, project-band thumbnails showing modules within a project clipped module names illegibly, and this became worse when a project contained more than 3 modules. The author proposed showing full module names instead of the clipped thumbnail view. Manufacturing engineering preferred keeping the existing view, and the team was resource- and time-constrained under the November 2025 MVP deadline. The proposal was not accepted, and the existing clipped view shipped as-is.",
+        },
       ],
     },
 
@@ -238,7 +250,7 @@ export const geminiDigitalTwin: CaseStudyData = {
           items: [
             {
               heading: "Designing the Workflow Grammar",
-              body: "We treated workflow visibility as a connected system rather than a single status label. Each module needed to communicate five separate pieces of information that changed together as work progressed.",
+              body: "We treated workflow visibility as a connected system rather than a single status label. This decision mapped pre-existing organizational vocabulary and process, established through stakeholder workshops, a full permission matrix, and workflow mapping in Miro, rather than inventing a new UI pattern. Each module needed to communicate five separate pieces of information that changed together as work progressed.",
               bullets: [
                 "Stage showed where the module was in the Short Flow lifecycle",
                 "Status showed the current review outcome or condition",
@@ -255,7 +267,7 @@ export const geminiDigitalTwin: CaseStudyData = {
           items: [
             {
               heading: "Role-Based Self-Assignment",
-              body: "During Pre-check and Feasibility, progress depended on input from both PAE and PMG. When roles were not assigned, ownership became unclear and modules stalled. To reduce this ambiguity, we introduced self-assignment inside Short Flow.",
+              body: "During Pre-check and Feasibility, progress depended on input from both PAE and PMG. When roles were not assigned, ownership became unclear and modules stalled. To reduce this ambiguity, the author proposed self-assignment inside Short Flow. This formalized an existing informal analog already used in the organization, where reviewers self-selected modules on a first-come basis via email, with FAEs guessing at who currently owned a module. The author also proposed real-time notifications for workflow activity, including module status changes, assignments, and feedback. The team responded positively to the idea, but it was shelved for a future phase because the backend, feasibility, and manufacturing team was small, specialized, and not resourced or ready for that level of process exposure within the MVP timeline.",
               bullets: [
                 "If no assignee exists, the primary CTA is “Assign to me”",
                 "Once assigned, the module state updates to Assigned",
@@ -277,7 +289,7 @@ export const geminiDigitalTwin: CaseStudyData = {
           items: [
             {
               heading: "Parallel Pre-check Decision Rule",
-              body: "Pre-check required both technical input from PAE and commercial input from PMG. The workflow made their parallel decisions visible and converted the combined result into one clear module-level outcome.",
+              body: "Pre-check required both technical input from PAE and commercial input from PMG. This translated an existing organizational process and vocabulary into the product, using stakeholder workshops, a full permission matrix, and Miro workflow mapping rather than an invented UI pattern. The workflow made their parallel decisions visible and converted the combined result into one clear module-level outcome.",
               bullets: [
                 "PAE and PMG reviewed the module in parallel",
                 "Two positive results allowed the module to progress",
@@ -294,7 +306,7 @@ export const geminiDigitalTwin: CaseStudyData = {
           items: [
             {
               heading: "Designing State Clarity",
-              body: "To make module progress scannable, each module displayed a persistent status badge combining color, icon, and text label. This made the state understandable without relying only on color, and kept status indicators consistent across module pages, project overview tables, and workflow notifications.",
+              body: "This decision was a 50/50 collaboration between the author and their UX colleague, decided in a joint workshop. To make module progress scannable, each module displayed a persistent status badge combining color, icon, and text label. This made the state understandable without relying only on color, and kept status indicators consistent across module pages, project overview tables, and workflow notifications.",
             },
           ],
         },
@@ -311,7 +323,7 @@ export const geminiDigitalTwin: CaseStudyData = {
           items: [
             {
               heading: "Visualizing Ownership and Editability",
-              body: "During review, editing needed to be restricted to prevent version conflicts. Instead of silently disabling controls, the interface explained why the module was read-only and who currently owned the next action.",
+              body: "During review, editing needed to be restricted to prevent version conflicts. The decision reflected pre-existing organizational vocabulary and process surfaced through stakeholder workshops, a full permission matrix, and workflow mapping in Miro, rather than a newly invented UI pattern. Instead of silently disabling controls, the interface explained why the module was read-only and who currently owned the next action.",
               bullets: [
                 "Editing became read-only",
                 "A lock icon appeared in the interface",
@@ -334,7 +346,7 @@ export const geminiDigitalTwin: CaseStudyData = {
           items: [
             {
               heading: "Structured Rejection Feedback",
-              body: "Previously, rejection feedback arrived through email conversations, forcing FAEs to interpret comments and track required changes manually. In Gemini, rejection was integrated directly into the module workflow.",
+              body: "Previously, rejection feedback arrived through email conversations, forcing FAEs to interpret comments and track required changes manually. In Gemini, rejection was integrated directly into the module workflow. Structured Rejection Feedback began as the author's original proposal and was developed further in a workshop with the PM, a data engineer, and the engineering director. The engineering director and PM initially pushed back, questioning why every workflow stage needed its own feedback and resubmit record. The argument for the record was that it had value beyond the immediate decision: as a reference if the module was later approved, and as a diagnostic record if it failed. It also removed the burden on individuals to privately maintain their own notes to recall context, and after time spent building alignment, the team ultimately adopted it.",
               bullets: [
                 "The module state changed to Rejected",
                 "Feedback appeared inside the module view",
@@ -415,7 +427,7 @@ export const geminiDigitalTwin: CaseStudyData = {
         },
         {
           type: "paragraph",
-          text: "The sessions helped validate whether users could understand the workflow state, identify their responsibilities, and complete review-related actions without relying on external email updates. Feedback led to refinements in icon placement, status communication, and interaction clarity before launch.",
+          text: "The sessions helped validate whether users could understand the workflow state, identify their responsibilities, and complete review-related actions without relying on external email updates. The real UAT finding was that FAEs took too long navigating to find options; the fix, including iconography improvements and guide overlays, was scoped but pushed to the backlog, not shipped before the MVP launch.",
         },
       ],
     },
