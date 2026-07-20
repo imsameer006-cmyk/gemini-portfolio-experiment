@@ -22,6 +22,12 @@ const GEMINI_SECTIONS = [
 export const toSectionId = (label: string) =>
   `cs-${label.toLowerCase().replace(/\s+/g, "-")}`;
 
+export interface StoryMoment {
+  label: string;
+  parent: string;
+  anchorId: string;
+}
+
 // With bottom bar there's no top obstruction beyond the nav itself
 const BOTTOM_SCROLL_OFFSET = 80; // nav (64) + gap (16)
 const DESKTOP_SCROLL_OFFSET = 88; // nav (64) + gap (24)
@@ -55,6 +61,7 @@ function DrawerList({
             key={label}
             role="option"
             aria-selected={isActive}
+            aria-current={isActive ? "location" : undefined}
             disabled={disabled}
             onClick={disabled ? undefined : () => onSelect(label)}
             className={[
@@ -85,9 +92,11 @@ function DrawerList({
 export default function JumpToNav({
   disabled = false,
   sections: sectionsProp,
+  moments = [],
 }: {
   disabled?: boolean;
   sections?: { label: string }[];
+  moments?: StoryMoment[];
 }) {
   const sections = sectionsProp ?? GEMINI_SECTIONS;
   const [isOpen, setIsOpen] = useState(false);
@@ -113,7 +122,7 @@ export default function JumpToNav({
     );
     obs.observe(hero);
     return () => obs.disconnect();
-  }, []);
+  }, [disabled]);
 
   // ── Hide desktop sidebar when footer enters the viewport ─────
   useEffect(() => {
@@ -122,7 +131,7 @@ export default function JumpToNav({
 
     const obs = new IntersectionObserver(
       ([entry]) => setIsNearBottom(entry.isIntersecting),
-      { threshold: 0 }
+      { threshold: 0, rootMargin: "0px 0px -40% 0px" }
     );
     obs.observe(footer);
     return () => obs.disconnect();
@@ -135,13 +144,27 @@ export default function JumpToNav({
 
     const update = () => {
       let next = toSectionId(sections[0]?.label ?? "Overview");
+      const sectionLine = Math.max(OFFSET, window.innerHeight * 0.4);
+      const momentStartLine = window.innerHeight * 0.65;
+
       for (const { label } of sections) {
-        const el = document.getElementById(toSectionId(label));
+        const id = toSectionId(label);
+        const el = document.getElementById(id);
         if (!el) continue;
-        if (el.getBoundingClientRect().top <= OFFSET) {
-          next = toSectionId(label);
+        if (el.getBoundingClientRect().top <= sectionLine) {
+          next = id;
         } else {
           break;
+        }
+      }
+
+      for (const moment of moments) {
+        const el = document.getElementById(moment.anchorId);
+        if (!el) continue;
+        const rect = el.getBoundingClientRect();
+        const isInReadingBand = rect.top <= momentStartLine && rect.bottom >= OFFSET;
+        if (isInReadingBand) {
+          next = moment.anchorId;
         }
       }
       setActiveId(next);
@@ -150,7 +173,7 @@ export default function JumpToNav({
     update();
     window.addEventListener("scroll", update, { passive: true });
     return () => window.removeEventListener("scroll", update);
-  }, [sections]);
+  }, [disabled, sections, moments]);
 
   // ── Close drawer on outside click ───────────────────────────
   useEffect(() => {
@@ -172,26 +195,39 @@ export default function JumpToNav({
   }, []);
 
   // ── Scroll helper ────────────────────────────────────────────
-  const scrollTo = (label: string) => {
-    const id = toSectionId(label);
+  const scrollToId = (id: string) => {
     const el = document.getElementById(id);
     if (!el) return;
 
     const isDesktop = window.innerWidth >= 1024;
     const offset = isDesktop ? DESKTOP_SCROLL_OFFSET : BOTTOM_SCROLL_OFFSET;
-    const top = el.getBoundingClientRect().top + window.scrollY - offset;
-
     const prefersReduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    prefersReduced
-      ? window.scrollTo(0, top)
-      : window.scrollTo({ top, behavior: "smooth" });
+
+    const scrollToElement = () => {
+      const nextTop = el.getBoundingClientRect().top + window.scrollY - offset;
+      if (prefersReduced) {
+        window.scrollTo(0, nextTop);
+      } else {
+        window.scrollTo({ top: nextTop, behavior: "smooth" });
+      }
+    };
+
+    scrollToElement();
+    window.setTimeout(scrollToElement, 1200);
 
     setActiveId(id);
     setIsOpen(false);
   };
 
+  const scrollTo = (label: string) => {
+    scrollToId(toSectionId(label));
+  };
+
   const activeLabel =
-    sections.find((s) => toSectionId(s.label) === activeId)?.label ?? sections[0]?.label ?? "Overview";
+    sections.find((s) => toSectionId(s.label) === activeId)?.label
+    ?? moments.find((moment) => moment.anchorId === activeId)?.label
+    ?? sections[0]?.label
+    ?? "Overview";
 
   // ── Transition config ────────────────────────────────────────
   const transition = { duration: 0.5, ease: "easeOut" as const };
@@ -205,48 +241,92 @@ export default function JumpToNav({
       <div className="hidden lg:block">
         <AnimatePresence>
           {!disabled && isVisible && !isNearBottom && (
-            <motion.nav
-              aria-label="Jump to section"
-              initial={{ opacity: 0, x: -6 }}
-              animate={{ opacity: 1, x: 0 }}
-              exit={{ opacity: 0, x: -6, transition: { duration: 0.35, ease: "easeOut" as const } }}
-              transition={transition}
-              className="fixed left-8 z-40 top-1/2 -translate-y-1/2"
-            >
-              <ul className="flex flex-col gap-3 w-[140px]" role="listbox" aria-label="Page sections">
+            <div className="fixed left-8 z-40 top-[calc(50%+2rem)] -translate-y-1/2">
+              <motion.nav
+                aria-label="Jump to section"
+                initial={{ opacity: 0, x: -6 }}
+                animate={{ opacity: 1, x: 0 }}
+                exit={{ opacity: 0, x: -6, transition: { duration: 0.35, ease: "easeOut" as const } }}
+                transition={transition}
+              >
+                <ul className="flex flex-col gap-4 w-[156px]" role="listbox" aria-label="Page sections">
                 {sections.map(({ label }) => {
                   const isActive = toSectionId(label) === activeId;
+                  const hasActiveMoment = moments.some(
+                    (moment) => moment.parent === label && moment.anchorId === activeId
+                  );
+                  const isGroupActive = isActive || hasActiveMoment;
                   return (
-                    <li key={label} className="flex items-center gap-2" role="presentation">
-                      <span
-                        className="w-[2px] h-3 rounded-full shrink-0 bg-transparent"
-                        aria-hidden="true"
-                      />
-                      <button
-                        role="option"
-                        aria-selected={false}
-                        disabled={disabled}
-                        onClick={disabled ? undefined : () => scrollTo(label)}
-                        className={[
-                          "text-left text-[11px] tracking-[0.08em] uppercase leading-snug",
-                          "focus-visible:outline-none",
-                          disabled
-                            ? "text-[#6E6D69] opacity-35 pointer-events-none cursor-default"
-                            : [
-                                "transition-colors duration-200",
-                                isActive
-                                  ? "text-[#18171A] font-medium"
-                                  : "text-[#6E6D69] hover:text-[#6A6764]",
-                              ].join(" "),
-                        ].join(" ")}
-                      >
-                        {label}
-                      </button>
+                    <li key={label} className="flex flex-col gap-1" role="presentation">
+                      <div className="flex items-center gap-2">
+                        <span
+                          className={[
+                            "w-[2px] h-3 rounded-full shrink-0",
+                            isActive ? "bg-[var(--color-accent)]" : "bg-transparent",
+                          ].join(" ")}
+                          aria-hidden="true"
+                        />
+                        <button
+                          role="option"
+                          aria-selected={isActive}
+                          aria-current={isActive ? "location" : undefined}
+                          disabled={disabled}
+                          onClick={disabled ? undefined : () => scrollTo(label)}
+                          className={[
+                            "text-left text-[11px] tracking-[0.08em] uppercase leading-snug",
+                            "focus-visible:outline-none",
+                            disabled
+                              ? "text-[var(--color-text)] opacity-35 pointer-events-none cursor-default"
+                              : [
+                                  "text-[var(--color-text)] hover:font-medium",
+                                  isGroupActive ? "font-medium" : "",
+                                ].join(" "),
+                          ].join(" ")}
+                        >
+                          {label}
+                        </button>
+                      </div>
+                      {moments
+                        .filter((moment) => moment.parent === label)
+                        .map((moment) => {
+                          const isMomentActive = moment.anchorId === activeId;
+                          return (
+                            <div key={moment.anchorId} className="ml-6 flex items-center gap-2">
+                              <span
+                                className={[
+                                  "w-[2px] h-3 rounded-full shrink-0",
+                                  isMomentActive ? "bg-[var(--color-accent)]" : "bg-transparent",
+                                ].join(" ")}
+                                aria-hidden="true"
+                              />
+                              <button
+                                role="option"
+                                aria-selected={isMomentActive}
+                                aria-current={isMomentActive ? "location" : undefined}
+                                onClick={disabled ? undefined : () => scrollToId(moment.anchorId)}
+                                className={[
+                                  "block max-w-full overflow-hidden text-ellipsis whitespace-nowrap text-left text-[10px] leading-snug normal-case tracking-normal",
+                                  "focus-visible:outline-none",
+                                  disabled
+                                    ? "text-[var(--color-text-muted)] opacity-35 pointer-events-none cursor-default"
+                                    : [
+                                        isMomentActive
+                                          ? "text-[var(--color-text)] font-medium"
+                                          : "text-[var(--color-text-muted)] hover:text-[var(--color-text)]",
+                                      ].join(" "),
+                                ].join(" ")}
+                              >
+                                {moment.label}
+                              </button>
+                            </div>
+                          );
+                        })}
                     </li>
                   );
                 })}
-              </ul>
-            </motion.nav>
+                </ul>
+              </motion.nav>
+            </div>
           )}
         </AnimatePresence>
       </div>

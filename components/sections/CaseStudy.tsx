@@ -7,7 +7,7 @@ import { CheckCircle, MinusCircle, ArrowsLeftRight } from "@phosphor-icons/react
 import Link from "next/link";
 import type { Project, Block, CaseStudySection, CaseStudyData } from "@/lib/types";
 import { projects } from "@/lib/data/projects";
-import JumpToNav, { toSectionId } from "@/components/ui/JumpToNav";
+import JumpToNav, { toSectionId, type StoryMoment } from "@/components/ui/JumpToNav";
 import { GeminiProjectHero } from "@/components/sections/GeminiProjectHero";
 import { InProgressHero } from "@/components/sections/ProjectInProgress";
 import DesignSystemThumbnail from "@/components/thumbnails/DesignSystemThumbnail";
@@ -17,11 +17,102 @@ interface Props {
   content?: CaseStudyData;
 }
 
+const GEMINI_STORY_MOMENTS: StoryMoment[] = [
+  { label: "The problem we misread", parent: "Research", anchorId: "moment-misread" },
+  { label: "Told to change nothing", parent: "Exploration", anchorId: "moment-mandate" },
+  { label: "The proposal I lost", parent: "Solution", anchorId: "moment-lost" },
+  { label: "The argument I won", parent: "Design Decisions", anchorId: "moment-won" },
+  { label: "The fix we didn't ship", parent: "Validation", anchorId: "moment-unshipped" },
+  { label: "The waiting we ended", parent: "Impact", anchorId: "moment-payoff" },
+];
+
+const MOMENT_HIGHLIGHTS = [
+  {
+    id: "moment-misread",
+    fragment:
+      "What the interviews actually showed was that the primary challenge wasn't module customization at all — it was status uncertainty.",
+  },
+  {
+    id: "moment-mandate",
+    fragment: "The mandate was to digitize the existing physical workflow as-is first",
+  },
+  {
+    id: "moment-lost",
+    fragment:
+      "Manufacturing engineering preferred the existing view, we were out of runway before the November deadline, and I lost that one.",
+  },
+  {
+    id: "moment-won",
+    fragment: "My argument was that the record outlived the decision",
+  },
+  {
+    id: "moment-unshipped",
+    fragment:
+      "We scoped a fix — iconography improvements and guide overlays — and it went to the backlog, not the launch.",
+  },
+  {
+    id: "moment-payoff",
+    fragment:
+      "an FAE who used to email engineering and wait weeks — sometimes months — for a status reply now opens the module and sees the stage, the owner, and the next action in one view",
+  },
+];
+
 // ── Block Renderers ────────────────────────────────────────────
 
 function Paragraph({ text }: { text: string }) {
   return (
-    <p className="text-base text-[#3A3836] leading-relaxed max-w-[640px]">{text}</p>
+    <p className="text-base text-[#3A3836] leading-relaxed max-w-[640px]">
+      {renderMomentHighlights(text)}
+    </p>
+  );
+}
+
+function renderMomentHighlights(text: string) {
+  const moment = MOMENT_HIGHLIGHTS.find(({ fragment }) => text.includes(fragment));
+  if (!moment) return text;
+
+  const [before, after] = text.split(moment.fragment);
+
+  return (
+    <>
+      {before}
+      <span
+        id={moment.id}
+        className="scroll-mt-24 rounded-[3px] bg-[var(--color-accent-light)] px-[3px] py-[1px] [box-decoration-break:clone] [-webkit-box-decoration-break:clone]"
+      >
+        {moment.fragment}
+      </span>
+      {after}
+    </>
+  );
+}
+
+function StoryMap({ moments }: { moments: StoryMoment[] }) {
+  return (
+    <nav
+      aria-label="Story map"
+      className="lg:hidden max-w-[640px] rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] px-5 py-5"
+      style={{ boxShadow: "0 2px 8px rgba(0,0,0,0.05)" }}
+    >
+      <p className="text-[10px] font-medium tracking-[0.08em] uppercase text-[var(--color-text-accent)] mb-4">
+        Story map
+      </p>
+      <ul className="space-y-4">
+        {moments.map((moment) => (
+          <li key={moment.anchorId} className="flex flex-col gap-1">
+            <span className="text-sm font-medium uppercase tracking-[0.08em] text-[var(--color-text)]">
+              {moment.parent}
+            </span>
+            <a
+              href={`#${moment.anchorId}`}
+              className="ml-6 block overflow-hidden text-ellipsis whitespace-nowrap text-xs text-[var(--color-text-muted)] hover:text-[var(--color-text)] transition-colors duration-200"
+            >
+              {moment.label}
+            </a>
+          </li>
+        ))}
+      </ul>
+    </nav>
   );
 }
 
@@ -31,8 +122,9 @@ function Subheading({ text }: { text: string }) {
   );
 }
 
-function Callout({ text }: { text: string }) {
+function Callout({ text, variant = "accent" }: { text: string; variant?: "accent" | "neutral" }) {
   const prefersReducedMotion = useReducedMotion();
+  const isNeutral = variant === "neutral";
 
   return (
     <motion.div
@@ -40,7 +132,12 @@ function Callout({ text }: { text: string }) {
       whileInView={{ opacity: 1, x: 0 }}
       viewport={REVEAL_VIEWPORT}
       transition={{ duration: prefersReducedMotion ? 0 : REVEAL_DURATION, ease: REVEAL_EASE }}
-      className="border-l-[3px] border-[#C07B50] bg-[#F9F4EF] px-6 py-5 rounded-r-xl max-w-[640px]"
+      className={[
+        "px-6 py-5 max-w-[640px]",
+        isNeutral
+          ? "border-l-2 border-[var(--color-text-muted)] bg-transparent rounded-none"
+          : "border-l-[3px] border-[#C07B50] bg-[#F9F4EF] rounded-r-xl",
+      ].join(" ")}
     >
       <p className="text-[#18171A] text-base leading-relaxed">{text}</p>
     </motion.div>
@@ -423,7 +520,9 @@ function Decisions({
           </span>
           <div className="space-y-3">
             <h4 className="font-medium text-[#18171A] text-base">{decision.heading}</h4>
-            <p className="text-sm text-[#3A3836] leading-relaxed">{decision.body}</p>
+            <p className="text-sm text-[#3A3836] leading-relaxed">
+              {renderMomentHighlights(decision.body)}
+            </p>
             {decision.bullets && (
               <ul className="space-y-1.5 mt-2">
                 {decision.bullets.map((b, j) => (
@@ -1182,11 +1281,11 @@ function BenchmarkMatrix({
   );
 }
 
-function renderBlock(block: Block, i: number): React.ReactNode {
+function renderBlock(block: Block, i: number, options: { neutralCallouts?: boolean } = {}): React.ReactNode {
   switch (block.type) {
     case "paragraph":        return <Paragraph key={i} text={block.text} />;
     case "subheading":       return <Subheading key={i} text={block.text} />;
-    case "callout":          return <Callout key={i} text={block.text} />;
+    case "callout":          return <Callout key={i} text={block.text} variant={options.neutralCallouts ? "neutral" : "accent"} />;
     case "bullet-list":      return <BulletList key={i} items={block.items} />;
     case "meta-grid":        return <MetaGrid key={i} fields={block.fields} />;
     case "two-col-list":     return <TwoColList key={i} left={block.left} right={block.right} />;
@@ -1216,7 +1315,15 @@ function renderBlock(block: Block, i: number): React.ReactNode {
 
 // ── Section Component ──────────────────────────────────────────
 
-function Section({ section }: { section: CaseStudySection }) {
+function Section({
+  section,
+  storyMoments = [],
+  neutralCallouts = false,
+}: {
+  section: CaseStudySection;
+  storyMoments?: StoryMoment[];
+  neutralCallouts?: boolean;
+}) {
   const reveal = useReveal();
   const prefersReducedMotion = useReducedMotion();
 
@@ -1248,7 +1355,10 @@ function Section({ section }: { section: CaseStudySection }) {
         )}
 
         <div className={["space-y-6", !section.heading ? "mt-4" : ""].join(" ").trim()}>
-          {section.blocks.map((block, i) => renderBlock(block, i))}
+          {section.blocks.map((block, i) => renderBlock(block, i, { neutralCallouts }))}
+          {section.label === "Overview" && storyMoments.length > 0 && (
+            <StoryMap moments={storyMoments} />
+          )}
         </div>
       </div>
     </motion.section>
@@ -1288,6 +1398,7 @@ export default function CaseStudy({ project, content }: Props) {
   const isGemini = project.slug === "gemini-digital-twin";
   const isCollabspace = project.slug === "plm-collabspace";
   const isDesignSystem = project.slug === "design-system";
+  const storyMoments = isGemini ? GEMINI_STORY_MOMENTS : [];
 
   return (
     <article>
@@ -1466,13 +1577,18 @@ export default function CaseStudy({ project, content }: Props) {
       )}
 
       {/* Jump-to navigation — sections derived from content so each project gets its own nav */}
-      {content && <JumpToNav sections={content.sections.map((s) => ({ label: s.label }))} />}
+      {content && <JumpToNav sections={content.sections.map((s) => ({ label: s.label }))} moments={storyMoments} />}
 
       {/* Case study body — pb-[80px] on mobile/tablet clears the fixed 52px bottom bar */}
       {content ? (
         <div className="max-w-[900px] mx-auto px-6 md:px-10 lg:pl-[150px] xl:pl-10 pt-4 md:pt-16 pb-[80px] xl:pb-16 space-y-0">
           {content.sections.map((section) => (
-            <Section key={section.label} section={section} />
+            <Section
+              key={section.label}
+              section={section}
+              storyMoments={storyMoments}
+              neutralCallouts={isGemini}
+            />
           ))}
         </div>
       ) : (

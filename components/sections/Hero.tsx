@@ -1,13 +1,8 @@
 "use client";
 
-import { ArrowDown, MapPin } from "@phosphor-icons/react";
+import { ArrowDown } from "@phosphor-icons/react";
 import { motion, useReducedMotion } from "framer-motion";
 import { useEffect, useRef, useState } from "react";
-
-const FADE_UP = {
-  initial: { opacity: 0, y: 20 },
-  animate: { opacity: 1, y: 0 },
-};
 
 const SIGNALS = [
   { value: "Research", label: "Evidence-Led" },
@@ -661,22 +656,6 @@ export default function Hero() {
 
       <div className="relative z-10 mx-auto w-full max-w-[1280px] pt-3 md:min-h-[calc(80svh-7.5rem)] md:pt-0">
         <div className="max-w-[840px]">
-          <motion.div
-            {...FADE_UP}
-            transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
-            className="mb-2 inline-flex items-center gap-1.5 rounded-full border border-[#BFD9CB]/70 bg-[#EDF7F1]/90 px-2.5 py-1 text-[10px] font-medium text-[#6A6764]"
-          >
-            <span className="h-1 w-1 rounded-full bg-[#3A7A54]" />
-            <span>Open to Work</span>
-            <span className="text-[#A7A39B]" aria-hidden="true">
-              /
-            </span>
-            <span className="inline-flex items-center gap-1">
-              <MapPin size={11} weight="fill" aria-hidden="true" />
-              Munich, Germany
-            </span>
-          </motion.div>
-
           <motion.h1
             initial={{ opacity: 0, y: 28 }}
             animate={{ opacity: 1, y: 0 }}
@@ -692,9 +671,9 @@ export default function Hero() {
             initial={{ opacity: 0, y: 18 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.55, delay: 0.24, ease: [0.16, 1, 0.3, 1] }}
-            className="mb-6 max-w-[58ch] text-base leading-relaxed text-[#6A6764] md:whitespace-nowrap md:text-lg"
+            className="mb-6 max-w-[46ch] text-base leading-relaxed text-[#6A6764] md:text-lg"
           >
-            I design products that work for people and perform for business.
+            I design products through systems thinking and deep understanding that work for people and perform for business.
           </motion.p>
 
           <motion.div

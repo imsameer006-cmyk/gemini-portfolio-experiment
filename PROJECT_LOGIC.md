@@ -85,3 +85,19 @@ Motion should imply:
 - Do not move the center point casually; it is aligned to the in-progress hero composition.
 - Do not add project-specific color accents. Use the shared neutral taupe and copper direction.
 - Do not over-densify spokes. The art should feel like an atmospheric network, not an engineering schematic.
+
+## Future Case Study Template Consistency
+
+**2026-07-19 note:** Gemini's case study page now establishes the intended base pattern for project-page navigation and section-summary treatment. Do not implement this across the remaining two projects yet, but use it as the consistency target when that work resumes.
+
+Carry forward these systemic patterns:
+
+- Case-study rail supports parent sections plus optional child story moments.
+- Parent labels communicate document context and stay primary ink when their child moment is active.
+- Child story moments communicate reading position and use muted ink until active.
+- Exactly one copper bar appears in the rail at a time; copper is the current reading-position marker only.
+- Rail hover never uses copper text; hover is ink darkening or subtle weight only.
+- Moment highlights are inline spans with stable anchors, using the existing accent-light wash and `box-decoration-break: clone`.
+- Mobile keeps the bottom section nav, while story moments are available through the Overview story-map card.
+- Section-summary callouts should use the neutral line-only treatment where orange highlights are present, so orange does not compete with story moments.
+- Preserve existing typography, spacing tokens, color tokens, and scroll-spy behavior when extending this to PLM Collabspace and the Design System case study.
