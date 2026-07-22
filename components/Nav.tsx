@@ -124,6 +124,8 @@ export default function Nav() {
               <li key={label}>
                 <button
                   onClick={() => handleNavClick(href)}
+                  data-analytics-nav-target={href.slice(1)}
+                  data-analytics-nav-label={label}
                   className={[
                     "text-sm transition-colors duration-200 cursor-pointer relative",
                     isActive(href)
@@ -200,6 +202,8 @@ export default function Nav() {
               <li key={label}>
                 <button
                   onClick={() => handleNavClick(href)}
+                  data-analytics-nav-target={href.slice(1)}
+                  data-analytics-nav-label={label}
                   className={[
                     "text-3xl transition-colors duration-200 cursor-pointer",
                     isActive(href) ? "text-[#C07B50] font-[450]" : "text-[#18171A] hover:text-[#C07B50] opacity-60 font-medium",

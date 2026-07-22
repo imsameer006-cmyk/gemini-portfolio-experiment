@@ -64,6 +64,8 @@ function DrawerList({
             aria-current={isActive ? "location" : undefined}
             disabled={disabled}
             onClick={disabled ? undefined : () => onSelect(label)}
+            data-analytics-nav-target={toSectionId(label)}
+            data-analytics-nav-label={label}
             className={[
               "w-full flex items-center gap-3 px-6 h-[48px] text-sm text-left",
               disabled
@@ -158,15 +160,20 @@ export default function JumpToNav({
         }
       }
 
+      let activeMoment: { id: string; distance: number } | null = null;
       for (const moment of moments) {
         const el = document.getElementById(moment.anchorId);
         if (!el) continue;
         const rect = el.getBoundingClientRect();
         const isInReadingBand = rect.top <= momentStartLine && rect.bottom >= OFFSET;
         if (isInReadingBand) {
-          next = moment.anchorId;
+          const distance = Math.abs(rect.top - OFFSET);
+          if (!activeMoment || distance < activeMoment.distance) {
+            activeMoment = { id: moment.anchorId, distance };
+          }
         }
       }
+      if (activeMoment) next = activeMoment.id;
       setActiveId(next);
     };
 
@@ -272,6 +279,8 @@ export default function JumpToNav({
                           aria-current={isActive ? "location" : undefined}
                           disabled={disabled}
                           onClick={disabled ? undefined : () => scrollTo(label)}
+                          data-analytics-nav-target={toSectionId(label)}
+                          data-analytics-nav-label={label}
                           className={[
                             "text-left text-[11px] tracking-[0.08em] uppercase leading-snug",
                             "focus-visible:outline-none",
@@ -304,6 +313,8 @@ export default function JumpToNav({
                                 aria-selected={isMomentActive}
                                 aria-current={isMomentActive ? "location" : undefined}
                                 onClick={disabled ? undefined : () => scrollToId(moment.anchorId)}
+                                data-analytics-nav-target={moment.anchorId}
+                                data-analytics-nav-label={moment.label}
                                 className={[
                                   "block max-w-full overflow-hidden text-ellipsis whitespace-nowrap text-left text-[10px] leading-snug normal-case tracking-normal",
                                   "focus-visible:outline-none",

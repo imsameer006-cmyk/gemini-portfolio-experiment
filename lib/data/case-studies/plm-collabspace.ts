@@ -5,7 +5,7 @@ export const plmCollabspace: CaseStudyData = {
   sections: [
     {
       label: "Overview",
-      heading: "Built to connect what already existed.",
+      heading: "A platform to connect what already existed",
       blocks: [
         {
           type: "paragraph",
@@ -18,19 +18,19 @@ export const plmCollabspace: CaseStudyData = {
         { type: "subheading", text: "My Role" },
         {
           type: "callout",
-          text: "Solo designer and researcher, from discovery to rollout. Research → synthesis → platform design → content production → launch campaign.",
+          text: "Sole designer and researcher on the project. I led design, research, and stakeholder workshops; content and reel production were coordinated in collaboration with a small production team.",
         },
         { type: "subheading", text: "Outcome" },
         {
           type: "callout",
-          text: "Eight domains launched. 2,000+ employees reached. Platform remained active after rollout.",
+          text: "Eight domains launched. 2,000+ employees had platform access, onboarded in batches as department heads provided their lists. Platform remained active after rollout.",
         },
       ],
     },
 
     {
       label: "Challenge",
-      heading: "Everything existed. Nothing connected.",
+      heading: "Eight domains, no shared view",
       blocks: [
         {
           type: "two-col-list",
@@ -59,20 +59,24 @@ export const plmCollabspace: CaseStudyData = {
           type: "closing-line",
           text: "The tools weren't missing. The connection between them was.",
         },
+        {
+          type: "paragraph",
+          text: "I'd initially mapped out every domain across the company before being told the platform would cover only the top relevant picks — not the full organisational chart.",
+        },
       ],
     },
 
     {
       label: "Context",
-      heading: "The resistance was the real problem.",
+      heading: "The question every conversation started with",
       blocks: [
         {
           type: "pull-quote",
-          text: "We already have our internal page. Why maintain another one?",
+          text: "\"We already have our internal page. Why maintain another one?\"",
         },
         {
           type: "paragraph",
-          text: "This question came up in every conversation. It wasn't pushback — it was a reasonable response to a real pattern. Platforms had been built before. Pages went live. People were invited. Nothing happened. The platforms were abandoned.",
+          text: "The software development department head asked it first, in one of my earliest conversations, and some version of it came up in every conversation after. It wasn't pushback. It was a reasonable response to a real pattern: platforms had been built before, pages went live, people were invited, nothing happened.",
         },
         {
           type: "paragraph",
@@ -95,32 +99,39 @@ export const plmCollabspace: CaseStudyData = {
             },
           ],
         },
+      ],
+    },
+
+    {
+      label: "First Attempt",
+      heading: "The first design answered the wrong question.",
+      blocks: [
         {
-          type: "closing-line",
-          text: "The resistance wasn't an obstacle. It was the most useful signal available.",
+          type: "paragraph",
+          text: "I joined the project with access to the design system, but without context on what the platform needed to do. I built a first UI aligned to the system, assuming visual and system alignment were the work. I presented it first to my supervisor and the department director, who said it was visually beautiful, but would not serve any purpose. The reason to use Collabspace instead of a department's own page was not how it looked; the requirements were different. I was allowed to present it to content owners anyway as a base for the initial meeting, and the same reaction held. That rejection opened the real thread: understanding stakeholders' mindset, motivations, and wants, and pivoting quickly once it was clear the job was solving the problem, not satisfying aesthetic preference.",
         },
       ],
     },
 
     {
       label: "Research",
-      heading: "Interviews revealed what nobody had asked before.",
+      heading: "What the interviews surfaced",
       blocks: [
         {
           type: "paragraph",
-          text: "I interviewed department heads and content owners across the PLM organisation — the people who would decide whether the platform earned contribution or quietly went inactive.",
+          text: "Getting time with domain and content owners was genuinely difficult. The issue was calendar scarcity, not refusal: department heads, managers, and leadership had little open slot time, and one owner took longer than the rest to reach. Repeated re-booking is what worked.",
         },
         {
           type: "paragraph",
-          text: "Structured interviews first. Post-interview surveys to validate patterns. Three workshops to build alignment before, during, and after design.",
+          text: "I interviewed department heads and content owners across the PLM organisation — the people who would decide whether the platform earned contribution or quietly went inactive — through structured interviews first, then post-interview surveys to validate patterns, and three workshops to build alignment before, during, and after design.",
+        },
+        {
+          type: "paragraph",
+          text: "One department head pushed back early: why maintain two pages when one was already working? The concern wasn't the platform's design — it was the ongoing effort of keeping a second page alive. Once they saw what Collabspace was actually for — being found by people outside the department, not replacing the internal page — the tone shifted: nods, questions, and soon suggestions of their own — content they already had that could simply move onto the platform.",
         },
         {
           type: "context-cards",
           items: [
-            {
-              heading: "Teams feared duplication, not change",
-              body: "Another platform felt like more of the same work on top of pages they already maintained.",
-            },
             {
               heading: "Value wasn't visible, so investment felt unjustified",
               body: "\"Collaboration\" wasn't a good enough reason. Nobody could see what made this different.",
@@ -134,55 +145,38 @@ export const plmCollabspace: CaseStudyData = {
         { type: "subheading", text: "The Key Insight" },
         {
           type: "callout",
-          text: "The challenge wasn't storage. It was visibility. Every domain already stored knowledge. Nobody could discover it across boundaries. That single reframe changed the design question entirely.",
+          text: "The director's reasoning, as I remember it, was direct: this was a cross-collaboration, knowledge-sharing platform, and visuals weren't the priority — enablement was. Content owners didn't put it in the same words, but the reaction was the same flatness. In hindsight that tracked: this was an internal, engineering- and research-facing audience — people who aren't moved by polish so much as by whether something is useful. The challenge wasn't storage. It was visibility. I did not walk in with that reframe. It emerged from the rejected first design and the two reactions that followed it. Every domain already stored knowledge; nobody could discover it across boundaries.",
         },
       ],
     },
 
     {
       label: "Synthesis",
-      heading: "From research to direction.",
+      heading: "From research to direction",
       blocks: [
         {
-          type: "synthesis-flow",
-          rows: [
-            {
-              label: "Research inputs",
-              items: ["Stakeholder interviews", "Surveys", "Workshops"],
-            },
-            {
-              label: "Recurring themes",
-              items: ["Discoverability", "Visibility", "Ownership", "Participation", "Relevance"],
-            },
-            {
-              label: "Design principles",
-              items: [
-                "Create visibility",
-                "Reduce duplication",
-                "Support ownership",
-                "Make contribution sustainable",
-              ],
-            },
-          ],
-        },
-        {
-          type: "synthesis-table",
-          headers: ["Research insight", "Platform requirement"],
-          rows: [
-            ["Knowledge difficult to discover", "Shared global hub"],
-            ["Expertise hidden within teams", "Domain visibility layer"],
-            ["Resistance to another platform", "Clear value beyond existing tools"],
-            ["Adoption concerns", "Defined ownership model"],
-            ["Need for ongoing relevance", "Sustainable content strategy"],
-          ],
+          type: "paragraph",
+          text: "Across the interviews, surveys, and three workshops, five themes kept resurfacing: discoverability, visibility, ownership, participation, relevance. I turned those into four principles I could test every design decision against: create visibility, reduce duplication, support ownership, make contribution sustainable.",
         },
       ],
     },
 
     {
       label: "Exploration",
-      heading: "Three structures. One answer.",
+      heading: "Designing inside the constraints",
       blocks: [
+        {
+          type: "paragraph",
+          text: "SAP workspaces gave the platform a hard structural framework. There was not open latitude to invent a different top-level architecture from scratch. The real design freedom was inside that structure: layout, widget placement and prioritisation, content arrangement, and what the structure was made to mean.",
+        },
+        {
+          type: "paragraph",
+          text: "My first instinct was a single shared space — every content owner posting and editing in one place, no per-domain containers. That still fit inside SAP's structure; the question was never architecture, it was whether one shared space or eight separated ones would actually get used. But the same openness was the problem: without domain containers, everyone's content would blend together, and nobody's work would read as theirs. That's what pushed the direction toward hub-plus-domains — one shared space at the top, but each domain still bounded and owned.",
+        },
+        {
+          type: "paragraph",
+          text: "A second constraint surfaced around access: I'd assumed every department employee would simply get access. Instead, department heads handed me batched name lists, round by round — so I wrote a script, with help from an AI coding assistant, to search the company portal and pull the corresponding emails, and onboarded people in successive waves.",
+        },
         {
           type: "exploration-cards",
           items: [
@@ -207,6 +201,10 @@ export const plmCollabspace: CaseStudyData = {
           ],
         },
         {
+          type: "paragraph",
+          text: "A real content boundary also existed. Material considered highly confidential stayed behind department walls — internal meetings, password-protected department pages, and Confluence — while publishable content came from channels already used organisation-wide, including SharePoint, Confluence, and the company's public web presence. That boundary was the department heads' pre-existing practice, not a governance model I designed, and formal written cross-domain governance remained an open question at handover.",
+        },
+        {
           type: "closing-line",
           text: "Only one structure answered both sides of the problem at the same time.",
         },
@@ -215,7 +213,7 @@ export const plmCollabspace: CaseStudyData = {
 
     {
       label: "Solution",
-      heading: "Visibility at the top. Ownership at the domain.",
+      heading: "The hub and the domain spaces",
       blocks: [
         {
           type: "two-col-list",
@@ -256,12 +254,12 @@ export const plmCollabspace: CaseStudyData = {
           type: "decisions-cdo",
           items: [
             {
-              heading: "Reframing what domain spaces were for",
-              challenge: "Domain spaces risked feeling like duplicates of existing pages.",
+              heading: "Pilot one domain before scaling",
+              challenge: "Domain spaces risked feeling like duplicates of existing pages. Committing the full approach to all eight domains simultaneously introduced too much validation risk, so the first domain needed to be the lowest-hanging fruit.",
               decision:
-                "Position them as outward-facing windows — not for internal teams, but for the rest of the organisation to discover them.",
+                "Position them as outward-facing windows — not for internal teams, but for the rest of the organisation to discover them. Launch my own PLM department page first. Direct, daily access to the department director, an agile coach, and scrum masters made it possible to validate the model before scaling it to the other seven domains. No one asked me to launch all eight at once — piloting was my own call, made because it was the lowest-risk, most obvious place to start. Choosing my own department for it wasn't weighed against other domains either; it was the practical option, given the access I already had to the director and the team.",
               outcome:
-                "Domain heads understood their role on the platform. Resistance shifted to investment.",
+                "Building the pilot meant iterating on multiple layout and widget-priority arrangements. The final template was chosen collectively in a working meeting with the director and an agile coach. Content for the pilot came from SharePoint, Confluence, and both public and password-protected internal sources, decided jointly with the director. One head — the most visibly skeptical in the room — sat arms crossed at the start, not invested, then leaned in and started asking questions once he saw the page working. One of them asked that the hero section's branding graphic be replaced with an infographic more specific to their department's work. Another wanted the contact section restructured — one larger card for the department head, smaller stacked cards for the rest of the team, rather than a uniform vertical stack. The structure otherwise survived intact — which told me the model worked when people could see it, in a way it hadn't when I'd only described it.",
             },
             {
               heading: "Ownership designed in, not added later",
@@ -271,19 +269,21 @@ export const plmCollabspace: CaseStudyData = {
               outcome:
                 "Domain heads weren't invited to participate — they were given a role only they could fill.",
             },
-            {
-              heading: "Pilot one domain before scaling",
-              challenge:
-                "Committing the full approach to all eight domains simultaneously introduced too much validation risk.",
-              decision: "Launch one domain first. Validate the model before scaling it.",
-              outcome:
-                "A live, working example proved more persuasive to hesitant domain heads than any presentation could.",
-            },
+          ],
+        },
+        {
+          type: "paragraph",
+          text: "Seven of eight domain owners came through normal back-and-forth, with ordinary scheduling friction rather than conflict. One owner was notably reluctant throughout: a marketing manager, not the head of marketing, assigned to own and manage that page. The head of marketing was supportive and set up a small joint workshop with himself, the reluctant manager, and me. A business trip stalled progress further because she was the sole assigned owner for that page. After she returned, persistent re-approach eventually led her to participate; the root cause of her initial reluctance was never fully clear, and what worked was patience, not escalation.",
+        },
+        {
+          type: "decisions-cdo",
+          startIndex: 2,
+          items: [
             {
               heading: "Content built into the design, not added after",
               challenge: "Previous platforms had launched empty and stayed that way.",
               decision:
-                "Every domain space launches with content on day one. Two formats anchor each space: a thirty-second domain reel and a featured home page video.",
+                "Every domain space launches with content on day one. Two formats anchor each space: a thirty-second domain reel and a featured home page video. Reels were uploaded once through the hub dashboard, then pulled onto whichever domain pages needed them.",
               outcome:
                 "Visitors had a reason to engage from the first visit — and a reason to return.",
             },
@@ -298,7 +298,7 @@ export const plmCollabspace: CaseStudyData = {
         },
         {
           type: "decisions-cdo",
-          startIndex: 4,
+          startIndex: 3,
           items: [
             {
               heading: "Awareness designed, not assumed",
@@ -314,11 +314,15 @@ export const plmCollabspace: CaseStudyData = {
 
     {
       label: "Content Strategy",
-      heading: "Technology doesn't create engagement. Content does.",
+      heading: "The content model",
       blocks: [
         {
           type: "paragraph",
-          text: "Domain experts owned the knowledge and chose the topics. Everything else was coordinated centrally — keeping the contribution bar low for domain teams and production consistent across the platform.",
+          text: "Domain experts and content owners chose the topics and owned the underlying knowledge. Reel and video production was a collaboration with another working student from the content-creation and post-production department. We handled equipment and booked available conference rooms and halls around dates provided by content owners and department heads, then recorded together on site. Footage was uploaded through SharePoint and handed to the post-production team for editing. I reviewed edited drafts with content owners and my own department, catching issues such as branding mismatches before anything published.",
+        },
+        {
+          type: "paragraph",
+          text: "On what got recorded and how, I had no say — that was the content owners' call, and rightly so. I sat in their planning sessions to understand their tools and process, but the creative and topical decisions stayed entirely theirs.",
         },
         {
           type: "two-col-list",
@@ -334,21 +338,6 @@ export const plmCollabspace: CaseStudyData = {
             variant: "neutral",
             items: ["Top of every domain home page. First thing a new visitor sees."],
           },
-        },
-      ],
-    },
-
-    {
-      label: "Validation",
-      heading: "The pilot tested the model, not just the design.",
-      blocks: [
-        {
-          type: "paragraph",
-          text: "After the first domain launched, retrospective interviews were conducted with early users — not about usability, but about relevance, ownership, and whether the platform offered something existing tools didn't.",
-        },
-        {
-          type: "paragraph",
-          text: "What held up became the template. What needed adjustment was fixed before it could compound across eight spaces.",
         },
       ],
     },
@@ -372,9 +361,9 @@ export const plmCollabspace: CaseStudyData = {
             heading: "After",
             items: [
               { label: "Eight domain communities live", detail: "Every major PLM domain launched with its own space — owned, staffed, and active." },
-              { label: "2,000+ employees reached", detail: "The platform scaled across the full PLM organisation in the first rollout phase." },
+              { label: "2,000+ employees onboarded", detail: "Employees had platform access, onboarded in batches as department heads provided their lists." },
               { label: "Cross-domain knowledge discoverable", detail: "Initiatives, expertise, and domain reels surfaced through the global hub for the first time." },
-              { label: "Sustainable content production", detail: "A publishing framework that outlasted launch — content kept coming after the campaign ended." },
+              { label: "Sustainable content production", detail: "Six of eight domains sustained regular publishing after the campaign ended. The other two slowed after launch; my read is that those domains likely had less frequent shareable material." },
             ],
           },
         },
@@ -391,15 +380,19 @@ export const plmCollabspace: CaseStudyData = {
       blocks: [
         {
           type: "paragraph",
-          text: "If a platform doesn't answer \"why should I use this,\" no launch campaign will compensate. The most important decision wasn't layout, navigation, or content format.",
+          text: "I started with the wrong belief: that design-system alignment and visual polish carried inherent merit, even before the work proved it served a stakeholder need.",
         },
         {
           type: "paragraph",
-          text: "It was treating stakeholder resistance as a design brief rather than an obstacle to manage.",
+          text: "The two rejections corrected that quickly. If a platform doesn't answer \"why should I use this,\" no launch campaign will compensate.",
         },
         {
           type: "paragraph",
-          text: "Previous attempts built the platform and expected adoption to follow. This project started with the question they skipped.",
+          text: "I've come to think internal platforms don't fail because they're badly designed. They fail because they're never taken seriously past the initial curiosity — started with interest, then left unattended once nobody's explicitly responsible for keeping them alive. No duties assigned, no value clearly defined, so the interest fades and the platform does too.",
+        },
+        {
+          type: "paragraph",
+          text: "The most important decision was treating stakeholder resistance as a design brief rather than an obstacle to manage. Previous attempts built the platform and expected adoption to follow. This project started with the question they skipped.",
         },
       ],
     },

@@ -26,34 +26,87 @@ const GEMINI_STORY_MOMENTS: StoryMoment[] = [
   { label: "The waiting we ended", parent: "Impact", anchorId: "moment-payoff" },
 ];
 
-const MOMENT_HIGHLIGHTS = [
+const COLLABSPACE_STORY_MOMENTS: StoryMoment[] = [
+  { label: "I learned the problem wasn't storage", parent: "Research", anchorId: "moment-reframe" },
+  { label: "I watched resistance turn into buy-in", parent: "Design Decisions", anchorId: "moment-skeptic" },
+  { label: "I won over a reluctant owner", parent: "Design Decisions", anchorId: "moment-owner" },
+  { label: "I designed inside someone else's structure", parent: "Exploration", anchorId: "moment-constraint" },
+  { label: "Six of eight domains stuck", parent: "Impact", anchorId: "moment-outcome" },
+  { label: "Why I think platforms actually fail", parent: "Reflection", anchorId: "moment-belief" },
+];
+
+const MOMENT_HIGHLIGHT_CLASS =
+  "scroll-mt-24 rounded-[3px] bg-[var(--color-accent-light)] px-[3px] py-[1px] [box-decoration-break:clone] [-webkit-box-decoration-break:clone]";
+
+const MOMENT_HIGHLIGHTS: { id: string; fragments: string[] }[] = [
   {
     id: "moment-misread",
-    fragment:
+    fragments: [
       "What the interviews actually showed was that the primary challenge wasn't module customization at all — it was status uncertainty.",
+    ],
   },
   {
     id: "moment-mandate",
-    fragment: "The mandate was to digitize the existing physical workflow as-is first",
+    fragments: ["The mandate was to digitize the existing physical workflow as-is first"],
   },
   {
     id: "moment-lost",
-    fragment:
+    fragments: [
       "Manufacturing engineering preferred the existing view, we were out of runway before the November deadline, and I lost that one.",
+    ],
   },
   {
     id: "moment-won",
-    fragment: "My argument was that the record outlived the decision",
+    fragments: ["My argument was that the record outlived the decision"],
   },
   {
     id: "moment-unshipped",
-    fragment:
+    fragments: [
       "We scoped a fix — iconography improvements and guide overlays — and it went to the backlog, not the launch.",
+    ],
   },
   {
     id: "moment-payoff",
-    fragment:
+    fragments: [
       "an FAE who used to email engineering and wait weeks — sometimes months — for a status reply now opens the module and sees the stage, the owner, and the next action in one view",
+    ],
+  },
+  {
+    id: "moment-reframe",
+    fragments: [
+      "The challenge wasn't storage. It was visibility. I did not walk in with that reframe. It emerged from the rejected first design and the two reactions that followed it.",
+    ],
+  },
+  {
+    id: "moment-owner",
+    fragments: [
+      "One owner was notably reluctant throughout: a marketing manager, not the head of marketing, assigned to own and manage that page.",
+      "A business trip stalled progress further because she was the sole assigned owner for that page. After she returned, persistent re-approach eventually led her to participate; the root cause of her initial reluctance was never fully clear, and what worked was patience, not escalation.",
+    ],
+  },
+  {
+    id: "moment-skeptic",
+    fragments: [
+      "One head — the most visibly skeptical in the room — sat arms crossed at the start, not invested, then leaned in and started asking questions once he saw the page working.",
+    ],
+  },
+  {
+    id: "moment-constraint",
+    fragments: [
+      "SAP workspaces gave the platform a hard structural framework. There was not open latitude to invent a different top-level architecture from scratch. The real design freedom was inside that structure: layout, widget placement and prioritisation, content arrangement",
+    ],
+  },
+  {
+    id: "moment-outcome",
+    fragments: [
+      "Six of eight domains sustained regular publishing after the campaign ended. The other two slowed after launch; my read is that those domains likely had less frequent shareable material.",
+    ],
+  },
+  {
+    id: "moment-belief",
+    fragments: [
+      "I've come to think internal platforms don't fail because they're badly designed. They fail because they're never taken seriously past the initial curiosity — started with interest, then left unattended once nobody's explicitly responsible for keeping them alive. No duties assigned, no value clearly defined, so the interest fades and the platform does too.",
+    ],
   },
 ];
 
@@ -68,23 +121,39 @@ function Paragraph({ text }: { text: string }) {
 }
 
 function renderMomentHighlights(text: string) {
-  const moment = MOMENT_HIGHLIGHTS.find(({ fragment }) => text.includes(fragment));
-  if (!moment) return text;
+  const matches = MOMENT_HIGHLIGHTS.flatMap((moment) =>
+    moment.fragments
+      .map((fragment, fragmentIndex) => {
+        const start = text.indexOf(fragment);
+        return start >= 0
+          ? { id: moment.id, fragment, fragmentIndex, start, end: start + fragment.length }
+          : null;
+      })
+      .filter((match): match is { id: string; fragment: string; fragmentIndex: number; start: number; end: number } => Boolean(match))
+  ).sort((a, b) => a.start - b.start);
 
-  const [before, after] = text.split(moment.fragment);
+  if (matches.length === 0) return text;
 
-  return (
-    <>
-      {before}
-      <span
-        id={moment.id}
-        className="scroll-mt-24 rounded-[3px] bg-[var(--color-accent-light)] px-[3px] py-[1px] [box-decoration-break:clone] [-webkit-box-decoration-break:clone]"
-      >
-        {moment.fragment}
+  const usedIds = new Set<string>();
+  const nodes: React.ReactNode[] = [];
+  let cursor = 0;
+
+  matches.forEach((match, index) => {
+    if (match.start < cursor) return;
+    if (match.start > cursor) nodes.push(text.slice(cursor, match.start));
+    const spanId = usedIds.has(match.id) ? undefined : match.id;
+    usedIds.add(match.id);
+    nodes.push(
+      <span key={`${match.id}-${match.fragmentIndex}-${index}`} id={spanId} className={MOMENT_HIGHLIGHT_CLASS}>
+        {match.fragment}
       </span>
-      {after}
-    </>
-  );
+    );
+    cursor = match.end;
+  });
+
+  if (cursor < text.length) nodes.push(text.slice(cursor));
+
+  return <>{nodes}</>;
 }
 
 function StoryMap({ moments }: { moments: StoryMoment[] }) {
@@ -139,7 +208,7 @@ function Callout({ text, variant = "accent" }: { text: string; variant?: "accent
           : "border-l-[3px] border-[#C07B50] bg-[#F9F4EF] rounded-r-xl",
       ].join(" ")}
     >
-      <p className="text-[#18171A] text-base leading-relaxed">{text}</p>
+      <p className="text-[#18171A] text-base leading-relaxed">{renderMomentHighlights(text)}</p>
     </motion.div>
   );
 }
@@ -243,7 +312,7 @@ function ColCard({
                   {item.label}
                 </span>
                 <span className="text-xs text-[#6E6D69] leading-relaxed">
-                  {item.detail}
+                  {renderMomentHighlights(item.detail)}
                 </span>
               </li>
             )
@@ -607,7 +676,7 @@ function BACard({
                   {item.label}
                 </span>
                 <span className="text-xs text-[#6E6D69] leading-relaxed">
-                  {item.detail}
+                  {renderMomentHighlights(item.detail)}
                 </span>
               </li>
             )
@@ -987,19 +1056,19 @@ function DecisionsCDO({
                 <span className="text-[10px] font-semibold tracking-widest uppercase text-[#6E6D69] block mb-1">
                   Challenge
                 </span>
-                <p className="text-sm text-[#3A3836] leading-relaxed">{item.challenge}</p>
+                <p className="text-sm text-[#3A3836] leading-relaxed">{renderMomentHighlights(item.challenge)}</p>
               </div>
               <div>
                 <span className="text-[10px] font-semibold tracking-widest uppercase text-[#C07B50]/70 block mb-1">
                   Decision
                 </span>
-                <p className="text-sm text-[#3A3836] leading-relaxed">{item.decision}</p>
+                <p className="text-sm text-[#3A3836] leading-relaxed">{renderMomentHighlights(item.decision)}</p>
               </div>
               <div>
                 <span className="text-[10px] font-semibold tracking-widest uppercase text-[#2E7D52] block mb-1">
                   Outcome
                 </span>
-                <p className="text-sm text-[#3A3836] leading-relaxed">{item.outcome}</p>
+                <p className="text-sm text-[#3A3836] leading-relaxed">{renderMomentHighlights(item.outcome)}</p>
               </div>
             </div>
           </div>
@@ -1398,7 +1467,7 @@ export default function CaseStudy({ project, content }: Props) {
   const isGemini = project.slug === "gemini-digital-twin";
   const isCollabspace = project.slug === "plm-collabspace";
   const isDesignSystem = project.slug === "design-system";
-  const storyMoments = isGemini ? GEMINI_STORY_MOMENTS : [];
+  const storyMoments = isGemini ? GEMINI_STORY_MOMENTS : isCollabspace ? COLLABSPACE_STORY_MOMENTS : [];
 
   return (
     <article>
@@ -1587,7 +1656,7 @@ export default function CaseStudy({ project, content }: Props) {
               key={section.label}
               section={section}
               storyMoments={storyMoments}
-              neutralCallouts={isGemini}
+              neutralCallouts={isGemini || isCollabspace}
             />
           ))}
         </div>

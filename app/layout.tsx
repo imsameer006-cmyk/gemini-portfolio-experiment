@@ -1,8 +1,12 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono, Instrument_Serif } from "next/font/google";
+import Script from "next/script";
+import { GoogleAnalytics } from "@next/third-parties/google";
 import Nav from "@/components/Nav";
 import Footer from "@/components/Footer";
+import AnalyticsTracker from "@/components/analytics/AnalyticsTracker";
 import MotionProvider from "@/components/providers/MotionProvider";
+import { isAnalyticsEnabled } from "@/lib/analytics/enabled";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -63,6 +67,10 @@ export const metadata: Metadata = {
 export default function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
+  const analyticsEnabled = isAnalyticsEnabled();
+  const gaId = process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID;
+  const clarityProjectId = process.env.NEXT_PUBLIC_CLARITY_PROJECT_ID;
+
   return (
     <html
       lang="en"
@@ -71,10 +79,23 @@ export default function RootLayout({
     >
       <body className="bg-[#F9F8F5] text-[#18171A] antialiased min-h-screen flex flex-col">
         <MotionProvider>
+          {analyticsEnabled && <AnalyticsTracker />}
           <Nav />
           <main className="flex-1">{children}</main>
           <Footer />
         </MotionProvider>
+        {analyticsEnabled && gaId && <GoogleAnalytics gaId={gaId} />}
+        {analyticsEnabled && clarityProjectId && (
+          <Script id="microsoft-clarity" strategy="afterInteractive">
+            {`
+              (function(c,l,a,r,i,t,y){
+                c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
+                t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
+                y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
+              })(window, document, "clarity", "script", "${clarityProjectId}");
+            `}
+          </Script>
+        )}
       </body>
     </html>
   );
