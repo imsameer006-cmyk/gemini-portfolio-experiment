@@ -126,18 +126,33 @@ export default function JumpToNav({
     return () => obs.disconnect();
   }, [disabled]);
 
-  // ── Hide desktop sidebar when footer enters the viewport ─────
+  // ── Hide nav when page-bottom boundaries enter the viewport ──
   useEffect(() => {
-    const footer = document.querySelector<HTMLElement>("footer");
-    if (!footer) return;
+    if (disabled || !isVisible) return;
+
+    const boundaries = Array.from(
+      document.querySelectorAll<HTMLElement>("[data-case-study-nav-boundary], footer")
+    );
+    if (boundaries.length === 0) return;
+
+    const visibleBoundaries = new Set<Element>();
 
     const obs = new IntersectionObserver(
-      ([entry]) => setIsNearBottom(entry.isIntersecting),
-      { threshold: 0, rootMargin: "0px 0px -40% 0px" }
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            visibleBoundaries.add(entry.target);
+          } else {
+            visibleBoundaries.delete(entry.target);
+          }
+        });
+        setIsNearBottom(visibleBoundaries.size > 0);
+      },
+      { threshold: 0 }
     );
-    obs.observe(footer);
+    boundaries.forEach((boundary) => obs.observe(boundary));
     return () => obs.disconnect();
-  }, []);
+  }, [disabled, isVisible, sections, moments]);
 
   // ── Active section via scroll position ───────────────────────
   useEffect(() => {
@@ -300,7 +315,7 @@ export default function JumpToNav({
                         .map((moment) => {
                           const isMomentActive = moment.anchorId === activeId;
                           return (
-                            <div key={moment.anchorId} className="ml-6 flex items-center gap-2">
+                            <div key={moment.anchorId} className="ml-3.5 flex items-center gap-2">
                               <span
                                 className={[
                                   "w-[2px] h-3 rounded-full shrink-0",
@@ -327,6 +342,7 @@ export default function JumpToNav({
                                       ].join(" "),
                                 ].join(" ")}
                               >
+                                <span aria-hidden="true" className="mr-1.5">⤷</span>
                                 {moment.label}
                               </button>
                             </div>

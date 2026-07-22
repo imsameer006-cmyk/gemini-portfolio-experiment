@@ -68,7 +68,6 @@ export default function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
   const analyticsEnabled = isAnalyticsEnabled();
-  const analyticsFlagValue = process.env.NEXT_PUBLIC_ANALYTICS_ENABLED ?? "undefined";
   const gaId = process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID;
   const clarityProjectId = process.env.NEXT_PUBLIC_CLARITY_PROJECT_ID;
 
@@ -85,14 +84,6 @@ export default function RootLayout({
           <main className="flex-1">{children}</main>
           <Footer />
         </MotionProvider>
-        <div
-          data-debug-analytics-flag={analyticsFlagValue}
-          data-debug-ga-id={gaId ?? "undefined"}
-          data-debug-clarity-id={clarityProjectId ?? "undefined"}
-          className="fixed bottom-2 right-2 z-[9999] rounded bg-black px-2 py-1 font-[family-name:var(--font-geist-mono)] text-[10px] text-white"
-        >
-          analytics:{analyticsFlagValue}
-        </div>
         {analyticsEnabled && gaId && <GoogleAnalytics gaId={gaId} />}
         {analyticsEnabled && clarityProjectId && (
           <Script id="microsoft-clarity" strategy="afterInteractive">

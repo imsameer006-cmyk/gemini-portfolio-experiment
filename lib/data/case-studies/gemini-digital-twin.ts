@@ -5,6 +5,7 @@ export const geminiDigitalTwin: CaseStudyData = {
   sections: [
     {
       label: "Overview",
+      heading: "Built to end the fragmentation",
       blocks: [
         {
           type: "paragraph",

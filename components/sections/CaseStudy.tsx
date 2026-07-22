@@ -27,12 +27,12 @@ const GEMINI_STORY_MOMENTS: StoryMoment[] = [
 ];
 
 const COLLABSPACE_STORY_MOMENTS: StoryMoment[] = [
-  { label: "I learned the problem wasn't storage", parent: "Research", anchorId: "moment-reframe" },
-  { label: "I watched resistance turn into buy-in", parent: "Design Decisions", anchorId: "moment-skeptic" },
-  { label: "I won over a reluctant owner", parent: "Design Decisions", anchorId: "moment-owner" },
-  { label: "I designed inside someone else's structure", parent: "Exploration", anchorId: "moment-constraint" },
-  { label: "Six of eight domains stuck", parent: "Impact", anchorId: "moment-outcome" },
-  { label: "Why I think platforms actually fail", parent: "Reflection", anchorId: "moment-belief" },
+  { label: "The problem I misread", parent: "Research", anchorId: "moment-reframe" },
+  { label: "Skeptic, then convinced", parent: "Design Decisions", anchorId: "moment-skeptic" },
+  { label: "I won over a holdout", parent: "Design Decisions", anchorId: "moment-owner" },
+  { label: "Designed within limits", parent: "Exploration", anchorId: "moment-constraint" },
+  { label: "Six of eight stuck", parent: "Impact", anchorId: "moment-outcome" },
+  { label: "Why I think it fails", parent: "Reflection", anchorId: "moment-belief" },
 ];
 
 const MOMENT_HIGHLIGHT_CLASS =
@@ -174,8 +174,9 @@ function StoryMap({ moments }: { moments: StoryMoment[] }) {
             </span>
             <a
               href={`#${moment.anchorId}`}
-              className="ml-6 block overflow-hidden text-ellipsis whitespace-nowrap text-xs text-[var(--color-text-muted)] hover:text-[var(--color-text)] transition-colors duration-200"
+              className="ml-3.5 block overflow-hidden text-ellipsis whitespace-nowrap text-xs text-[var(--color-text-muted)] hover:text-[var(--color-text)] transition-colors duration-200"
             >
+              <span aria-hidden="true" className="mr-1.5">⤷</span>
               {moment.label}
             </a>
           </li>
@@ -1685,7 +1686,10 @@ export default function CaseStudy({ project, content }: Props) {
       )}
 
       {/* Adjacent project */}
-      <div className="border-t border-[#E6E3DD] px-6 md:px-10 py-12 bg-[#F9F8F5]">
+      <div
+        data-case-study-nav-boundary
+        className="border-t border-[#E6E3DD] px-6 md:px-10 py-12 bg-[#F9F8F5]"
+      >
         <div className="max-w-[1280px] mx-auto flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
           <div>
             <p className="text-xs text-[var(--color-text-accent)] tracking-widest uppercase font-medium mb-1">
