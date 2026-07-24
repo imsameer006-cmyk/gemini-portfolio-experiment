@@ -54,7 +54,7 @@ export default function ProjectCard({ project, index }: ProjectCardProps) {
             {project.title}
           </h3>
 
-          <p className="text-sm text-[#6A6764] leading-relaxed mb-6 line-clamp-2">
+          <p className="text-body-compact text-[#6A6764] leading-relaxed mb-6 line-clamp-2">
             {project.description}
           </p>
 

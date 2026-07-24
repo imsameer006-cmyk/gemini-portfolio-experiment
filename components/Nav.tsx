@@ -96,7 +96,7 @@ export default function Nav() {
             : "bg-transparent",
         ].join(" ")}
       >
-        <nav className="max-w-[1360px] mx-auto px-6 md:px-10 h-14 flex items-center">
+        <nav className="max-w-[1360px] mx-auto px-6 md:px-10 h-[46px] flex items-center">
           {/* Wordmark — flex-1 to balance the CTA on the right */}
           <div className="flex-1 flex items-center">
             <Link
@@ -184,7 +184,7 @@ export default function Nav() {
       {/* Mobile overlay */}
       {mobileOpen && (
         <div
-          className="fixed inset-0 z-40 bg-[#F9F8F5] flex flex-col pt-14"
+          className="fixed inset-0 z-40 bg-[#F9F8F5] flex flex-col pt-[46px]"
           role="dialog"
           aria-label="Navigation menu"
         >

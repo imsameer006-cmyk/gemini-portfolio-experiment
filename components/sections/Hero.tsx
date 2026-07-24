@@ -617,9 +617,7 @@ export default function Hero() {
             transition={{ duration: 0.65, delay: 0.12, ease: [0.16, 1, 0.3, 1] }}
             className="font-display mb-4 max-w-[16ch] text-[clamp(3rem,8vw,7rem)] leading-[1.05] text-[#18171A]"
           >
-            Building clarity{" "}
-            <span>out of</span>{" "}
-            complexity.
+            Hi, I put things together.
           </motion.h1>
 
           <motion.p
@@ -628,7 +626,7 @@ export default function Hero() {
             transition={{ duration: 0.55, delay: 0.24, ease: [0.16, 1, 0.3, 1] }}
             className="max-w-[46ch] text-base leading-relaxed text-[#6A6764] md:text-lg"
           >
-            I design products through systems thinking and deep understanding that work for people and perform for business.
+            I&apos;m curious and inquisitive by nature — I guess it&apos;s my hidden superpower. Nature is the biggest design inspiration for me: how desert heat from the Middle East warms Europe, how ocean water turns to vapor, becomes clouds, and travels far to water distant lands. Nothing in an ecosystem is wasted, and everything is interwoven — it either serves the system, or it doesn&apos;t survive. I think in systems the same way: I treat data, feedback, and failure as signal, not noise. And I&apos;d rather hear honest feedback than praise that sounds good but gives me nothing to course-correct on.
           </motion.p>
         </div>
 

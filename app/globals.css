@@ -33,6 +33,8 @@
   --font-display: var(--font-open-sans), ui-sans-serif, system-ui, sans-serif;
   --font-numeral: var(--font-archivo-black), ui-sans-serif, system-ui, sans-serif;
   --font-mono:    var(--font-geist-mono), ui-monospace, monospace;
+  --text-body:    1rem;
+  --text-body-compact: 0.875rem;
 
   /* Easing */
   --ease-out-expo:    cubic-bezier(0.16, 1, 0.3, 1);
