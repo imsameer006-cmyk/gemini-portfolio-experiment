@@ -47,7 +47,7 @@ function ClarityThreadVisual({
       initial={{ opacity: 0, x: 10 }}
       animate={{ opacity: 1, x: 0 }}
       transition={{ duration: 1, delay: 0.35, ease: [0.16, 1, 0.3, 1] }}
-      className="pointer-events-none absolute right-[max(2.5rem,calc((100vw-1280px)/2+0.5rem))] top-[34%] z-20 hidden h-[320px] w-[min(31vw,440px)] lg:block"
+      className="pointer-events-none absolute right-[max(2.5rem,calc((100vw-1280px)/2+0.5rem))] top-[32%] z-20 hidden h-[320px] w-[min(31vw,440px)] lg:block"
     >
       <svg
         aria-hidden="true"
@@ -585,7 +585,7 @@ export default function Hero() {
   return (
     <section
       aria-label="Introduction"
-      className="relative overflow-hidden px-6 pb-10 pt-[76px] md:min-h-[80svh] md:px-10 md:pb-12 md:pt-[92px]"
+      className="relative overflow-hidden px-6 pb-5 pt-[76px] md:min-h-[80svh] md:px-10 md:pb-5 md:pt-[92px]"
     >
       <ClarityThreadVisual
         hoverSuppressed={hoverSuppressed}
@@ -610,21 +610,23 @@ export default function Hero() {
       />
 
       <div className="relative z-10 mx-auto flex w-full max-w-[1280px] pt-3 md:min-h-[calc(80svh-7.5rem)] md:items-end md:pt-0">
-        <div className="max-w-[840px]">
+        <div className="max-w-[840px] translate-y-2">
           <motion.h1
             initial={{ opacity: 0, y: 28 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.65, delay: 0.12, ease: [0.16, 1, 0.3, 1] }}
-            className="font-display mb-4 max-w-none text-[clamp(2rem,4.5vw,3.5rem)] leading-tight text-[#18171A] md:whitespace-nowrap"
+            className="font-display mb-4 max-w-none text-[clamp(3rem,8vw,7rem)] leading-[1.05] text-[#18171A]"
           >
-            Hi, I put things together.
+            Hi, I put things
+            <br />
+            together.
           </motion.h1>
 
           <motion.p
             initial={{ opacity: 0, y: 18 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.55, delay: 0.24, ease: [0.16, 1, 0.3, 1] }}
-            className="max-w-[58ch] text-body-compact leading-relaxed text-[#6A6764]"
+            className="max-w-[54ch] text-body-compact leading-relaxed text-[#6A6764]"
           >
             I&apos;m curious and inquisitive by nature — I guess it&apos;s my hidden superpower. Nature is the biggest design inspiration for me: how desert heat from the Middle East warms Europe, how ocean water turns to vapor, becomes clouds, and travels far to water distant lands. Nothing in an ecosystem is wasted, and everything is interwoven — it either serves the system, or it doesn&apos;t survive. I think in systems the same way: I treat data, feedback, and failure as signal, not noise. And I&apos;d rather hear honest feedback than praise that sounds good but gives me nothing to course-correct on.
           </motion.p>
