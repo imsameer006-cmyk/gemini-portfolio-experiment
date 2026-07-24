@@ -18,7 +18,6 @@ export default function DemoPage() {
         <h1
           style={{
             fontFamily: "var(--font-display, Georgia, serif)",
-            fontStyle: "italic",
             fontSize: "clamp(28px, 4vw, 42px)",
             fontWeight: 400,
             color: "#18171A",

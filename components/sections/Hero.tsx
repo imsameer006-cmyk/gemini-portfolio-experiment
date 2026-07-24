@@ -206,8 +206,8 @@ function PhilosophyOverlay({ isOpen, onComplete }: { isOpen: boolean; onComplete
     const color = "#EFEFEF";
     const rootStyles = getComputedStyle(document.documentElement);
     const displayFamily =
-      rootStyles.getPropertyValue("--font-instrument-serif").trim() ||
-      "Georgia, Times New Roman, serif";
+      rootStyles.getPropertyValue("--font-open-sans").trim() ||
+      "Open Sans, Arial, sans-serif";
 
     const wait = (ms: number) =>
       new Promise<void>((resolve) => {
@@ -336,7 +336,7 @@ function PhilosophyOverlay({ isOpen, onComplete }: { isOpen: boolean; onComplete
       const centerY = height / 2;
       const dots = buildGrid(width, height);
       const fontSize = shouldReduceMotion ? 42 : Math.min(Math.max(width * 0.032, 36), 58);
-      const font = `italic 400 ${fontSize}px ${displayFamily}`;
+      const font = `400 ${fontSize}px ${displayFamily}`;
 
       ctx.font = font;
       ctx.textBaseline = "middle";
@@ -554,7 +554,7 @@ function SignalPanel() {
           ].join(" ")}
           role="listitem"
         >
-          <div className="font-display text-lg italic leading-none text-[#18171A] md:text-xl">
+          <div className="font-display text-lg leading-none text-[#18171A] md:text-xl">
             {signal.value}
           </div>
           <div className="mt-1 text-[9px] font-medium uppercase tracking-[0.08em] text-[#6E6D69] md:text-[10px]">
@@ -660,10 +660,10 @@ export default function Hero() {
             initial={{ opacity: 0, y: 28 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.65, delay: 0.12, ease: [0.16, 1, 0.3, 1] }}
-            className="font-display mb-4 max-w-[16ch] text-[clamp(3rem,8vw,7rem)] italic leading-[1.05] text-[#18171A]"
+            className="font-display mb-4 max-w-[16ch] text-[clamp(3rem,8vw,7rem)] leading-[1.05] text-[#18171A]"
           >
             Building clarity{" "}
-            <span className="not-italic">out of</span>{" "}
+            <span>out of</span>{" "}
             complexity.
           </motion.h1>
 

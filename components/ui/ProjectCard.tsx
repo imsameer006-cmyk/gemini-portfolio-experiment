@@ -34,7 +34,7 @@ export default function ProjectCard({ project, index }: ProjectCardProps) {
             </div>
           ) : (
             <div className="w-full h-full flex items-center justify-center">
-              <span className="font-[family-name:var(--font-instrument-serif)] italic text-4xl md:text-5xl text-[#18171A]/20 select-none">
+              <span className="font-[family-name:var(--font-numeral)] text-4xl md:text-5xl text-[#18171A]/20 select-none">
                 {String(index + 1).padStart(2, "0")}
               </span>
             </div>

@@ -226,7 +226,7 @@ export default function HeroLabPage() {
               <div>
                 <div className="mb-6 h-[2px] w-[44px] rounded-full bg-[#C07B50]" />
                 <h1
-                  className="font-[family-name:var(--font-instrument-serif)] italic leading-[0.93] text-[#18171A]"
+                  className="font-display leading-[0.93] text-[#18171A]"
                   style={{ fontSize: "50px" }}
                 >
                   Building clarity
@@ -283,7 +283,7 @@ export default function HeroLabPage() {
               <div className="flex flex-col items-end">
                 <div className="mb-6 h-[2px] w-[44px] rounded-full bg-[#C07B50]" />
                 <h1
-                  className="font-[family-name:var(--font-instrument-serif)] italic leading-[0.95] text-[#F5F3F1]"
+                  className="font-display leading-[0.95] text-[#F5F3F1]"
                   style={{ fontSize: "52px" }}
                 >
                   Building clarity
@@ -337,7 +337,7 @@ export default function HeroLabPage() {
               <div className="flex flex-col items-end">
                 <div className="mb-6 h-[2px] w-[44px] rounded-full bg-[#CBD5E1]" />
                 <h1
-                  className="font-[family-name:var(--font-instrument-serif)] italic leading-[0.95] text-[#F3F4F6]"
+                  className="font-display leading-[0.95] text-[#F3F4F6]"
                   style={{ fontSize: "52px" }}
                 >
                   Building clarity

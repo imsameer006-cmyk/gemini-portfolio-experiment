@@ -174,8 +174,7 @@ export function AnnotatedImage({ src, alt, annotations = [], caption }: Props) {
                 aria-label={`Annotation ${i + 1}`}
                 style={{
                   flexShrink: 0,
-                  fontFamily: "var(--font-display, Georgia, serif)",
-                  fontStyle: "italic",
+                  fontFamily: "var(--font-numeral, sans-serif)",
                   fontSize: "36px",
                   fontWeight: 400,
                   lineHeight: 1,

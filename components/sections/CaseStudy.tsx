@@ -585,7 +585,7 @@ function Decisions({
           className="grid grid-cols-[2rem_1fr] gap-4"
           {...reveal(staggerDelay(i))}
         >
-          <span className="font-[family-name:var(--font-instrument-serif)] italic text-2xl text-[#C07B50]/50 leading-none pt-0.5">
+          <span className="font-[family-name:var(--font-numeral)] text-2xl text-[#C07B50]/50 leading-none pt-0.5">
             {String(startIndex + i + 1).padStart(2, "0")}
           </span>
           <div className="space-y-3">
@@ -939,7 +939,7 @@ function ImagePlaceholder({ caption, tall }: { caption: string; tall?: boolean }
 function PullQuote({ text }: { text: string }) {
   return (
     <blockquote className="border-l-[3px] border-[#C07B50]/30 pl-6 my-1">
-      <p className="font-[family-name:var(--font-instrument-serif)] italic text-[clamp(1.1rem,2.5vw,1.3rem)] text-[#18171A] leading-snug max-w-[640px]">
+      <p className="font-display text-[clamp(1.1rem,2.5vw,1.3rem)] text-[#18171A] leading-snug max-w-[640px]">
         &ldquo;{text}&rdquo;
       </p>
     </blockquote>
@@ -948,7 +948,7 @@ function PullQuote({ text }: { text: string }) {
 
 function ClosingLine({ text }: { text: string }) {
   return (
-    <p className="font-[family-name:var(--font-instrument-serif)] italic text-base text-[#6A6764]">
+    <p className="font-display text-base text-[#6A6764]">
       {text}
     </p>
   );
@@ -959,7 +959,7 @@ function ContextCards({ items }: { items: { heading: string; body: string }[] })
     <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
       {items.map((card, i) => (
         <div key={i} className="bg-white border border-[#E6E3DD] rounded-2xl p-5 flex flex-col gap-3">
-          <span className="font-[family-name:var(--font-instrument-serif)] italic text-2xl text-[#C07B50]/50 leading-none">
+          <span className="font-[family-name:var(--font-numeral)] text-2xl text-[#C07B50]/50 leading-none">
             {String(i + 1).padStart(2, "0")}
           </span>
           <h4 className="font-medium text-[#18171A] text-sm leading-snug">{card.heading}</h4>
@@ -1047,7 +1047,7 @@ function DecisionsCDO({
           className="grid grid-cols-[2rem_1fr] gap-4"
           {...reveal(staggerDelay(i))}
         >
-          <span className="font-[family-name:var(--font-instrument-serif)] italic text-2xl text-[#C07B50]/50 leading-none pt-0.5">
+          <span className="font-[family-name:var(--font-numeral)] text-2xl text-[#C07B50]/50 leading-none pt-0.5">
             {String(startIndex + i + 1).padStart(2, "0")}
           </span>
           <div className="space-y-4">
@@ -1148,7 +1148,7 @@ function DriftAudit({
       <div className="flex flex-col gap-px bg-[#E6E3DD] border border-[#E6E3DD] rounded-2xl overflow-hidden">
         {stats.map((s, i) => (
           <div key={i} className="bg-white px-6 py-5 flex items-baseline justify-between gap-4">
-            <span className="font-[family-name:var(--font-instrument-serif)] italic text-4xl text-[var(--color-text-accent)] leading-none">
+            <span className="font-[family-name:var(--font-numeral)] text-4xl text-[var(--color-text-accent)] leading-none">
               {s.n}
             </span>
             <span className="text-xs text-[#6A6764] text-right max-w-[170px]">{s.label}</span>
@@ -1419,7 +1419,7 @@ function Section({
         </span>
 
         {section.heading && (
-          <h2 className="font-[family-name:var(--font-instrument-serif)] italic text-[clamp(1.5rem,3vw,2.25rem)] leading-snug text-[#18171A] max-w-[22ch] mb-8">
+          <h2 className="font-display text-[clamp(1.5rem,3vw,2.25rem)] leading-snug text-[#18171A] max-w-[22ch] mb-8">
             {section.heading}
           </h2>
         )}
@@ -1510,7 +1510,7 @@ export default function CaseStudy({ project, content }: Props) {
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.55, delay: 0.08, ease: [0.16, 1, 0.3, 1] }}
-                className="font-[family-name:var(--font-instrument-serif)] text-[clamp(2.50rem,3.74vw,4.06rem)] italic leading-tight text-[#18171A] max-w-[670px]"
+                className="font-display text-[clamp(2.50rem,3.74vw,4.06rem)] leading-tight text-[#18171A] max-w-[670px]"
               >
                 {project.title}
               </motion.h1>
@@ -1595,7 +1595,7 @@ export default function CaseStudy({ project, content }: Props) {
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.55, delay: 0.08, ease: [0.16, 1, 0.3, 1] }}
-                className="font-[family-name:var(--font-instrument-serif)] italic text-[clamp(2rem,5vw,4rem)] leading-tight text-[#18171A] max-w-[22ch] mb-5"
+                className="font-display text-[clamp(2rem,5vw,4rem)] leading-tight text-[#18171A] max-w-[22ch] mb-5"
               >
                 {project.title}
               </motion.h1>

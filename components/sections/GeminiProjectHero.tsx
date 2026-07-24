@@ -593,7 +593,7 @@ export function GeminiProjectHero({
             </div>
             <h1
               id="hero-lab-title"
-              className="font-[family-name:var(--font-instrument-serif)] text-[clamp(2.50rem,3.74vw,4.06rem)] italic leading-tight text-[#18171A] max-w-[670px]"
+              className="font-display text-[clamp(2.50rem,3.74vw,4.06rem)] leading-tight text-[#18171A] max-w-[670px]"
             >
               {title}
             </h1>

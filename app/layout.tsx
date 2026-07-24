@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono, Instrument_Serif } from "next/font/google";
+import { Archivo_Black, Geist, Geist_Mono, Open_Sans } from "next/font/google";
 import Script from "next/script";
 import { GoogleAnalytics } from "@next/third-parties/google";
 import Nav from "@/components/Nav";
@@ -21,11 +21,17 @@ const geistMono = Geist_Mono({
   display: "swap",
 });
 
-const instrumentSerif = Instrument_Serif({
-  variable: "--font-instrument-serif",
+const openSans = Open_Sans({
+  variable: "--font-open-sans",
   subsets: ["latin"],
   weight: "400",
-  style: ["normal", "italic"],
+  display: "swap",
+});
+
+const archivoBlack = Archivo_Black({
+  variable: "--font-archivo-black",
+  subsets: ["latin"],
+  weight: "400",
   display: "swap",
 });
 
@@ -75,7 +81,7 @@ export default function RootLayout({
     <html
       lang="en"
       data-scroll-behavior="smooth"
-      className={`${geistSans.variable} ${geistMono.variable} ${instrumentSerif.variable}`}
+      className={`${geistSans.variable} ${geistMono.variable} ${openSans.variable} ${archivoBlack.variable}`}
     >
       <body className="bg-[#F9F8F5] text-[#18171A] antialiased min-h-screen flex flex-col">
         <MotionProvider>
