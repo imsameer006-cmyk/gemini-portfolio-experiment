@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { DownloadSimple, LinkedinLogo } from "@phosphor-icons/react";
+import { LinkedinLogo } from "@phosphor-icons/react";
 import PixelBand from "@/components/ui/PixelBand";
 
 const links = [
@@ -96,7 +96,7 @@ export default function Nav() {
             : "bg-transparent",
         ].join(" ")}
       >
-        <nav className="max-w-[1360px] mx-auto px-6 md:px-10 h-16 flex items-center">
+        <nav className="max-w-[1360px] mx-auto px-6 md:px-10 h-14 flex items-center">
           {/* Wordmark — flex-1 to balance the CTA on the right */}
           <div className="flex-1 flex items-center">
             <Link
@@ -127,10 +127,10 @@ export default function Nav() {
                   data-analytics-nav-target={href.slice(1)}
                   data-analytics-nav-label={label}
                   className={[
-                    "text-sm transition-colors duration-200 cursor-pointer relative",
+                    "text-[13px] font-normal transition-colors duration-200 cursor-pointer relative",
                     isActive(href)
-                      ? "text-[#18171A] font-[450] after:absolute after:-bottom-0.5 after:left-0 after:w-full after:h-px after:bg-[#C07B50] after:content-['']"
-                      : "text-[#18171A]/50 hover:text-[#18171A]",
+                      ? "text-[#18171A]/80 after:absolute after:-bottom-0.5 after:left-0 after:w-full after:h-px after:bg-[#C07B50] after:content-['']"
+                      : "text-[#18171A]/45 hover:text-[#18171A]/70",
                   ].join(" ")}
                 >
                   {label}
@@ -140,22 +140,13 @@ export default function Nav() {
           </ul>
 
           {/* CTA — flex-1 + justify-end to balance the wordmark */}
-          <div className="flex-1 flex items-center justify-end gap-3">
-            <a
-              href="/Sameer-Gautam-Resume.pdf"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="hidden md:inline-flex items-center gap-1.5 text-sm font-medium text-[#18171A] border border-[#E6E3DD] rounded-full px-4 py-1.5 hover:border-[#C07B50] hover:text-[#C07B50] transition-all duration-200"
-            >
-              Resume
-              <DownloadSimple size={12} weight="bold" aria-hidden="true" />
-            </a>
+          <div className="flex-1 flex items-center justify-end">
             <a
               href="https://www.linkedin.com/in/uxd-sameer/"
               target="_blank"
               rel="noopener noreferrer"
               aria-label="LinkedIn profile"
-              className="hidden md:inline-flex text-[#18171A]/50 hover:text-[#C07B50] transition-colors duration-200"
+              className="hidden md:inline-flex h-9 w-9 items-center justify-center text-[#18171A]/45 hover:text-[#18171A]/70 transition-colors duration-200"
             >
               <LinkedinLogo size={18} weight="fill" aria-hidden="true" />
             </a>
@@ -193,7 +184,7 @@ export default function Nav() {
       {/* Mobile overlay */}
       {mobileOpen && (
         <div
-          className="fixed inset-0 z-40 bg-[#F9F8F5] flex flex-col pt-16"
+          className="fixed inset-0 z-40 bg-[#F9F8F5] flex flex-col pt-14"
           role="dialog"
           aria-label="Navigation menu"
         >
@@ -214,16 +205,7 @@ export default function Nav() {
               </li>
             ))}
           </ul>
-          <div className="mt-auto border-t border-[#E6E3DD] px-6 py-8 flex items-center gap-3">
-            <a
-              href="/Sameer-Gautam-Resume.pdf"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center gap-1.5 text-sm font-medium text-[#18171A] border border-[#E6E3DD] rounded-full px-4 py-1.5 hover:border-[#C07B50] hover:text-[#C07B50] transition-all duration-200"
-            >
-              Resume
-              <DownloadSimple size={12} weight="bold" aria-hidden="true" />
-            </a>
+          <div className="mt-auto border-t border-[#E6E3DD] px-6 py-8 flex items-center justify-end">
             <a
               href="https://www.linkedin.com/in/uxd-sameer/"
               target="_blank"

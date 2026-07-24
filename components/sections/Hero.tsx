@@ -1,15 +1,7 @@
 "use client";
 
-import { ArrowDown } from "@phosphor-icons/react";
 import { motion, useReducedMotion } from "framer-motion";
 import { useEffect, useRef, useState } from "react";
-
-const SIGNALS = [
-  { value: "Research", label: "Evidence-Led" },
-  { value: "Strategy", label: "Outcome-Focused" },
-  { value: "Systems", label: "Creating Clarity" },
-  { value: "Craft", label: "Execution Excellence" },
-];
 
 type ClarityThreadVisualProps = {
   hoverSuppressed: boolean;
@@ -533,48 +525,11 @@ function PhilosophyOverlay({ isOpen, onComplete }: { isOpen: boolean; onComplete
   );
 }
 
-function SignalPanel() {
-  return (
-    <motion.div
-      initial={{ opacity: 0, y: 18 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.55, delay: 0.44, ease: [0.16, 1, 0.3, 1] }}
-      className="mt-[61px] grid max-w-[660px] grid-cols-2 border-y border-[#E6E3DD] sm:grid-cols-4 md:mt-[69px]"
-      aria-label="Portfolio focus areas"
-      role="list"
-    >
-      {SIGNALS.map((signal, index) => (
-        <div
-          key={signal.label}
-          className={[
-            "relative px-3 py-3 text-center",
-            index === 0 || index === 1 ? "border-b border-[#CECAC2] sm:border-b-0" : "",
-            index === 0 || index === 2 ? "after:absolute after:right-0 after:top-1/2 after:h-8 after:w-px after:-translate-y-1/2 after:bg-[rgba(206,202,194,0.58)] after:content-['']" : "",
-            index === 1 ? "sm:after:absolute sm:after:right-0 sm:after:top-1/2 sm:after:h-8 sm:after:w-px sm:after:-translate-y-1/2 sm:after:bg-[rgba(206,202,194,0.58)] sm:after:content-['']" : "",
-          ].join(" ")}
-          role="listitem"
-        >
-          <div className="font-display text-lg leading-none text-[#18171A] md:text-xl">
-            {signal.value}
-          </div>
-          <div className="mt-1 text-[9px] font-medium uppercase tracking-[0.08em] text-[#6E6D69] md:text-[10px]">
-            {signal.label}
-          </div>
-        </div>
-      ))}
-    </motion.div>
-  );
-}
-
 export default function Hero() {
   const [hoverSuppressed, setHoverSuppressed] = useState(false);
   const [isPhilosophyOpen, setIsPhilosophyOpen] = useState(false);
   const unlockTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const hoverTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
-
-  const scrollToWork = () => {
-    document.querySelector("#work")?.scrollIntoView({ behavior: "smooth" });
-  };
 
   const openPhilosophy = () => {
     if (isPhilosophyOpen) {
@@ -654,7 +609,7 @@ export default function Hero() {
         }}
       />
 
-      <div className="relative z-10 mx-auto w-full max-w-[1280px] pt-3 md:min-h-[calc(80svh-7.5rem)] md:pt-0">
+      <div className="relative z-10 mx-auto flex w-full max-w-[1280px] pt-3 md:min-h-[calc(80svh-7.5rem)] md:items-center md:pt-0">
         <div className="max-w-[840px]">
           <motion.h1
             initial={{ opacity: 0, y: 28 }}
@@ -671,28 +626,10 @@ export default function Hero() {
             initial={{ opacity: 0, y: 18 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.55, delay: 0.24, ease: [0.16, 1, 0.3, 1] }}
-            className="mb-6 max-w-[46ch] text-base leading-relaxed text-[#6A6764] md:text-lg"
+            className="max-w-[46ch] text-base leading-relaxed text-[#6A6764] md:text-lg"
           >
             I design products through systems thinking and deep understanding that work for people and perform for business.
           </motion.p>
-
-          <motion.div
-            initial={{ opacity: 0, y: 18 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.55, delay: 0.34, ease: [0.16, 1, 0.3, 1] }}
-            className="flex flex-wrap items-center gap-3"
-          >
-            <button
-              type="button"
-              onClick={scrollToWork}
-              className="inline-flex min-h-[44px] items-center gap-2 rounded-full bg-[#18171A] px-5 py-3 text-sm font-medium text-[#F9F8F5] transition-colors duration-200 hover:bg-[#C07B50]"
-            >
-              View work
-              <ArrowDown size={14} weight="bold" aria-hidden="true" />
-            </button>
-          </motion.div>
-
-          <SignalPanel />
         </div>
 
       </div>
