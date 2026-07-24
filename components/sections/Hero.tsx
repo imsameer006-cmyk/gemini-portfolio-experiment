@@ -3,13 +3,7 @@
 import { ArrowDown } from "@phosphor-icons/react";
 import { motion, useReducedMotion } from "framer-motion";
 import { useEffect, useRef, useState } from "react";
-
-const SIGNALS = [
-  { value: "Research", label: "Evidence-Led" },
-  { value: "Strategy", label: "Outcome-Focused" },
-  { value: "Systems", label: "Creating Clarity" },
-  { value: "Craft", label: "Execution Excellence" },
-];
+import { homepageContent } from "@/lib/data/homepage";
 
 type ClarityThreadVisualProps = {
   hoverSuppressed: boolean;
@@ -202,7 +196,7 @@ function PhilosophyOverlay({ isOpen, onComplete }: { isOpen: boolean; onComplete
     }
 
     let cancelled = false;
-    const text = "Building clarity out of complexity.";
+    const text = homepageContent.hero.headingText;
     const color = "#EFEFEF";
     const rootStyles = getComputedStyle(document.documentElement);
     const displayFamily =
@@ -528,7 +522,7 @@ function PhilosophyOverlay({ isOpen, onComplete }: { isOpen: boolean; onComplete
       className="fixed inset-0 z-[80] overflow-hidden bg-[#080808] opacity-0 outline-none"
     >
       <canvas ref={canvasRef} aria-hidden="true" className="absolute inset-0 h-full w-full" />
-      <p className="sr-only">Building clarity out of complexity.</p>
+      <p className="sr-only">{homepageContent.hero.headingText}</p>
     </div>
   );
 }
@@ -543,7 +537,7 @@ function SignalPanel() {
       aria-label="Portfolio focus areas"
       role="list"
     >
-      {SIGNALS.map((signal, index) => (
+      {homepageContent.hero.signals.map((signal, index) => (
         <div
           key={signal.label}
           className={[
@@ -662,9 +656,15 @@ export default function Hero() {
             transition={{ duration: 0.65, delay: 0.12, ease: [0.16, 1, 0.3, 1] }}
             className="font-display mb-4 max-w-[16ch] text-[clamp(3rem,8vw,7rem)] italic leading-[1.05] text-[#18171A]"
           >
-            Building clarity{" "}
-            <span className="not-italic">out of</span>{" "}
-            complexity.
+            {homepageContent.hero.headingSegments.map((segment) =>
+              segment.italic ? (
+                <span key={segment.text}>{segment.text}</span>
+              ) : (
+                <span key={segment.text} className="not-italic">
+                  {segment.text}
+                </span>
+              ),
+            )}
           </motion.h1>
 
           <motion.p
@@ -673,7 +673,7 @@ export default function Hero() {
             transition={{ duration: 0.55, delay: 0.24, ease: [0.16, 1, 0.3, 1] }}
             className="mb-6 max-w-[46ch] text-base leading-relaxed text-[#6A6764] md:text-lg"
           >
-            I design products through systems thinking and deep understanding that work for people and perform for business.
+            {homepageContent.hero.statement}
           </motion.p>
 
           <motion.div

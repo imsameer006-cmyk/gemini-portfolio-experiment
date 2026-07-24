@@ -3,6 +3,7 @@
 import { motion } from "framer-motion";
 import Image from "next/image";
 import { useRef, useState } from "react";
+import { homepageContent } from "@/lib/data/homepage";
 import { useReveal, staggerDelay } from "@/lib/motion";
 
 type ExperienceMoment = {
@@ -13,49 +14,7 @@ type ExperienceMoment = {
   imageAlt?: string;
 };
 
-const MOMENTS: ExperienceMoment[] = [
-  {
-    title: "Facilitating Discussions",
-    company: "Rohde & Schwarz",
-    location: "Munich",
-    imageSrc: "/Gallery/editorial/1.webp",
-    imageAlt: "Work moment at Rohde and Schwarz in Munich",
-  },
-  {
-    title: "Cross-functional Collaboration",
-    company: "Infineon",
-    location: "Munich",
-    imageSrc: "/Gallery/editorial/2.webp",
-    imageAlt: "Work moment at Infineon Technologies in Munich",
-  },
-  {
-    title: "Content Co-creation",
-    company: "Infineon",
-    location: "Munich",
-    imageSrc: "/Gallery/editorial/3.webp",
-    imageAlt: "Work moment at Infineon Technologies in Munich",
-  },
-  {
-    title: "Systems Mapping",
-    company: "Rohde & Schwarz",
-    location: "Munich",
-    imageSrc: "/Gallery/editorial/4.webp",
-    imageAlt: "Work moment at Rohde and Schwarz in Munich",
-  },
-  {
-    title: "Design–Engineering Alignment",
-    company: "Infineon",
-    location: "Munich",
-    imageSrc: "/Gallery/editorial/5.webp",
-    imageAlt: "Work moment at Infineon Technologies in Munich",
-  },
-  {
-    title: "Eye-Tracking Debrief",
-    location: "Technische Hochschule Augsburg",
-    imageSrc: "/Gallery/editorial/6-v2.webp",
-    imageAlt: "Reviewing an interface with colleagues during an eye-tracking debrief at Technische Hochschule Augsburg",
-  },
-];
+const MOMENTS: ExperienceMoment[] = [...homepageContent.moments.items];
 
 function ExperiencePhotoCard({
   moment,
@@ -210,17 +169,14 @@ export default function ExperienceMoments() {
         >
           <div>
             <p className="mb-3 text-xs font-medium uppercase tracking-widest text-[var(--color-text-accent)]">
-              Selected Moments
+              {homepageContent.moments.eyebrow}
             </p>
             <h2 className="font-[family-name:var(--font-instrument-serif)] text-[clamp(2rem,4.5vw,3.5rem)] italic leading-tight text-[#18171A]">
-              In Practice.
+              {homepageContent.moments.headline}
             </h2>
           </div>
           <p className="max-w-[640px] text-base leading-relaxed text-[#6A6764] md:text-lg lg:ml-auto">
-            Product design is ultimately about working with people. These moments
-            capture the conversations, workshops, and collaborations that transform
-            ambiguity into shared understanding and shape the systems behind the
-            final experience.
+            {homepageContent.moments.body}
           </p>
         </motion.div>
 

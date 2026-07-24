@@ -1,6 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
+import { homepageContent } from "@/lib/data/homepage";
 import { beliefs } from "@/lib/data/projects";
 import { useReveal, useRevealFade, staggerDelay } from "@/lib/motion";
 
@@ -19,7 +20,7 @@ export default function Philosophy() {
           {...reveal()}
           className="text-xs text-[var(--color-accent)] tracking-widest uppercase font-medium mb-10"
         >
-          My Design Philosophy
+          {homepageContent.philosophy.eyebrow}
         </motion.p>
 
         {/* Core statement */}
@@ -27,15 +28,14 @@ export default function Philosophy() {
           {...reveal(0.08)}
           className="font-[family-name:var(--font-instrument-serif)] italic text-[clamp(1.75rem,4vw,3.25rem)] leading-[1.2] text-[#EDEBE3] mb-6 max-w-[26ch]"
         >
-          &ldquo;Design is the practice of understanding complexity, uncovering what matters, and shaping it into experiences people can understand and use.&rdquo;
+          &ldquo;{homepageContent.philosophy.statement}&rdquo;
         </motion.blockquote>
 
         <motion.p
           {...revealFade(0.2)}
           className="text-[#847F76] text-sm mb-20 max-w-[36ch] leading-relaxed"
         >
-          Over the years, I&apos;ve learned that good design isn&apos;t about adding more&mdash;it&apos;s
-          about understanding what matters and making it clear.
+          {homepageContent.philosophy.body}
         </motion.p>
 
         {/* Divider */}

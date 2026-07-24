@@ -1,6 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
+import { homepageContent } from "@/lib/data/homepage";
 import { useReveal, useRevealFade } from "@/lib/motion";
 
 export default function Contact() {
@@ -17,22 +18,21 @@ export default function Contact() {
           {...reveal()}
           className="text-xs text-[var(--color-accent)] tracking-widest uppercase font-medium mb-8"
         >
-          Get in Touch
+          {homepageContent.contact.eyebrow}
         </motion.p>
 
         <motion.h2
           {...reveal(0.08)}
           className="font-[family-name:var(--font-instrument-serif)] italic text-[clamp(2.5rem,6vw,5rem)] leading-[1.1] text-[#EDEBE3] mb-6 max-w-[18ch]"
         >
-          Let&apos;s build something good.
+          {homepageContent.contact.headline}
         </motion.h2>
 
         <motion.p
           {...revealFade(0.2)}
           className="text-[#847F76] text-base mb-12 max-w-[40ch] leading-relaxed"
         >
-          Whether you&apos;re building a product from scratch, rethinking an existing
-          experience, or just want to talk design — I&apos;d love to hear from you.
+          {homepageContent.contact.body}
         </motion.p>
 
         <motion.div

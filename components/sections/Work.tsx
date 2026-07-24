@@ -2,6 +2,7 @@
 
 import { motion } from "framer-motion";
 import ProjectCard from "@/components/ui/ProjectCard";
+import { homepageContent } from "@/lib/data/homepage";
 import { projects } from "@/lib/data/projects";
 import { useReveal, useRevealFade } from "@/lib/motion";
 
@@ -21,13 +22,13 @@ export default function Work() {
               {...reveal()}
               className="text-xs text-[var(--color-text-accent)] tracking-widest uppercase font-medium mb-3"
             >
-              Selected Work
+              {homepageContent.work.eyebrow}
             </motion.p>
             <motion.h2
               {...reveal(0.06)}
               className="font-[family-name:var(--font-instrument-serif)] italic text-[clamp(2rem,4.5vw,3.5rem)] leading-tight text-[#18171A]"
             >
-              What I&apos;ve shipped.
+              {homepageContent.work.headline}
             </motion.h2>
           </div>
 
@@ -35,7 +36,7 @@ export default function Work() {
             {...revealFade(0.15)}
             className="text-sm text-[#6E6D69] md:text-right max-w-[28ch] leading-relaxed"
           >
-            Each project is a case study in systems thinking and human-centered design.
+            {homepageContent.work.summary}
           </motion.p>
         </div>
 

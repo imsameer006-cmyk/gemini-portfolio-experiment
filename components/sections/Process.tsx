@@ -1,6 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
+import { homepageContent } from "@/lib/data/homepage";
 import { processSteps } from "@/lib/data/projects";
 import { useReveal, useRevealFade, staggerDelay } from "@/lib/motion";
 
@@ -26,13 +27,13 @@ export default function Process() {
             {...reveal()}
             className="text-xs text-[var(--color-text-accent)] tracking-widest uppercase font-medium mb-3"
           >
-            How I Work
+            {homepageContent.process.eyebrow}
           </motion.p>
           <motion.h2
             {...reveal(0.06)}
             className="font-[family-name:var(--font-instrument-serif)] italic text-[clamp(2rem,4.5vw,3.5rem)] leading-tight text-[#18171A] max-w-[20ch]"
           >
-            Process as a design tool.
+            {homepageContent.process.headline}
           </motion.h2>
         </div>
 
@@ -75,8 +76,7 @@ export default function Process() {
           {...revealFade(0.4)}
           className="mt-16 text-xs text-[#6E6D69] max-w-[48ch] leading-relaxed border-t border-[#E6E3DD] pt-8"
         >
-          The process is not linear. Real design work is recursive — each step
-          sends you back to re-examine earlier assumptions with sharper clarity.
+          {homepageContent.process.note}
         </motion.p>
       </div>
     </section>
