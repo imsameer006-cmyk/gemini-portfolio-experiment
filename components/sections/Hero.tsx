@@ -10,6 +10,8 @@ type ClarityThreadVisualProps = {
   onNodeUnlock: () => void;
 };
 
+const showLegacyHeroArt = false;
+
 function ClarityThreadVisual({
   hoverSuppressed,
   isOpen,
@@ -585,14 +587,16 @@ export default function Hero() {
   return (
     <section
       aria-label="Introduction"
-      className="relative overflow-hidden px-6 pb-5 pt-[76px] md:min-h-[80svh] md:px-10 md:pb-5 md:pt-[92px]"
+      className="relative overflow-hidden px-6 pb-10 pt-[76px] md:min-h-[100svh] md:px-10 md:pb-12 md:pt-[92px]"
     >
-      <ClarityThreadVisual
-        hoverSuppressed={hoverSuppressed}
-        isOpen={isPhilosophyOpen}
-        onNodeEnter={onNodeEnter}
-        onNodeUnlock={onNodeUnlock}
-      />
+      {showLegacyHeroArt && (
+        <ClarityThreadVisual
+          hoverSuppressed={hoverSuppressed}
+          isOpen={isPhilosophyOpen}
+          onNodeEnter={onNodeEnter}
+          onNodeUnlock={onNodeUnlock}
+        />
+      )}
       <PhilosophyOverlay
         isOpen={isPhilosophyOpen}
         onComplete={closePhilosophy}
@@ -609,13 +613,13 @@ export default function Hero() {
         }}
       />
 
-      <div className="relative z-10 mx-auto flex w-full max-w-[1280px] pt-3 md:min-h-[calc(80svh-7.5rem)] md:items-end md:pt-0">
-        <div className="max-w-[840px] translate-y-2">
+      <div className="relative z-10 mx-auto flex w-full max-w-[1280px] pt-3 md:min-h-[calc(100svh-4rem)] md:items-end md:pb-12 md:pt-0">
+        <div className="max-w-[840px]">
           <motion.h1
             initial={{ opacity: 0, y: 28 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.65, delay: 0.12, ease: [0.16, 1, 0.3, 1] }}
-            className="font-display mb-4 max-w-none text-[clamp(3rem,8vw,7rem)] leading-[1.05] text-[#18171A]"
+            className="w-fit font-display mb-4 max-w-none text-[clamp(2rem,4.5vw,3.5rem)] leading-tight text-[#18171A]"
           >
             Hi, I put things
             <br />
@@ -626,7 +630,7 @@ export default function Hero() {
             initial={{ opacity: 0, y: 18 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.55, delay: 0.24, ease: [0.16, 1, 0.3, 1] }}
-            className="max-w-[54ch] text-body-compact leading-relaxed text-[#6A6764]"
+            className="max-w-[40ch] text-body-compact leading-relaxed text-[#6A6764]"
           >
             I&apos;m curious and inquisitive by nature — I guess it&apos;s my hidden superpower. Nature is the biggest design inspiration for me: how desert heat from the Middle East warms Europe, how ocean water turns to vapor, becomes clouds, and travels far to water distant lands. Nothing in an ecosystem is wasted, and everything is interwoven — it either serves the system, or it doesn&apos;t survive. I think in systems the same way: I treat data, feedback, and failure as signal, not noise. And I&apos;d rather hear honest feedback than praise that sounds good but gives me nothing to course-correct on.
           </motion.p>
