@@ -70,28 +70,28 @@ export default function GeminiThumbnail() {
       {/* Subtle grid background */}
       <defs>
         <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse">
-          <path d="M 40 0 L 0 0 0 40" fill="none" stroke="#E6E3DD" strokeWidth="0.5" opacity="0.4" />
+          <path d="M 40 0 L 0 0 0 40" fill="none" stroke="var(--work-thumbnail-grid-color)" strokeWidth="0.5" opacity="0.1" />
         </pattern>
         <linearGradient id="line-shimmer" x1="80" y1="145" x2="220" y2="145" gradientUnits="userSpaceOnUse">
-          <stop offset="0%"   stopColor="#BFA391" stopOpacity="0" />
-          <stop offset="50%"  stopColor="#C07B50" stopOpacity="1"   />
-          <stop offset="100%" stopColor="#BFA391" stopOpacity="0" />
+          <stop offset="0%"   stopColor="var(--work-thumbnail-interactive-color)" stopOpacity="0" />
+          <stop offset="50%"  stopColor="var(--work-thumbnail-interactive-color)" stopOpacity="1" />
+          <stop offset="100%" stopColor="var(--work-thumbnail-interactive-color)" stopOpacity="0" />
         </linearGradient>
       </defs>
-      <rect width="460" height="256" fill="#F9F8F5" />
+      <rect width="460" height="256" fill="var(--work-thumbnail-background-color)" />
       <rect width="460" height="256" fill="url(#grid)" />
 
       {/* Main Connection Path - Horizontal & Asymmetrical */}
       <motion.path
         d={`M80 ${yPos}H380`}
-        stroke="#9E7E6B"
+        stroke="var(--work-thumbnail-connector-color)"
         strokeWidth="1"
         opacity="0.22"
         variants={draw}
       />
       <motion.path
         d={`M80 ${yPos}H220`}
-        stroke="#C07B50"
+        stroke="var(--work-thumbnail-connector-color)"
         strokeWidth="1.6"
         strokeLinecap="round"
         variants={baseLineDraw}
@@ -116,18 +116,18 @@ export default function GeminiThumbnail() {
 
       {/* Node 1: DRAFT */}
       <g>
-        <motion.circle 
-          cx="80" cy={yPos} r="16" 
-          fill="#FFFFFF" 
-          stroke="#C07B50" 
+        <motion.circle
+          cx="80" cy={yPos} r="16"
+          fill="var(--work-thumbnail-node-fill-color)"
+          stroke="var(--work-thumbnail-primary-color)"
           strokeWidth="1.2"
           variants={nodeVariants}
           custom={0}
         />
-        <motion.path 
-          d={`M76 ${yPos-4}H81L84 ${yPos-1}V${yPos+6}H76V${yPos-4}Z`} 
-          stroke="#C07B50" 
-          strokeWidth="1" 
+        <motion.path
+          d={`M76 ${yPos-4}H81L84 ${yPos-1}V${yPos+6}H76V${yPos-4}Z`}
+          stroke="var(--work-thumbnail-primary-color)"
+          strokeWidth="1"
           variants={nodeVariants}
           custom={0}
         />
@@ -135,26 +135,26 @@ export default function GeminiThumbnail() {
 
       {/* Node 2: PRE-CHECK */}
       <g>
-        <motion.circle 
-          cx="220" cy={yPos} r="16" 
-          fill="#FFFFFF" 
-          stroke="#C07B50" 
+        <motion.circle
+          cx="220" cy={yPos} r="16"
+          fill="var(--work-thumbnail-node-fill-color)"
+          stroke="var(--work-thumbnail-primary-color)"
           strokeWidth="1.6"
           variants={nodeVariants}
           custom={1}
         />
-        <motion.circle 
-          cx="218" cy={yPos-2} r="5" 
-          stroke="#C07B50" 
-          strokeWidth="1.2" 
+        <motion.circle
+          cx="218" cy={yPos-2} r="5"
+          stroke="var(--work-thumbnail-lotus-color)"
+          strokeWidth="1.2"
           variants={nodeVariants}
           custom={1}
         />
-        <motion.path 
-          d={`M222 ${yPos+2}L226 ${yPos+6}`} 
-          stroke="#C07B50" 
-          strokeWidth="1.2" 
-          strokeLinecap="round" 
+        <motion.path
+          d={`M222 ${yPos+2}L226 ${yPos+6}`}
+          stroke="var(--work-thumbnail-primary-color)"
+          strokeWidth="1.2"
+          strokeLinecap="round"
           variants={nodeVariants}
           custom={1}
         />
@@ -162,21 +162,21 @@ export default function GeminiThumbnail() {
 
       {/* Node 3: FEASIBILITY */}
       <g>
-        <motion.circle 
-          cx="360" cy={yPos} r="16" 
-          fill="#FFFFFF" 
-          stroke="#9E7E6B" 
+        <motion.circle
+          cx="360" cy={yPos} r="16"
+          fill="var(--work-thumbnail-node-fill-color)"
+          stroke="var(--work-thumbnail-secondary-color)"
           strokeWidth="1"
           opacity="0.45"
           variants={nodeVariants}
           custom={2}
         />
-        <motion.path 
-          d={`M354 ${yPos}L358 ${yPos+4}L366 ${yPos-4}`} 
-          stroke="#9E7E6B" 
-          strokeWidth="1.2" 
-          strokeLinecap="round" 
-          strokeLinejoin="round" 
+        <motion.path
+          d={`M354 ${yPos}L358 ${yPos+4}L366 ${yPos-4}`}
+          stroke="var(--work-thumbnail-secondary-color)"
+          strokeWidth="1.2"
+          strokeLinecap="round"
+          strokeLinejoin="round"
           opacity="0.6"
           variants={nodeVariants}
           custom={2}

@@ -24,8 +24,31 @@
   --primitive-taupe-700:    #847F76;
   --primitive-lime-500:     #D2E823;
   --primitive-green-800:    #254F1A;
-  --cyan-400:               #43EBFF;
+  --turquoise-400:          #43EBFF;
   --navy-900:               #003A76;
+  --blue-grey-600:          #5F7388;
+  --blue-grey-400:          #8599AD;
+  --blue-grey-300:          #B4C2CE;
+  --cool-white:             #F8FCFD;
+  --surface-nested:         #EEF6F9;
+  --border-light:           #D8E7EE;
+  --border-subtle:          #E8F0F4;
+  --divider:                #EEF4F7;
+  --connector-blue:         #A9D5E8;
+  --card-hover-blue:        #8DD7F2;
+  --royal-blue:             #3B76D8;
+  --bright-blue:            #0094FB;
+  --lotus-pink:             #B83F77;
+  --pill-default-bg:        #F4FAFC;
+  --pill-default-border:    #DCE8EE;
+  --pill-company-bg:        #EAF7FC;
+  --pill-achievement-bg:    #F8FBFC;
+  --thumbnail-border:       #DCE8EE;
+  --lavender-50:            #F3E8F7;
+  --lavender-border:        #E7D4EC;
+  --lotus-pink-strong:      #C74F86;
+  --moments-border:         #DCE6EC;
+  --moments-border-hover:   #A9D5E8;
 
   /* Tier 2: Semantic colors */
   --color-warm-bg:        var(--primitive-cream-50);
@@ -46,8 +69,6 @@
   --color-focus-ring:     var(--color-accent-hover); /* was var(--color-accent) - failed 3:1 on tinted surface */
   --color-bg-hero:        var(--primitive-lime-500);
   --color-text-hero:      var(--primitive-green-800);
-  --color-bg-work:        var(--cyan-400);
-  --color-text-work:      var(--navy-900);
 
   --color-dark:           var(--primitive-charcoal-900);
   --color-dark-surface:   var(--primitive-charcoal-850);
@@ -56,7 +77,7 @@
   --color-dark-secondary: var(--primitive-stone-500);
   --color-dark-muted:     var(--primitive-taupe-700); /* was #6A6860 - failed WCAG AA at actual 12-16px usage (3.33:1); remediated 2026-07 */
 
-  /* Tier 3: Component colors */
+  /* Tier 3: Homepage component colors */
   --hero-background-color: var(--color-bg-hero);
   --hero-heading-color:    var(--color-text-hero);
   --hero-body-color:       var(--color-text-hero);
@@ -67,16 +88,6 @@
   --nav-wordmark-color-scrolled:       var(--color-text);
   --nav-link-color-scrolled:           var(--color-text);
   --nav-link-indicator-color-scrolled: var(--color-accent);
-  --work-background-color:        var(--color-bg-work);
-  --work-heading-color:           var(--color-text-work);
-  --work-eyebrow-color:           var(--color-text-work);
-  --work-description-color:       var(--color-text-work);
-  --work-card-surface-color:      var(--color-surface);
-  --work-card-text-color:         var(--color-text-work);
-  --work-card-description-color:  var(--color-text-work);
-  --work-card-pill-surface-color: var(--color-surface);
-  --work-card-pill-text-color:    var(--color-text-work);
-  --work-card-icon-color:         var(--color-text-work);
   /* Typography */
   --font-sans:    var(--font-geist-sans), ui-sans-serif, system-ui, sans-serif;
   --font-display: var(--font-linik-sans), ui-sans-serif, system-ui, sans-serif;
@@ -90,6 +101,89 @@
   --ease-out-expo:    cubic-bezier(0.16, 1, 0.3, 1);
   --ease-in-out-soft: cubic-bezier(0.4, 0, 0.2, 1);
   --ease-spring:      cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+/* Tier 3: Homepage / Selected Work */
+#work {
+  --color-text-primary:       var(--navy-900);
+  --color-text-interactive:   var(--navy-900);
+  --color-text-secondary:     var(--blue-grey-600);
+  --color-text-muted:         var(--blue-grey-400);
+  --color-text-disabled:      var(--blue-grey-300);
+  --color-surface-page-work:  var(--turquoise-400);
+  --color-surface-card:       #FFFFFF;
+  --color-surface-thumbnail:  var(--cool-white);
+  --color-surface-nested:     var(--surface-nested);
+  --color-border-primary:     var(--border-light);
+  --color-border-subtle:      var(--border-subtle);
+  --color-accent-lotus:       var(--lotus-pink);
+
+  --work-background-color:             var(--color-surface-page-work);
+  --work-heading-color:                var(--color-text-primary);
+  --work-eyebrow-color:                var(--color-accent-lotus);
+  --work-description-color:            var(--color-text-secondary);
+  --work-card-surface-color:           var(--color-surface-card);
+  --work-card-border-color:            var(--color-border-primary);
+  --work-card-border-color-hover:      var(--card-hover-blue);
+  --work-card-shadow:                  0 6px 18px rgba(0,58,118,.05);
+  --work-card-shadow-hover:            0 12px 24px rgba(0,58,118,.08), 0 28px 64px rgba(0,58,118,.12);
+  --work-card-title-color:             var(--color-text-primary);
+  --work-card-description-color:       var(--color-text-secondary);
+  --work-card-metadata-color:          var(--color-text-muted);
+  --work-card-cta-color:               var(--color-text-interactive);
+  --work-card-cta-border-color:        var(--color-border-primary);
+  --work-card-cta-border-color-hover:  var(--connector-blue);
+  --work-pill-default-surface-color:   var(--pill-default-bg);
+  --work-pill-default-border-color:    var(--pill-default-border);
+  --work-pill-default-text-color:      var(--color-text-secondary);
+  --work-pill-company-surface-color:   var(--pill-company-bg);
+  --work-pill-company-text-color:      var(--color-text-primary);
+  --work-pill-achievement-surface-color: var(--pill-achievement-bg);
+  --work-pill-achievement-text-color:  var(--color-text-muted);
+  --work-thumbnail-background-color:   var(--color-surface-thumbnail);
+  --work-thumbnail-border-color:       var(--thumbnail-border);
+  --work-thumbnail-nested-color:       var(--color-surface-nested);
+  --work-thumbnail-grid-color:         var(--surface-nested);
+  --work-thumbnail-primary-color:      var(--navy-900);
+  --work-thumbnail-secondary-color:    var(--royal-blue);
+  --work-thumbnail-interactive-color:  var(--bright-blue);
+  --work-thumbnail-connector-color:    var(--connector-blue);
+  --work-thumbnail-lotus-color:        var(--color-accent-lotus);
+  --work-thumbnail-node-fill-color:    var(--color-surface-nested);
+}
+
+/* Tier 3: Homepage / About */
+#about {
+  --about-background-color:       var(--lavender-50);
+  --about-heading-color:          var(--navy-900);
+  --about-body-color:             var(--blue-grey-600);
+  --about-supporting-color:       var(--blue-grey-400);
+  --about-eyebrow-color:          var(--lotus-pink-strong);
+  --about-border-color:           var(--lavender-border);
+  --about-portrait-surface-color: #F4F1EC;
+  --about-portrait-shadow:        0 12px 32px rgba(94,54,107,.08);
+  --about-chip-background-color:  #FFFFFF;
+  --about-chip-border-color:      var(--lavender-border);
+  --about-chip-text-color:        var(--blue-grey-600);
+  --about-chip-border-hover:      var(--lotus-pink-strong);
+  --about-chip-text-hover:        var(--navy-900);
+}
+
+/* Tier 3: Homepage / Selected Moments */
+#experience-moments {
+  --moments-background-color:       #FFFFFF;
+  --moments-eyebrow-color:          var(--lotus-pink-strong);
+  --moments-heading-color:          var(--navy-900);
+  --moments-body-color:             var(--blue-grey-600);
+  --moments-card-background-color:  #FFFFFF;
+  --moments-card-border-color:      var(--moments-border);
+  --moments-card-border-hover:      var(--moments-border-hover);
+  --moments-card-shadow:            0 4px 12px rgba(0,58,118,.04);
+  --moments-card-shadow-hover:      0 10px 24px rgba(0,58,118,.08), 0 22px 48px rgba(0,58,118,.10);
+  --moments-title-color:            var(--navy-900);
+  --moments-metadata-color:         var(--blue-grey-400);
+  --moments-indicator-inactive:     var(--border-light);
+  --moments-indicator-active:       var(--lotus-pink-strong);
 }
 
 /* ── Base Reset ─────────────────────────────────────────────── */

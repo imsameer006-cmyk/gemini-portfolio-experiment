@@ -12,7 +12,13 @@ export default function Work() {
   const revealFade = useRevealFade();
 
   return (
-    <section id="work" className="bg-[var(--work-background-color)] px-6 pb-16 pt-10 md:px-10 md:pb-24 md:pt-36">
+    <section
+      id="work"
+      className="px-6 pb-16 pt-10 md:px-10 md:pb-24 md:pt-36"
+      style={{
+        background: "radial-gradient(circle at top, rgba(255,255,255,.08), transparent 65%), var(--work-background-color)",
+      }}
+    >
       <div className="max-w-[1280px] mx-auto">
         {/* Section header */}
         <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-14">
@@ -33,7 +39,7 @@ export default function Work() {
 
           <motion.p
             {...revealFade(0.15)}
-            className="text-sm text-[var(--work-description-color)]/70 md:text-right max-w-[28ch] leading-relaxed"
+            className="text-sm text-[var(--work-description-color)] md:text-right max-w-[28ch] leading-relaxed"
           >
             Each project is a case study in systems thinking and human-centered design.
           </motion.p>

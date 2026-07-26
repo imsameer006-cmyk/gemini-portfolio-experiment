@@ -76,16 +76,16 @@ export default function DesignSystemThumbnail() {
     >
       <defs>
         <pattern id="grid-ds" width="40" height="40" patternUnits="userSpaceOnUse">
-          <path d="M 40 0 L 0 0 0 40" fill="none" stroke="#E6E3DD" strokeWidth="0.5" opacity="0.4" />
+          <path d="M 40 0 L 0 0 0 40" fill="none" stroke="var(--work-thumbnail-grid-color)" strokeWidth="0.5" opacity="0.1" />
         </pattern>
         <linearGradient id="line-shimmer-ds" x1="150" y1={Y} x2="340" y2={Y} gradientUnits="userSpaceOnUse">
-          <stop offset="0%" stopColor="#BFA391" stopOpacity="0" />
-          <stop offset="50%" stopColor="#C07B50" stopOpacity="1" />
-          <stop offset="100%" stopColor="#BFA391" stopOpacity="0" />
+          <stop offset="0%" stopColor="var(--work-thumbnail-interactive-color)" stopOpacity="0" />
+          <stop offset="50%" stopColor="var(--work-thumbnail-interactive-color)" stopOpacity="1" />
+          <stop offset="100%" stopColor="var(--work-thumbnail-interactive-color)" stopOpacity="0" />
         </linearGradient>
       </defs>
 
-      <rect width="460" height="256" fill="#F9F8F5" />
+      <rect width="460" height="256" fill="var(--work-thumbnail-background-color)" />
       <rect width="460" height="256" fill="url(#grid-ds)" />
 
       {/* Drifted swatches — scattered, low opacity, representing pre-audit color drift */}
@@ -97,7 +97,7 @@ export default function DesignSystemThumbnail() {
           width={s.size}
           height={s.size}
           rx={2}
-          stroke="#9E7E6B"
+          stroke="var(--work-thumbnail-secondary-color)"
           strokeWidth="1"
           transform={`rotate(${s.rotate} ${s.x} ${s.y})`}
           variants={driftIn}
@@ -106,7 +106,7 @@ export default function DesignSystemThumbnail() {
       ))}
 
       {/* Connecting path — drift converging into the token chain */}
-      <motion.path d={`M150 ${Y}H340`} stroke="#9E7E6B" strokeWidth="1.6" strokeLinecap="round" variants={baseLineDraw} className="group-hover:opacity-60 transition-opacity duration-500" />
+      <motion.path d={`M150 ${Y}H340`} stroke="var(--work-thumbnail-connector-color)" strokeWidth="1.6" strokeLinecap="round" variants={baseLineDraw} className="group-hover:opacity-60 transition-opacity duration-500" />
       <motion.path d={`M150 ${Y}H340`} stroke="url(#line-shimmer-ds)" strokeWidth="2" strokeLinecap="round" variants={shimmerVariants(0.6)} />
       <motion.path d={`M150 ${Y}H340`} stroke="url(#line-shimmer-ds)" strokeWidth="2" strokeLinecap="round" variants={shimmerVariants(2.1)} />
 
@@ -119,14 +119,14 @@ export default function DesignSystemThumbnail() {
             width={30}
             height={30}
             rx={6}
-            fill="#FFFFFF"
-            stroke={s.accent ? "#C07B50" : "#9E7E6B"}
+            fill="var(--work-thumbnail-node-fill-color)"
+            stroke={s.accent ? "var(--work-thumbnail-primary-color)" : "var(--work-thumbnail-secondary-color)"}
             strokeWidth={s.accent ? 1.6 : 1}
             variants={resolvedIn}
             custom={i}
           />
           {s.accent && (
-            <motion.circle cx={s.x} cy={Y} r={4} fill="#C07B50" variants={resolvedIn} custom={i} />
+            <motion.circle cx={s.x} cy={Y} r={4} fill="var(--work-thumbnail-lotus-color)" variants={resolvedIn} custom={i} />
           )}
         </g>
       ))}

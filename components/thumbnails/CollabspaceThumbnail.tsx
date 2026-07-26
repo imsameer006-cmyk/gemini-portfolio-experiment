@@ -25,7 +25,7 @@ function NodeIcon({
   variants: Parameters<typeof motion.path>[0]["variants"];
   custom: number;
 }) {
-  const base = { stroke: "#9E7E6B", strokeWidth: "1", fill: "none", variants, custom } as const;
+  const base = { stroke: "var(--work-thumbnail-secondary-color)", strokeWidth: "1", fill: "none", variants, custom } as const;
 
   switch (shape) {
     case "square":
@@ -39,7 +39,7 @@ function NodeIcon({
     case "pentagon":
       return <motion.path d={`M${cx} ${cy-5}L${cx+4.8} ${cy-1.5}L${cx+2.9} ${cy+4}L${cx-2.9} ${cy+4}L${cx-4.8} ${cy-1.5}Z`} strokeLinejoin="round" {...base} />;
     case "circle":
-      return <motion.circle cx={cx} cy={cy} r={4} stroke="#9E7E6B" strokeWidth="1" fill="none" variants={variants} custom={custom} />;
+      return <motion.circle cx={cx} cy={cy} r={4} stroke="var(--work-thumbnail-secondary-color)" strokeWidth="1" fill="none" variants={variants} custom={custom} />;
   }
 }
 
@@ -95,16 +95,16 @@ export default function CollabspaceThumbnail() {
     >
       <defs>
         <pattern id="grid-collab" width="40" height="40" patternUnits="userSpaceOnUse">
-          <path d="M 40 0 L 0 0 0 40" fill="none" stroke="#E6E3DD" strokeWidth="0.5" opacity="0.4" />
+          <path d="M 40 0 L 0 0 0 40" fill="none" stroke="var(--work-thumbnail-grid-color)" strokeWidth="0.5" opacity="0.1" />
         </pattern>
         <radialGradient id="spoke-shimmer" cx="230" cy="128" r="90" gradientUnits="userSpaceOnUse">
-          <stop offset="0%"   stopColor="#BFA391" stopOpacity="0" />
-          <stop offset="50%"  stopColor="#C07B50" stopOpacity="1"   />
-          <stop offset="100%" stopColor="#BFA391" stopOpacity="0" />
+          <stop offset="0%"   stopColor="var(--work-thumbnail-interactive-color)" stopOpacity="0" />
+          <stop offset="50%"  stopColor="var(--work-thumbnail-interactive-color)" stopOpacity="1" />
+          <stop offset="100%" stopColor="var(--work-thumbnail-interactive-color)" stopOpacity="0" />
         </radialGradient>
       </defs>
 
-      <rect width="460" height="256" fill="#F9F8F5" />
+      <rect width="460" height="256" fill="var(--work-thumbnail-background-color)" />
       <rect width="460" height="256" fill="url(#grid-collab)" />
 
       {/* Base spokes — static, low opacity */}
@@ -112,7 +112,7 @@ export default function CollabspaceThumbnail() {
         <motion.path
           key={`base-${i}`}
           d={`M${CENTER.x} ${CENTER.y}L${node.x} ${node.y}`}
-          stroke="#C07B50"
+          stroke="var(--work-thumbnail-connector-color)"
           strokeWidth="1.6"
           variants={baseLineDraw}
           className="group-hover:opacity-60 transition-opacity duration-500"
@@ -146,7 +146,7 @@ export default function CollabspaceThumbnail() {
         <g key={i}>
           <motion.circle
             cx={node.x} cy={node.y} r={16}
-            fill="#FFFFFF" stroke="#9E7E6B" strokeWidth="1"
+            fill="var(--work-thumbnail-node-fill-color)" stroke="var(--work-thumbnail-secondary-color)" strokeWidth="1"
             variants={nodeVariants}
             custom={i + 1}
           />
@@ -162,13 +162,13 @@ export default function CollabspaceThumbnail() {
       {/* Centre node — active */}
       <motion.circle
         cx={CENTER.x} cy={CENTER.y} r={16}
-        fill="#FFFFFF" stroke="#C07B50" strokeWidth="1.6"
+        fill="var(--work-thumbnail-node-fill-color)" stroke="var(--work-thumbnail-primary-color)" strokeWidth="1.6"
         variants={nodeVariants}
         custom={0}
       />
       <motion.circle
         cx={CENTER.x} cy={CENTER.y} r={1.5}
-        fill="#C07B50"
+        fill="var(--work-thumbnail-lotus-color)"
         variants={nodeVariants}
         custom={0}
       />
