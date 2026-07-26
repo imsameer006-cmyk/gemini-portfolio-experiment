@@ -30,7 +30,7 @@ export default function Process() {
           </motion.p>
           <motion.h2
             {...reveal(0.06)}
-            className="font-display text-[clamp(2rem,4.5vw,3.5rem)] leading-tight text-[#18171A] max-w-[20ch]"
+            className="font-display max-w-[20ch] text-[clamp(2rem,4.5vw,3.5rem)] font-bold leading-tight text-[#18171A]"
           >
             Process as a design tool.
           </motion.h2>

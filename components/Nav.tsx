@@ -4,7 +4,6 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { LinkedinLogo } from "@phosphor-icons/react";
-import PixelBand from "@/components/ui/PixelBand";
 
 const links = [
   { label: "Work", href: "#work" },
@@ -18,7 +17,6 @@ export default function Nav() {
   const [scrolled, setScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
   const [activeSection, setActiveSection] = useState<string | null>(null);
-  const [navMarkLit, setNavMarkLit] = useState(false);
   const pathname = usePathname();
 
   const isWorkPage = pathname.startsWith("/work/");
@@ -90,10 +88,10 @@ export default function Nav() {
     <>
       <header
         className={[
-          "fixed top-0 left-0 right-0 z-50 transition-all duration-300",
+          "fixed z-50 transition-all duration-300",
           scrolled
-            ? "bg-[#F9F8F5]/90 backdrop-blur-md border-b border-[#E6E3DD]"
-            : "bg-transparent",
+            ? "top-4 left-4 right-4 rounded-2xl border border-[#E6E3DD] bg-[#F9F8F5]/90 shadow-[0_2px_12px_rgba(0,0,0,0.08)] backdrop-blur-md md:left-6 md:right-6"
+            : "top-0 left-0 right-0 rounded-none border-0 bg-transparent shadow-none",
         ].join(" ")}
       >
         <nav className="max-w-[1360px] mx-auto px-6 md:px-10 h-[46px] flex items-center">
@@ -101,10 +99,6 @@ export default function Nav() {
           <div className="flex-1 flex items-center">
             <Link
               href="/"
-              onMouseEnter={() => setNavMarkLit(true)}
-              onMouseLeave={() => setNavMarkLit(false)}
-              onFocus={() => setNavMarkLit(true)}
-              onBlur={() => setNavMarkLit(false)}
               onClick={(e) => {
                 setMobileOpen(false);
                 if (pathname === "/") {
@@ -112,9 +106,11 @@ export default function Nav() {
                   window.scrollTo({ top: 0, behavior: "smooth" });
                 }
               }}
-              className="pixel-band-link inline-flex min-h-11 items-center justify-center text-[#18171A] pr-3 md:pr-2"
+              className="inline-flex min-h-11 items-center justify-center pr-3 text-[#18171A] md:pr-2"
             >
-              <PixelBand variant="nav" mode="smart" lit={navMarkLit} />
+              <span className="text-[13px] font-semibold uppercase tracking-[0.14em]">
+                SAMEER G.
+              </span>
             </Link>
           </div>
 

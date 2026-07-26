@@ -212,7 +212,7 @@ export default function ExperienceMoments() {
             <p className="mb-3 text-xs font-medium uppercase tracking-widest text-[var(--color-text-accent)]">
               Selected Moments
             </p>
-            <h2 className="font-display text-[clamp(2rem,4.5vw,3.5rem)] leading-tight text-[#18171A]">
+            <h2 className="font-display text-[clamp(2rem,4.5vw,3.5rem)] font-bold leading-tight text-[#18171A]">
               In Practice.
             </h2>
           </div>

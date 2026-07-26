@@ -6,7 +6,7 @@ export default function NotFound() {
       <p className="mb-4 text-xs font-medium uppercase tracking-widest text-[var(--color-text-accent)]">
         404
       </p>
-      <h1 className="font-display text-[clamp(2rem,4.5vw,3.5rem)] leading-tight text-[#18171A]">
+      <h1 className="font-display text-[clamp(2rem,4.5vw,3.5rem)] font-bold leading-tight text-[#18171A]">
         This page fell outside the user flow.
       </h1>
       <p className="mt-5 max-w-[46ch] text-base leading-relaxed text-[#6A6764]">

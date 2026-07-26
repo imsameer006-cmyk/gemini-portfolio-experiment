@@ -30,7 +30,8 @@
 
   /* Typography */
   --font-sans:    var(--font-geist-sans), ui-sans-serif, system-ui, sans-serif;
-  --font-display: var(--font-open-sans), ui-sans-serif, system-ui, sans-serif;
+  --font-display: var(--font-linik-sans), ui-sans-serif, system-ui, sans-serif;
+  --font-quote:   var(--font-open-sans), ui-sans-serif, system-ui, sans-serif;
   --font-numeral: var(--font-archivo-black), ui-sans-serif, system-ui, sans-serif;
   --font-mono:    var(--font-geist-mono), ui-monospace, monospace;
   --text-body:    1rem;
@@ -67,6 +68,10 @@ body {
 
 .display-italic {
   font-family: var(--font-display);
+}
+
+.font-quote {
+  font-family: var(--font-quote);
 }
 
 /* Pixel wordmark */

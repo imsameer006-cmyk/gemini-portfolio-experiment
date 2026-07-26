@@ -55,7 +55,7 @@ export default function Testimonials() {
           <p className="mb-3 text-xs font-medium uppercase tracking-widest text-[var(--color-text-accent)]">
             Testimonials
           </p>
-          <h2 className="font-display text-[clamp(2rem,4.5vw,3.5rem)] leading-tight text-[#18171A]">
+          <h2 className="font-display text-[clamp(2rem,4.5vw,3.5rem)] font-bold leading-tight text-[#18171A]">
             What people say.
           </h2>
         </motion.div>
@@ -69,11 +69,11 @@ export default function Testimonials() {
             >
               <span
                 aria-hidden="true"
-                className="mb-4 font-display text-[3rem] leading-none text-[#C07B50] select-none"
+                className="mb-4 font-quote text-[3rem] leading-none text-[#C07B50] select-none"
               >
                 &ldquo;
               </span>
-              <p className="flex-1 font-display text-lg leading-relaxed text-[#3A3836]">
+              <p className="flex-1 font-quote text-lg leading-relaxed text-[#3A3836]">
                 {t.quote}
               </p>
               <div className="mt-6 border-t border-[#E6E3DD] pt-5 flex items-center gap-3">

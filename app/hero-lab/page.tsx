@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { AsteriskHeroExperiment } from "./_sandbox/AsteriskHeroExperiment";
 import { GeminiHeroSandbox } from "./_sandbox/GeminiHeroSandbox";
 import { CollabHeroSandbox } from "./_sandbox/CollabHeroSandbox";
 
@@ -195,6 +196,14 @@ export default function HeroLabPage() {
   return (
     <section className="min-h-screen bg-[#0B0A0C] px-6 py-20 md:px-10">
       <div className="mx-auto w-full max-w-[1584px] flex flex-col gap-10">
+        <div>
+          <p className="mb-3 text-[11px] font-mono tracking-wider text-[#6A6764] uppercase">
+            Sandbox — Homepage Hero Asterisk Experiment · isolated preview
+          </p>
+          <div className="overflow-hidden rounded-lg border border-[#2E2C27]">
+            <AsteriskHeroExperiment />
+          </div>
+        </div>
 
         {/* ── Canvas 1: Light ───────────────────────────────────────────── */}
         <div>
@@ -226,7 +235,7 @@ export default function HeroLabPage() {
               <div>
                 <div className="mb-6 h-[2px] w-[44px] rounded-full bg-[#C07B50]" />
                 <h1
-                  className="font-display leading-[0.93] text-[#18171A]"
+                  className="font-display font-bold leading-[0.93] text-[#18171A]"
                   style={{ fontSize: "50px" }}
                 >
                   Building clarity
@@ -283,7 +292,7 @@ export default function HeroLabPage() {
               <div className="flex flex-col items-end">
                 <div className="mb-6 h-[2px] w-[44px] rounded-full bg-[#C07B50]" />
                 <h1
-                  className="font-display leading-[0.95] text-[#F5F3F1]"
+                  className="font-display font-bold leading-[0.95] text-[#F5F3F1]"
                   style={{ fontSize: "52px" }}
                 >
                   Building clarity
@@ -337,7 +346,7 @@ export default function HeroLabPage() {
               <div className="flex flex-col items-end">
                 <div className="mb-6 h-[2px] w-[44px] rounded-full bg-[#CBD5E1]" />
                 <h1
-                  className="font-display leading-[0.95] text-[#F3F4F6]"
+                  className="font-display font-bold leading-[0.95] text-[#F3F4F6]"
                   style={{ fontSize: "52px" }}
                 >
                   Building clarity

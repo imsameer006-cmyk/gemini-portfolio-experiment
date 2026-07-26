@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Archivo_Black, Geist, Geist_Mono, Open_Sans } from "next/font/google";
+import localFont from "next/font/local";
 import Script from "next/script";
 import { GoogleAnalytics } from "@next/third-parties/google";
 import Nav from "@/components/Nav";
@@ -25,6 +26,14 @@ const openSans = Open_Sans({
   variable: "--font-open-sans",
   subsets: ["latin"],
   weight: "400",
+  display: "swap",
+});
+
+const linikSans = localFont({
+  src: "../public/Fonts/LinikSans[wght].ttf",
+  variable: "--font-linik-sans",
+  weight: "100 900",
+  style: "normal",
   display: "swap",
 });
 
@@ -81,7 +90,7 @@ export default function RootLayout({
     <html
       lang="en"
       data-scroll-behavior="smooth"
-      className={`${geistSans.variable} ${geistMono.variable} ${openSans.variable} ${archivoBlack.variable}`}
+      className={`${geistSans.variable} ${geistMono.variable} ${openSans.variable} ${linikSans.variable} ${archivoBlack.variable}`}
     >
       <body className="bg-[#F9F8F5] text-[#18171A] antialiased min-h-screen flex flex-col">
         <MotionProvider>

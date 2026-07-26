@@ -2,6 +2,7 @@
 
 import { motion, useReducedMotion } from "framer-motion";
 import { useEffect, useRef, useState } from "react";
+import StructuralAsteriskHeroArt from "./StructuralAsteriskHeroArt";
 
 type ClarityThreadVisualProps = {
   hoverSuppressed: boolean;
@@ -200,8 +201,9 @@ function PhilosophyOverlay({ isOpen, onComplete }: { isOpen: boolean; onComplete
     const color = "#EFEFEF";
     const rootStyles = getComputedStyle(document.documentElement);
     const displayFamily =
-      rootStyles.getPropertyValue("--font-open-sans").trim() ||
-      "Open Sans, Arial, sans-serif";
+      rootStyles.getPropertyValue("--font-linik-sans").trim() ||
+      rootStyles.getPropertyValue("--font-display").trim() ||
+      "Linik Sans, Arial, sans-serif";
 
     const wait = (ms: number) =>
       new Promise<void>((resolve) => {
@@ -530,6 +532,7 @@ function PhilosophyOverlay({ isOpen, onComplete }: { isOpen: boolean; onComplete
 export default function Hero() {
   const [hoverSuppressed, setHoverSuppressed] = useState(false);
   const [isPhilosophyOpen, setIsPhilosophyOpen] = useState(false);
+  const [isHeroIntroExpanded, setIsHeroIntroExpanded] = useState(false);
   const unlockTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const hoverTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
@@ -602,37 +605,58 @@ export default function Hero() {
         onComplete={closePhilosophy}
       />
 
-      {/* Subtle grid texture - Harmonized to 40px spacing */}
-      <div
-        aria-hidden="true"
-        className="absolute inset-0 pointer-events-none"
-        style={{
-          backgroundImage: `radial-gradient(circle at 1px 1px, #E6E3DD 1px, transparent 0)`,
-          backgroundSize: "40px 40px",
-          opacity: 0.5,
-        }}
-      />
+      <StructuralAsteriskHeroArt />
 
-      <div className="relative z-10 mx-auto flex w-full max-w-[1280px] pt-3 md:min-h-[calc(100svh-4rem)] md:items-end md:pb-12 md:pt-0">
-        <div className="max-w-[840px]">
+      <div className="pointer-events-none relative z-10 mx-auto flex w-full max-w-[1280px] justify-center pt-3 md:min-h-[calc(100svh-4rem)] md:items-end md:pb-12 md:pt-0">
+        <div className="pointer-events-none relative isolate w-full max-w-[800px] text-center">
+          <div
+            aria-hidden="true"
+            className="pointer-events-none absolute -inset-x-10 -inset-y-8 -z-10"
+            style={{
+              background:
+                "radial-gradient(ellipse at center, color-mix(in srgb, var(--color-warm-bg) 96%, transparent) 0%, color-mix(in srgb, var(--color-warm-bg) 82%, transparent) 48%, color-mix(in srgb, var(--color-warm-bg) 0%, transparent) 78%)",
+            }}
+          />
           <motion.h1
             initial={{ opacity: 0, y: 28 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.65, delay: 0.12, ease: [0.16, 1, 0.3, 1] }}
-            className="w-fit font-display mb-4 max-w-none text-[clamp(2rem,4.5vw,3.5rem)] leading-tight text-[#18171A]"
+            className="mx-auto mb-4 w-fit max-w-none font-display text-[clamp(2rem,4.5vw,3.5rem)] font-black leading-tight text-[#18171A]"
           >
-            Hi, I put things
-            <br />
-            together.
+            Hi, I discover patterns, & connect the dots.
           </motion.h1>
 
           <motion.p
             initial={{ opacity: 0, y: 18 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.55, delay: 0.24, ease: [0.16, 1, 0.3, 1] }}
-            className="max-w-[40ch] text-body-compact leading-relaxed text-[#6A6764]"
+            className="max-w-[800px] text-body-compact leading-relaxed text-[#6A6764]"
           >
-            I&apos;m curious and inquisitive by nature — I guess it&apos;s my hidden superpower. Nature is the biggest design inspiration for me: how desert heat from the Middle East warms Europe, how ocean water turns to vapor, becomes clouds, and travels far to water distant lands. Nothing in an ecosystem is wasted, and everything is interwoven — it either serves the system, or it doesn&apos;t survive. I think in systems the same way: I treat data, feedback, and failure as signal, not noise. And I&apos;d rather hear honest feedback than praise that sounds good but gives me nothing to course-correct on.
+            I&apos;m curious and inquisitive by nature — I guess it&apos;s my hidden superpower. For me, nature is the biggest design inspiration.
+            {isHeroIntroExpanded && (
+              <>
+                {" "}Desert heat from the Middle East warms Europe, ocean water becomes clouds, and travels far to water distant lands. Nothing in an ecosystem is wasted — everything is interwoven, serving the system or failing to survive. I think in systems the same way, treating data, feedback, and failure as signal, not noise. And I prefer honest feedback over praise that sounds good but gives nothing to course-correct on.{" "}
+                <button
+                  type="button"
+                  onClick={() => setIsHeroIntroExpanded(false)}
+                  className="pointer-events-auto inline text-[#18171A] underline decoration-[#C07B50]/60 underline-offset-4 transition-colors duration-200 hover:text-[#C07B50] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#C07B50]"
+                >
+                  Less
+                </button>
+              </>
+            )}
+            {!isHeroIntroExpanded && (
+              <>
+                {" "}
+                <button
+                  type="button"
+                  onClick={() => setIsHeroIntroExpanded(true)}
+                  className="pointer-events-auto inline text-[#18171A] underline decoration-[#C07B50]/60 underline-offset-4 transition-colors duration-200 hover:text-[#C07B50] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#C07B50]"
+                >
+                  More
+                </button>
+              </>
+            )}
           </motion.p>
         </div>
 

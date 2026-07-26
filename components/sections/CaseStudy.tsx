@@ -939,7 +939,7 @@ function ImagePlaceholder({ caption, tall }: { caption: string; tall?: boolean }
 function PullQuote({ text }: { text: string }) {
   return (
     <blockquote className="border-l-[3px] border-[#C07B50]/30 pl-6 my-1">
-      <p className="font-display text-[clamp(1.1rem,2.5vw,1.3rem)] text-[#18171A] leading-snug max-w-[640px]">
+      <p className="font-quote max-w-[640px] text-[clamp(1.1rem,2.5vw,1.3rem)] leading-snug text-[#18171A]">
         &ldquo;{text}&rdquo;
       </p>
     </blockquote>
@@ -948,7 +948,7 @@ function PullQuote({ text }: { text: string }) {
 
 function ClosingLine({ text }: { text: string }) {
   return (
-    <p className="font-display text-base text-[#6A6764]">
+    <p className="font-quote text-base text-[#6A6764]">
       {text}
     </p>
   );
@@ -1419,7 +1419,7 @@ function Section({
         </span>
 
         {section.heading && (
-          <h2 className="font-display text-[clamp(1.5rem,3vw,2.25rem)] leading-snug text-[#18171A] max-w-[22ch] mb-8">
+          <h2 className="mb-8 max-w-[22ch] font-display text-[clamp(1.5rem,3vw,2.25rem)] font-bold leading-snug text-[#18171A]">
             {section.heading}
           </h2>
         )}
@@ -1510,7 +1510,7 @@ export default function CaseStudy({ project, content }: Props) {
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.55, delay: 0.08, ease: [0.16, 1, 0.3, 1] }}
-                className="font-display text-[clamp(2.50rem,3.74vw,4.06rem)] leading-tight text-[#18171A] max-w-[670px]"
+                className="font-display max-w-[670px] text-[clamp(2.50rem,3.74vw,4.06rem)] font-bold leading-tight text-[#18171A]"
               >
                 {project.title}
               </motion.h1>
@@ -1595,7 +1595,7 @@ export default function CaseStudy({ project, content }: Props) {
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.55, delay: 0.08, ease: [0.16, 1, 0.3, 1] }}
-                className="font-display text-[clamp(2rem,5vw,4rem)] leading-tight text-[#18171A] max-w-[22ch] mb-5"
+                className="mb-5 max-w-[22ch] font-display text-[clamp(2rem,5vw,4rem)] font-bold leading-tight text-[#18171A]"
               >
                 {project.title}
               </motion.h1>

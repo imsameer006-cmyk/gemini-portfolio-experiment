@@ -17,6 +17,10 @@ function isStaticAsset(pathname: string) {
 export async function proxy(request: NextRequest) {
   const { pathname, search } = request.nextUrl;
 
+  if (process.env.NODE_ENV !== "production") {
+    return NextResponse.next();
+  }
+
   if (PUBLIC_PATHS.has(pathname) || isStaticAsset(pathname)) {
     return NextResponse.next();
   }

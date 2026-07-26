@@ -22,7 +22,7 @@ export default function Contact() {
 
         <motion.h2
           {...reveal(0.08)}
-          className="font-display text-[clamp(2.5rem,6vw,5rem)] leading-[1.1] text-[#EDEBE3] mb-6 max-w-[18ch]"
+          className="mb-6 max-w-[18ch] font-display text-[clamp(2.5rem,6vw,5rem)] font-bold leading-[1.1] text-[#EDEBE3]"
         >
           Let&apos;s build something good.
         </motion.h2>

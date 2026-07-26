@@ -19,7 +19,7 @@ export default function DemoPage() {
           style={{
             fontFamily: "var(--font-display, Georgia, serif)",
             fontSize: "clamp(28px, 4vw, 42px)",
-            fontWeight: 400,
+            fontWeight: 700,
             color: "#18171A",
             margin: "0 0 8px",
             lineHeight: 1.2,
