@@ -20,7 +20,7 @@ export default function ProjectCard({ project, index }: ProjectCardProps) {
     >
       <Link
         href={`/work/${project.slug}`}
-        className="group flex flex-col h-full bg-[var(--work-card-surface-color)] border border-[var(--work-card-border-color)] rounded-2xl overflow-hidden shadow-[var(--work-card-shadow)] hover:border-2 hover:border-[var(--work-card-border-color-hover)] hover:shadow-[var(--work-card-shadow-hover)] transition-[border-color,border-width,box-shadow] duration-300"
+        className="premium-white-surface group flex flex-col h-full border border-[var(--work-card-border-color)] rounded-2xl overflow-hidden hover:border-2 hover:border-[var(--work-card-border-color-hover)] transition-[border-color,border-width,box-shadow] duration-300 [--surface-shadow-hover:var(--work-card-shadow-hover)] [--surface-shadow:var(--work-card-shadow)]"
         aria-label={`View case study: ${project.title}`}
       >
         {/* Visual panel */}

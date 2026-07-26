@@ -11,13 +11,13 @@ export default function Philosophy() {
   return (
     <section
       id="philosophy"
-      className="bg-[var(--color-dark)] px-6 md:px-10 py-24 md:py-36"
+      className="homepage-atmosphere home-philosophy-atmosphere px-6 md:px-10 py-24 md:py-36"
     >
       <div className="max-w-[1280px] mx-auto">
         {/* Section label */}
         <motion.p
           {...reveal()}
-          className="text-xs text-[var(--color-accent)] tracking-widest uppercase font-medium mb-10"
+          className="text-xs text-[var(--philosophy-eyebrow-color)] tracking-widest uppercase font-medium mb-10"
         >
           My Design Philosophy
         </motion.p>
@@ -25,21 +25,21 @@ export default function Philosophy() {
         {/* Core statement */}
         <motion.blockquote
           {...reveal(0.08)}
-          className="mb-6 max-w-[26ch] font-quote text-[clamp(1.75rem,4vw,3.25rem)] leading-[1.2] text-[var(--color-dark-text)]"
+          className="mb-6 max-w-[26ch] font-quote text-[clamp(1.75rem,4vw,3.25rem)] leading-[1.2] text-[var(--philosophy-heading-color)]"
         >
           &ldquo;Design is the practice of understanding complexity, uncovering what matters, and shaping it into experiences people can understand and use.&rdquo;
         </motion.blockquote>
 
         <motion.p
           {...revealFade(0.2)}
-          className="text-[var(--color-dark-muted)] text-sm mb-20 max-w-[36ch] leading-relaxed"
+          className="text-[var(--philosophy-body-color)] text-sm mb-20 max-w-[36ch] leading-relaxed"
         >
           Over the years, I&apos;ve learned that good design isn&apos;t about adding more&mdash;it&apos;s
           about understanding what matters and making it clear.
         </motion.p>
 
         {/* Divider */}
-        <div className="border-t border-[var(--color-dark-border)] mb-16" />
+        <div className="border-t border-[var(--philosophy-divider-color)] mb-16" />
 
         {/* Beliefs grid */}
         <div className="grid grid-cols-1 gap-12 md:grid-cols-3 md:gap-12">
@@ -49,13 +49,13 @@ export default function Philosophy() {
               {...reveal(staggerDelay(i))}
               className="grid h-full grid-rows-[auto_auto_1fr] content-start"
             >
-              <span className="mb-5 block text-xs font-medium uppercase tracking-widest text-[var(--color-dark-muted)]">
+              <span className="mb-5 block text-xs font-medium uppercase tracking-widest text-[var(--philosophy-secondary-color)]">
                 {String(i + 1).padStart(2, "0")}
               </span>
-              <h3 className="mb-4 max-w-[24ch] text-base font-medium leading-snug text-[var(--color-dark-text)] md:text-lg">
+              <h3 className="mb-4 max-w-[24ch] text-base font-medium leading-snug text-[var(--philosophy-principle-title-color)] md:text-lg">
                 {belief.heading}
               </h3>
-              <p className="max-w-[38ch] text-sm leading-relaxed text-[var(--color-dark-muted)]">
+              <p className="max-w-[38ch] text-sm leading-relaxed text-[var(--philosophy-principle-body-color)]">
                 {belief.body}
               </p>
             </motion.div>

@@ -1,16 +1,61 @@
-import PixelBand from "@/components/ui/PixelBand";
+export function FooterAsterisk() {
+  const spokeAngles = [0, 60, 120, 180, 240, 300];
+
+  return (
+    <div className="flex h-[80px] w-[50px] items-center justify-center">
+      <svg
+        width="50"
+        height="50"
+        viewBox="-100 -100 200 200"
+        fill="none"
+        xmlns="http://www.w3.org/2000/svg"
+        className="h-[50px] w-[50px]"
+        aria-hidden="true"
+      >
+        <defs>
+          <radialGradient
+            id="footerAsteriskMetallic"
+            cx="0"
+            cy="0"
+            r="90"
+            gradientUnits="userSpaceOnUse"
+          >
+            <stop offset="0%" stopColor="#89B5CC" />
+            <stop offset="55%" stopColor="#6497B1" />
+            <stop offset="100%" stopColor="#426F8A" />
+          </radialGradient>
+        </defs>
+        <g transform="translate(0,0)">
+          {spokeAngles.map((angle) => (
+            <rect
+              key={angle}
+              x="-12"
+              y="-90"
+              width="24"
+              height="95"
+              rx="2"
+              fill="url(#footerAsteriskMetallic)"
+              transform={`rotate(${angle})`}
+              shapeRendering="geometricPrecision"
+            />
+          ))}
+        </g>
+      </svg>
+    </div>
+  );
+}
 
 export default function Footer() {
   const year = new Date().getFullYear();
 
   return (
-    <footer className="bg-[var(--color-dark)] border-t border-[var(--color-dark-border)]">
-      <div className="max-w-[1280px] mx-auto px-6 md:px-10 py-10">
-        <div className="text-[var(--color-dark-text)] mb-8 flex justify-center">
-          <PixelBand variant="hero" />
+    <footer className="bg-[var(--footer-background-color)]">
+      <div className="max-w-[1280px] mx-auto px-6 md:px-10 py-6">
+        <div className="text-[var(--footer-logo-color)] mb-5 flex justify-center">
+          <FooterAsterisk />
         </div>
         <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
-          <p className="text-[var(--color-dark-muted)] text-sm">
+          <p className="text-[var(--footer-copy-color)] text-sm">
             &copy; {year} Sameer Gautam. All rights reserved.
           </p>
           <div className="flex items-center gap-6">
@@ -18,13 +63,13 @@ export default function Footer() {
               href="https://www.linkedin.com/in/uxd-sameer/"
               target="_blank"
               rel="noopener noreferrer"
-              className="text-[var(--color-dark-muted)] text-sm hover:text-[var(--color-dark-text)] transition-colors duration-200"
+              className="text-[var(--footer-link-color)] text-sm hover:text-[var(--footer-link-hover)] transition-colors duration-200"
             >
               LinkedIn
             </a>
             <a
               href="mailto:hi@withsameer.design"
-              className="text-[var(--color-dark-muted)] text-sm hover:text-[var(--color-dark-text)] transition-colors duration-200"
+              className="text-[var(--footer-link-color)] text-sm hover:text-[var(--footer-link-hover)] transition-colors duration-200"
             >
               Email
             </a>

@@ -69,7 +69,7 @@ function ExperiencePhotoCard({
   return (
     <motion.article
       {...reveal(staggerDelay(index))}
-      className="group flex h-full flex-col overflow-hidden rounded-2xl border border-[var(--moments-card-border-color)] bg-[var(--moments-card-background-color)] shadow-[var(--moments-card-shadow)] transition-[border-color,border-width,box-shadow] duration-300 hover:border-[1.5px] hover:border-[var(--moments-card-border-hover)] hover:shadow-[var(--moments-card-shadow-hover)]"
+      className="premium-white-surface group flex h-full flex-col overflow-hidden rounded-2xl border border-[var(--moments-card-border-color)] transition-[border-color,border-width,box-shadow] duration-300 hover:border-[1.5px] hover:border-[var(--moments-card-border-hover)] [--surface-shadow-hover:var(--moments-card-shadow-hover)] [--surface-shadow:var(--moments-card-shadow)]"
     >
       <div className="relative aspect-[4/3] w-full overflow-hidden bg-[var(--moments-card-background-color)]">
         {moment.imageSrc ? (
@@ -203,7 +203,7 @@ export default function ExperienceMoments() {
       id="experience-moments"
       className="bg-[var(--moments-background-color)] px-6 pb-24 pt-0 md:px-10 md:pb-32"
     >
-      <div className="mx-auto max-w-[1280px] border-t border-[var(--moments-card-border-color)] pt-16">
+      <div className="mx-auto max-w-[1280px] pt-16">
         <motion.div
           {...reveal()}
           className="mb-12 grid gap-5 lg:grid-cols-[0.7fr_1fr] lg:items-end"
@@ -228,7 +228,7 @@ export default function ExperienceMoments() {
           <div
             ref={mobileScrollerRef}
             onScroll={updateActiveMoment}
-            className="-mx-6 -my-12 flex snap-x snap-mandatory gap-4 overflow-x-auto scroll-smooth px-6 py-12 [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
+            className="-mx-6 -my-20 flex snap-x snap-mandatory gap-4 overflow-x-auto scroll-smooth px-6 py-20 [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
             aria-label="Selected work moments"
           >
             {MOMENTS.map((moment, index) => (
@@ -269,7 +269,7 @@ export default function ExperienceMoments() {
           <div
             ref={desktopScrollerRef}
             onScroll={updateActiveDesktopPage}
-            className="-my-12 flex snap-x snap-mandatory gap-5 overflow-x-auto scroll-smooth py-12 [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
+            className="-my-20 flex snap-x snap-mandatory gap-5 overflow-x-auto scroll-smooth py-20 [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
             aria-label="Selected work moments"
           >
             {MOMENTS.map((moment, index) => (

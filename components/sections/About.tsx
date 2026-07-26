@@ -19,12 +19,9 @@ export default function About() {
   return (
     <section
       id="about"
-      className="px-6 pb-24 pt-0 md:px-10 md:pb-32 md:pt-0"
-      style={{
-        background: "radial-gradient(circle at 50% 12%, rgba(255,255,255,.02), transparent 62%), var(--about-background-color)",
-      }}
+      className="homepage-atmosphere home-about-atmosphere px-6 pb-24 pt-0 md:px-10 md:pb-32 md:pt-0"
     >
-      <div className="mx-auto max-w-[1280px] border-t border-[var(--about-border-color)] pt-16">
+      <div className="mx-auto max-w-[1280px] pt-16">
         <p className="mb-10 text-xs font-medium uppercase tracking-widest text-[var(--about-eyebrow-color)]">
           About
         </p>

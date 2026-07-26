@@ -45,17 +45,17 @@ export default function Testimonials() {
   return (
     <section
       id="testimonials"
-      className="px-6 pb-24 pt-0 md:px-10 md:pb-32"
+      className="bg-[var(--testimonials-background-color)] px-6 pb-24 pt-0 md:px-10 md:pb-32"
     >
-      <div className="mx-auto max-w-[1280px] border-t border-[var(--color-border)] pt-16">
+      <div className="mx-auto max-w-[1280px] pt-16">
         <motion.div
           {...reveal()}
           className="mb-12"
         >
-          <p className="mb-3 text-xs font-medium uppercase tracking-widest text-[var(--color-text-accent)]">
+          <p className="mb-3 text-xs font-medium uppercase tracking-widest text-[var(--testimonials-eyebrow-color)]">
             Testimonials
           </p>
-          <h2 className="font-display text-[clamp(2rem,4.5vw,3.5rem)] font-bold leading-tight text-[var(--color-text)]">
+          <h2 className="font-display text-[clamp(2rem,4.5vw,3.5rem)] font-bold leading-tight text-[var(--testimonials-heading-color)]">
             What people say.
           </h2>
         </motion.div>
@@ -65,18 +65,18 @@ export default function Testimonials() {
             <motion.div
               key={t.name}
               {...reveal(staggerDelay(i))}
-              className="flex flex-col rounded-2xl border border-[var(--color-border)] bg-white p-7 transition-shadow duration-300 hover:shadow-[0_8px_40px_-8px_rgba(0,0,0,0.12)]"
+              className="premium-white-surface flex flex-col rounded-2xl border border-[var(--testimonials-card-border-color)] p-7 transition-[border-color,border-width,box-shadow] duration-300 hover:border-[1.5px] hover:border-[var(--testimonials-card-border-hover)] [--surface-shadow-hover:var(--testimonials-card-shadow-hover)] [--surface-shadow:var(--testimonials-card-shadow)]"
             >
               <span
                 aria-hidden="true"
-                className="mb-4 font-quote text-[3rem] leading-none text-[var(--color-accent)] select-none"
+                className="mb-4 font-quote text-[3rem] leading-none text-[var(--testimonials-quote-mark-color)] select-none"
               >
                 &ldquo;
               </span>
-              <p className="flex-1 font-quote text-lg leading-relaxed text-[var(--color-text-body)]">
+              <p className="flex-1 font-quote text-lg leading-relaxed text-[var(--testimonials-quote-text-color)]">
                 {t.quote}
               </p>
-              <div className="mt-6 border-t border-[var(--color-border)] pt-5 flex items-center gap-3">
+              <div className="mt-6 border-t border-[var(--testimonials-divider-color)] pt-5 flex items-center gap-3">
                 {"avatar" in t && t.avatar && (
                   <Image
                     src={t.avatar}
@@ -98,12 +98,12 @@ export default function Testimonials() {
                   />
                 )}
                 <div>
-                  <p className="text-sm font-medium text-[var(--color-text)]">{t.name}</p>
-                  <p className="mt-0.5 text-xs text-[var(--color-text-secondary)]">
+                  <p className="text-sm font-medium text-[var(--testimonials-person-name-color)]">{t.name}</p>
+                  <p className="mt-0.5 text-xs text-[var(--testimonials-person-meta-color)]">
                     {t.role && (
                       <>
                         {t.role}
-                        <span className="mx-1.5 text-[var(--color-border-strong)]">·</span>
+                        <span className="mx-1.5 text-[var(--testimonials-divider-color)]">·</span>
                       </>
                     )}
                     {t.company}

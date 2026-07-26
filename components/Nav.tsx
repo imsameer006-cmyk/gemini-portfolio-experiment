@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { LinkedinLogo } from "@phosphor-icons/react";
@@ -13,19 +13,92 @@ const links = [
   { label: "Contact", href: "#contact" },
 ];
 
+type NavSurface = "light" | "dark";
+
+function parseRgb(color: string) {
+  const match = color.match(/rgba?\(([^)]+)\)/);
+  if (!match) return null;
+
+  const [r, g, b, a = "1"] = match[1].split(",").map((part) => part.trim());
+  const alpha = Number.parseFloat(a);
+
+  if (alpha <= 0.05) return null;
+
+  return {
+    r: Number.parseFloat(r),
+    g: Number.parseFloat(g),
+    b: Number.parseFloat(b),
+  };
+}
+
+function relativeLuminance({ r, g, b }: { r: number; g: number; b: number }) {
+  const toLinear = (value: number) => {
+    const channel = value / 255;
+    return channel <= 0.03928 ? channel / 12.92 : ((channel + 0.055) / 1.055) ** 2.4;
+  };
+
+  return 0.2126 * toLinear(r) + 0.7152 * toLinear(g) + 0.0722 * toLinear(b);
+}
+
 export default function Nav() {
+  const headerRef = useRef<HTMLElement>(null);
   const [scrolled, setScrolled] = useState(false);
+  const [surface, setSurface] = useState<NavSurface>("light");
   const [mobileOpen, setMobileOpen] = useState(false);
   const [activeSection, setActiveSection] = useState<string | null>(null);
   const pathname = usePathname();
 
   const isWorkPage = pathname.startsWith("/work/");
-  const isHeroResting = pathname === "/" && !scrolled;
 
   useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 40);
-    window.addEventListener("scroll", onScroll, { passive: true });
-    return () => window.removeEventListener("scroll", onScroll);
+    let frame = 0;
+
+    const readSurface = () => {
+      frame = 0;
+      setScrolled(window.scrollY > 16);
+
+      const header = headerRef.current;
+      const rect = header?.getBoundingClientRect();
+      const sampleX = Math.round(window.innerWidth / 2);
+      const sampleY = Math.round((rect?.bottom ?? 56) + 8);
+      const stack = document.elementsFromPoint(sampleX, sampleY);
+      const target = stack.find((el) => !header?.contains(el));
+      let node = target instanceof HTMLElement ? target : null;
+
+      while (node && node !== document.body) {
+        const declared = node.dataset.navSurface;
+        if (declared === "light" || declared === "dark") {
+          setSurface(declared);
+          return;
+        }
+
+        const rgb = parseRgb(getComputedStyle(node).backgroundColor);
+        if (rgb) {
+          setSurface(relativeLuminance(rgb) < 0.28 ? "dark" : "light");
+          return;
+        }
+
+        node = node.parentElement;
+      }
+
+      const bodyRgb = parseRgb(getComputedStyle(document.body).backgroundColor);
+      setSurface(bodyRgb && relativeLuminance(bodyRgb) < 0.28 ? "dark" : "light");
+    };
+
+    const requestRead = () => {
+      if (frame) return;
+      frame = window.requestAnimationFrame(readSurface);
+    };
+
+    readSurface();
+    window.addEventListener("scroll", requestRead, { passive: true });
+    window.addEventListener("resize", requestRead);
+
+    return () => {
+      if (frame) window.cancelAnimationFrame(frame);
+      window.removeEventListener("scroll", requestRead);
+      window.removeEventListener("resize", requestRead);
+    };
   }, []);
 
   useEffect(() => {
@@ -85,14 +158,24 @@ export default function Nav() {
     }
   };
 
+  const isDarkSurface = surface === "dark";
+
   return (
     <>
       <header
+        ref={headerRef}
+        data-nav-surface-state={surface}
+        data-nav-floating={scrolled ? "true" : "false"}
         className={[
-          "fixed z-50 transition-all duration-300",
+          "premium-glass-material fixed z-50 overflow-hidden border transition-[top,left,right,border-radius,background-color,border-color,box-shadow,backdrop-filter] duration-[250ms] ease-in-out",
           scrolled
-            ? "top-4 left-4 right-4 rounded-2xl border border-[var(--color-border)] bg-[var(--color-warm-bg)]/90 shadow-[0_2px_12px_rgba(0,0,0,0.08)] backdrop-blur-md md:left-6 md:right-6"
-            : "top-0 left-0 right-0 rounded-none border-0 bg-transparent shadow-none",
+            ? "top-4 left-4 right-4 rounded-2xl md:left-6 md:right-6"
+            : "top-0 left-0 right-0 rounded-none",
+          scrolled
+            ? isDarkSurface
+              ? "border-[var(--nav-glass-dark-border)] bg-[var(--nav-glass-dark-background)] shadow-[var(--nav-glass-dark-shadow)] backdrop-blur-[20px]"
+              : "border-[var(--nav-glass-light-border)] bg-[var(--nav-glass-light-background)] shadow-[var(--nav-glass-light-shadow)] backdrop-blur-[20px]"
+            : "border-transparent bg-transparent shadow-none backdrop-blur-none",
         ].join(" ")}
       >
         <nav className="max-w-[1360px] mx-auto px-6 md:px-10 h-[46px] flex items-center">
@@ -109,9 +192,9 @@ export default function Nav() {
               }}
               className={[
                 "inline-flex min-h-11 items-center justify-center pr-3 md:pr-2",
-                isHeroResting
-                  ? "text-[var(--nav-wordmark-color-at-rest)]"
-                  : "text-[var(--nav-wordmark-color-scrolled)]",
+                isDarkSurface
+                  ? "text-[var(--nav-glass-dark-logo-color)]"
+                  : "text-[var(--nav-glass-light-logo-color)]",
               ].join(" ")}
             >
               <span className="font-display text-[13px] font-semibold tracking-[0.14em]">
@@ -129,14 +212,14 @@ export default function Nav() {
                   data-analytics-nav-target={href.slice(1)}
                   data-analytics-nav-label={label}
                   className={[
-                    "text-[13px] font-normal transition-colors duration-200 cursor-pointer relative",
+                    "rounded-full border-[1.5px] px-[14px] py-2 text-[13px] font-medium transition-[background-color,border-color,color] duration-150 ease-out cursor-pointer",
                     isActive(href)
-                      ? isHeroResting
-                        ? "text-[var(--nav-link-color-at-rest)] after:absolute after:-bottom-0.5 after:left-0 after:w-full after:h-px after:bg-[var(--nav-link-indicator-color-at-rest)] after:content-['']"
-                        : "text-[var(--nav-link-color-scrolled)]/80 after:absolute after:-bottom-0.5 after:left-0 after:w-full after:h-px after:bg-[var(--nav-link-indicator-color-scrolled)] after:content-['']"
-                      : isHeroResting
-                        ? "text-[var(--nav-link-color-at-rest)] hover:text-[var(--nav-link-color-at-rest)]"
-                        : "text-[var(--nav-link-color-scrolled)]/45 hover:text-[var(--nav-link-color-scrolled)]/70",
+                      ? isDarkSurface
+                        ? "border-[var(--nav-glass-dark-pill-border)] bg-[var(--nav-glass-dark-pill-background)] text-[var(--nav-glass-dark-link-active-color)]"
+                        : "border-[var(--nav-glass-light-pill-border)] bg-[var(--nav-glass-light-pill-background)] text-[var(--nav-glass-light-link-active-color)]"
+                      : isDarkSurface
+                        ? "border-transparent bg-transparent text-[var(--nav-glass-dark-link-color)] hover:border-[var(--nav-glass-dark-hover-border)] hover:bg-[var(--nav-glass-dark-hover-background)] hover:text-[var(--nav-glass-dark-link-hover-color)]"
+                        : "border-transparent bg-transparent text-[var(--nav-glass-light-link-color)] hover:border-[var(--nav-glass-light-hover-border)] hover:bg-[var(--nav-glass-light-hover-background)] hover:text-[var(--nav-glass-light-link-hover-color)]",
                   ].join(" ")}
                 >
                   {label}
@@ -153,10 +236,10 @@ export default function Nav() {
               rel="noopener noreferrer"
               aria-label="LinkedIn profile"
               className={[
-                "hidden md:inline-flex h-9 w-9 items-center justify-center transition-colors duration-200",
-                isHeroResting
-                  ? "text-[var(--nav-link-color-at-rest)] hover:text-[var(--nav-link-color-at-rest)]"
-                  : "text-[var(--nav-link-color-scrolled)]/45 hover:text-[var(--nav-link-color-scrolled)]/70",
+                "hidden md:inline-flex h-9 w-9 items-center justify-center opacity-70 transition-[color,opacity] duration-300 ease-[var(--ease-out-expo)] hover:opacity-100",
+                isDarkSurface
+                  ? "text-[var(--nav-glass-dark-link-active-color)]"
+                  : "text-[var(--nav-glass-light-link-active-color)]",
               ].join(" ")}
             >
               <LinkedinLogo size={18} weight="fill" aria-hidden="true" />
@@ -172,21 +255,21 @@ export default function Nav() {
               <span
                 className={[
                   "block h-px w-full transition-all duration-300 origin-center",
-                  isHeroResting ? "bg-[var(--nav-link-color-at-rest)]" : "bg-[var(--nav-link-color-scrolled)]",
+                  isDarkSurface ? "bg-[var(--nav-glass-dark-logo-color)]" : "bg-[var(--nav-glass-light-logo-color)]",
                   mobileOpen ? "rotate-45 translate-y-[4px]" : "",
                 ].join(" ")}
               />
               <span
                 className={[
                   "block h-px w-full transition-all duration-300",
-                  isHeroResting ? "bg-[var(--nav-link-color-at-rest)]" : "bg-[var(--nav-link-color-scrolled)]",
+                  isDarkSurface ? "bg-[var(--nav-glass-dark-logo-color)]" : "bg-[var(--nav-glass-light-logo-color)]",
                   mobileOpen ? "opacity-0 scale-x-0" : "",
                 ].join(" ")}
               />
               <span
                 className={[
                   "block h-px w-full transition-all duration-300 origin-center",
-                  isHeroResting ? "bg-[var(--nav-link-color-at-rest)]" : "bg-[var(--nav-link-color-scrolled)]",
+                  isDarkSurface ? "bg-[var(--nav-glass-dark-logo-color)]" : "bg-[var(--nav-glass-light-logo-color)]",
                   mobileOpen ? "-rotate-45 -translate-y-[4px]" : "",
                 ].join(" ")}
               />

@@ -14,10 +14,7 @@ export default function Work() {
   return (
     <section
       id="work"
-      className="px-6 pb-16 pt-10 md:px-10 md:pb-24 md:pt-36"
-      style={{
-        background: "radial-gradient(circle at top, rgba(255,255,255,.08), transparent 65%), var(--work-background-color)",
-      }}
+      className="homepage-atmosphere home-work-atmosphere px-6 pb-16 pt-10 md:px-10 md:pb-24 md:pt-[104px]"
     >
       <div className="max-w-[1280px] mx-auto">
         {/* Section header */}

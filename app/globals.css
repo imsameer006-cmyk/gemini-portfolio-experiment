@@ -49,6 +49,18 @@
   --lotus-pink-strong:      #C74F86;
   --moments-border:         #DCE6EC;
   --moments-border-hover:   #A9D5E8;
+  --philosophy-navy-950:    #011640;
+  --philosophy-ice-50:      #F7FAFD;
+  --philosophy-blue-100:    #DCE8F1;
+  --philosophy-blue-200:    #8EA9BC;
+  --philosophy-blue-300:    #7F99AC;
+  --philosophy-blue-500:    #6497B1;
+  --process-blue-tint:      #EAF3FA;
+  --process-blue-900:       #011F4B;
+  --process-blue-800:       #03396C;
+  --process-body-blue:      #4E6782;
+  --process-note-blue:      #6F8497;
+  --footer-text-blue:       #B3CDE0;
 
   /* Tier 2: Semantic colors */
   --color-warm-bg:        var(--primitive-cream-50);
@@ -82,12 +94,31 @@
   --hero-heading-color:    var(--color-text-hero);
   --hero-body-color:       var(--color-text-hero);
   --hero-scrim-color:      var(--color-bg-hero);
-  --nav-wordmark-color-at-rest:       var(--color-text-hero);
-  --nav-link-color-at-rest:           var(--color-text-hero);
-  --nav-link-indicator-color-at-rest: var(--color-text-hero);
-  --nav-wordmark-color-scrolled:       var(--color-text);
-  --nav-link-color-scrolled:           var(--color-text);
-  --nav-link-indicator-color-scrolled: var(--color-accent);
+  --nav-glass-light-background:       rgba(255,255,255,.22);
+  --nav-glass-light-border:           rgba(1,31,75,.10);
+  --nav-glass-light-shadow:           0 4px 20px rgba(1,31,75,.05);
+  --nav-glass-light-logo-color:       var(--process-blue-900);
+  --nav-glass-light-link-color:       var(--blue-grey-600);
+  --nav-glass-light-link-active-color: var(--process-blue-900);
+  --nav-glass-light-pill-background:  rgba(255,255,255,.55);
+  --nav-glass-light-pill-border:      rgba(1,31,75,.42);
+  --nav-glass-light-hover-background: rgba(255,255,255,.22);
+  --nav-glass-light-hover-border:     rgba(1,31,75,.16);
+  --nav-glass-light-link-hover-color: #011F4B;
+
+  --nav-glass-dark-background:        rgba(1,31,75,.32);
+  --nav-glass-dark-border:            rgba(255,255,255,.14);
+  --nav-glass-dark-shadow:            0 10px 28px rgba(0,0,0,.22);
+  --nav-glass-dark-logo-color:        var(--philosophy-ice-50);
+  --nav-glass-dark-link-color:        rgba(255,255,255,.72);
+  --nav-glass-dark-link-hover-color:  #FFFFFF;
+  --nav-glass-dark-link-active-color: #FFFFFF;
+  --nav-glass-dark-pill-background:   rgba(255,255,255,.10);
+  --nav-glass-dark-pill-border:       rgba(255,255,255,.42);
+  --nav-glass-dark-hover-background:  rgba(255,255,255,.10);
+  --nav-glass-dark-hover-border:      rgba(255,255,255,.10);
+  --material-white-surface: linear-gradient(180deg, #FFFFFF 0%, #FFFFFF 42%, #FBFCFD 100%);
+  --material-surface-highlight: inset 0 1px 0 rgba(255,255,255,.10);
   /* Typography */
   --font-sans:    var(--font-geist-sans), ui-sans-serif, system-ui, sans-serif;
   --font-display: var(--font-linik-sans), ui-sans-serif, system-ui, sans-serif;
@@ -152,6 +183,62 @@
   --work-thumbnail-node-fill-color:    var(--color-surface-nested);
 }
 
+.homepage-atmosphere {
+  background:
+    radial-gradient(circle at 50% 18%, rgba(255,255,255,.028), rgba(255,255,255,0) 48%),
+    radial-gradient(circle at 50% 115%, rgba(0,0,0,.022), rgba(0,0,0,0) 58%),
+    var(--homepage-atmosphere-color);
+}
+
+.home-hero-atmosphere {
+  --homepage-atmosphere-color: var(--hero-background-color);
+}
+
+.home-work-atmosphere {
+  --homepage-atmosphere-color: var(--work-background-color);
+}
+
+.home-about-atmosphere {
+  --homepage-atmosphere-color: var(--about-background-color);
+}
+
+.home-philosophy-atmosphere {
+  --homepage-atmosphere-color: var(--philosophy-background-color);
+}
+
+.home-process-atmosphere {
+  --homepage-atmosphere-color: var(--process-background-color);
+}
+
+.home-contact-atmosphere {
+  --homepage-atmosphere-color: var(--contact-background-color);
+}
+
+.premium-white-surface {
+  position: relative;
+  background: var(--material-white-surface);
+  box-shadow: var(--material-surface-highlight), var(--surface-shadow, none);
+}
+
+.premium-white-surface:hover {
+  box-shadow: var(--material-surface-highlight), var(--surface-shadow-hover, var(--surface-shadow, none));
+}
+
+.premium-glass-material[data-nav-floating="true"]::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  border-radius: inherit;
+  background: linear-gradient(180deg, rgba(255,255,255,.08), rgba(255,255,255,.015));
+}
+
+.premium-glass-material > nav {
+  position: relative;
+  z-index: 1;
+}
+
 /* Tier 3: Homepage / About */
 #about {
   --about-background-color:       var(--lavender-50);
@@ -184,6 +271,77 @@
   --moments-metadata-color:         var(--blue-grey-400);
   --moments-indicator-inactive:     var(--border-light);
   --moments-indicator-active:       var(--lotus-pink-strong);
+}
+
+/* Tier 3: Homepage / Philosophy */
+#philosophy {
+  --philosophy-background-color:  var(--philosophy-navy-950);
+  --philosophy-background-depth:  radial-gradient(circle at 50% 12%, rgba(255,255,255,.03), transparent 62%);
+  --philosophy-eyebrow-color:     var(--lotus-pink);
+  --philosophy-heading-color:     var(--philosophy-ice-50);
+  --philosophy-body-color:        var(--philosophy-blue-200);
+  --philosophy-secondary-color:   var(--philosophy-blue-500);
+  --philosophy-principle-title-color: var(--philosophy-blue-100);
+  --philosophy-principle-body-color:  var(--philosophy-blue-200);
+  --philosophy-divider-color:     rgba(179,205,224,.12);
+  --philosophy-interactive-color: var(--turquoise-400);
+}
+
+/* Tier 3: Homepage / Process */
+#process {
+  --process-background-color:    var(--process-blue-tint);
+  --process-eyebrow-color:       var(--lotus-pink);
+  --process-heading-color:       var(--process-blue-900);
+  --process-number-color:        var(--philosophy-blue-500);
+  --process-title-color:         var(--process-blue-800);
+  --process-description-color:   var(--process-body-blue);
+  --process-divider-color:       rgba(1,31,75,.10);
+  --process-note-color:          var(--blue-grey-600);
+  --process-connector-color:     rgba(1,31,75,.10);
+  --process-connector-soft-color: rgba(1,31,75,.03);
+}
+
+/* Tier 3: Homepage / Testimonials */
+#testimonials {
+  --testimonials-background-color:       var(--lavender-50);
+  --testimonials-heading-color:          var(--process-blue-900);
+  --testimonials-eyebrow-color:          var(--lotus-pink);
+  --testimonials-card-background-color:  #FFFFFF;
+  --testimonials-card-border-color:      var(--moments-border);
+  --testimonials-card-border-hover:      var(--card-hover-blue);
+  --testimonials-card-shadow:            0 2px 8px rgba(1,31,75,.04);
+  --testimonials-card-shadow-hover:      0 12px 32px rgba(1,31,75,.10);
+  --testimonials-quote-mark-color:       var(--lotus-pink);
+  --testimonials-quote-text-color:       var(--process-body-blue);
+  --testimonials-person-name-color:      var(--process-blue-900);
+  --testimonials-person-meta-color:      var(--philosophy-blue-500);
+  --testimonials-divider-color:          rgba(1,31,75,.10);
+}
+
+/* Tier 3: Homepage / Contact */
+#contact {
+  --contact-background-color:             var(--turquoise-400);
+  --contact-eyebrow-color:                var(--lotus-pink);
+  --contact-heading-color:                var(--process-blue-900);
+  --contact-body-color:                   var(--process-blue-800);
+  --contact-primary-button-background:    #FFFFFF;
+  --contact-primary-button-text:          var(--process-blue-900);
+  --contact-primary-button-background-hover: var(--process-blue-900);
+  --contact-primary-button-text-hover:    #FFFFFF;
+  --contact-secondary-button-border:      var(--process-blue-900);
+  --contact-secondary-button-text:        var(--process-blue-900);
+  --contact-secondary-button-background-hover: var(--process-blue-900);
+  --contact-secondary-button-text-hover:  #FFFFFF;
+}
+
+/* Tier 3: Homepage / Footer */
+footer {
+  --footer-background-color: var(--process-blue-900);
+  --footer-border-color:    rgba(179,205,224,.12);
+  --footer-logo-color:      var(--footer-text-blue);
+  --footer-link-color:      var(--footer-text-blue);
+  --footer-link-hover:      var(--turquoise-400);
+  --footer-copy-color:      var(--philosophy-blue-500);
 }
 
 /* ── Base Reset ─────────────────────────────────────────────── */

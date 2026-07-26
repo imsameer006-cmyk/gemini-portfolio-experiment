@@ -532,7 +532,6 @@ function PhilosophyOverlay({ isOpen, onComplete }: { isOpen: boolean; onComplete
 export default function Hero() {
   const [hoverSuppressed, setHoverSuppressed] = useState(false);
   const [isPhilosophyOpen, setIsPhilosophyOpen] = useState(false);
-  const [isHeroIntroExpanded, setIsHeroIntroExpanded] = useState(false);
   const unlockTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const hoverTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
@@ -590,7 +589,7 @@ export default function Hero() {
   return (
     <section
       aria-label="Introduction"
-      className="relative overflow-hidden bg-[var(--hero-background-color)] px-6 pb-10 pt-[76px] md:min-h-[100svh] md:px-10 md:pb-12 md:pt-[92px]"
+      className="homepage-atmosphere home-hero-atmosphere relative overflow-hidden px-6 pb-24 pt-[76px] md:min-h-[106svh] md:px-10 md:pb-32 md:pt-[92px]"
     >
       {showLegacyHeroArt && (
         <ClarityThreadVisual
@@ -607,16 +606,8 @@ export default function Hero() {
 
       <StructuralAsteriskHeroArt />
 
-      <div className="pointer-events-none relative z-10 mx-auto flex w-full max-w-[1280px] justify-center pt-3 md:min-h-[calc(100svh-4rem)] md:items-end md:pb-12 md:pt-0">
-        <div className="pointer-events-none relative isolate w-full max-w-[800px] text-center">
-          <div
-            aria-hidden="true"
-            className="pointer-events-none absolute -inset-x-10 -inset-y-8 -z-10"
-            style={{
-              background:
-                "radial-gradient(ellipse at center, color-mix(in srgb, var(--hero-scrim-color) 96%, transparent) 0%, color-mix(in srgb, var(--hero-scrim-color) 82%, transparent) 48%, color-mix(in srgb, var(--hero-scrim-color) 0%, transparent) 78%)",
-            }}
-          />
+      <div className="pointer-events-none relative z-10 mx-auto flex w-full max-w-[1280px] justify-center pt-3 md:min-h-[calc(106svh-4rem)] md:items-end md:pb-12 md:pt-0">
+        <div className="pointer-events-none relative isolate w-full max-w-[800px] text-center md:translate-y-14 lg:translate-y-16">
           <motion.h1
             initial={{ opacity: 0, y: 28 }}
             animate={{ opacity: 1, y: 0 }}
@@ -632,43 +623,11 @@ export default function Hero() {
             transition={{ duration: 0.55, delay: 0.24, ease: [0.16, 1, 0.3, 1] }}
             className="max-w-[800px] text-body-compact leading-relaxed text-[var(--hero-body-color)]"
           >
-            I&apos;m curious and inquisitive by nature — I guess it&apos;s my hidden superpower. For me, nature is the biggest design inspiration.
-            {isHeroIntroExpanded && (
-              <>
-                {" "}Desert heat from the Middle East warms Europe, ocean water becomes clouds, and travels far to water distant lands. Nothing in an ecosystem is wasted — everything is interwoven, serving the system or failing to survive. I think in systems the same way, treating data, feedback, and failure as signal, not noise. And I prefer honest feedback over praise that sounds good but gives nothing to course-correct on.{" "}
-                <button
-                  type="button"
-                  onClick={() => setIsHeroIntroExpanded(false)}
-                  className="pointer-events-auto inline text-[var(--hero-body-color)] underline decoration-[var(--color-accent)]/60 underline-offset-4 transition-colors duration-200 hover:text-[var(--hero-body-color)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[var(--color-accent)]"
-                >
-                  Less
-                </button>
-              </>
-            )}
-            {!isHeroIntroExpanded && (
-              <>
-                {" "}
-                <button
-                  type="button"
-                  onClick={() => setIsHeroIntroExpanded(true)}
-                  className="pointer-events-auto inline text-[var(--hero-body-color)] underline decoration-[var(--color-accent)]/60 underline-offset-4 transition-colors duration-200 hover:text-[var(--hero-body-color)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[var(--color-accent)]"
-                >
-                  More
-                </button>
-              </>
-            )}
+            I&apos;m curious and inquisitive by nature — I guess it&apos;s my hidden superpower. For me, nature is the biggest design inspiration. Desert heat from the Middle East warms Europe, ocean water becomes clouds, and travels far to water distant lands. Nothing in an ecosystem is wasted — everything is interwoven, serving the system or failing to survive. I think in systems the same way, treating data, feedback, and failure as signal, not noise. And I prefer honest feedback over praise that sounds good but gives nothing to course-correct on.
           </motion.p>
         </div>
 
       </div>
-
-      {/* Decorative accent line at bottom */}
-      <motion.div
-        initial={{ scaleX: 0 }}
-        animate={{ scaleX: 1 }}
-        transition={{ duration: 0.8, delay: 0.5, ease: [0.16, 1, 0.3, 1] }}
-        className="absolute bottom-0 left-6 md:left-10 right-6 md:right-10 h-px bg-[#E6E3DD] origin-left"
-      />
     </section>
   );
 }
