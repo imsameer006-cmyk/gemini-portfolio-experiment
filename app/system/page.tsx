@@ -120,7 +120,7 @@ export default function SystemPage() {
           <div className="grid grid-cols-2 sm:grid-cols-3 gap-px bg-[#E6E3DD] border border-[#E6E3DD] rounded-xl overflow-hidden max-w-[720px]">
             {[
               { k: "Token layers", v: "3 — Primitive · Semantic · Component" },
-              { k: "Color tokens", v: "13 light + 6 dark + copper ramp" },
+              { k: "Color tokens", v: "21 primitives + semantic/component roles" },
               { k: "Components", v: "20 React components" },
               { k: "Case-study blocks", v: "26 block types" },
               { k: "Motion", v: "1 easing consumed · untokenized durations" },
@@ -140,7 +140,7 @@ export default function SystemPage() {
 
       {/* ── 01 Hierarchy ──────────────────────────────────────── */}
       <Chapter num="01" eyebrow="Hierarchy" heading="Three tiers." headingItalic="One system."
-        description="Primitives hold raw values. Semantics describe intent. Components consume semantics only — never a raw hex, px, or ms. Skipping a tier is the defect this whole audit exists to catch.">
+        description="Primitive tokens hold raw color values. Semantic tokens assign role and intent by referencing primitives. Component tokens capture local decisions by referencing semantics, so component color can change without rewriting the global palette.">
         <Reveal className="mt-8 border border-[#E6E3DD] rounded-2xl bg-white overflow-hidden overflow-x-auto">
           <table className="w-full text-sm border-collapse min-w-[560px]">
             <thead>
@@ -153,21 +153,21 @@ export default function SystemPage() {
             <tbody className="text-[13px]">
               <tr className="border-b border-[#E6E3DD]">
                 <td className="px-4 py-3 font-medium">1 · Primitive</td>
-                <td className="px-4 py-3 text-[#6A6764]">Raw hex / px / ms / curves</td>
-                <td className="px-4 py-3 font-[family-name:var(--font-geist-mono)] text-[11.5px]">#C07B50 · 16px</td>
-                <td className="px-4 py-3 text-[#6A6764]">Meaningless until referenced</td>
+                <td className="px-4 py-3 text-[#6A6764]">Raw values with hue/shade names</td>
+                <td className="px-4 py-3 font-[family-name:var(--font-geist-mono)] text-[11.5px]">primitive-copper-500</td>
+                <td className="px-4 py-3 text-[#6A6764]">No role or component meaning</td>
               </tr>
               <tr className="border-b border-[#E6E3DD]">
                 <td className="px-4 py-3 font-medium">2 · Semantic</td>
-                <td className="px-4 py-3 text-[#6A6764]">Intent</td>
-                <td className="px-4 py-3 font-[family-name:var(--font-geist-mono)] text-[11.5px]">color.accent · space.section</td>
-                <td className="px-4 py-3 text-[#6A6764]">The only layer components see</td>
+                <td className="px-4 py-3 text-[#6A6764]">Role and intent</td>
+                <td className="px-4 py-3 font-[family-name:var(--font-geist-mono)] text-[11.5px]">color.accent</td>
+                <td className="px-4 py-3 text-[#6A6764]">References primitives only</td>
               </tr>
               <tr>
                 <td className="px-4 py-3 font-medium">3 · Component</td>
-                <td className="px-4 py-3 text-[#6A6764]">Specific decisions</td>
-                <td className="px-4 py-3 font-[family-name:var(--font-geist-mono)] text-[11.5px]">card.border.hover</td>
-                <td className="px-4 py-3 text-[#6A6764]">One decision, made once</td>
+                <td className="px-4 py-3 text-[#6A6764]">Scoped component decisions</td>
+                <td className="px-4 py-3 font-[family-name:var(--font-geist-mono)] text-[11.5px]">hero.heading-color</td>
+                <td className="px-4 py-3 text-[#6A6764]">References semantic tokens</td>
               </tr>
             </tbody>
           </table>
@@ -176,7 +176,7 @@ export default function SystemPage() {
 
       {/* ── 02 Color ──────────────────────────────────────────── */}
       <Chapter num="02" eyebrow="Color" heading="Every color." headingItalic="Every constraint."
-        description="Thirteen light-palette tokens, a self-contained dark set, and the copper ramp — as they exist in app/globals.css right now, including the five remediated in the July 2026 audit.">
+        description="The palette now resolves through three layers: primitives for raw values, semantic tokens for roles, and component tokens for scoped decisions such as the homepage Hero and nav-at-rest color treatment.">
         <Reveal className="mt-8 border border-[#E6E3DD] rounded-2xl bg-white overflow-hidden overflow-x-auto">
           <table className="w-full border-collapse min-w-[640px]">
             <thead>
@@ -216,6 +216,25 @@ export default function SystemPage() {
               <TokenRow swatch="#EDEBE3" token="color.dark-text" value="#EDEBE3" usage="Body on dark — 15.6:1" notFor="—" />
               <TokenRow swatch="#9A9890" token="color.dark-secondary" value="#9A9890" usage="Supporting on dark — 6.4:1" notFor="—" />
               <TokenRow swatch="#847F76" token="color.dark-muted" value="#847F76" usage="Labels on dark at real 12–16px — 4.67:1" notFor="—" badge="remediated" />
+            </tbody>
+          </table>
+        </Reveal>
+        <Reveal className="mt-5 border border-[#E6E3DD] rounded-2xl bg-white overflow-hidden overflow-x-auto">
+          <table className="w-full border-collapse min-w-[720px]">
+            <thead>
+              <tr className="bg-[#F2F0EB]">
+                {["Component token", "References", "Resolved value", "Usage"].map((h) => (
+                  <th key={h} className="text-left text-[10px] font-medium uppercase tracking-widest text-[var(--color-text-muted)] px-4 py-3 border-b border-[#E6E3DD]">{h}</th>
+                ))}
+              </tr>
+            </thead>
+            <tbody>
+              <TokenRow swatch="#D2E823" token="hero.background-color" value="color.bg-hero -> primitive-lime-500" usage="Homepage Hero background only" notFor="Case studies or other sections" badge="new" />
+              <TokenRow swatch="#254F1A" token="hero.heading-color" value="color.text-hero -> primitive-green-800" usage="Homepage Hero headline" notFor="Global headings" badge="new" />
+              <TokenRow swatch="#254F1A" token="hero.body-color" value="color.text-hero -> primitive-green-800" usage="Homepage Hero body/subtext" notFor="Global body copy" badge="new" />
+              <TokenRow swatch="#254F1A" token="nav.link-color-at-rest" value="color.text-hero -> primitive-green-800" usage="Transparent nav over homepage Hero" notFor="Scrolled/floating nav" badge="new" />
+              <TokenRow swatch="#18171A" token="nav.link-color-scrolled" value="color.text -> primitive-ink-900" usage="Existing scrolled nav ink treatment" notFor="Hero rest state" />
+              <TokenRow swatch="#C07B50" token="nav.link-indicator-color-scrolled" value="color.accent -> primitive-copper-500" usage="Existing scrolled active underline" notFor="Hero rest state" />
             </tbody>
           </table>
         </Reveal>

@@ -590,7 +590,7 @@ export default function Hero() {
   return (
     <section
       aria-label="Introduction"
-      className="relative overflow-hidden px-6 pb-10 pt-[76px] md:min-h-[100svh] md:px-10 md:pb-12 md:pt-[92px]"
+      className="relative overflow-hidden bg-[var(--hero-background-color)] px-6 pb-10 pt-[76px] md:min-h-[100svh] md:px-10 md:pb-12 md:pt-[92px]"
     >
       {showLegacyHeroArt && (
         <ClarityThreadVisual
@@ -614,14 +614,14 @@ export default function Hero() {
             className="pointer-events-none absolute -inset-x-10 -inset-y-8 -z-10"
             style={{
               background:
-                "radial-gradient(ellipse at center, color-mix(in srgb, var(--color-warm-bg) 96%, transparent) 0%, color-mix(in srgb, var(--color-warm-bg) 82%, transparent) 48%, color-mix(in srgb, var(--color-warm-bg) 0%, transparent) 78%)",
+                "radial-gradient(ellipse at center, color-mix(in srgb, var(--hero-scrim-color) 96%, transparent) 0%, color-mix(in srgb, var(--hero-scrim-color) 82%, transparent) 48%, color-mix(in srgb, var(--hero-scrim-color) 0%, transparent) 78%)",
             }}
           />
           <motion.h1
             initial={{ opacity: 0, y: 28 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.65, delay: 0.12, ease: [0.16, 1, 0.3, 1] }}
-            className="mx-auto mb-4 w-fit max-w-none font-display text-[clamp(2rem,4.5vw,3.5rem)] font-black leading-tight text-[#18171A]"
+            className="mx-auto mb-4 w-fit max-w-none font-display text-[clamp(2rem,4.5vw,3.5rem)] font-black leading-tight text-[var(--hero-heading-color)]"
           >
             Hi, I discover patterns, & connect the dots.
           </motion.h1>
@@ -630,7 +630,7 @@ export default function Hero() {
             initial={{ opacity: 0, y: 18 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.55, delay: 0.24, ease: [0.16, 1, 0.3, 1] }}
-            className="max-w-[800px] text-body-compact leading-relaxed text-[#6A6764]"
+            className="max-w-[800px] text-body-compact leading-relaxed text-[var(--hero-body-color)]"
           >
             I&apos;m curious and inquisitive by nature — I guess it&apos;s my hidden superpower. For me, nature is the biggest design inspiration.
             {isHeroIntroExpanded && (
@@ -639,7 +639,7 @@ export default function Hero() {
                 <button
                   type="button"
                   onClick={() => setIsHeroIntroExpanded(false)}
-                  className="pointer-events-auto inline text-[#18171A] underline decoration-[#C07B50]/60 underline-offset-4 transition-colors duration-200 hover:text-[#C07B50] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#C07B50]"
+                  className="pointer-events-auto inline text-[var(--hero-body-color)] underline decoration-[var(--color-accent)]/60 underline-offset-4 transition-colors duration-200 hover:text-[var(--hero-body-color)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[var(--color-accent)]"
                 >
                   Less
                 </button>
@@ -651,7 +651,7 @@ export default function Hero() {
                 <button
                   type="button"
                   onClick={() => setIsHeroIntroExpanded(true)}
-                  className="pointer-events-auto inline text-[#18171A] underline decoration-[#C07B50]/60 underline-offset-4 transition-colors duration-200 hover:text-[#C07B50] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#C07B50]"
+                  className="pointer-events-auto inline text-[var(--hero-body-color)] underline decoration-[var(--color-accent)]/60 underline-offset-4 transition-colors duration-200 hover:text-[var(--hero-body-color)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[var(--color-accent)]"
                 >
                   More
                 </button>

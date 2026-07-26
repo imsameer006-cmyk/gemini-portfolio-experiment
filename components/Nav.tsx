@@ -20,6 +20,7 @@ export default function Nav() {
   const pathname = usePathname();
 
   const isWorkPage = pathname.startsWith("/work/");
+  const isHeroResting = pathname === "/" && !scrolled;
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 40);
@@ -106,10 +107,15 @@ export default function Nav() {
                   window.scrollTo({ top: 0, behavior: "smooth" });
                 }
               }}
-              className="inline-flex min-h-11 items-center justify-center pr-3 text-[var(--color-text)] md:pr-2"
+              className={[
+                "inline-flex min-h-11 items-center justify-center pr-3 md:pr-2",
+                isHeroResting
+                  ? "text-[var(--nav-wordmark-color-at-rest)]"
+                  : "text-[var(--nav-wordmark-color-scrolled)]",
+              ].join(" ")}
             >
-              <span className="text-[13px] font-semibold uppercase tracking-[0.14em]">
-                SAMEER G.
+              <span className="font-display text-[13px] font-semibold tracking-[0.14em]">
+                Sameer G.
               </span>
             </Link>
           </div>
@@ -125,8 +131,12 @@ export default function Nav() {
                   className={[
                     "text-[13px] font-normal transition-colors duration-200 cursor-pointer relative",
                     isActive(href)
-                      ? "text-[var(--color-text)]/80 after:absolute after:-bottom-0.5 after:left-0 after:w-full after:h-px after:bg-[var(--color-accent)] after:content-['']"
-                      : "text-[var(--color-text)]/45 hover:text-[var(--color-text)]/70",
+                      ? isHeroResting
+                        ? "text-[var(--nav-link-color-at-rest)] after:absolute after:-bottom-0.5 after:left-0 after:w-full after:h-px after:bg-[var(--nav-link-indicator-color-at-rest)] after:content-['']"
+                        : "text-[var(--nav-link-color-scrolled)]/80 after:absolute after:-bottom-0.5 after:left-0 after:w-full after:h-px after:bg-[var(--nav-link-indicator-color-scrolled)] after:content-['']"
+                      : isHeroResting
+                        ? "text-[var(--nav-link-color-at-rest)] hover:text-[var(--nav-link-color-at-rest)]"
+                        : "text-[var(--nav-link-color-scrolled)]/45 hover:text-[var(--nav-link-color-scrolled)]/70",
                   ].join(" ")}
                 >
                   {label}
@@ -142,7 +152,12 @@ export default function Nav() {
               target="_blank"
               rel="noopener noreferrer"
               aria-label="LinkedIn profile"
-              className="hidden md:inline-flex h-9 w-9 items-center justify-center text-[var(--color-text)]/45 hover:text-[var(--color-text)]/70 transition-colors duration-200"
+              className={[
+                "hidden md:inline-flex h-9 w-9 items-center justify-center transition-colors duration-200",
+                isHeroResting
+                  ? "text-[var(--nav-link-color-at-rest)] hover:text-[var(--nav-link-color-at-rest)]"
+                  : "text-[var(--nav-link-color-scrolled)]/45 hover:text-[var(--nav-link-color-scrolled)]/70",
+              ].join(" ")}
             >
               <LinkedinLogo size={18} weight="fill" aria-hidden="true" />
             </a>
@@ -156,19 +171,22 @@ export default function Nav() {
             >
               <span
                 className={[
-                  "block h-px w-full bg-[var(--color-text)] transition-all duration-300 origin-center",
+                  "block h-px w-full transition-all duration-300 origin-center",
+                  isHeroResting ? "bg-[var(--nav-link-color-at-rest)]" : "bg-[var(--nav-link-color-scrolled)]",
                   mobileOpen ? "rotate-45 translate-y-[4px]" : "",
                 ].join(" ")}
               />
               <span
                 className={[
-                  "block h-px w-full bg-[var(--color-text)] transition-all duration-300",
+                  "block h-px w-full transition-all duration-300",
+                  isHeroResting ? "bg-[var(--nav-link-color-at-rest)]" : "bg-[var(--nav-link-color-scrolled)]",
                   mobileOpen ? "opacity-0 scale-x-0" : "",
                 ].join(" ")}
               />
               <span
                 className={[
-                  "block h-px w-full bg-[var(--color-text)] transition-all duration-300 origin-center",
+                  "block h-px w-full transition-all duration-300 origin-center",
+                  isHeroResting ? "bg-[var(--nav-link-color-at-rest)]" : "bg-[var(--nav-link-color-scrolled)]",
                   mobileOpen ? "-rotate-45 -translate-y-[4px]" : "",
                 ].join(" ")}
               />

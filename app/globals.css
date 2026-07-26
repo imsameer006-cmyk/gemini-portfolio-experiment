@@ -2,32 +2,67 @@
 
 /* ── Design Tokens ─────────────────────────────────────────── */
 @theme {
-  /* Colors — Light palette */
-  --color-warm-bg:        #F9F8F5;
-  --color-surface:        #FFFFFF;
-  --color-surface-tinted: #F2F0EB;
-  --color-border:         #E6E3DD;
-  --color-border-strong:  #CECAC2;
+  /* Tier 1: Color primitives */
+  --primitive-cream-50:     #F9F8F5;
+  --primitive-white:        #FFFFFF;
+  --primitive-cream-100:    #F2F0EB;
+  --primitive-sand-200:     #E6E3DD;
+  --primitive-sand-300:     #CECAC2;
+  --primitive-ink-900:      #18171A;
+  --primitive-ink-700:      #3A3836;
+  --primitive-taupe-600:    #6A6764;
+  --primitive-gray-600:     #6E6D69;
+  --primitive-copper-800:   #96552F;
+  --primitive-copper-500:   #C07B50;
+  --primitive-copper-100:   #F5E8DC;
+  --primitive-copper-600:   #A8643C;
+  --primitive-charcoal-900: #141310;
+  --primitive-charcoal-850: #1C1B17;
+  --primitive-charcoal-800: #2E2C27;
+  --primitive-cream-200:    #EDEBE3;
+  --primitive-stone-500:    #9A9890;
+  --primitive-taupe-700:    #847F76;
+  --primitive-lime-500:     #D2E823;
+  --primitive-green-800:    #254F1A;
 
-  --color-text:           #18171A;
-  --color-text-body:      #3A3836;
-  --color-text-secondary: #6A6764;
-  --color-text-muted:     #6E6D69; /* was #9C9A95 — failed WCAG AA (2.47–2.81:1); remediated 2026-07 */
-  --color-text-accent:    #96552F; /* copper at body/label sizes — #C07B50 fails 4.5:1 below display sizes */
+  /* Tier 2: Semantic colors */
+  --color-warm-bg:        var(--primitive-cream-50);
+  --color-surface:        var(--primitive-white);
+  --color-surface-tinted: var(--primitive-cream-100);
+  --color-border:         var(--primitive-sand-200);
+  --color-border-strong:  var(--primitive-sand-300);
 
-  --color-accent:         #C07B50; /* display sizes, decoration, dark surfaces only — not body text */
-  --color-accent-light:   #F5E8DC;
-  --color-accent-hover:   #A8643C;
-  --color-focus-ring:     var(--color-accent-hover); /* was var(--color-accent) — failed 3:1 on tinted surface */
+  --color-text:           var(--primitive-ink-900);
+  --color-text-body:      var(--primitive-ink-700);
+  --color-text-secondary: var(--primitive-taupe-600);
+  --color-text-muted:     var(--primitive-gray-600); /* was #9C9A95 - failed WCAG AA (2.47-2.81:1); remediated 2026-07 */
+  --color-text-accent:    var(--primitive-copper-800); /* copper at body/label sizes - #C07B50 fails 4.5:1 below display sizes */
 
-  /* Colors — Dark sections */
-  --color-dark:           #141310;
-  --color-dark-surface:   #1C1B17;
-  --color-dark-border:    #2E2C27;
-  --color-dark-text:      #EDEBE3;
-  --color-dark-secondary: #9A9890;
-  --color-dark-muted:     #847F76; /* was #6A6860 — failed WCAG AA at actual 12–16px usage (3.33:1); remediated 2026-07 */
+  --color-accent:         var(--primitive-copper-500); /* display sizes, decoration, dark surfaces only - not body text */
+  --color-accent-light:   var(--primitive-copper-100);
+  --color-accent-hover:   var(--primitive-copper-600);
+  --color-focus-ring:     var(--color-accent-hover); /* was var(--color-accent) - failed 3:1 on tinted surface */
+  --color-bg-hero:        var(--primitive-lime-500);
+  --color-text-hero:      var(--primitive-green-800);
 
+  --color-dark:           var(--primitive-charcoal-900);
+  --color-dark-surface:   var(--primitive-charcoal-850);
+  --color-dark-border:    var(--primitive-charcoal-800);
+  --color-dark-text:      var(--primitive-cream-200);
+  --color-dark-secondary: var(--primitive-stone-500);
+  --color-dark-muted:     var(--primitive-taupe-700); /* was #6A6860 - failed WCAG AA at actual 12-16px usage (3.33:1); remediated 2026-07 */
+
+  /* Tier 3: Component colors */
+  --hero-background-color: var(--color-bg-hero);
+  --hero-heading-color:    var(--color-text-hero);
+  --hero-body-color:       var(--color-text-hero);
+  --hero-scrim-color:      var(--color-bg-hero);
+  --nav-wordmark-color-at-rest:       var(--color-text-hero);
+  --nav-link-color-at-rest:           var(--color-text-hero);
+  --nav-link-indicator-color-at-rest: var(--color-text-hero);
+  --nav-wordmark-color-scrolled:       var(--color-text);
+  --nav-link-color-scrolled:           var(--color-text);
+  --nav-link-indicator-color-scrolled: var(--color-accent);
   /* Typography */
   --font-sans:    var(--font-geist-sans), ui-sans-serif, system-ui, sans-serif;
   --font-display: var(--font-linik-sans), ui-sans-serif, system-ui, sans-serif;
