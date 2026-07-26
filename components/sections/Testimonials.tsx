@@ -47,7 +47,7 @@ export default function Testimonials() {
       id="testimonials"
       className="px-6 pb-24 pt-0 md:px-10 md:pb-32"
     >
-      <div className="mx-auto max-w-[1280px] border-t border-[#E6E3DD] pt-16">
+      <div className="mx-auto max-w-[1280px] border-t border-[var(--color-border)] pt-16">
         <motion.div
           {...reveal()}
           className="mb-12"
@@ -55,7 +55,7 @@ export default function Testimonials() {
           <p className="mb-3 text-xs font-medium uppercase tracking-widest text-[var(--color-text-accent)]">
             Testimonials
           </p>
-          <h2 className="font-display text-[clamp(2rem,4.5vw,3.5rem)] font-bold leading-tight text-[#18171A]">
+          <h2 className="font-display text-[clamp(2rem,4.5vw,3.5rem)] font-bold leading-tight text-[var(--color-text)]">
             What people say.
           </h2>
         </motion.div>
@@ -65,18 +65,18 @@ export default function Testimonials() {
             <motion.div
               key={t.name}
               {...reveal(staggerDelay(i))}
-              className="flex flex-col rounded-2xl border border-[#E6E3DD] bg-white p-7 transition-shadow duration-300 hover:shadow-[0_8px_40px_-8px_rgba(0,0,0,0.12)]"
+              className="flex flex-col rounded-2xl border border-[var(--color-border)] bg-white p-7 transition-shadow duration-300 hover:shadow-[0_8px_40px_-8px_rgba(0,0,0,0.12)]"
             >
               <span
                 aria-hidden="true"
-                className="mb-4 font-quote text-[3rem] leading-none text-[#C07B50] select-none"
+                className="mb-4 font-quote text-[3rem] leading-none text-[var(--color-accent)] select-none"
               >
                 &ldquo;
               </span>
-              <p className="flex-1 font-quote text-lg leading-relaxed text-[#3A3836]">
+              <p className="flex-1 font-quote text-lg leading-relaxed text-[var(--color-text-body)]">
                 {t.quote}
               </p>
-              <div className="mt-6 border-t border-[#E6E3DD] pt-5 flex items-center gap-3">
+              <div className="mt-6 border-t border-[var(--color-border)] pt-5 flex items-center gap-3">
                 {"avatar" in t && t.avatar && (
                   <Image
                     src={t.avatar}
@@ -98,12 +98,12 @@ export default function Testimonials() {
                   />
                 )}
                 <div>
-                  <p className="text-sm font-medium text-[#18171A]">{t.name}</p>
-                  <p className="mt-0.5 text-xs text-[#6A6764]">
+                  <p className="text-sm font-medium text-[var(--color-text)]">{t.name}</p>
+                  <p className="mt-0.5 text-xs text-[var(--color-text-secondary)]">
                     {t.role && (
                       <>
                         {t.role}
-                        <span className="mx-1.5 text-[#CECAC2]">·</span>
+                        <span className="mx-1.5 text-[var(--color-border-strong)]">·</span>
                       </>
                     )}
                     {t.company}

@@ -50,7 +50,7 @@ export function AnnotatedImage({ src, alt, annotations = [], caption }: Props) {
           setTimeout(() => {
             // Apply shimmer gradient + animation inline
             num.style.setProperty("background-image",
-              "linear-gradient(90deg, #C07B50 0%, #E8A87C 40%, #fff8f2 50%, #E8A87C 60%, #C07B50 100%)");
+              "linear-gradient(90deg, var(--color-accent) 0%, #E8A87C 40%, #fff8f2 50%, #E8A87C 60%, var(--color-accent) 100%)");
             num.style.setProperty("background-size", "200% auto");
             num.style.setProperty("background-clip", "text");
             num.style.setProperty("-webkit-background-clip", "text");
@@ -92,7 +92,7 @@ export function AnnotatedImage({ src, alt, annotations = [], caption }: Props) {
           display: "block",
           borderRadius: "12px",
           overflow: "hidden",
-          border: "1px solid #E6E3DD",
+          border: "1px solid var(--color-border)",
           boxShadow: "0 2px 12px rgba(0,0,0,0.06)",
         }}
       >
@@ -115,8 +115,8 @@ export function AnnotatedImage({ src, alt, annotations = [], caption }: Props) {
               width:  "22px",
               height: "22px",
               borderRadius: "50%",
-              background: "#C07B50",
-              color: "#fff",
+              background: "var(--color-accent)",
+              color: "var(--color-surface)",
               fontSize: "10px",
               fontWeight: 700,
               fontFamily: "var(--font-sans, system-ui, sans-serif)",
@@ -125,7 +125,7 @@ export function AnnotatedImage({ src, alt, annotations = [], caption }: Props) {
               justifyContent: "center",
               letterSpacing: 0,
               userSelect: "none",
-              boxShadow: "0 0 0 2px #fff, 0 2px 8px rgba(0,0,0,0.20)",
+              boxShadow: "0 0 0 2px var(--color-surface), 0 2px 8px rgba(0,0,0,0.20)",
               zIndex: 2,
             }}
           >
@@ -140,7 +140,7 @@ export function AnnotatedImage({ src, alt, annotations = [], caption }: Props) {
           style={{
             marginTop: "10px",
             fontSize: "11px",
-            color: "#6E6D69",
+            color: "var(--color-text-muted)",
             textAlign: "center",
             lineHeight: 1.5,
             letterSpacing: "0.01em",
@@ -179,7 +179,7 @@ export function AnnotatedImage({ src, alt, annotations = [], caption }: Props) {
                   fontWeight: 400,
                   lineHeight: 1,
                   // Stronger copper — was too faded before
-                  color: "#C07B50",
+                  color: "var(--color-accent)",
                   opacity: 0.72,
                   minWidth: "36px",
                   paddingTop: "2px",
@@ -196,7 +196,7 @@ export function AnnotatedImage({ src, alt, annotations = [], caption }: Props) {
                     margin: 0,
                     fontSize: "13px",
                     fontWeight: 500,
-                    color: "#18171A",
+                    color: "var(--color-text)",
                     lineHeight: 1.4,
                   }}
                 >
@@ -207,7 +207,7 @@ export function AnnotatedImage({ src, alt, annotations = [], caption }: Props) {
                     style={{
                       margin: "4px 0 0",
                       fontSize: "12px",
-                      color: "#6A6764",
+                      color: "var(--color-text-secondary)",
                       lineHeight: 1.55,
                     }}
                   >

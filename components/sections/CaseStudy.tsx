@@ -114,7 +114,7 @@ const MOMENT_HIGHLIGHTS: { id: string; fragments: string[] }[] = [
 
 function Paragraph({ text }: { text: string }) {
   return (
-    <p className="text-base text-[#3A3836] leading-relaxed max-w-[640px]">
+    <p className="text-base text-[var(--color-text-body)] leading-relaxed max-w-[640px]">
       {renderMomentHighlights(text)}
     </p>
   );
@@ -188,7 +188,7 @@ function StoryMap({ moments }: { moments: StoryMoment[] }) {
 
 function Subheading({ text }: { text: string }) {
   return (
-    <h3 className="text-sm font-medium text-[#18171A] tracking-wide mt-2">{text}</h3>
+    <h3 className="text-sm font-medium text-[var(--color-text)] tracking-wide mt-2">{text}</h3>
   );
 }
 
@@ -206,10 +206,10 @@ function Callout({ text, variant = "accent" }: { text: string; variant?: "accent
         "px-6 py-5 max-w-[640px]",
         isNeutral
           ? "border-l-2 border-[var(--color-text-muted)] bg-transparent rounded-none"
-          : "border-l-[3px] border-[#C07B50] bg-[#F9F4EF] rounded-r-xl",
+          : "border-l-[3px] border-[var(--color-accent)] bg-[#F9F4EF] rounded-r-xl",
       ].join(" ")}
     >
-      <p className="text-[#18171A] text-base leading-relaxed">{renderMomentHighlights(text)}</p>
+      <p className="text-[var(--color-text)] text-base leading-relaxed">{renderMomentHighlights(text)}</p>
     </motion.div>
   );
 }
@@ -218,8 +218,8 @@ function BulletList({ items }: { items: string[] }) {
   return (
     <ul className="space-y-2">
       {items.map((item, i) => (
-        <li key={i} className="flex gap-3 text-base text-[#3A3836] leading-relaxed">
-          <span className="mt-2 w-1 h-1 rounded-full bg-[#C07B50] shrink-0" />
+        <li key={i} className="flex gap-3 text-base text-[var(--color-text-body)] leading-relaxed">
+          <span className="mt-2 w-1 h-1 rounded-full bg-[var(--color-accent)] shrink-0" />
           {item}
         </li>
       ))}
@@ -233,15 +233,15 @@ function MetaGrid({ fields }: { fields: { label: string; value: string }[] }) {
   return (
     <motion.div
       {...reveal()}
-      className="grid grid-cols-2 sm:grid-cols-3 border border-[#E6E3DD] rounded-2xl overflow-hidden bg-[#E6E3DD] gap-px"
+      className="grid grid-cols-2 sm:grid-cols-3 border border-[var(--color-border)] rounded-2xl overflow-hidden bg-[var(--color-border)] gap-px"
     >
       {fields.map(({ label, value }) => (
         <div
           key={label}
           className="px-5 py-5 bg-white flex flex-col gap-2"
         >
-          <span className="text-[10px] text-[#6E6D69] tracking-widest uppercase font-medium">{label}</span>
-          <span className="text-sm font-medium text-[#18171A] leading-snug">{value}</span>
+          <span className="text-[10px] text-[var(--color-text-muted)] tracking-widest uppercase font-medium">{label}</span>
+          <span className="text-sm font-medium text-[var(--color-text)] leading-snug">{value}</span>
         </div>
       ))}
     </motion.div>
@@ -268,12 +268,12 @@ function ColCard({
   const labelColor =
     isGreen ? "text-[#3a7a54]"
     : isRed  ? "text-[#B85A48]"
-    : "text-[#6A6764]";
+    : "text-[var(--color-text-secondary)]";
 
   return (
     <motion.div
       className={[
-        "rounded-xl bg-white border border-[#E6E3DD] flex flex-col relative overflow-hidden",
+        "rounded-xl bg-white border border-[var(--color-border)] flex flex-col relative overflow-hidden",
         isGreen ? "card-green" : isRed ? "card-red" : "",
       ].join(" ").trim()}
       style={{ padding: "28px", boxShadow: "0 2px 8px rgba(0,0,0,0.05)" }}
@@ -298,21 +298,21 @@ function ColCard({
         </div>
 
         {/* Subtle structural divider */}
-        <div className="mt-5 h-px bg-[#E6E3DD]" />
+        <div className="mt-5 h-px bg-[var(--color-border)]" />
 
         {/* Item list */}
         <ul className="mt-5 flex flex-col gap-5">
           {col.items.map((item, i) =>
             typeof item === "string" ? (
-              <li key={i} className="text-sm text-[#3A3836] leading-relaxed">
+              <li key={i} className="text-sm text-[var(--color-text-body)] leading-relaxed">
                 {item}
               </li>
             ) : (
               <li key={i} className="flex flex-col gap-1">
-                <span className="text-sm font-medium text-[#18171A] leading-snug">
+                <span className="text-sm font-medium text-[var(--color-text)] leading-snug">
                   {item.label}
                 </span>
-                <span className="text-xs text-[#6E6D69] leading-relaxed">
+                <span className="text-xs text-[var(--color-text-muted)] leading-relaxed">
                   {renderMomentHighlights(item.detail)}
                 </span>
               </li>
@@ -375,7 +375,7 @@ function RoleList({ items }: { items: { abbr: string; fullName: string; descript
                     display: "inline-block",
                     position: "relative",
                     background:   active ? "#F5EAE0" : "#FBF5EF",
-                    border:       `1px solid ${active ? "#C07B50" : "#EDD9C8"}`,
+                    border:       `1px solid ${active ? "var(--color-accent)" : "#EDD9C8"}`,
                     borderRadius: "4px",
                     padding:      "3px 8px",
                     fontSize:     "10px",
@@ -407,7 +407,7 @@ function RoleList({ items }: { items: { abbr: string; fullName: string; descript
                           left:         "50%",
                           transform:    "translateX(-50%)",
                           background:   "#1a1a1a",
-                          color:        "#fff",
+                          color:        "var(--color-surface)",
                           fontSize:     "11px",
                           fontWeight:   500,
                           letterSpacing: 0,
@@ -468,22 +468,22 @@ function ExplorationCards({
       {items.map((card, i) => (
         <motion.div
           key={i}
-          className="bg-white border border-[#E6E3DD] rounded-2xl p-5 flex flex-col gap-4"
+          className="bg-white border border-[var(--color-border)] rounded-2xl p-5 flex flex-col gap-4"
           whileHover={{ y: -2, boxShadow: "0 4px 16px rgba(0,0,0,0.08)" }}
           transition={{ duration: 0.18, ease: "easeOut" }}
         >
           <div className="flex flex-col gap-4 min-h-[4rem]">
-            <h4 className="font-medium text-[#18171A] text-sm leading-snug">{card.heading}</h4>
-            <p className="text-sm text-[#6A6764] leading-relaxed h-6 overflow-hidden">{card.description}</p>
+            <h4 className="font-medium text-[var(--color-text)] text-sm leading-snug">{card.heading}</h4>
+            <p className="text-sm text-[var(--color-text-secondary)] leading-relaxed h-6 overflow-hidden">{card.description}</p>
           </div>
-          <div className="space-y-2 pt-4 border-t border-[#F2F0EB]">
+          <div className="space-y-2 pt-4 border-t border-[var(--color-surface-tinted)]">
             <div>
               <span className="text-[10px] font-semibold tracking-widest uppercase text-[#2E7D52] block mb-0.5">Strength</span>
-              <p className="text-xs text-[#3A3836] leading-relaxed">{card.strength}</p>
+              <p className="text-xs text-[var(--color-text-body)] leading-relaxed">{card.strength}</p>
             </div>
             <div>
-              <span className="text-[10px] font-semibold tracking-widest uppercase text-[#6E6D69] block mb-0.5">Limitation</span>
-              <p className="text-xs text-[#3A3836] leading-relaxed">{card.limitation}</p>
+              <span className="text-[10px] font-semibold tracking-widest uppercase text-[var(--color-text-muted)] block mb-0.5">Limitation</span>
+              <p className="text-xs text-[var(--color-text-body)] leading-relaxed">{card.limitation}</p>
             </div>
           </div>
         </motion.div>
@@ -520,7 +520,7 @@ function Stages({ items }: { items: string[] }) {
   }, []);
 
   return (
-    <div ref={containerRef} className="relative border border-[#E6E3DD] rounded-xl overflow-hidden bg-[#F2F0EB]">
+    <div ref={containerRef} className="relative border border-[var(--color-border)] rounded-xl overflow-hidden bg-[var(--color-surface-tinted)]">
 
       {/* Single-pass shimmer overlay — remounted on each scroll-in */}
       {animKey > 0 && (
@@ -536,11 +536,11 @@ function Stages({ items }: { items: string[] }) {
         <div className="flex items-center gap-1 flex-nowrap py-3">
           {items.map((stage, i) => (
             <div key={i} className="flex items-center gap-1 shrink-0">
-              <span className="text-[11px] font-medium bg-white border border-[#E6E3DD] text-[#18171A] px-2 py-1 rounded-full whitespace-nowrap">
+              <span className="text-[11px] font-medium bg-white border border-[var(--color-border)] text-[var(--color-text)] px-2 py-1 rounded-full whitespace-nowrap">
                 {stage}
               </span>
               {i < items.length - 1 && (
-                <span className="text-[#C07B50] text-xs shrink-0 select-none" aria-hidden="true">→</span>
+                <span className="text-[var(--color-accent)] text-xs shrink-0 select-none" aria-hidden="true">→</span>
               )}
             </div>
           ))}
@@ -552,12 +552,12 @@ function Stages({ items }: { items: string[] }) {
         <div className="flex flex-col gap-2">
           {items.map((stage, i) => (
             <div key={i} className="flex flex-col gap-2">
-              <span className="text-[11px] font-medium bg-white border border-[#E6E3DD] text-[#18171A] px-3 py-1.5 rounded-full text-center">
+              <span className="text-[11px] font-medium bg-white border border-[var(--color-border)] text-[var(--color-text)] px-3 py-1.5 rounded-full text-center">
                 {stage}
               </span>
               {i < items.length - 1 && (
                 <div className="flex justify-center" aria-hidden="true">
-                  <span className="text-[#C07B50] text-xs select-none">↓</span>
+                  <span className="text-[var(--color-accent)] text-xs select-none">↓</span>
                 </div>
               )}
             </div>
@@ -585,19 +585,19 @@ function Decisions({
           className="grid grid-cols-[2rem_1fr] gap-4"
           {...reveal(staggerDelay(i))}
         >
-          <span className="font-[family-name:var(--font-numeral)] text-2xl text-[#C07B50]/50 leading-none pt-0.5">
+          <span className="font-[family-name:var(--font-numeral)] text-2xl text-[var(--color-accent)]/50 leading-none pt-0.5">
             {String(startIndex + i + 1).padStart(2, "0")}
           </span>
           <div className="space-y-3">
-            <h4 className="font-medium text-[#18171A] text-base">{decision.heading}</h4>
-            <p className="text-sm text-[#3A3836] leading-relaxed">
+            <h4 className="font-medium text-[var(--color-text)] text-base">{decision.heading}</h4>
+            <p className="text-sm text-[var(--color-text-body)] leading-relaxed">
               {renderMomentHighlights(decision.body)}
             </p>
             {decision.bullets && (
               <ul className="space-y-1.5 mt-2">
                 {decision.bullets.map((b, j) => (
-                  <li key={j} className="flex gap-2.5 text-sm text-[#3A3836] leading-relaxed">
-                    <span className="mt-2 w-1 h-1 rounded-full bg-[#C07B50] shrink-0" />
+                  <li key={j} className="flex gap-2.5 text-sm text-[var(--color-text-body)] leading-relaxed">
+                    <span className="mt-2 w-1 h-1 rounded-full bg-[var(--color-accent)] shrink-0" />
                     {b}
                   </li>
                 ))}
@@ -631,7 +631,7 @@ function BACard({
   return (
     <motion.div
       className={[
-        "rounded-xl relative overflow-hidden bg-white border border-[#E6E3DD]",
+        "rounded-xl relative overflow-hidden bg-white border border-[var(--color-border)]",
         isAfter ? "card-green" : "card-red",
       ].join(" ")}
       style={{ padding: "28px", boxShadow: "0 2px 8px rgba(0,0,0,0.05)" }}
@@ -662,21 +662,21 @@ function BACard({
         </p>
 
         {/* Subtle structural divider */}
-        <div className="mt-5 h-px bg-[#E6E3DD]" />
+        <div className="mt-5 h-px bg-[var(--color-border)]" />
 
         {/* Item list */}
         <ul className="mt-5 flex flex-col gap-5">
           {items.map((item, i) =>
             typeof item === "string" ? (
-              <li key={i} className="text-sm text-[#3A3836] leading-relaxed">
+              <li key={i} className="text-sm text-[var(--color-text-body)] leading-relaxed">
                 {item}
               </li>
             ) : (
               <li key={i} className="flex flex-col gap-1">
-                <span className="text-sm font-medium text-[#18171A] leading-snug">
+                <span className="text-sm font-medium text-[var(--color-text)] leading-snug">
                   {item.label}
                 </span>
-                <span className="text-xs text-[#6E6D69] leading-relaxed">
+                <span className="text-xs text-[var(--color-text-muted)] leading-relaxed">
                   {renderMomentHighlights(item.detail)}
                 </span>
               </li>
@@ -804,7 +804,7 @@ function CaseStudyImage({ src, caption, alt, mobileDetail = false }: { src: stri
     <>
       <figure className="w-full flex flex-col gap-3">
         <div
-          className="w-full rounded-2xl overflow-hidden border border-[#E6E3DD] cursor-zoom-in"
+          className="w-full rounded-2xl overflow-hidden border border-[var(--color-border)] cursor-zoom-in"
           style={{ boxShadow: "0 4px 24px rgba(0,0,0,0.07)" }}
           onClick={() => setOpen(true)}
           role="button"
@@ -820,13 +820,13 @@ function CaseStudyImage({ src, caption, alt, mobileDetail = false }: { src: stri
           />
         </div>
         {caption && (
-          <figcaption className="text-xs text-[#6E6D69] text-center leading-snug px-4">{caption}</figcaption>
+          <figcaption className="text-xs text-[var(--color-text-muted)] text-center leading-snug px-4">{caption}</figcaption>
         )}
         {mobileDetail && (
           <button
             type="button"
             onClick={() => setOpen(true)}
-            className="sm:hidden self-center text-xs font-medium text-[#6A6764] underline underline-offset-4"
+            className="sm:hidden self-center text-xs font-medium text-[var(--color-text-secondary)] underline underline-offset-4"
           >
             Inspect full-size visual
           </button>
@@ -869,7 +869,7 @@ function CaseStudyVideo({ src, caption, poster, mobileDetail = false, controls =
     <>
       <figure className="w-full flex flex-col gap-3">
         <div
-          className="w-full rounded-2xl overflow-hidden border border-[#E6E3DD]"
+          className="w-full rounded-2xl overflow-hidden border border-[var(--color-border)]"
           style={{ boxShadow: "0 4px 24px rgba(0,0,0,0.07)" }}
           onClick={() => setOpen(true)}
           role="button"
@@ -892,13 +892,13 @@ function CaseStudyVideo({ src, caption, poster, mobileDetail = false, controls =
           />
         </div>
         {caption && (
-          <figcaption className="text-xs text-[#6E6D69] text-center leading-snug px-4">{caption}</figcaption>
+          <figcaption className="text-xs text-[var(--color-text-muted)] text-center leading-snug px-4">{caption}</figcaption>
         )}
         {mobileDetail && (
           <button
             type="button"
             onClick={() => setOpen(true)}
-            className="sm:hidden self-center text-xs font-medium text-[#6A6764] underline underline-offset-4"
+            className="sm:hidden self-center text-xs font-medium text-[var(--color-text-secondary)] underline underline-offset-4"
           >
             Inspect video full-screen
           </button>
@@ -924,13 +924,13 @@ function ImagePlaceholder({ caption, tall }: { caption: string; tall?: boolean }
   return (
     <figure
       className={[
-        "w-full bg-[#F2F0EB] border border-[#E6E3DD] rounded-2xl overflow-hidden flex flex-col justify-end",
+        "w-full bg-[var(--color-surface-tinted)] border border-[var(--color-border)] rounded-2xl overflow-hidden flex flex-col justify-end",
         tall ? "min-h-[280px]" : "min-h-[200px]",
       ].join(" ")}
       style={{ boxShadow: "inset 0 2px 8px rgba(0,0,0,0.05)" }}
     >
-      <div className="p-4 border-t border-[#E6E3DD] bg-white/60 backdrop-blur-sm">
-        <figcaption className="text-xs text-[#6E6D69] leading-snug">{caption}</figcaption>
+      <div className="p-4 border-t border-[var(--color-border)] bg-white/60 backdrop-blur-sm">
+        <figcaption className="text-xs text-[var(--color-text-muted)] leading-snug">{caption}</figcaption>
       </div>
     </figure>
   );
@@ -938,8 +938,8 @@ function ImagePlaceholder({ caption, tall }: { caption: string; tall?: boolean }
 
 function PullQuote({ text }: { text: string }) {
   return (
-    <blockquote className="border-l-[3px] border-[#C07B50]/30 pl-6 my-1">
-      <p className="font-quote max-w-[640px] text-[clamp(1.1rem,2.5vw,1.3rem)] leading-snug text-[#18171A]">
+    <blockquote className="border-l-[3px] border-[var(--color-accent)]/30 pl-6 my-1">
+      <p className="font-quote max-w-[640px] text-[clamp(1.1rem,2.5vw,1.3rem)] leading-snug text-[var(--color-text)]">
         &ldquo;{text}&rdquo;
       </p>
     </blockquote>
@@ -948,7 +948,7 @@ function PullQuote({ text }: { text: string }) {
 
 function ClosingLine({ text }: { text: string }) {
   return (
-    <p className="font-quote text-base text-[#6A6764]">
+    <p className="font-quote text-base text-[var(--color-text-secondary)]">
       {text}
     </p>
   );
@@ -958,12 +958,12 @@ function ContextCards({ items }: { items: { heading: string; body: string }[] })
   return (
     <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
       {items.map((card, i) => (
-        <div key={i} className="bg-white border border-[#E6E3DD] rounded-2xl p-5 flex flex-col gap-3">
-          <span className="font-[family-name:var(--font-numeral)] text-2xl text-[#C07B50]/50 leading-none">
+        <div key={i} className="bg-white border border-[var(--color-border)] rounded-2xl p-5 flex flex-col gap-3">
+          <span className="font-[family-name:var(--font-numeral)] text-2xl text-[var(--color-accent)]/50 leading-none">
             {String(i + 1).padStart(2, "0")}
           </span>
-          <h4 className="font-medium text-[#18171A] text-sm leading-snug">{card.heading}</h4>
-          <p className="text-sm text-[#6A6764] leading-relaxed">{card.body}</p>
+          <h4 className="font-medium text-[var(--color-text)] text-sm leading-snug">{card.heading}</h4>
+          <p className="text-sm text-[var(--color-text-secondary)] leading-relaxed">{card.body}</p>
         </div>
       ))}
     </div>
@@ -975,15 +975,15 @@ function SynthesisFlow({ rows }: { rows: { label: string; items: string[] }[] })
     <div className="flex flex-col">
       {rows.map((row, i) => (
         <div key={i} className="flex flex-col">
-          <div className="bg-[#F2F0EB] border border-[#E6E3DD] rounded-xl p-5 flex flex-col sm:flex-row gap-4 sm:items-start">
-            <span className="text-[10px] font-semibold tracking-widest uppercase text-[#6E6D69] shrink-0 sm:w-[130px] sm:pt-0.5">
+          <div className="bg-[var(--color-surface-tinted)] border border-[var(--color-border)] rounded-xl p-5 flex flex-col sm:flex-row gap-4 sm:items-start">
+            <span className="text-[10px] font-semibold tracking-widest uppercase text-[var(--color-text-muted)] shrink-0 sm:w-[130px] sm:pt-0.5">
               {row.label}
             </span>
             <div className="flex flex-wrap gap-2">
               {row.items.map((item, j) => (
                 <span
                   key={j}
-                  className="text-xs text-[#18171A] bg-white border border-[#E6E3DD] rounded-full px-3 py-1 leading-none"
+                  className="text-xs text-[var(--color-text)] bg-white border border-[var(--color-border)] rounded-full px-3 py-1 leading-none"
                 >
                   {item}
                 </span>
@@ -992,7 +992,7 @@ function SynthesisFlow({ rows }: { rows: { label: string; items: string[] }[] })
           </div>
           {i < rows.length - 1 && (
             <div className="flex justify-center items-center h-7" aria-hidden="true">
-              <span className="text-[#C07B50] text-base select-none">↓</span>
+              <span className="text-[var(--color-accent)] text-base select-none">↓</span>
             </div>
           )}
         </div>
@@ -1003,25 +1003,25 @@ function SynthesisFlow({ rows }: { rows: { label: string; items: string[] }[] })
 
 function SynthesisTable({ headers, rows }: { headers: [string, string]; rows: [string, string][] }) {
   return (
-    <div className="overflow-hidden rounded-xl border border-[#E6E3DD]">
+    <div className="overflow-hidden rounded-xl border border-[var(--color-border)]">
       <table className="w-full border-collapse">
         <thead>
-          <tr className="bg-[#F2F0EB]">
+          <tr className="bg-[var(--color-surface-tinted)]">
             {headers.map((h, i) => (
               <th
                 key={i}
-                className="text-left px-5 py-3 text-[10px] font-semibold tracking-widest uppercase text-[#6E6D69] border-b border-[#E6E3DD]"
+                className="text-left px-5 py-3 text-[10px] font-semibold tracking-widest uppercase text-[var(--color-text-muted)] border-b border-[var(--color-border)]"
               >
                 {h}
               </th>
             ))}
           </tr>
         </thead>
-        <tbody className="divide-y divide-[#E6E3DD]">
+        <tbody className="divide-y divide-[var(--color-border)]">
           {rows.map(([insight, requirement], i) => (
             <tr key={i} className="bg-white">
-              <td className="px-5 py-3.5 text-sm text-[#3A3836] leading-snug">{insight}</td>
-              <td className="px-5 py-3.5 text-sm font-medium text-[#18171A] leading-snug">{requirement}</td>
+              <td className="px-5 py-3.5 text-sm text-[var(--color-text-body)] leading-snug">{insight}</td>
+              <td className="px-5 py-3.5 text-sm font-medium text-[var(--color-text)] leading-snug">{requirement}</td>
             </tr>
           ))}
         </tbody>
@@ -1047,29 +1047,29 @@ function DecisionsCDO({
           className="grid grid-cols-[2rem_1fr] gap-4"
           {...reveal(staggerDelay(i))}
         >
-          <span className="font-[family-name:var(--font-numeral)] text-2xl text-[#C07B50]/50 leading-none pt-0.5">
+          <span className="font-[family-name:var(--font-numeral)] text-2xl text-[var(--color-accent)]/50 leading-none pt-0.5">
             {String(startIndex + i + 1).padStart(2, "0")}
           </span>
           <div className="space-y-4">
-            <h4 className="font-medium text-[#18171A] text-base">{item.heading}</h4>
+            <h4 className="font-medium text-[var(--color-text)] text-base">{item.heading}</h4>
             <div className="space-y-3">
               <div>
-                <span className="text-[10px] font-semibold tracking-widest uppercase text-[#6E6D69] block mb-1">
+                <span className="text-[10px] font-semibold tracking-widest uppercase text-[var(--color-text-muted)] block mb-1">
                   Challenge
                 </span>
-                <p className="text-sm text-[#3A3836] leading-relaxed">{renderMomentHighlights(item.challenge)}</p>
+                <p className="text-sm text-[var(--color-text-body)] leading-relaxed">{renderMomentHighlights(item.challenge)}</p>
               </div>
               <div>
-                <span className="text-[10px] font-semibold tracking-widest uppercase text-[#C07B50]/70 block mb-1">
+                <span className="text-[10px] font-semibold tracking-widest uppercase text-[var(--color-accent)]/70 block mb-1">
                   Decision
                 </span>
-                <p className="text-sm text-[#3A3836] leading-relaxed">{renderMomentHighlights(item.decision)}</p>
+                <p className="text-sm text-[var(--color-text-body)] leading-relaxed">{renderMomentHighlights(item.decision)}</p>
               </div>
               <div>
                 <span className="text-[10px] font-semibold tracking-widest uppercase text-[#2E7D52] block mb-1">
                   Outcome
                 </span>
-                <p className="text-sm text-[#3A3836] leading-relaxed">{renderMomentHighlights(item.outcome)}</p>
+                <p className="text-sm text-[var(--color-text-body)] leading-relaxed">{renderMomentHighlights(item.outcome)}</p>
               </div>
             </div>
           </div>
@@ -1081,15 +1081,15 @@ function DecisionsCDO({
 
 function PublishingWorkflow({ steps }: { steps: string[] }) {
   return (
-    <div className="border border-[#E6E3DD] rounded-xl overflow-hidden bg-[#F2F0EB] px-6 py-5 max-w-[400px]">
+    <div className="border border-[var(--color-border)] rounded-xl overflow-hidden bg-[var(--color-surface-tinted)] px-6 py-5 max-w-[400px]">
       <div className="flex flex-col">
         {steps.map((step, i) => (
           <div key={i} className="flex flex-col">
             <div className="flex items-center gap-4">
-              <span className="w-6 h-6 rounded-full bg-white border border-[#E6E3DD] flex items-center justify-center text-[10px] font-semibold text-[#6E6D69] shrink-0">
+              <span className="w-6 h-6 rounded-full bg-white border border-[var(--color-border)] flex items-center justify-center text-[10px] font-semibold text-[var(--color-text-muted)] shrink-0">
                 {i + 1}
               </span>
-              <span className="text-sm font-medium text-[#18171A]">{step}</span>
+              <span className="text-sm font-medium text-[var(--color-text)]">{step}</span>
             </div>
             {i < steps.length - 1 && (
               <div className="ml-[11px] w-px h-5 bg-[#D4D0C8] my-1" aria-hidden="true" />
@@ -1110,7 +1110,7 @@ function DriftAudit({
 }) {
   return (
     <div className="mt-8 grid gap-5 lg:grid-cols-[1.2fr_0.8fr]">
-      <div className="border border-[#E6E3DD] rounded-2xl bg-white p-7 space-y-6">
+      <div className="border border-[var(--color-border)] rounded-2xl bg-white p-7 space-y-6">
         {groups.map((g, gi) => (
           <div key={gi} className="flex flex-wrap items-center gap-2.5">
             <span className="w-full text-[10px] font-medium uppercase tracking-widest text-[var(--color-text-muted)] mb-1">
@@ -1145,13 +1145,13 @@ function DriftAudit({
           </div>
         ))}
       </div>
-      <div className="flex flex-col gap-px bg-[#E6E3DD] border border-[#E6E3DD] rounded-2xl overflow-hidden">
+      <div className="flex flex-col gap-px bg-[var(--color-border)] border border-[var(--color-border)] rounded-2xl overflow-hidden">
         {stats.map((s, i) => (
           <div key={i} className="bg-white px-6 py-5 flex items-baseline justify-between gap-4">
             <span className="font-[family-name:var(--font-numeral)] text-4xl text-[var(--color-text-accent)] leading-none">
               {s.n}
             </span>
-            <span className="text-xs text-[#6A6764] text-right max-w-[170px]">{s.label}</span>
+            <span className="text-xs text-[var(--color-text-secondary)] text-right max-w-[170px]">{s.label}</span>
           </div>
         ))}
       </div>
@@ -1162,13 +1162,13 @@ function DriftAudit({
 function TokenChain({ steps }: { steps: { tier: string; token: string; why: string }[] }) {
   const [hovered, setHovered] = useState(false);
   return (
-    <div className="mt-8 grid gap-px bg-[#E6E3DD] border border-[#E6E3DD] rounded-2xl overflow-hidden md:grid-cols-4">
+    <div className="mt-8 grid gap-px bg-[var(--color-border)] border border-[var(--color-border)] rounded-2xl overflow-hidden md:grid-cols-4">
       {steps.map((s, i) => (
         <div key={i} className="bg-white px-6 py-6">
           <p className="text-[10px] font-medium uppercase tracking-widest text-[var(--color-text-accent)] mb-2.5">
             {s.tier}
           </p>
-          <span className="inline-block font-[family-name:var(--font-geist-mono)] text-[13px] bg-[#F2F0EB] rounded-lg px-3 py-2">
+          <span className="inline-block font-[family-name:var(--font-geist-mono)] text-[13px] bg-[var(--color-surface-tinted)] rounded-lg px-3 py-2">
             {s.token}
           </span>
           <p className="mt-3 text-xs text-[var(--color-text-muted)] leading-relaxed">{s.why}</p>
@@ -1184,12 +1184,12 @@ function TokenChain({ steps }: { steps: { tier: string; token: string; why: stri
           aria-label="Live demo: token chain rendered as a project card hover state"
           className="w-full max-w-[170px] rounded-xl border bg-white p-4 text-left transition-[border-color,box-shadow] duration-300"
           style={{
-            borderColor: hovered ? "var(--color-accent)" : "#E6E3DD",
+            borderColor: hovered ? "var(--color-accent)" : "var(--color-border)",
             boxShadow: hovered ? "0 8px 40px -8px rgba(0,0,0,0.12)" : "none",
           }}
         >
-          <span className="block h-12 rounded-lg bg-[#F2F0EB] mb-2.5" aria-hidden="true" />
-          <span className="block text-[13px] font-medium text-[#18171A]">Hover me</span>
+          <span className="block h-12 rounded-lg bg-[var(--color-surface-tinted)] mb-2.5" aria-hidden="true" />
+          <span className="block text-[13px] font-medium text-[var(--color-text)]">Hover me</span>
           <span className="block text-[10px] text-[var(--color-text-muted)] mt-0.5">The chain, rendered</span>
         </button>
       </div>
@@ -1213,14 +1213,14 @@ function ContrastMatrix({
     fail: "Fail",
   };
   return (
-    <div className="mt-8 border border-[#E6E3DD] rounded-2xl bg-white overflow-hidden overflow-x-auto">
+    <div className="mt-8 border border-[var(--color-border)] rounded-2xl bg-white overflow-hidden overflow-x-auto">
       <table className="w-full text-sm border-collapse min-w-[560px]">
         <thead>
-          <tr className="bg-[#F2F0EB]">
+          <tr className="bg-[var(--color-surface-tinted)]">
             {["Pairing", "Measured", "WCAG AA", "Remediation"].map((h) => (
               <th
                 key={h}
-                className="text-left text-[10px] font-medium uppercase tracking-widest text-[var(--color-text-muted)] px-4 py-3 border-b border-[#E6E3DD]"
+                className="text-left text-[10px] font-medium uppercase tracking-widest text-[var(--color-text-muted)] px-4 py-3 border-b border-[var(--color-border)]"
               >
                 {h}
               </th>
@@ -1229,7 +1229,7 @@ function ContrastMatrix({
         </thead>
         <tbody>
           {rows.map((r, i) => (
-            <tr key={i} className={i < rows.length - 1 ? "border-b border-[#E6E3DD]" : ""}>
+            <tr key={i} className={i < rows.length - 1 ? "border-b border-[var(--color-border)]" : ""}>
               <td className="px-4 py-3">
                 <div className="flex items-center gap-2.5">
                   <span
@@ -1238,16 +1238,16 @@ function ContrastMatrix({
                   >
                     Aa
                   </span>
-                  <span className="font-[family-name:var(--font-geist-mono)] text-[11px] text-[#3A3836]">{r.pairing}</span>
+                  <span className="font-[family-name:var(--font-geist-mono)] text-[11px] text-[var(--color-text-body)]">{r.pairing}</span>
                 </div>
               </td>
-              <td className="px-4 py-3 font-[family-name:var(--font-geist-mono)] text-[12px] text-[#3A3836]">{r.ratio}</td>
+              <td className="px-4 py-3 font-[family-name:var(--font-geist-mono)] text-[12px] text-[var(--color-text-body)]">{r.ratio}</td>
               <td className="px-4 py-3">
                 <span className={`inline-block text-[10px] font-medium uppercase tracking-wide rounded-full border px-2.5 py-0.5 ${verdictStyle[r.verdict]}`}>
                   {verdictLabel[r.verdict]}
                 </span>
               </td>
-              <td className="px-4 py-3 text-xs text-[#6A6764]">{r.fix ?? "—"}</td>
+              <td className="px-4 py-3 text-xs text-[var(--color-text-secondary)]">{r.fix ?? "—"}</td>
             </tr>
           ))}
         </tbody>
@@ -1265,16 +1265,16 @@ function ComponentAnatomy({
 }) {
   return (
     <div className="mt-8 grid gap-7 lg:grid-cols-[0.9fr_1.1fr] lg:items-center">
-      <div className="rounded-2xl bg-[#F2F0EB] border border-[#E6E3DD] p-9 flex justify-center">
-        <div className="w-full max-w-[280px] bg-white border border-[#E6E3DD] rounded-2xl overflow-hidden hover:border-[#C07B50]/40 hover:shadow-[0_8px_40px_-8px_rgba(0,0,0,0.12)] transition-[border-color,box-shadow] duration-300">
-          <div className="h-[100px]" style={{ background: "linear-gradient(135deg, #F2F0EB, #F5E8DC)" }} aria-hidden="true" />
+      <div className="rounded-2xl bg-[var(--color-surface-tinted)] border border-[var(--color-border)] p-9 flex justify-center">
+        <div className="w-full max-w-[280px] bg-white border border-[var(--color-border)] rounded-2xl overflow-hidden hover:border-[var(--color-accent)]/40 hover:shadow-[0_8px_40px_-8px_rgba(0,0,0,0.12)] transition-[border-color,box-shadow] duration-300">
+          <div className="h-[100px]" style={{ background: "linear-gradient(135deg, var(--color-surface-tinted), var(--color-accent-light))" }} aria-hidden="true" />
           <div className="p-5">
             <div className="flex items-center justify-between mb-2.5">
-              <span className="text-[10px] font-medium uppercase tracking-wide text-[#C07B50]">Enterprise UX</span>
+              <span className="text-[10px] font-medium uppercase tracking-wide text-[var(--color-accent)]">Enterprise UX</span>
               <span className="text-[10px] text-[var(--color-text-muted)]">2025</span>
             </div>
-            <h4 className="text-[15px] font-medium text-[#18171A] mb-1.5">{componentName}</h4>
-            <p className="text-xs text-[#6A6764] leading-relaxed">Approval workflow for a multi-stakeholder platform.</p>
+            <h4 className="text-[15px] font-medium text-[var(--color-text)] mb-1.5">{componentName}</h4>
+            <p className="text-xs text-[var(--color-text-secondary)] leading-relaxed">Approval workflow for a multi-stakeholder platform.</p>
           </div>
         </div>
       </div>
@@ -1282,13 +1282,13 @@ function ComponentAnatomy({
         {annotations.map((a, i) => (
           <div
             key={i}
-            className={`grid grid-cols-[24px_1fr] gap-3.5 py-3 items-baseline ${i > 0 ? "border-t border-[#E6E3DD]" : ""}`}
+            className={`grid grid-cols-[24px_1fr] gap-3.5 py-3 items-baseline ${i > 0 ? "border-t border-[var(--color-border)]" : ""}`}
           >
             <span className="font-[family-name:var(--font-geist-mono)] text-[11px] text-[var(--color-text-accent)]">
               {String(i + 1).padStart(2, "0")}
             </span>
             <div>
-              <span className="text-[13px] text-[#18171A]">{a.label}</span>
+              <span className="text-[13px] text-[var(--color-text)]">{a.label}</span>
               <span className="block font-[family-name:var(--font-geist-mono)] text-[11px] text-[var(--color-text-muted)] mt-0.5">
                 {a.token}
               </span>
@@ -1319,14 +1319,14 @@ function BenchmarkMatrix({
     );
   };
   return (
-    <div className="mt-8 border border-[#E6E3DD] rounded-2xl bg-white overflow-hidden overflow-x-auto">
+    <div className="mt-8 border border-[var(--color-border)] rounded-2xl bg-white overflow-hidden overflow-x-auto">
       <table className="w-full text-sm border-collapse min-w-[520px]">
         <thead>
-          <tr className="bg-[#F2F0EB]">
+          <tr className="bg-[var(--color-surface-tinted)]">
             {["Capability", "Material 3", "Carbon", "This system"].map((h, i) => (
               <th
                 key={h}
-                className={`text-[10px] font-medium uppercase tracking-widest text-[var(--color-text-muted)] px-4 py-3 border-b border-[#E6E3DD] ${i === 0 ? "text-left" : "text-center"}`}
+                className={`text-[10px] font-medium uppercase tracking-widest text-[var(--color-text-muted)] px-4 py-3 border-b border-[var(--color-border)] ${i === 0 ? "text-left" : "text-center"}`}
               >
                 {h}
               </th>
@@ -1335,10 +1335,10 @@ function BenchmarkMatrix({
         </thead>
         <tbody>
           {rows.map((r, i) => (
-            <tr key={i} className={i < rows.length - 1 ? "border-b border-[#E6E3DD]" : ""}>
-              <td className="px-4 py-3 text-sm font-medium text-[#18171A]">
+            <tr key={i} className={i < rows.length - 1 ? "border-b border-[var(--color-border)]" : ""}>
+              <td className="px-4 py-3 text-sm font-medium text-[var(--color-text)]">
                 {r.category}
-                {r.note && <span className="block text-xs font-normal text-[#6A6764] mt-0.5">{r.note}</span>}
+                {r.note && <span className="block text-xs font-normal text-[var(--color-text-secondary)] mt-0.5">{r.note}</span>}
               </td>
               <td className="px-4 py-3 text-center"><Cell v={r.m3} /></td>
               <td className="px-4 py-3 text-center"><Cell v={r.carbon} /></td>
@@ -1405,7 +1405,7 @@ function Section({
     >
       {/* Animated divider — grows left-to-right on scroll */}
       <motion.div
-        className="h-px bg-[#E6E3DD]"
+        className="h-px bg-[var(--color-border)]"
         initial={{ scaleX: 0 }}
         whileInView={{ scaleX: 1 }}
         viewport={REVEAL_VIEWPORT}
@@ -1419,7 +1419,7 @@ function Section({
         </span>
 
         {section.heading && (
-          <h2 className="mb-8 max-w-[22ch] font-display text-[clamp(1.5rem,3vw,2.25rem)] font-bold leading-snug text-[#18171A]">
+          <h2 className="mb-8 max-w-[22ch] font-display text-[clamp(1.5rem,3vw,2.25rem)] font-bold leading-snug text-[var(--color-text)]">
             {section.heading}
           </h2>
         )}
@@ -1440,10 +1440,10 @@ function Section({
 function GenericBody() {
   return (
     <div className="max-w-[800px] mx-auto px-6 md:px-10 py-20">
-      <div className="border-t border-[#E6E3DD] pt-12 space-y-6">
-        <p className="text-[#6A6764] text-base leading-relaxed">
+      <div className="border-t border-[var(--color-border)] pt-12 space-y-6">
+        <p className="text-[var(--color-text-secondary)] text-base leading-relaxed">
           Full case study coming soon. In the meantime, feel free to{" "}
-          <a href="mailto:hi@withsameer.design" className="text-[#C07B50] underline underline-offset-2">
+          <a href="mailto:hi@withsameer.design" className="text-[var(--color-accent)] underline underline-offset-2">
             reach out
           </a>{" "}
           to discuss this project in detail.
@@ -1485,7 +1485,7 @@ export default function CaseStudy({ project, content }: Props) {
       ) : isCollabspace ? (
         <InProgressHero project={project} />
       ) : isDesignSystem ? (
-        <div className="relative isolate overflow-hidden bg-[#F9F8F5]">
+        <div className="relative isolate overflow-hidden bg-[var(--color-warm-bg)]">
           <section className="relative flex md:min-h-screen flex-col justify-start px-6 pb-16 md:pb-[88px] pt-[72px] md:px-10">
             <motion.div
               initial={{ opacity: 0, y: 24, scale: 0.98 }}
@@ -1510,7 +1510,7 @@ export default function CaseStudy({ project, content }: Props) {
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.55, delay: 0.08, ease: [0.16, 1, 0.3, 1] }}
-                className="font-display max-w-[670px] text-[clamp(2.50rem,3.74vw,4.06rem)] font-bold leading-tight text-[#18171A]"
+                className="font-display max-w-[670px] text-[clamp(2.50rem,3.74vw,4.06rem)] font-bold leading-tight text-[var(--color-text)]"
               >
                 {project.title}
               </motion.h1>
@@ -1518,7 +1518,7 @@ export default function CaseStudy({ project, content }: Props) {
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 transition={{ duration: 0.4, delay: 0.2 }}
-                className="mt-5 text-base text-[#18171A]/65 max-w-[48ch] leading-relaxed mb-6 pointer-events-auto"
+                className="mt-5 text-base text-[var(--color-text)]/65 max-w-[48ch] leading-relaxed mb-6 pointer-events-auto"
               >
                 {project.description}
               </motion.p>
@@ -1543,15 +1543,15 @@ export default function CaseStudy({ project, content }: Props) {
                   initial={{ opacity: 0, y: 12 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.45, delay: 0.25, ease: [0.16, 1, 0.3, 1] }}
-                  className="grid w-fit grid-cols-[auto_auto] sm:grid-cols-[auto_auto_auto] overflow-hidden rounded-xl border border-[#E6E3DD] bg-[#E6E3DD] gap-px mb-8 pointer-events-auto"
+                  className="grid w-fit grid-cols-[auto_auto] sm:grid-cols-[auto_auto_auto] overflow-hidden rounded-xl border border-[var(--color-border)] bg-[var(--color-border)] gap-px mb-8 pointer-events-auto"
                   style={{ boxShadow: "0 2px 8px rgba(0,0,0,0.05)" }}
                 >
                   {project.heroMetadata.map(({ label, value }) => (
                     <div key={label} className="flex flex-col gap-1.5 bg-white px-6 py-3">
-                      <span className="text-[10px] font-medium uppercase tracking-widest text-[#18171A]/[0.38]">
+                      <span className="text-[10px] font-medium uppercase tracking-widest text-[var(--color-text)]/[0.38]">
                         {label}
                       </span>
-                      <span className="text-[15px] font-normal text-[#18171A]/85 leading-snug">
+                      <span className="text-[15px] font-normal text-[var(--color-text)]/85 leading-snug">
                         {value}
                       </span>
                     </div>
@@ -1564,11 +1564,11 @@ export default function CaseStudy({ project, content }: Props) {
                 transition={{ duration: 0.4, delay: 0.3, ease: [0.16, 1, 0.3, 1] }}
                 className="flex flex-wrap gap-2 pointer-events-auto max-w-[640px]"
               >
-                <span className="text-sm font-medium text-[#18171A] bg-[#18171A]/8 px-3 py-1.5 rounded-full">
+                <span className="text-sm font-medium text-[var(--color-text)] bg-[var(--color-text)]/8 px-3 py-1.5 rounded-full">
                   {project.impact}
                 </span>
                 {project.tags.map((tag) => (
-                  <span key={tag} className="text-xs text-[#18171A]/50 border border-[#18171A]/15 px-3 py-1.5 rounded-full">
+                  <span key={tag} className="text-xs text-[var(--color-text)]/50 border border-[var(--color-text)]/15 px-3 py-1.5 rounded-full">
                     {tag}
                   </span>
                 ))}
@@ -1595,7 +1595,7 @@ export default function CaseStudy({ project, content }: Props) {
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.55, delay: 0.08, ease: [0.16, 1, 0.3, 1] }}
-                className="mb-5 max-w-[22ch] font-display text-[clamp(2rem,5vw,4rem)] font-bold leading-tight text-[#18171A]"
+                className="mb-5 max-w-[22ch] font-display text-[clamp(2rem,5vw,4rem)] font-bold leading-tight text-[var(--color-text)]"
               >
                 {project.title}
               </motion.h1>
@@ -1603,7 +1603,7 @@ export default function CaseStudy({ project, content }: Props) {
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 transition={{ duration: 0.4, delay: 0.2 }}
-                className="text-base text-[#18171A]/65 max-w-[48ch] leading-relaxed mb-8"
+                className="text-base text-[var(--color-text)]/65 max-w-[48ch] leading-relaxed mb-8"
               >
                 {project.description}
               </motion.p>
@@ -1612,14 +1612,14 @@ export default function CaseStudy({ project, content }: Props) {
                   initial={{ opacity: 0, y: 12 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.45, delay: 0.25, ease: [0.16, 1, 0.3, 1] }}
-                  className="grid w-fit grid-cols-[auto_auto] sm:grid-cols-[auto_auto_auto] overflow-hidden rounded-xl border border-[#18171A]/10 bg-[#18171A]/10 gap-px mb-8"
+                  className="grid w-fit grid-cols-[auto_auto] sm:grid-cols-[auto_auto_auto] overflow-hidden rounded-xl border border-[var(--color-text)]/10 bg-[var(--color-text)]/10 gap-px mb-8"
                 >
                   {project.heroMetadata.map(({ label, value }) => (
                     <div key={label} className="flex flex-col gap-1.5 bg-white/70 px-6 py-3">
-                      <span className="text-[10px] font-medium uppercase tracking-widest text-[#18171A]/40">
+                      <span className="text-[10px] font-medium uppercase tracking-widest text-[var(--color-text)]/40">
                         {label}
                       </span>
-                      <span className="text-[15px] font-normal text-[#18171A]/85 leading-snug">
+                      <span className="text-[15px] font-normal text-[var(--color-text)]/85 leading-snug">
                         {value}
                       </span>
                     </div>
@@ -1632,11 +1632,11 @@ export default function CaseStudy({ project, content }: Props) {
                 transition={{ duration: 0.4, delay: 0.3, ease: [0.16, 1, 0.3, 1] }}
                 className="flex flex-wrap gap-2"
               >
-                <span className="text-sm font-medium text-[#18171A] bg-[#18171A]/8 px-3 py-1.5 rounded-full">
+                <span className="text-sm font-medium text-[var(--color-text)] bg-[var(--color-text)]/8 px-3 py-1.5 rounded-full">
                   {project.impact}
                 </span>
                 {project.tags.map((tag) => (
-                  <span key={tag} className="text-xs text-[#18171A]/50 border border-[#18171A]/15 px-3 py-1.5 rounded-full">
+                  <span key={tag} className="text-xs text-[var(--color-text)]/50 border border-[var(--color-text)]/15 px-3 py-1.5 rounded-full">
                     {tag}
                   </span>
                 ))}
@@ -1667,14 +1667,14 @@ export default function CaseStudy({ project, content }: Props) {
 
       {project.slug === "design-system" && (
         <div className="max-w-[900px] mx-auto px-6 md:px-10 lg:pl-[150px] xl:pl-10 pb-16">
-          <div className="border-t border-[#E6E3DD] pt-10 flex flex-wrap items-center justify-between gap-4">
+          <div className="border-t border-[var(--color-border)] pt-10 flex flex-wrap items-center justify-between gap-4">
             <div>
               <p className="text-xs text-[var(--color-text-accent)] tracking-widest uppercase font-medium mb-1">Go deeper</p>
-              <p className="text-[#18171A] font-medium">Every token, every rule, in one reference.</p>
+              <p className="text-[var(--color-text)] font-medium">Every token, every rule, in one reference.</p>
             </div>
             <Link
               href="/system"
-              className="inline-flex items-center gap-2 bg-[#18171A] text-[#F9F8F5] text-sm font-medium px-5 py-3 rounded-full hover:bg-[#C07B50] transition-colors duration-200 min-h-[44px]"
+              className="inline-flex items-center gap-2 bg-[var(--color-text)] text-[var(--color-warm-bg)] text-sm font-medium px-5 py-3 rounded-full hover:bg-[var(--color-accent)] transition-colors duration-200 min-h-[44px]"
             >
               View the Token Atlas
               <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true">
@@ -1688,21 +1688,21 @@ export default function CaseStudy({ project, content }: Props) {
       {/* Adjacent project */}
       <div
         data-case-study-nav-boundary
-        className="border-t border-[#E6E3DD] px-6 md:px-10 py-12 bg-[#F9F8F5]"
+        className="border-t border-[var(--color-border)] px-6 md:px-10 py-12 bg-[var(--color-warm-bg)]"
       >
         <div className="max-w-[1280px] mx-auto flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
           <div>
             <p className="text-xs text-[var(--color-text-accent)] tracking-widest uppercase font-medium mb-1">
               {adjacentLabel}
             </p>
-            <p className="text-[#18171A] font-medium">{adjacentProject.title}</p>
-            <p className="text-sm text-[#6A6764] mt-0.5">{adjacentProject.category}</p>
+            <p className="text-[var(--color-text)] font-medium">{adjacentProject.title}</p>
+            <p className="text-sm text-[var(--color-text-secondary)] mt-0.5">{adjacentProject.category}</p>
           </div>
           <MotionLink
             href={`/work/${adjacentProject.slug}`}
             whileHover={{ scale: 1.02 }}
             transition={{ duration: 0.15, ease: "easeOut" }}
-            className="inline-flex items-center gap-2 bg-[#18171A] text-[#F9F8F5] text-sm font-medium px-5 py-3 rounded-full hover:bg-[#C07B50] transition-colors duration-200 min-h-[44px]"
+            className="inline-flex items-center gap-2 bg-[var(--color-text)] text-[var(--color-warm-bg)] text-sm font-medium px-5 py-3 rounded-full hover:bg-[var(--color-accent)] transition-colors duration-200 min-h-[44px]"
           >
             View case study
             <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true">

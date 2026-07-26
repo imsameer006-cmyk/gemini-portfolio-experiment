@@ -240,7 +240,7 @@ body {
     left: 50%;
     transform: translateX(-50%);
     background: #1a1a1a;
-    color: #fff;
+    color: var(--color-surface);
     font-size: 11px;
     font-weight: 500;
     letter-spacing: 0;
@@ -271,7 +271,7 @@ body {
   /* Hover — pill color shift */
   .role-pill:hover {
     background: #F5EAE0;
-    border-color: #C07B50;
+    border-color: var(--color-accent);
     color: var(--color-text-accent); /* was #A0622E — same remediation as resting state */
   }
 

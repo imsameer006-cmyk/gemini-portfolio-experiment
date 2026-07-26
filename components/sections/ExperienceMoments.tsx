@@ -69,9 +69,9 @@ function ExperiencePhotoCard({
   return (
     <motion.article
       {...reveal(staggerDelay(index))}
-      className="group flex h-full flex-col overflow-hidden rounded-2xl border border-[#E6E3DD] bg-white transition-[border-color,box-shadow] duration-300 hover:border-[#C07B50]/35 hover:shadow-[0_8px_40px_-8px_rgba(0,0,0,0.1)]"
+      className="group flex h-full flex-col overflow-hidden rounded-2xl border border-[var(--color-border)] bg-white transition-[border-color,box-shadow] duration-300 hover:border-[var(--color-accent)]/35 hover:shadow-[0_8px_40px_-8px_rgba(0,0,0,0.1)]"
     >
-      <div className="relative aspect-[4/3] w-full overflow-hidden bg-[#F2F0EB]">
+      <div className="relative aspect-[4/3] w-full overflow-hidden bg-[var(--color-surface-tinted)]">
         {moment.imageSrc ? (
           <Image
             src={moment.imageSrc}
@@ -82,28 +82,28 @@ function ExperiencePhotoCard({
           />
         ) : (
           <div className="flex h-full w-full items-center justify-center">
-            <span className="font-[family-name:var(--font-numeral)] text-5xl leading-none text-[#18171A]/15">
+            <span className="font-[family-name:var(--font-numeral)] text-5xl leading-none text-[var(--color-text)]/15">
               {String(index + 1).padStart(2, "0")}
             </span>
           </div>
         )}
       </div>
 
-      <div className="flex min-h-[88px] flex-col justify-start border-t border-[#E6E3DD] px-4 py-4">
+      <div className="flex min-h-[88px] flex-col justify-start border-t border-[var(--color-border)] px-4 py-4">
         {moment.title && (
-          <p className="overflow-hidden text-ellipsis whitespace-nowrap text-[13px] font-medium leading-[1.35] text-[#18171A] lg:text-[12px]">
+          <p className="overflow-hidden text-ellipsis whitespace-nowrap text-[13px] font-medium leading-[1.35] text-[var(--color-text)] lg:text-[12px]">
             {moment.title}
           </p>
         )}
         <p
           className={[
             "overflow-hidden text-ellipsis whitespace-nowrap text-[11px] font-medium uppercase tracking-[0.06em]",
-            moment.title ? "mt-2 text-[#6E6D69]" : "text-[#C07B50]",
+            moment.title ? "mt-2 text-[var(--color-text-muted)]" : "text-[var(--color-accent)]",
           ].join(" ")}
         >
           {moment.company}
           {moment.company ? (
-            <span className="mx-1.5 text-[#CECAC2]" aria-hidden="true">
+            <span className="mx-1.5 text-[var(--color-border-strong)]" aria-hidden="true">
               ·
             </span>
           ) : null}
@@ -203,7 +203,7 @@ export default function ExperienceMoments() {
       id="experience-moments"
       className="px-6 pb-24 pt-0 md:px-10 md:pb-32"
     >
-      <div className="mx-auto max-w-[1280px] border-t border-[#E6E3DD] pt-16">
+      <div className="mx-auto max-w-[1280px] border-t border-[var(--color-border)] pt-16">
         <motion.div
           {...reveal()}
           className="mb-12 grid gap-5 lg:grid-cols-[0.7fr_1fr] lg:items-end"
@@ -212,11 +212,11 @@ export default function ExperienceMoments() {
             <p className="mb-3 text-xs font-medium uppercase tracking-widest text-[var(--color-text-accent)]">
               Selected Moments
             </p>
-            <h2 className="font-display text-[clamp(2rem,4.5vw,3.5rem)] font-bold leading-tight text-[#18171A]">
+            <h2 className="font-display text-[clamp(2rem,4.5vw,3.5rem)] font-bold leading-tight text-[var(--color-text)]">
               In Practice.
             </h2>
           </div>
-          <p className="max-w-[640px] text-base leading-relaxed text-[#6A6764] md:text-lg lg:ml-auto">
+          <p className="max-w-[640px] text-base leading-relaxed text-[var(--color-text-secondary)] md:text-lg lg:ml-auto">
             Product design is ultimately about working with people. These moments
             capture the conversations, workshops, and collaborations that transform
             ambiguity into shared understanding and shape the systems behind the
@@ -245,7 +245,7 @@ export default function ExperienceMoments() {
             className="mt-5 flex justify-center"
             aria-label="Selected moment navigation"
           >
-            <div className="inline-flex items-center gap-3 rounded-full bg-[#F2F0EB] px-6 py-4">
+            <div className="inline-flex items-center gap-3 rounded-full bg-[var(--color-surface-tinted)] px-6 py-4">
               {MOMENTS.map((moment, index) => (
                 <button
                   key={`${moment.company}-${index}-dot`}
@@ -254,8 +254,8 @@ export default function ExperienceMoments() {
                   aria-label={`Show ${moment.title ?? `moment ${index + 1}`}`}
                   aria-current={activeMoment === index ? "true" : undefined}
                   className={[
-                    "h-2 w-2 rounded-full border border-[#18171A] transition-colors duration-200",
-                    activeMoment === index ? "bg-[#18171A]" : "bg-transparent",
+                    "h-2 w-2 rounded-full border border-[var(--color-text)] transition-colors duration-200",
+                    activeMoment === index ? "bg-[var(--color-text)]" : "bg-transparent",
                   ].join(" ")}
                 />
               ))}
@@ -284,7 +284,7 @@ export default function ExperienceMoments() {
             className="mt-5 flex justify-center"
             aria-label="Selected moment navigation"
           >
-            <div className="inline-flex items-center gap-3 rounded-full bg-[#F2F0EB] px-6 py-4">
+            <div className="inline-flex items-center gap-3 rounded-full bg-[var(--color-surface-tinted)] px-6 py-4">
               {desktopPageStartIndexes.map((startIndex, index) => (
                 <button
                   key={`desktop-moment-page-${index}`}
@@ -296,8 +296,8 @@ export default function ExperienceMoments() {
                   )}`}
                   aria-current={activeDesktopPage === index ? "true" : undefined}
                   className={[
-                    "h-2 w-2 rounded-full border border-[#18171A] transition-colors duration-200",
-                    activeDesktopPage === index ? "bg-[#18171A]" : "bg-transparent",
+                    "h-2 w-2 rounded-full border border-[var(--color-text)] transition-colors duration-200",
+                    activeDesktopPage === index ? "bg-[var(--color-text)]" : "bg-transparent",
                   ].join(" ")}
                 />
               ))}

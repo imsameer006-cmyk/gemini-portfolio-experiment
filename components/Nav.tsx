@@ -90,7 +90,7 @@ export default function Nav() {
         className={[
           "fixed z-50 transition-all duration-300",
           scrolled
-            ? "top-4 left-4 right-4 rounded-2xl border border-[#E6E3DD] bg-[#F9F8F5]/90 shadow-[0_2px_12px_rgba(0,0,0,0.08)] backdrop-blur-md md:left-6 md:right-6"
+            ? "top-4 left-4 right-4 rounded-2xl border border-[var(--color-border)] bg-[var(--color-warm-bg)]/90 shadow-[0_2px_12px_rgba(0,0,0,0.08)] backdrop-blur-md md:left-6 md:right-6"
             : "top-0 left-0 right-0 rounded-none border-0 bg-transparent shadow-none",
         ].join(" ")}
       >
@@ -106,7 +106,7 @@ export default function Nav() {
                   window.scrollTo({ top: 0, behavior: "smooth" });
                 }
               }}
-              className="inline-flex min-h-11 items-center justify-center pr-3 text-[#18171A] md:pr-2"
+              className="inline-flex min-h-11 items-center justify-center pr-3 text-[var(--color-text)] md:pr-2"
             >
               <span className="text-[13px] font-semibold uppercase tracking-[0.14em]">
                 SAMEER G.
@@ -125,8 +125,8 @@ export default function Nav() {
                   className={[
                     "text-[13px] font-normal transition-colors duration-200 cursor-pointer relative",
                     isActive(href)
-                      ? "text-[#18171A]/80 after:absolute after:-bottom-0.5 after:left-0 after:w-full after:h-px after:bg-[#C07B50] after:content-['']"
-                      : "text-[#18171A]/45 hover:text-[#18171A]/70",
+                      ? "text-[var(--color-text)]/80 after:absolute after:-bottom-0.5 after:left-0 after:w-full after:h-px after:bg-[var(--color-accent)] after:content-['']"
+                      : "text-[var(--color-text)]/45 hover:text-[var(--color-text)]/70",
                   ].join(" ")}
                 >
                   {label}
@@ -142,7 +142,7 @@ export default function Nav() {
               target="_blank"
               rel="noopener noreferrer"
               aria-label="LinkedIn profile"
-              className="hidden md:inline-flex h-9 w-9 items-center justify-center text-[#18171A]/45 hover:text-[#18171A]/70 transition-colors duration-200"
+              className="hidden md:inline-flex h-9 w-9 items-center justify-center text-[var(--color-text)]/45 hover:text-[var(--color-text)]/70 transition-colors duration-200"
             >
               <LinkedinLogo size={18} weight="fill" aria-hidden="true" />
             </a>
@@ -156,19 +156,19 @@ export default function Nav() {
             >
               <span
                 className={[
-                  "block h-px w-full bg-[#18171A] transition-all duration-300 origin-center",
+                  "block h-px w-full bg-[var(--color-text)] transition-all duration-300 origin-center",
                   mobileOpen ? "rotate-45 translate-y-[4px]" : "",
                 ].join(" ")}
               />
               <span
                 className={[
-                  "block h-px w-full bg-[#18171A] transition-all duration-300",
+                  "block h-px w-full bg-[var(--color-text)] transition-all duration-300",
                   mobileOpen ? "opacity-0 scale-x-0" : "",
                 ].join(" ")}
               />
               <span
                 className={[
-                  "block h-px w-full bg-[#18171A] transition-all duration-300 origin-center",
+                  "block h-px w-full bg-[var(--color-text)] transition-all duration-300 origin-center",
                   mobileOpen ? "-rotate-45 -translate-y-[4px]" : "",
                 ].join(" ")}
               />
@@ -180,7 +180,7 @@ export default function Nav() {
       {/* Mobile overlay */}
       {mobileOpen && (
         <div
-          className="fixed inset-0 z-40 bg-[#F9F8F5] flex flex-col pt-[46px]"
+          className="fixed inset-0 z-40 bg-[var(--color-warm-bg)] flex flex-col pt-[46px]"
           role="dialog"
           aria-label="Navigation menu"
         >
@@ -193,7 +193,7 @@ export default function Nav() {
                   data-analytics-nav-label={label}
                   className={[
                     "text-3xl transition-colors duration-200 cursor-pointer",
-                    isActive(href) ? "text-[#C07B50] font-[450]" : "text-[#18171A] hover:text-[#C07B50] opacity-60 font-medium",
+                    isActive(href) ? "text-[var(--color-accent)] font-[450]" : "text-[var(--color-text)] hover:text-[var(--color-accent)] opacity-60 font-medium",
                   ].join(" ")}
                 >
                   {label}
@@ -201,13 +201,13 @@ export default function Nav() {
               </li>
             ))}
           </ul>
-          <div className="mt-auto border-t border-[#E6E3DD] px-6 py-8 flex items-center justify-end">
+          <div className="mt-auto border-t border-[var(--color-border)] px-6 py-8 flex items-center justify-end">
             <a
               href="https://www.linkedin.com/in/uxd-sameer/"
               target="_blank"
               rel="noopener noreferrer"
               aria-label="LinkedIn profile"
-              className="text-[#18171A]/50 hover:text-[#C07B50] transition-colors duration-200"
+              className="text-[var(--color-text)]/50 hover:text-[var(--color-accent)] transition-colors duration-200"
             >
               <LinkedinLogo size={18} weight="fill" aria-hidden="true" />
             </a>

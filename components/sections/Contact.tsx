@@ -10,7 +10,7 @@ export default function Contact() {
   return (
     <section
       id="contact"
-      className="bg-[#141310] px-6 md:px-10 py-24 md:py-36"
+      className="bg-[var(--color-dark)] px-6 md:px-10 py-24 md:py-36"
     >
       <div className="max-w-[1280px] mx-auto">
         <motion.p
@@ -22,14 +22,14 @@ export default function Contact() {
 
         <motion.h2
           {...reveal(0.08)}
-          className="mb-6 max-w-[18ch] font-display text-[clamp(2.5rem,6vw,5rem)] font-bold leading-[1.1] text-[#EDEBE3]"
+          className="mb-6 max-w-[18ch] font-display text-[clamp(2.5rem,6vw,5rem)] font-bold leading-[1.1] text-[var(--color-dark-text)]"
         >
           Let&apos;s build something good.
         </motion.h2>
 
         <motion.p
           {...revealFade(0.2)}
-          className="text-[#847F76] text-base mb-12 max-w-[40ch] leading-relaxed"
+          className="text-[var(--color-dark-muted)] text-base mb-12 max-w-[40ch] leading-relaxed"
         >
           Whether you&apos;re building a product from scratch, rethinking an existing
           experience, or just want to talk design — I&apos;d love to hear from you.
@@ -41,7 +41,7 @@ export default function Contact() {
         >
           <a
             href="mailto:hi@withsameer.design"
-            className="inline-flex items-center gap-2 bg-[#EDEBE3] text-[#18171A] text-sm font-medium px-6 py-3.5 rounded-full hover:bg-[#C07B50] hover:text-white transition-all duration-200 min-h-[44px]"
+            className="inline-flex items-center gap-2 bg-[var(--color-dark-text)] text-[var(--color-text)] text-sm font-medium px-6 py-3.5 rounded-full hover:bg-[var(--color-accent)] hover:text-white transition-all duration-200 min-h-[44px]"
           >
             hi@withsameer.design
             <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true">
@@ -52,7 +52,7 @@ export default function Contact() {
             href="https://www.linkedin.com/in/uxd-sameer/"
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex items-center gap-2 border border-[#2E2C27] text-[#9A9890] text-sm font-medium px-6 py-3.5 rounded-full hover:border-[#847F76] hover:text-[#EDEBE3] transition-all duration-200 min-h-[44px]"
+            className="inline-flex items-center gap-2 border border-[var(--color-dark-border)] text-[var(--color-dark-secondary)] text-sm font-medium px-6 py-3.5 rounded-full hover:border-[var(--color-dark-muted)] hover:text-[var(--color-dark-text)] transition-all duration-200 min-h-[44px]"
           >
             LinkedIn →
           </a>

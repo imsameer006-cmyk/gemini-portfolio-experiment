@@ -5,14 +5,14 @@ export default function DemoPage() {
     <main
       style={{
         minHeight: "100vh",
-        background: "#F9F8F5",
+        background: "var(--color-warm-bg)",
         padding: "80px 0",
       }}
     >
       <div style={{ maxWidth: "780px", margin: "0 auto", padding: "0 40px" }}>
 
         {/* Header */}
-        <p style={{ fontSize: "10px", fontWeight: 700, letterSpacing: "0.12em", textTransform: "uppercase", color: "#6E6D69", marginBottom: "12px" }}>
+        <p style={{ fontSize: "10px", fontWeight: 700, letterSpacing: "0.12em", textTransform: "uppercase", color: "var(--color-text-muted)", marginBottom: "12px" }}>
           Component Demo
         </p>
         <h1
@@ -20,20 +20,20 @@ export default function DemoPage() {
             fontFamily: "var(--font-display, Georgia, serif)",
             fontSize: "clamp(28px, 4vw, 42px)",
             fontWeight: 700,
-            color: "#18171A",
+            color: "var(--color-text)",
             margin: "0 0 8px",
             lineHeight: 1.2,
           }}
         >
           Annotated Image
         </h1>
-        <p style={{ fontSize: "15px", color: "#6A6764", marginBottom: "56px", lineHeight: 1.6 }}>
+        <p style={{ fontSize: "15px", color: "var(--color-text-secondary)", marginBottom: "56px", lineHeight: 1.6 }}>
           Numbered callout badges on the image, matched to a clean legend below. Fully editable, sharp at any size.
         </p>
 
         {/* ── Demo 1 — with annotations ──────────────────────── */}
         <section style={{ marginBottom: "64px" }}>
-          <p style={{ fontSize: "10px", fontWeight: 700, letterSpacing: "0.10em", textTransform: "uppercase", color: "#CECAC2", marginBottom: "20px" }}>
+          <p style={{ fontSize: "10px", fontWeight: 700, letterSpacing: "0.10em", textTransform: "uppercase", color: "var(--color-border-strong)", marginBottom: "20px" }}>
             With annotations
           </p>
 
@@ -71,11 +71,11 @@ export default function DemoPage() {
         </section>
 
         {/* Divider */}
-        <div style={{ height: "1px", background: "#E6E3DD", marginBottom: "64px" }} />
+        <div style={{ height: "1px", background: "var(--color-border)", marginBottom: "64px" }} />
 
         {/* ── Demo 2 — no annotations (caption only) ─────────── */}
         <section style={{ marginBottom: "64px" }}>
-          <p style={{ fontSize: "10px", fontWeight: 700, letterSpacing: "0.10em", textTransform: "uppercase", color: "#CECAC2", marginBottom: "20px" }}>
+          <p style={{ fontSize: "10px", fontWeight: 700, letterSpacing: "0.10em", textTransform: "uppercase", color: "var(--color-border-strong)", marginBottom: "20px" }}>
             Without annotations — caption only
           </p>
 

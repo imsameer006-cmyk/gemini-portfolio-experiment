@@ -69,17 +69,17 @@ function DrawerList({
             className={[
               "w-full flex items-center gap-3 px-6 h-[48px] text-sm text-left",
               disabled
-                ? "text-[#6E6D69] opacity-35 pointer-events-none cursor-default"
+                ? "text-[var(--color-text-muted)] opacity-35 pointer-events-none cursor-default"
                 : [
-                    "transition-colors duration-150 focus-visible:outline-none focus-visible:bg-[#F2F0EB]",
-                    isActive ? "text-[#18171A] font-medium" : "text-[#6A6764] hover:text-[#18171A]",
+                    "transition-colors duration-150 focus-visible:outline-none focus-visible:bg-[var(--color-surface-tinted)]",
+                    isActive ? "text-[var(--color-text)] font-medium" : "text-[var(--color-text-secondary)] hover:text-[var(--color-text)]",
                   ].join(" "),
             ].join(" ")}
           >
             <span
               className={[
                 "w-[2px] h-[14px] rounded-full shrink-0 transition-all duration-200",
-                isActive ? "bg-[#C07B50]" : "bg-transparent",
+                isActive ? "bg-[var(--color-accent)]" : "bg-transparent",
               ].join(" ")}
               aria-hidden="true"
             />
@@ -384,7 +384,7 @@ export default function JumpToNav({
                   role="listbox"
                   aria-label="Page sections"
                   id="jumpto-drawer"
-                  className="bg-[#F9F8F5]/96 backdrop-blur-xl border-t border-[#E6E3DD] rounded-t-[12px] overflow-y-auto"
+                  className="bg-[var(--color-warm-bg)]/96 backdrop-blur-xl border-t border-[var(--color-border)] rounded-t-[12px] overflow-y-auto"
                   style={{ maxHeight: "60vh" }}
                 >
                   <DrawerList sections={sections} activeId={activeId} onSelect={scrollTo} disabled={disabled} />
@@ -400,7 +400,7 @@ export default function JumpToNav({
               aria-controls={disabled ? undefined : "jumpto-drawer"}
               aria-label={disabled ? "Case study sections — coming soon" : `Jump to section. Current: ${activeLabel}`}
               className={[
-                "w-full h-[52px] flex items-center bg-[#F9F8F5]/96 backdrop-blur-xl border-t border-[#E6E3DD] shadow-[0_-2px_12px_rgba(0,0,0,0.08)]",
+                "w-full h-[52px] flex items-center bg-[var(--color-warm-bg)]/96 backdrop-blur-xl border-t border-[var(--color-border)] shadow-[0_-2px_12px_rgba(0,0,0,0.08)]",
                 disabled ? "pointer-events-none" : "",
               ].join(" ")}
             >
@@ -408,14 +408,14 @@ export default function JumpToNav({
                 <div className="flex items-center gap-3 min-w-0">
                   <span className={[
                     "text-[11px] font-medium tracking-[0.08em] uppercase shrink-0",
-                    disabled ? "text-[#6E6D69] opacity-50" : "text-[#6E6D69]",
+                    disabled ? "text-[var(--color-text-muted)] opacity-50" : "text-[var(--color-text-muted)]",
                   ].join(" ")}>
                     {disabled ? "Case study" : "Jump to"}
                   </span>
                   <span className="text-[#D4D0C8] shrink-0 select-none">|</span>
                   <span className={[
                     "text-sm truncate",
-                    disabled ? "text-[#6E6D69] opacity-50" : "font-medium text-[#18171A]",
+                    disabled ? "text-[var(--color-text-muted)] opacity-50" : "font-medium text-[var(--color-text)]",
                   ].join(" ")}>
                     {disabled ? "In progress" : activeLabel}
                   </span>
@@ -424,7 +424,7 @@ export default function JumpToNav({
                   <motion.span
                     animate={{ rotate: isOpen ? 180 : 0 }}
                     transition={{ duration: 0.2 }}
-                    className="text-[#6E6D69] shrink-0 ml-4"
+                    className="text-[var(--color-text-muted)] shrink-0 ml-4"
                   >
                     <ChevronDown />
                   </motion.span>
@@ -432,7 +432,7 @@ export default function JumpToNav({
               </div>
             </button>
             {/* Fills the safe-area gap below the bar on devices with a home indicator */}
-            <div className="bg-[#F9F8F5]/96 backdrop-blur-xl w-full" style={{ height: "env(safe-area-inset-bottom)" }} />
+            <div className="bg-[var(--color-warm-bg)]/96 backdrop-blur-xl w-full" style={{ height: "env(safe-area-inset-bottom)" }} />
           </motion.div>
         )}
       </AnimatePresence>

@@ -25,7 +25,7 @@ export default function Work() {
             </motion.p>
             <motion.h2
               {...reveal(0.06)}
-              className="font-display text-[clamp(2rem,4.5vw,3.5rem)] font-bold leading-tight text-[#18171A]"
+              className="font-display text-[clamp(2rem,4.5vw,3.5rem)] font-bold leading-tight text-[var(--color-text)]"
             >
               What I&apos;ve shipped.
             </motion.h2>
@@ -33,7 +33,7 @@ export default function Work() {
 
           <motion.p
             {...revealFade(0.15)}
-            className="text-sm text-[#6E6D69] md:text-right max-w-[28ch] leading-relaxed"
+            className="text-sm text-[var(--color-text-muted)] md:text-right max-w-[28ch] leading-relaxed"
           >
             Each project is a case study in systems thinking and human-centered design.
           </motion.p>
