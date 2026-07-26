@@ -24,6 +24,8 @@
   --primitive-taupe-700:    #847F76;
   --primitive-lime-500:     #D2E823;
   --primitive-green-800:    #254F1A;
+  --cyan-400:               #43EBFF;
+  --navy-900:               #003A76;
 
   /* Tier 2: Semantic colors */
   --color-warm-bg:        var(--primitive-cream-50);
@@ -44,6 +46,8 @@
   --color-focus-ring:     var(--color-accent-hover); /* was var(--color-accent) - failed 3:1 on tinted surface */
   --color-bg-hero:        var(--primitive-lime-500);
   --color-text-hero:      var(--primitive-green-800);
+  --color-bg-work:        var(--cyan-400);
+  --color-text-work:      var(--navy-900);
 
   --color-dark:           var(--primitive-charcoal-900);
   --color-dark-surface:   var(--primitive-charcoal-850);
@@ -63,6 +67,16 @@
   --nav-wordmark-color-scrolled:       var(--color-text);
   --nav-link-color-scrolled:           var(--color-text);
   --nav-link-indicator-color-scrolled: var(--color-accent);
+  --work-background-color:        var(--color-bg-work);
+  --work-heading-color:           var(--color-text-work);
+  --work-eyebrow-color:           var(--color-text-work);
+  --work-description-color:       var(--color-text-work);
+  --work-card-surface-color:      var(--color-surface);
+  --work-card-text-color:         var(--color-text-work);
+  --work-card-description-color:  var(--color-text-work);
+  --work-card-pill-surface-color: var(--color-surface);
+  --work-card-pill-text-color:    var(--color-text-work);
+  --work-card-icon-color:         var(--color-text-work);
   /* Typography */
   --font-sans:    var(--font-geist-sans), ui-sans-serif, system-ui, sans-serif;
   --font-display: var(--font-linik-sans), ui-sans-serif, system-ui, sans-serif;

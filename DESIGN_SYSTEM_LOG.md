@@ -30,3 +30,24 @@ Component:
 Added `--hero-background-color`, `--hero-heading-color`, `--hero-body-color`, `--hero-scrim-color`, `--nav-wordmark-color-at-rest`, `--nav-link-color-at-rest`, `--nav-link-indicator-color-at-rest`, `--nav-wordmark-color-scrolled`, `--nav-link-color-scrolled`, and `--nav-link-indicator-color-scrolled`.
 
 **Questions raised / conflicts found:** `DESIGN_SYSTEM.md` already existed, so the new living color-system log was named `DESIGN_SYSTEM_LOG.md` after confirmation. Hero art remains explicitly excluded and unmodified; its color system needs a separate decision pass.
+
+**Known future pass:** The current Tier 2 semantic tokens are a first-pass migration, not a finalized semantic model. Revisit consolidation after more sections are colored and real redundancy is visible. For example, `--color-bg-hero` may eventually merge with `--color-warm-bg`, and `--color-text-hero` may fold into a broader hero-family semantic token if later Hero variants share the same intent.
+
+## 2026-07-26 - Selected Work section
+
+**Decision:** Applied a scoped cyan/navy color treatment to the homepage Selected Work section and project cards only. Section background uses `#43EBFF`; Work text, headings, metadata, and card icon/link line-art use `#003A76`, with descriptive copy set at reduced opacity.
+
+**Reasoning:** This continues the section-by-section color rollout through the three-tier token model without changing case studies, the Hero, nav, or other homepage sections. `#003A76` on `#43EBFF` calculates to 7.80:1, passing WCAG AA.
+
+**Tokens created/modified:**
+
+Primitive:
+`--cyan-400`, `--navy-900`.
+
+Semantic:
+`--color-bg-work`, `--color-text-work`.
+
+Component:
+`--work-background-color`, `--work-heading-color`, `--work-eyebrow-color`, `--work-description-color`, `--work-card-surface-color`, `--work-card-text-color`, `--work-card-description-color`, `--work-card-pill-surface-color`, `--work-card-pill-text-color`, `--work-card-icon-color`.
+
+**Questions raised / conflicts found:** None. `ProjectCard` is currently only consumed by the Selected Work section, so its component-token migration is scoped to this section.
