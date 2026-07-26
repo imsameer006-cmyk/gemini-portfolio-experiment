@@ -82,7 +82,7 @@ function ExperiencePhotoCard({
           />
         ) : (
           <div className="flex h-full w-full items-center justify-center">
-            <span className="font-[family-name:var(--font-instrument-serif)] text-5xl italic leading-none text-[#18171A]/15">
+            <span className="font-[family-name:var(--font-numeral)] text-5xl leading-none text-[#18171A]/15">
               {String(index + 1).padStart(2, "0")}
             </span>
           </div>
@@ -212,7 +212,7 @@ export default function ExperienceMoments() {
             <p className="mb-3 text-xs font-medium uppercase tracking-widest text-[var(--color-text-accent)]">
               Selected Moments
             </p>
-            <h2 className="font-[family-name:var(--font-instrument-serif)] text-[clamp(2rem,4.5vw,3.5rem)] italic leading-tight text-[#18171A]">
+            <h2 className="font-display text-[clamp(2rem,4.5vw,3.5rem)] font-bold leading-tight text-[#18171A]">
               In Practice.
             </h2>
           </div>

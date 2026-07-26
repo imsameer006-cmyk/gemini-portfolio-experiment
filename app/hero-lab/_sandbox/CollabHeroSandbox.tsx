@@ -423,7 +423,7 @@ export function CollabHeroSandbox() {
             </p>
             <h1
               id="hero-lab-sandbox-collab-title"
-              className="font-[family-name:var(--font-instrument-serif)] text-[clamp(2.50rem,3.74vw,4.06rem)] italic leading-tight text-[#1C1A16] max-w-[670px]"
+              className="font-display max-w-[670px] text-[clamp(2.50rem,3.74vw,4.06rem)] font-bold leading-tight text-[#1C1A16]"
             >
               {project.title}
             </h1>

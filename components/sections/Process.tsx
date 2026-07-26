@@ -30,7 +30,7 @@ export default function Process() {
           </motion.p>
           <motion.h2
             {...reveal(0.06)}
-            className="font-[family-name:var(--font-instrument-serif)] italic text-[clamp(2rem,4.5vw,3.5rem)] leading-tight text-[#18171A] max-w-[20ch]"
+            className="font-display max-w-[20ch] text-[clamp(2rem,4.5vw,3.5rem)] font-bold leading-tight text-[#18171A]"
           >
             Process as a design tool.
           </motion.h2>
@@ -61,7 +61,7 @@ export default function Process() {
                 />
               )}
 
-              <span className="font-[family-name:var(--font-instrument-serif)] italic text-4xl text-[#C07B50]/30 block mb-5 leading-none">
+              <span className="font-[family-name:var(--font-numeral)] text-4xl text-[#C07B50]/30 block mb-5 leading-none">
                 {step.number}
               </span>
               <h3 className="text-[#18171A] font-medium text-lg mb-3">{step.title}</h3>

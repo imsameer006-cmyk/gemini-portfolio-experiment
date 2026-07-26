@@ -1,15 +1,8 @@
 "use client";
 
-import { ArrowDown } from "@phosphor-icons/react";
 import { motion, useReducedMotion } from "framer-motion";
 import { useEffect, useRef, useState } from "react";
-
-const SIGNALS = [
-  { value: "Research", label: "Evidence-Led" },
-  { value: "Strategy", label: "Outcome-Focused" },
-  { value: "Systems", label: "Creating Clarity" },
-  { value: "Craft", label: "Execution Excellence" },
-];
+import StructuralAsteriskHeroArt from "./StructuralAsteriskHeroArt";
 
 type ClarityThreadVisualProps = {
   hoverSuppressed: boolean;
@@ -17,6 +10,8 @@ type ClarityThreadVisualProps = {
   onNodeEnter: () => void;
   onNodeUnlock: () => void;
 };
+
+const showLegacyHeroArt = false;
 
 function ClarityThreadVisual({
   hoverSuppressed,
@@ -55,7 +50,7 @@ function ClarityThreadVisual({
       initial={{ opacity: 0, x: 10 }}
       animate={{ opacity: 1, x: 0 }}
       transition={{ duration: 1, delay: 0.35, ease: [0.16, 1, 0.3, 1] }}
-      className="pointer-events-none absolute right-[max(2.5rem,calc((100vw-1280px)/2+0.5rem))] top-[24%] z-20 hidden h-[320px] w-[min(31vw,440px)] lg:block"
+      className="pointer-events-none absolute right-[max(2.5rem,calc((100vw-1280px)/2+0.5rem))] top-[32%] z-20 hidden h-[320px] w-[min(31vw,440px)] lg:block"
     >
       <svg
         aria-hidden="true"
@@ -206,8 +201,9 @@ function PhilosophyOverlay({ isOpen, onComplete }: { isOpen: boolean; onComplete
     const color = "#EFEFEF";
     const rootStyles = getComputedStyle(document.documentElement);
     const displayFamily =
-      rootStyles.getPropertyValue("--font-instrument-serif").trim() ||
-      "Georgia, Times New Roman, serif";
+      rootStyles.getPropertyValue("--font-linik-sans").trim() ||
+      rootStyles.getPropertyValue("--font-display").trim() ||
+      "Linik Sans, Arial, sans-serif";
 
     const wait = (ms: number) =>
       new Promise<void>((resolve) => {
@@ -336,7 +332,7 @@ function PhilosophyOverlay({ isOpen, onComplete }: { isOpen: boolean; onComplete
       const centerY = height / 2;
       const dots = buildGrid(width, height);
       const fontSize = shouldReduceMotion ? 42 : Math.min(Math.max(width * 0.032, 36), 58);
-      const font = `italic 400 ${fontSize}px ${displayFamily}`;
+      const font = `400 ${fontSize}px ${displayFamily}`;
 
       ctx.font = font;
       ctx.textBaseline = "middle";
@@ -533,48 +529,12 @@ function PhilosophyOverlay({ isOpen, onComplete }: { isOpen: boolean; onComplete
   );
 }
 
-function SignalPanel() {
-  return (
-    <motion.div
-      initial={{ opacity: 0, y: 18 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.55, delay: 0.44, ease: [0.16, 1, 0.3, 1] }}
-      className="mt-[61px] grid max-w-[660px] grid-cols-2 border-y border-[#E6E3DD] sm:grid-cols-4 md:mt-[69px]"
-      aria-label="Portfolio focus areas"
-      role="list"
-    >
-      {SIGNALS.map((signal, index) => (
-        <div
-          key={signal.label}
-          className={[
-            "relative px-3 py-3 text-center",
-            index === 0 || index === 1 ? "border-b border-[#CECAC2] sm:border-b-0" : "",
-            index === 0 || index === 2 ? "after:absolute after:right-0 after:top-1/2 after:h-8 after:w-px after:-translate-y-1/2 after:bg-[rgba(206,202,194,0.58)] after:content-['']" : "",
-            index === 1 ? "sm:after:absolute sm:after:right-0 sm:after:top-1/2 sm:after:h-8 sm:after:w-px sm:after:-translate-y-1/2 sm:after:bg-[rgba(206,202,194,0.58)] sm:after:content-['']" : "",
-          ].join(" ")}
-          role="listitem"
-        >
-          <div className="font-display text-lg italic leading-none text-[#18171A] md:text-xl">
-            {signal.value}
-          </div>
-          <div className="mt-1 text-[9px] font-medium uppercase tracking-[0.08em] text-[#6E6D69] md:text-[10px]">
-            {signal.label}
-          </div>
-        </div>
-      ))}
-    </motion.div>
-  );
-}
-
 export default function Hero() {
   const [hoverSuppressed, setHoverSuppressed] = useState(false);
   const [isPhilosophyOpen, setIsPhilosophyOpen] = useState(false);
+  const [isHeroIntroExpanded, setIsHeroIntroExpanded] = useState(false);
   const unlockTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const hoverTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
-
-  const scrollToWork = () => {
-    document.querySelector("#work")?.scrollIntoView({ behavior: "smooth" });
-  };
 
   const openPhilosophy = () => {
     if (isPhilosophyOpen) {
@@ -630,69 +590,74 @@ export default function Hero() {
   return (
     <section
       aria-label="Introduction"
-      className="relative overflow-hidden px-6 pb-10 pt-[76px] md:min-h-[80svh] md:px-10 md:pb-12 md:pt-[92px]"
+      className="relative overflow-hidden px-6 pb-10 pt-[76px] md:min-h-[100svh] md:px-10 md:pb-12 md:pt-[92px]"
     >
-      <ClarityThreadVisual
-        hoverSuppressed={hoverSuppressed}
-        isOpen={isPhilosophyOpen}
-        onNodeEnter={onNodeEnter}
-        onNodeUnlock={onNodeUnlock}
-      />
+      {showLegacyHeroArt && (
+        <ClarityThreadVisual
+          hoverSuppressed={hoverSuppressed}
+          isOpen={isPhilosophyOpen}
+          onNodeEnter={onNodeEnter}
+          onNodeUnlock={onNodeUnlock}
+        />
+      )}
       <PhilosophyOverlay
         isOpen={isPhilosophyOpen}
         onComplete={closePhilosophy}
       />
 
-      {/* Subtle grid texture - Harmonized to 40px spacing */}
-      <div
-        aria-hidden="true"
-        className="absolute inset-0 pointer-events-none"
-        style={{
-          backgroundImage: `radial-gradient(circle at 1px 1px, #E6E3DD 1px, transparent 0)`,
-          backgroundSize: "40px 40px",
-          opacity: 0.5,
-        }}
-      />
+      <StructuralAsteriskHeroArt />
 
-      <div className="relative z-10 mx-auto w-full max-w-[1280px] pt-3 md:min-h-[calc(80svh-7.5rem)] md:pt-0">
-        <div className="max-w-[840px]">
+      <div className="pointer-events-none relative z-10 mx-auto flex w-full max-w-[1280px] justify-center pt-3 md:min-h-[calc(100svh-4rem)] md:items-end md:pb-12 md:pt-0">
+        <div className="pointer-events-none relative isolate w-full max-w-[800px] text-center">
+          <div
+            aria-hidden="true"
+            className="pointer-events-none absolute -inset-x-10 -inset-y-8 -z-10"
+            style={{
+              background:
+                "radial-gradient(ellipse at center, color-mix(in srgb, var(--color-warm-bg) 96%, transparent) 0%, color-mix(in srgb, var(--color-warm-bg) 82%, transparent) 48%, color-mix(in srgb, var(--color-warm-bg) 0%, transparent) 78%)",
+            }}
+          />
           <motion.h1
             initial={{ opacity: 0, y: 28 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.65, delay: 0.12, ease: [0.16, 1, 0.3, 1] }}
-            className="font-display mb-4 max-w-[16ch] text-[clamp(3rem,8vw,7rem)] italic leading-[1.05] text-[#18171A]"
+            className="mx-auto mb-4 w-fit max-w-none font-display text-[clamp(2rem,4.5vw,3.5rem)] font-black leading-tight text-[#18171A]"
           >
-            Building clarity{" "}
-            <span className="not-italic">out of</span>{" "}
-            complexity.
+            Hi, I discover patterns, & connect the dots.
           </motion.h1>
 
           <motion.p
             initial={{ opacity: 0, y: 18 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.55, delay: 0.24, ease: [0.16, 1, 0.3, 1] }}
-            className="mb-6 max-w-[46ch] text-base leading-relaxed text-[#6A6764] md:text-lg"
+            className="max-w-[800px] text-body-compact leading-relaxed text-[#6A6764]"
           >
-            I design products through systems thinking and deep understanding that work for people and perform for business.
+            I&apos;m curious and inquisitive by nature — I guess it&apos;s my hidden superpower. For me, nature is the biggest design inspiration.
+            {isHeroIntroExpanded && (
+              <>
+                {" "}Desert heat from the Middle East warms Europe, ocean water becomes clouds, and travels far to water distant lands. Nothing in an ecosystem is wasted — everything is interwoven, serving the system or failing to survive. I think in systems the same way, treating data, feedback, and failure as signal, not noise. And I prefer honest feedback over praise that sounds good but gives nothing to course-correct on.{" "}
+                <button
+                  type="button"
+                  onClick={() => setIsHeroIntroExpanded(false)}
+                  className="pointer-events-auto inline text-[#18171A] underline decoration-[#C07B50]/60 underline-offset-4 transition-colors duration-200 hover:text-[#C07B50] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#C07B50]"
+                >
+                  Less
+                </button>
+              </>
+            )}
+            {!isHeroIntroExpanded && (
+              <>
+                {" "}
+                <button
+                  type="button"
+                  onClick={() => setIsHeroIntroExpanded(true)}
+                  className="pointer-events-auto inline text-[#18171A] underline decoration-[#C07B50]/60 underline-offset-4 transition-colors duration-200 hover:text-[#C07B50] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#C07B50]"
+                >
+                  More
+                </button>
+              </>
+            )}
           </motion.p>
-
-          <motion.div
-            initial={{ opacity: 0, y: 18 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.55, delay: 0.34, ease: [0.16, 1, 0.3, 1] }}
-            className="flex flex-wrap items-center gap-3"
-          >
-            <button
-              type="button"
-              onClick={scrollToWork}
-              className="inline-flex min-h-[44px] items-center gap-2 rounded-full bg-[#18171A] px-5 py-3 text-sm font-medium text-[#F9F8F5] transition-colors duration-200 hover:bg-[#C07B50]"
-            >
-              View work
-              <ArrowDown size={14} weight="bold" aria-hidden="true" />
-            </button>
-          </motion.div>
-
-          <SignalPanel />
         </div>
 
       </div>

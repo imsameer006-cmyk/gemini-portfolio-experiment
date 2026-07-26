@@ -45,7 +45,7 @@ export default async function EnterPage({ searchParams }: EnterPageProps) {
         <p className="mb-3 text-xs font-medium uppercase tracking-widest text-[var(--color-text-accent)]">
           Private Portfolio
         </p>
-        <h1 className="font-display text-[clamp(2rem,4.5vw,3.5rem)] leading-tight text-[var(--color-text)]">
+        <h1 className="font-display text-[clamp(2rem,4.5vw,3.5rem)] font-bold leading-tight text-[var(--color-text)]">
           Enter password
         </h1>
         <p className="mt-5 text-body-compact leading-relaxed text-[var(--color-text-secondary)]">

@@ -45,7 +45,7 @@ export default function About() {
           <div>
             <motion.h2
               {...reveal()}
-              className="font-[family-name:var(--font-instrument-serif)] text-[clamp(2rem,4.5vw,3.5rem)] italic leading-tight text-[#18171A]"
+              className="font-display text-[clamp(2rem,4.5vw,3.5rem)] font-bold leading-tight text-[#18171A]"
             >
               The designer behind the systems.
             </motion.h2>
@@ -63,7 +63,7 @@ export default function About() {
 
             <motion.p
               {...reveal(0.14)}
-              className="mt-10 max-w-[420px] font-[family-name:var(--font-instrument-serif)] text-[clamp(1.2rem,1.6vw,1.5rem)] italic leading-[1.45] text-[#5F5A54]"
+              className="mt-10 max-w-[420px] font-display text-[clamp(1.2rem,1.6vw,1.5rem)] font-black leading-[1.45] text-[#5F5A54]"
             >
               Think in systems.
               <br />

@@ -53,8 +53,8 @@ function Chapter({
         <p className="text-[11px] font-medium uppercase tracking-[0.18em] text-[var(--color-text-accent)] mb-2.5">
           {num} — {eyebrow}
         </p>
-        <h2 className="font-[family-name:var(--font-instrument-serif)] text-[clamp(26px,3.6vw,36px)] italic leading-tight text-[#18171A] mb-2">
-          {heading} <span className="italic">{headingItalic}</span>
+        <h2 className="mb-2 font-display text-[clamp(26px,3.6vw,36px)] font-bold leading-tight text-[#18171A]">
+          {heading} <span>{headingItalic}</span>
         </h2>
         <p className="text-[15px] text-[#6A6764] max-w-[640px] leading-relaxed">{description}</p>
       </Reveal>
@@ -109,7 +109,7 @@ export default function SystemPage() {
           <p className="text-[11px] font-medium uppercase tracking-[0.18em] text-[var(--color-text-accent)] mb-3">
             Design System · Token Atlas
           </p>
-          <h1 className="font-[family-name:var(--font-instrument-serif)] text-[clamp(38px,6vw,60px)] italic leading-tight text-[#18171A] mb-5 max-w-[16ch]">
+          <h1 className="mb-5 max-w-[16ch] font-display text-[clamp(38px,6vw,60px)] font-bold leading-tight text-[#18171A]">
             Every value. Every rule.
           </h1>
           <p className="text-base text-[#6A6764] max-w-[620px] leading-relaxed mb-10">
@@ -222,12 +222,14 @@ export default function SystemPage() {
       </Chapter>
 
       {/* ── 03 Typography ──────────────────────────────────────── */}
-      <Chapter num="03" eyebrow="Typography" heading="Two voices," headingItalic="strict roles."
-        description="Instrument Serif italic carries narrative moments and is never body text. Geist carries facts. Letter-spacing lives only on labels.">
+      <Chapter num="03" eyebrow="Typography" heading="Three voices," headingItalic="stricter roles."
+        description="Linik Sans carries the display hierarchy, Open Sans stays on quieter quote/narrative moments, and Geist carries body, facts, labels, and interface text. Letter-spacing lives only on labels.">
         <Reveal className="mt-8 divide-y divide-[#E6E3DD] border-t border-[#E6E3DD]">
           {[
-            { tok: "type.hero", sample: "Building clarity out of complexity.", style: "font-[family-name:var(--font-instrument-serif)] italic text-[clamp(28px,4.2vw,44px)]", rule: "Instrument Serif italic · homepage hero only" },
-            { tok: "type.section-heading", sample: "The system behind the site.", style: "font-[family-name:var(--font-instrument-serif)] italic text-[clamp(22px,3vw,30px)]", rule: "Major section / case-study headings" },
+            { tok: "type.home-hero", sample: "I discover patterns, and connect the dots.", style: "font-display text-[clamp(28px,4.2vw,44px)] font-black", rule: "Linik Sans 900 upright - homepage hero only" },
+            { tok: "type.display-heading", sample: "The system behind the site.", style: "font-display text-[clamp(22px,3vw,30px)] font-bold", rule: "Linik Sans 700 upright - homepage sections, contact CTA, case-study heroes and sections, utility page headings" },
+            { tok: "type.mantra", sample: "Think in systems. Design for humans.", style: "font-display text-[clamp(19px,1.6vw,24px)] font-black", rule: "Linik Sans 900 upright - About mantra only" },
+            { tok: "type.quote", sample: "Design starts where certainty ends.", style: "font-quote text-[clamp(18px,2vw,22px)]", rule: "Open Sans 400 upright - testimonials, pull quotes, closing lines, decorative quote marks" },
             { tok: "type.body", sample: "Explanatory paragraphs stay quiet and readable — secondary in tone, never in contrast.", style: "text-[15px] text-[#6A6764]", rule: "Geist 400 · relaxed leading" },
             { tok: "type.card-title", sample: "Gemini Digital Twin", style: "text-lg font-medium", rule: "Project names · truncate over prose" },
             { tok: "type.label", sample: "SELECTED WORK", style: "text-[12px] font-medium uppercase tracking-[0.18em] text-[var(--color-text-muted)]", rule: "Section labels · keep short" },

@@ -86,7 +86,7 @@ export function InProgressHero({ project }: { project: Project }) {
             </p>
             <h1
               id="project-hero-title"
-              className="font-[family-name:var(--font-instrument-serif)] text-[clamp(2.50rem,3.74vw,4.06rem)] italic leading-tight text-[#18171A] max-w-[670px]"
+              className="font-display max-w-[670px] text-[clamp(2.50rem,3.74vw,4.06rem)] font-bold leading-tight text-[#18171A]"
             >
               {project.title}
             </h1>

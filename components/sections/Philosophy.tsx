@@ -25,7 +25,7 @@ export default function Philosophy() {
         {/* Core statement */}
         <motion.blockquote
           {...reveal(0.08)}
-          className="font-[family-name:var(--font-instrument-serif)] italic text-[clamp(1.75rem,4vw,3.25rem)] leading-[1.2] text-[#EDEBE3] mb-6 max-w-[26ch]"
+          className="mb-6 max-w-[26ch] font-quote text-[clamp(1.75rem,4vw,3.25rem)] leading-[1.2] text-[#EDEBE3]"
         >
           &ldquo;Design is the practice of understanding complexity, uncovering what matters, and shaping it into experiences people can understand and use.&rdquo;
         </motion.blockquote>

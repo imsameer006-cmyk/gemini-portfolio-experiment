@@ -25,7 +25,7 @@ export default function Work() {
             </motion.p>
             <motion.h2
               {...reveal(0.06)}
-              className="font-[family-name:var(--font-instrument-serif)] italic text-[clamp(2rem,4.5vw,3.5rem)] leading-tight text-[#18171A]"
+              className="font-display text-[clamp(2rem,4.5vw,3.5rem)] font-bold leading-tight text-[#18171A]"
             >
               What I&apos;ve shipped.
             </motion.h2>
