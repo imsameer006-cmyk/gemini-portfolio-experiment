@@ -20,13 +20,12 @@ export default function ProjectCard({ project, index }: ProjectCardProps) {
     >
       <Link
         href={`/work/${project.slug}`}
-        className="premium-white-surface group flex flex-col h-full border border-[var(--work-card-border-color)] rounded-2xl overflow-hidden hover:border-2 hover:border-[var(--work-card-border-color-hover)] transition-[border-color,border-width,box-shadow] duration-300 [--surface-shadow-hover:var(--work-card-shadow-hover)] [--surface-shadow:var(--work-card-shadow)]"
+        className="group flex h-full flex-col overflow-hidden rounded-2xl border border-[var(--work-card-border-color)] bg-[var(--work-card-surface-color)] backdrop-blur-sm transition-colors duration-300 hover:border-[var(--work-card-border-color-hover)]"
         aria-label={`View case study: ${project.title}`}
       >
         {/* Visual panel */}
         <div
-          className="w-full aspect-[460/256] overflow-hidden shrink-0 rounded-t-2xl border-b border-[var(--work-thumbnail-border-color)] bg-[var(--work-thumbnail-background-color)] lg:transition-[filter] lg:duration-500 lg:group-hover:saturate-[1.05]"
-          style={{ backgroundColor: "var(--work-thumbnail-background-color)" }}
+          className="w-full aspect-[460/256] shrink-0 rounded-t-2xl border-b border-[rgba(182,255,0,0.15)] bg-[#092212] lg:transition-[filter] lg:duration-500 lg:group-hover:saturate-[1.05]"
         >
           {project.thumbnail ? (
             <div className="w-full h-full">
@@ -44,13 +43,13 @@ export default function ProjectCard({ project, index }: ProjectCardProps) {
         {/* Content */}
         <div className="p-6 md:p-7 flex-1 flex flex-col">
           <div className="flex items-center justify-between mb-3">
-            <span className="rounded-full border border-[var(--work-pill-default-border-color)] bg-[var(--work-pill-default-surface-color)] px-2.5 py-1 text-xs font-medium text-[var(--work-pill-default-text-color)] tracking-wide uppercase">
+            <span className="font-mono text-xs uppercase tracking-wider text-[#B6FF00]/80">
               {project.category}
             </span>
-            <span className="text-xs text-[var(--work-card-metadata-color)]">{project.year}</span>
+            <span className="font-mono text-xs uppercase tracking-wider text-[#B6FF00]/80">{project.year}</span>
           </div>
 
-          <h3 className="text-lg md:text-xl font-medium text-[var(--work-card-title-color)] leading-snug mb-2 transition-[font-weight,opacity] duration-200 group-hover:font-semibold group-hover:opacity-95">
+          <h3 className="text-lg md:text-xl font-medium text-[#E8E3D5] leading-snug mb-2 transition-[font-weight,opacity] duration-200 group-hover:font-semibold group-hover:opacity-95">
             {project.title}
           </h3>
 
@@ -61,17 +60,17 @@ export default function ProjectCard({ project, index }: ProjectCardProps) {
           <div className="mt-auto">
             <div className="flex flex-wrap items-center gap-2 mb-4">
               {project.client && (
-                <span className="whitespace-nowrap text-xs font-medium text-[var(--work-pill-company-text-color)] bg-[var(--work-pill-company-surface-color)] px-2.5 py-1 rounded-full">
+                <span className="whitespace-nowrap rounded-full border border-white/10 bg-white/[0.04] px-2.5 py-1 text-xs text-[#D9EBE1]/80">
                   {project.client}
                 </span>
               )}
               <span className="basis-full md:basis-0 w-0 h-0" aria-hidden="true" />
-              <span className="whitespace-nowrap text-xs text-[var(--work-pill-achievement-text-color)] border border-[var(--work-pill-default-border-color)] bg-[var(--work-pill-achievement-surface-color)] px-2.5 py-1 rounded-full">
+              <span className="whitespace-nowrap rounded-full border border-white/10 bg-white/[0.04] px-2.5 py-1 text-xs text-[#D9EBE1]/80">
                 {project.impact}
               </span>
             </div>
             <div className="flex justify-end">
-              <span className="flex items-center gap-1 rounded-full border border-[var(--work-card-cta-border-color)] px-3 py-1.5 text-sm text-[var(--work-card-cta-color)] font-medium opacity-60 group-hover:border-[var(--work-card-cta-border-color-hover)] group-hover:opacity-100 transition-[border-color,opacity] duration-200">
+              <span className="flex items-center gap-1 font-mono text-xs text-[#B6FF00] transition-[text-decoration-color] duration-200 hover:underline group-hover:underline">
                 View case study
                 <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true">
                   <path d="M2.5 7h9M7.5 3l4 4-4 4" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round" />

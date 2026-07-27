@@ -15,6 +15,23 @@ const links = [
 
 type NavSurface = "light" | "dark";
 
+function NavAsterisk() {
+  return (
+    <svg
+      viewBox="0 0 500 500"
+      aria-hidden="true"
+      className="h-[15px] w-[15px] flex-shrink-0"
+      preserveAspectRatio="xMidYMid meet"
+    >
+      <path
+        d="M255 145L243 212L190 185L223 234L110 205L205 258L160 300L230 262L230 365L257 262L345 325L282 250L390 130L278 222Z"
+        fill="currentColor"
+        shapeRendering="geometricPrecision"
+      />
+    </svg>
+  );
+}
+
 function parseRgb(color: string) {
   const match = color.match(/rgba?\(([^)]+)\)/);
   if (!match) return null;
@@ -191,12 +208,13 @@ export default function Nav() {
                 }
               }}
               className={[
-                "inline-flex min-h-11 items-center justify-center pr-3 md:pr-2",
+                "inline-flex min-h-11 items-center justify-center gap-[7px] pr-3 md:pr-2",
                 isDarkSurface
                   ? "text-[var(--nav-glass-dark-logo-color)]"
                   : "text-[var(--nav-glass-light-logo-color)]",
               ].join(" ")}
             >
+              <NavAsterisk />
               <span className="font-display text-[13px] font-semibold tracking-[0.14em]">
                 Sameer G.
               </span>

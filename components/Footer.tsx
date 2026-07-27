@@ -1,12 +1,10 @@
 export function FooterAsterisk() {
-  const spokeAngles = [0, 60, 120, 180, 240, 300];
-
   return (
     <div className="flex h-[80px] w-[50px] items-center justify-center">
       <svg
         width="50"
         height="50"
-        viewBox="-100 -100 200 200"
+        viewBox="0 0 500 500"
         fill="none"
         xmlns="http://www.w3.org/2000/svg"
         className="h-[50px] w-[50px]"
@@ -25,21 +23,11 @@ export function FooterAsterisk() {
             <stop offset="100%" stopColor="#426F8A" />
           </radialGradient>
         </defs>
-        <g transform="translate(0,0)">
-          {spokeAngles.map((angle) => (
-            <rect
-              key={angle}
-              x="-12"
-              y="-90"
-              width="24"
-              height="95"
-              rx="2"
-              fill="url(#footerAsteriskMetallic)"
-              transform={`rotate(${angle})`}
-              shapeRendering="geometricPrecision"
-            />
-          ))}
-        </g>
+        <path
+          d="M255 145L243 212L190 185L223 234L110 205L205 258L160 300L230 262L230 365L257 262L345 325L282 250L390 130L278 222Z"
+          fill="url(#footerAsteriskMetallic)"
+          shapeRendering="geometricPrecision"
+        />
       </svg>
     </div>
   );

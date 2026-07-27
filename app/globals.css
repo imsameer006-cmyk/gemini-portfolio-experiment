@@ -136,18 +136,18 @@
 
 /* Tier 3: Homepage / Selected Work */
 #work {
-  --color-text-primary:       var(--navy-900);
-  --color-text-interactive:   var(--navy-900);
-  --color-text-secondary:     var(--blue-grey-600);
-  --color-text-muted:         var(--blue-grey-400);
+  --color-text-primary:       #E8E3D5;
+  --color-text-interactive:   #B6FF00;
+  --color-text-secondary:     #D9EBE1;
+  --color-text-muted:         rgba(217,235,225,.7);
   --color-text-disabled:      var(--blue-grey-300);
-  --color-surface-page-work:  var(--turquoise-400);
-  --color-surface-card:       #FFFFFF;
+  --color-surface-page-work:  #092212;
+  --color-surface-card:       rgba(13,42,23,.5);
   --color-surface-thumbnail:  var(--cool-white);
   --color-surface-nested:     var(--surface-nested);
-  --color-border-primary:     var(--border-light);
-  --color-border-subtle:      var(--border-subtle);
-  --color-accent-lotus:       var(--lotus-pink);
+  --color-border-primary:     rgba(182,255,0,.15);
+  --color-border-subtle:      rgba(255,255,255,.1);
+  --color-accent-lotus:       #B6FF00;
 
   --work-background-color:             var(--color-surface-page-work);
   --work-heading-color:                var(--color-text-primary);
@@ -155,22 +155,22 @@
   --work-description-color:            var(--color-text-secondary);
   --work-card-surface-color:           var(--color-surface-card);
   --work-card-border-color:            var(--color-border-primary);
-  --work-card-border-color-hover:      var(--card-hover-blue);
-  --work-card-shadow:                  0 6px 18px rgba(0,58,118,.05);
-  --work-card-shadow-hover:            0 12px 24px rgba(0,58,118,.08), 0 28px 64px rgba(0,58,118,.12);
+  --work-card-border-color-hover:      rgba(182,255,0,.4);
+  --work-card-shadow:                  none;
+  --work-card-shadow-hover:            none;
   --work-card-title-color:             var(--color-text-primary);
   --work-card-description-color:       var(--color-text-secondary);
   --work-card-metadata-color:          var(--color-text-muted);
   --work-card-cta-color:               var(--color-text-interactive);
-  --work-card-cta-border-color:        var(--color-border-primary);
-  --work-card-cta-border-color-hover:  var(--connector-blue);
-  --work-pill-default-surface-color:   var(--pill-default-bg);
-  --work-pill-default-border-color:    var(--pill-default-border);
-  --work-pill-default-text-color:      var(--color-text-secondary);
-  --work-pill-company-surface-color:   var(--pill-company-bg);
-  --work-pill-company-text-color:      var(--color-text-primary);
-  --work-pill-achievement-surface-color: var(--pill-achievement-bg);
-  --work-pill-achievement-text-color:  var(--color-text-muted);
+  --work-card-cta-border-color:        transparent;
+  --work-card-cta-border-color-hover:  transparent;
+  --work-pill-default-surface-color:   rgba(255,255,255,.04);
+  --work-pill-default-border-color:    rgba(255,255,255,.1);
+  --work-pill-default-text-color:      rgba(217,235,225,.8);
+  --work-pill-company-surface-color:   rgba(255,255,255,.04);
+  --work-pill-company-text-color:      rgba(217,235,225,.8);
+  --work-pill-achievement-surface-color: rgba(255,255,255,.04);
+  --work-pill-achievement-text-color:  rgba(217,235,225,.8);
   --work-thumbnail-background-color:   var(--color-surface-thumbnail);
   --work-thumbnail-border-color:       var(--thumbnail-border);
   --work-thumbnail-nested-color:       var(--color-surface-nested);
@@ -179,7 +179,7 @@
   --work-thumbnail-secondary-color:    var(--royal-blue);
   --work-thumbnail-interactive-color:  var(--bright-blue);
   --work-thumbnail-connector-color:    var(--connector-blue);
-  --work-thumbnail-lotus-color:        var(--color-accent-lotus);
+  --work-thumbnail-lotus-color:        var(--lotus-pink);
   --work-thumbnail-node-fill-color:    var(--color-surface-nested);
 }
 

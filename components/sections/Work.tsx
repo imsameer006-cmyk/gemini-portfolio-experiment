@@ -15,6 +15,7 @@ export default function Work() {
     <section
       id="work"
       className="homepage-atmosphere home-work-atmosphere px-6 pb-16 pt-10 md:px-10 md:pb-24 md:pt-[104px]"
+      style={{ background: "#092212" }}
     >
       <div className="max-w-[1280px] mx-auto">
         {/* Section header */}
@@ -22,13 +23,13 @@ export default function Work() {
           <div>
             <motion.p
               {...reveal()}
-              className="text-xs text-[var(--work-eyebrow-color)] tracking-widest uppercase font-medium mb-3"
+              className="mb-3 font-mono text-xs uppercase tracking-widest text-[#B6FF00] opacity-90"
             >
               Selected Work
             </motion.p>
             <motion.h2
               {...reveal(0.06)}
-              className="font-display text-[clamp(2rem,4.5vw,3.5rem)] font-bold leading-tight text-[var(--work-heading-color)]"
+              className="font-display text-4xl font-bold tracking-tight text-[#E8E3D5] md:text-5xl"
             >
               What I&apos;ve shipped.
             </motion.h2>
@@ -36,7 +37,7 @@ export default function Work() {
 
           <motion.p
             {...revealFade(0.15)}
-            className="text-sm text-[var(--work-description-color)] md:text-right max-w-[28ch] leading-relaxed"
+            className="max-w-sm text-sm font-normal leading-relaxed text-[#D9EBE1]/70 md:text-right"
           >
             Each project is a case study in systems thinking and human-centered design.
           </motion.p>

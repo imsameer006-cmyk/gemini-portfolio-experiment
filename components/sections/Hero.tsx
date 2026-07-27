@@ -1,8 +1,8 @@
 "use client";
 
 import { motion, useReducedMotion } from "framer-motion";
+import type { CSSProperties } from "react";
 import { useEffect, useRef, useState } from "react";
-import StructuralAsteriskHeroArt from "./StructuralAsteriskHeroArt";
 
 type ClarityThreadVisualProps = {
   hoverSuppressed: boolean;
@@ -12,6 +12,123 @@ type ClarityThreadVisualProps = {
 };
 
 const showLegacyHeroArt = false;
+
+const heroShowcaseItems = [
+  { id: "01", fill: "#F8FCFD" },
+  { id: "02", fill: "#EEF6F9" },
+  { id: "03", fill: "#EAF3FA" },
+  { id: "04", fill: "#F3E8F7" },
+  { id: "05", fill: "#F4FAFC" },
+  { id: "06", fill: "#E8F0F4" },
+  { id: "07", fill: "#F8FBFC" },
+  { id: "08", fill: "#E4EEF7" },
+];
+
+function HeroShowcaseReel() {
+  const shouldReduceMotion = useReducedMotion();
+  const groups = shouldReduceMotion ? [heroShowcaseItems.slice(0, 1)] : [heroShowcaseItems, heroShowcaseItems];
+
+  return (
+    <div
+      className="pointer-events-none absolute inset-x-0 inset-y-0 z-0 hidden md:block"
+      aria-label="Project preview reel"
+    >
+      <div className="mx-auto flex h-full w-full max-w-[1360px] justify-end px-6 md:px-10">
+        <div className="hero-showcase-frame h-full">
+          <div
+            className="hero-showcase-mask pointer-events-auto h-full overflow-hidden"
+            style={{
+              WebkitMaskImage: "linear-gradient(to bottom, transparent 0%, black 15%, black 85%, transparent 100%)",
+              maskImage: "linear-gradient(to bottom, transparent 0%, black 15%, black 85%, transparent 100%)",
+            }}
+          >
+            <div className="hero-showcase-track">
+              {groups.map((group, groupIndex) => (
+                <div key={groupIndex} className="hero-showcase-group flex flex-col items-end gap-6 pb-6">
+                  {group.map((item) => (
+                    <div
+                      key={`${groupIndex}-${item.id}`}
+                      data-hero-showcase-card
+                      className="hero-showcase-card flex items-end rounded-2xl border border-[rgba(182,255,0,0.2)] bg-transparent p-7"
+                      style={{ borderWidth: "1.5px" }}
+                    >
+                      <span className="font-display text-[56px] font-black leading-none text-[#B6FF00]">
+                        {item.id}
+                      </span>
+                    </div>
+                  ))}
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      </div>
+      <style>{`
+        .hero-showcase-frame {
+          --hero-showcase-gap: 24px;
+          container-type: size;
+          width: calc(((90svh - var(--hero-showcase-gap)) / 1.5) * 1.08);
+        }
+
+        .hero-showcase-mask {
+          width: 100%;
+        }
+
+        .hero-showcase-track {
+          animation: hero-showcase-scroll 32s linear infinite;
+          will-change: transform;
+        }
+
+        .hero-showcase-card {
+          height: calc((100cqh - var(--hero-showcase-gap)) / 1.5);
+          width: 100%;
+        }
+
+        .hero-showcase-mask:hover .hero-showcase-track {
+          animation-play-state: paused;
+        }
+
+        @keyframes hero-showcase-scroll {
+          from {
+            transform: translateY(0);
+          }
+          to {
+            transform: translateY(-50%);
+          }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+          .hero-showcase-track {
+            animation: none;
+            transform: none;
+          }
+
+          .hero-showcase-track > div:not(:first-child),
+          .hero-showcase-track > div:first-child > div:not(:first-child) {
+            display: none;
+          }
+        }
+      `}</style>
+    </div>
+  );
+}
+
+function DecorativeHeroAsterisk({ className = "" }: { className?: string }) {
+  return (
+    <svg
+      viewBox="0 0 500 500"
+      aria-hidden="true"
+      className={className}
+      preserveAspectRatio="xMidYMid meet"
+    >
+      <path
+        d="M255 145L243 212L190 185L223 234L110 205L205 258L160 300L230 262L230 365L257 262L345 325L282 250L390 130L278 222Z"
+        fill="currentColor"
+        shapeRendering="geometricPrecision"
+      />
+    </svg>
+  );
+}
 
 function ClarityThreadVisual({
   hoverSuppressed,
@@ -589,7 +706,13 @@ export default function Hero() {
   return (
     <section
       aria-label="Introduction"
-      className="homepage-atmosphere home-hero-atmosphere relative overflow-hidden px-6 pb-24 pt-[76px] md:min-h-[106svh] md:px-10 md:pb-32 md:pt-[92px]"
+      className="homepage-atmosphere home-hero-atmosphere relative overflow-hidden px-0 py-16 md:min-h-[90vh] md:py-24"
+      style={{
+        "--homepage-atmosphere-color": "radial-gradient(circle, rgba(182, 255, 0, 0.08) 0%, rgba(9, 34, 18, 1) 100%), #092212",
+        "--hero-heading-color": "#B6FF00",
+        "--hero-body-color": "#D9EBE1",
+        background: "radial-gradient(circle, rgba(182, 255, 0, 0.08) 0%, rgba(9, 34, 18, 1) 100%), #092212",
+      } as CSSProperties}
     >
       {showLegacyHeroArt && (
         <ClarityThreadVisual
@@ -603,16 +726,20 @@ export default function Hero() {
         isOpen={isPhilosophyOpen}
         onComplete={closePhilosophy}
       />
+      <div className="pointer-events-none absolute inset-x-0 top-0 z-[1] hidden md:block">
+        <div className="mx-auto w-full max-w-[1360px] px-6 md:px-10">
+          <DecorativeHeroAsterisk className="ml-[360px] mt-[112px] h-[56px] w-[56px] text-[#B6FF00] opacity-25" />
+        </div>
+      </div>
+      <HeroShowcaseReel />
 
-      <StructuralAsteriskHeroArt />
-
-      <div className="pointer-events-none relative z-10 mx-auto flex w-full max-w-[1280px] justify-center pt-3 md:min-h-[calc(106svh-4rem)] md:items-end md:pb-12 md:pt-0">
-        <div className="pointer-events-none relative isolate w-full max-w-[800px] text-center md:translate-y-14 lg:translate-y-16">
+      <div className="relative z-10 mx-auto grid w-full max-w-[1360px] grid-cols-1 items-center gap-12 px-6 pt-10 md:grid-cols-12 md:gap-12 md:px-10 md:pt-16 lg:gap-20">
+        <div className="col-span-12 flex max-w-[760px] translate-y-[55px] flex-col items-start text-left md:col-span-9">
           <motion.h1
             initial={{ opacity: 0, y: 28 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.65, delay: 0.12, ease: [0.16, 1, 0.3, 1] }}
-            className="mx-auto mb-4 w-fit max-w-none font-display text-[clamp(2rem,4.5vw,3.5rem)] font-black leading-tight text-[var(--hero-heading-color)]"
+            className="mt-0 mb-[15px] w-fit max-w-[760px] font-display text-[clamp(3rem,6.5vw,5.5rem)] font-black leading-[1.05] text-[var(--hero-heading-color)]"
           >
             Hi, I discover patterns, & connect the dots.
           </motion.h1>
@@ -621,12 +748,11 @@ export default function Hero() {
             initial={{ opacity: 0, y: 18 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.55, delay: 0.24, ease: [0.16, 1, 0.3, 1] }}
-            className="max-w-[800px] text-body-compact leading-relaxed text-[var(--hero-body-color)]"
+            className="max-w-[760px] text-[1.0625rem] leading-relaxed text-[var(--hero-body-color)] md:text-lg"
           >
             I&apos;m curious and inquisitive by nature — I guess it&apos;s my hidden superpower. For me, nature is the biggest design inspiration. Desert heat from the Middle East warms Europe, ocean water becomes clouds, and travels far to water distant lands. Nothing in an ecosystem is wasted — everything is interwoven, serving the system or failing to survive. I think in systems the same way, treating data, feedback, and failure as signal, not noise. And I prefer honest feedback over praise that sounds good but gives nothing to course-correct on.
           </motion.p>
         </div>
-
       </div>
     </section>
   );
