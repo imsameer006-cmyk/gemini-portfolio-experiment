@@ -18,7 +18,7 @@ export default function Process() {
   const revealFade = useRevealFade();
 
   return (
-    <section id="process" className="bg-[var(--process-background-color)] px-6 md:px-10 py-24 md:py-36">
+    <section id="process" className="bg-[var(--process-background-color)] px-6 md:px-10 py-24 md:py-32">
       <div className="max-w-[1280px] mx-auto">
         {/* Section header */}
         <div className="mb-16">
@@ -64,20 +64,23 @@ export default function Process() {
               <span className="font-mono text-3xl font-bold text-[var(--process-number-color)] block mb-5 leading-none">
                 {step.number}
               </span>
-              <h3 className="text-[var(--process-title-color)] font-semibold text-lg mb-3">{step.title}</h3>
-              <p className="text-[var(--process-description-color)] text-sm leading-relaxed">{step.description}</p>
+              <h3 className="text-[var(--process-title-color)] font-semibold text-base mb-2">{step.title}</h3>
+              <p className="text-[var(--process-description-color)] text-xs font-normal leading-relaxed">{step.description}</p>
             </motion.div>
           ))}
         </div>
 
         {/* Bottom note */}
-        <motion.p
+        <motion.div
           {...revealFade(0.4)}
-          className="mt-16 text-xs text-[var(--process-note-color)] max-w-[48ch] leading-normal border-t border-[var(--process-divider-color)] pt-8"
+          className="mt-16 max-w-[48ch]"
         >
-          The process is not linear. Real design work is recursive — each step
-          sends you back to re-examine earlier assumptions with sharper clarity.
-        </motion.p>
+          <div className="border-t border-white/10 w-1/4 my-6" />
+          <p className="text-[#A0B8A6]/70 text-[11px] leading-normal">
+            The process is not linear. Real design work is recursive — each step
+            sends you back to re-examine earlier assumptions with sharper clarity.
+          </p>
+        </motion.div>
       </div>
     </section>
   );

@@ -3,7 +3,7 @@
 import { motion, useReducedMotion } from "framer-motion";
 import type { CSSProperties } from "react";
 import { useEffect, useRef, useState } from "react";
-import { BrandFlare } from "../BrandFlare";
+import StructuralAsteriskHeroArt from "./StructuralAsteriskHeroArt";
 
 type ClarityThreadVisualProps = {
   hoverSuppressed: boolean;
@@ -710,13 +710,7 @@ export default function Hero() {
         isOpen={isPhilosophyOpen}
         onComplete={closePhilosophy}
       />
-      <div className="pointer-events-none absolute inset-x-0 top-0 z-[1] hidden md:block">
-        <div className="mx-auto w-full max-w-[1360px] px-6 md:px-10">
-          <div className="relative inline-flex items-center justify-center ml-[360px] mt-[112px] opacity-100">
-            <BrandFlare className="w-12 h-12 md:w-16 md:h-16" />
-          </div>
-        </div>
-      </div>
+      <StructuralAsteriskHeroArt />
       <HeroShowcaseReel />
 
       <div className="relative z-10 mx-auto grid w-full max-w-[1360px] grid-cols-1 items-center gap-12 px-6 pt-10 md:grid-cols-12 md:gap-12 md:px-10 md:pt-16 lg:gap-20">

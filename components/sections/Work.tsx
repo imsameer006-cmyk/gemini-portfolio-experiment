@@ -14,8 +14,7 @@ export default function Work() {
   return (
     <section
       id="work"
-      className="homepage-atmosphere home-work-atmosphere px-6 pb-16 pt-10 md:px-10 md:pb-24 md:pt-[104px]"
-      style={{ background: "#092212" }}
+      className="bg-gradient-to-b from-[#092212] via-[#071A0E] to-[#051209] px-6 pb-16 pt-10 md:px-10 md:pb-24 md:pt-[104px]"
     >
       <div className="max-w-[1280px] mx-auto">
         {/* Section header */}

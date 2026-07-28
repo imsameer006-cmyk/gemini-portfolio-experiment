@@ -4,7 +4,6 @@ import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { LinkedinLogo } from "@phosphor-icons/react";
-import { BrandFlare } from "./BrandFlare";
 
 const links = [
   { label: "Work", href: "#work" },
@@ -13,6 +12,23 @@ const links = [
   { label: "Testimonials", href: "#testimonials" },
   { label: "Contact", href: "#contact" },
 ];
+
+function NavAsterisk() {
+  return (
+    <svg
+      viewBox="0 0 500 500"
+      aria-hidden="true"
+      className="h-[15px] w-[15px] flex-shrink-0"
+      preserveAspectRatio="xMidYMid meet"
+    >
+      <path
+        d="M255 145L243 212L190 185L223 234L110 205L205 258L160 300L230 262L230 365L257 262L345 325L282 250L390 130L278 222Z"
+        fill="currentColor"
+        shapeRendering="geometricPrecision"
+      />
+    </svg>
+  );
+}
 
 type NavSurface = "light" | "dark";
 
@@ -43,6 +59,8 @@ function relativeLuminance({ r, g, b }: { r: number; g: number; b: number }) {
 
 export default function Nav() {
   const headerRef = useRef<HTMLElement>(null);
+  const dialogRef = useRef<HTMLDivElement>(null);
+  const menuToggleRef = useRef<HTMLButtonElement>(null);
   const [scrolled, setScrolled] = useState(false);
   const [surface, setSurface] = useState<NavSurface>("light");
   const [mobileOpen, setMobileOpen] = useState(false);
@@ -104,7 +122,39 @@ export default function Nav() {
 
   useEffect(() => {
     document.body.style.overflow = mobileOpen ? "hidden" : "";
-    return () => { document.body.style.overflow = ""; };
+
+    const main = document.querySelector("main");
+    const footer = document.querySelector("footer");
+
+    if (mobileOpen) {
+      main?.setAttribute("inert", "");
+      footer?.setAttribute("inert", "");
+      dialogRef.current?.focus();
+    } else {
+      main?.removeAttribute("inert");
+      footer?.removeAttribute("inert");
+    }
+
+    return () => {
+      document.body.style.overflow = "";
+      main?.removeAttribute("inert");
+      footer?.removeAttribute("inert");
+    };
+  }, [mobileOpen]);
+
+  // Close on Escape, restore focus to the toggle button
+  useEffect(() => {
+    if (!mobileOpen) return;
+
+    const onKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "Escape") {
+        setMobileOpen(false);
+        menuToggleRef.current?.focus();
+      }
+    };
+
+    window.addEventListener("keydown", onKeyDown);
+    return () => window.removeEventListener("keydown", onKeyDown);
   }, [mobileOpen]);
 
   // Track active section via IntersectionObserver on homepage
@@ -198,7 +248,7 @@ export default function Nav() {
                   : "text-[var(--nav-glass-light-logo-color)]",
               ].join(" ")}
             >
-              <BrandFlare className="w-[1.2em] h-[1.2em] inline-block align-middle" />
+              <NavAsterisk />
               <span className="font-display text-[13px] font-semibold tracking-[0.14em]">
                 Sameer G.
               </span>
@@ -249,6 +299,7 @@ export default function Nav() {
 
             {/* Mobile menu toggle */}
             <button
+              ref={menuToggleRef}
               aria-label={mobileOpen ? "Close menu" : "Open menu"}
               aria-expanded={mobileOpen}
               onClick={() => setMobileOpen((o) => !o)}
@@ -283,8 +334,11 @@ export default function Nav() {
       {/* Mobile overlay */}
       {mobileOpen && (
         <div
-          className="fixed inset-0 z-40 bg-[var(--color-warm-bg)] flex flex-col pt-[46px]"
+          ref={dialogRef}
+          tabIndex={-1}
+          className="fixed inset-0 z-40 bg-[var(--color-warm-bg)] flex flex-col pt-[46px] outline-none"
           role="dialog"
+          aria-modal="true"
           aria-label="Navigation menu"
         >
           <ul className="flex flex-col px-6 pt-12 gap-6">

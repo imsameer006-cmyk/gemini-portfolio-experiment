@@ -11,7 +11,7 @@ export default function Philosophy() {
   return (
     <section
       id="philosophy"
-      className="bg-[var(--philosophy-background-color)] px-6 md:px-10 py-24 md:py-36"
+      className="bg-[var(--philosophy-background-color)] px-6 md:px-10 py-24 md:py-32"
     >
       <div className="max-w-[1280px] mx-auto">
         {/* Section label */}

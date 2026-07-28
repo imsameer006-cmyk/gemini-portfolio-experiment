@@ -204,7 +204,7 @@ export default function ExperienceMoments() {
   return (
     <section
       id="experience-moments"
-      className="bg-[var(--moments-background-color)] px-6 pb-24 pt-0 md:px-10 md:pb-32"
+      className="bg-[#051209] px-6 pb-24 pt-0 md:px-10 md:pb-32"
     >
       <div className="mx-auto max-w-[1280px] pt-16">
         <motion.div
