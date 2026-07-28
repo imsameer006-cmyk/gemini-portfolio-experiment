@@ -53,24 +53,24 @@ export default function ProjectCard({ project, index }: ProjectCardProps) {
             {project.title}
           </h3>
 
-          <p className="text-body-compact text-[var(--work-card-description-color)] leading-relaxed mb-6 line-clamp-2">
+          <p className="text-body-compact text-[#D9EBE1]/70 leading-relaxed mb-6 line-clamp-2">
             {project.description}
           </p>
 
           <div className="mt-auto">
             <div className="flex flex-wrap items-center gap-2 mb-4">
               {project.client && (
-                <span className="whitespace-nowrap rounded-full border border-white/10 bg-white/[0.04] px-2.5 py-1 text-xs text-[#D9EBE1]/80">
+                <span className="whitespace-nowrap rounded-full border border-[#B6FF00]/20 bg-white/5 px-2.5 py-1 text-xs font-medium text-[#D9EBE1]">
                   {project.client}
                 </span>
               )}
               <span className="basis-full md:basis-0 w-0 h-0" aria-hidden="true" />
-              <span className="whitespace-nowrap rounded-full border border-white/10 bg-white/[0.04] px-2.5 py-1 text-xs text-[#D9EBE1]/80">
+              <span className="whitespace-nowrap rounded-full border border-[#B6FF00]/20 bg-white/5 px-2.5 py-1 text-xs font-medium text-[#D9EBE1]">
                 {project.impact}
               </span>
             </div>
             <div className="flex justify-end">
-              <span className="flex items-center gap-1 font-mono text-xs text-[#B6FF00] transition-[text-decoration-color] duration-200 hover:underline group-hover:underline">
+              <span className="flex items-center gap-1 font-mono text-xs font-medium text-[#B6FF00] no-underline opacity-0 translate-y-1 transition-all duration-300 group-hover:opacity-100 group-hover:translate-y-0 group-focus-visible:opacity-100 group-focus-visible:translate-y-0">
                 View case study
                 <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true">
                   <path d="M2.5 7h9M7.5 3l4 4-4 4" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round" />

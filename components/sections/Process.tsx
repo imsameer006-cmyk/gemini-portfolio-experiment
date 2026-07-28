@@ -18,13 +18,13 @@ export default function Process() {
   const revealFade = useRevealFade();
 
   return (
-    <section id="process" className="homepage-atmosphere home-process-atmosphere px-6 md:px-10 py-24 md:py-36">
+    <section id="process" className="bg-[var(--process-background-color)] px-6 md:px-10 py-24 md:py-36">
       <div className="max-w-[1280px] mx-auto">
         {/* Section header */}
         <div className="mb-16">
           <motion.p
             {...reveal()}
-            className="text-xs text-[var(--process-eyebrow-color)] tracking-widest uppercase font-medium mb-3"
+            className="text-xs text-[var(--process-eyebrow-color)] tracking-widest uppercase font-semibold mb-3"
           >
             How I Work
           </motion.p>
@@ -61,10 +61,10 @@ export default function Process() {
                 />
               )}
 
-              <span className="font-[family-name:var(--font-numeral)] text-4xl text-[var(--process-number-color)] block mb-5 leading-none">
+              <span className="font-mono text-3xl font-bold text-[var(--process-number-color)] block mb-5 leading-none">
                 {step.number}
               </span>
-              <h3 className="text-[var(--process-title-color)] font-medium text-lg mb-3">{step.title}</h3>
+              <h3 className="text-[var(--process-title-color)] font-semibold text-lg mb-3">{step.title}</h3>
               <p className="text-[var(--process-description-color)] text-sm leading-relaxed">{step.description}</p>
             </motion.div>
           ))}
@@ -73,7 +73,7 @@ export default function Process() {
         {/* Bottom note */}
         <motion.p
           {...revealFade(0.4)}
-          className="mt-16 text-xs text-[var(--process-note-color)] max-w-[48ch] leading-relaxed border-t border-[var(--process-divider-color)] pt-8"
+          className="mt-16 text-xs text-[var(--process-note-color)] max-w-[48ch] leading-normal border-t border-[var(--process-divider-color)] pt-8"
         >
           The process is not linear. Real design work is recursive — each step
           sends you back to re-examine earlier assumptions with sharper clarity.

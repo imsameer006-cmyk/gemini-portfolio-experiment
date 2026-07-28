@@ -3,6 +3,7 @@
 import { motion, useReducedMotion } from "framer-motion";
 import type { CSSProperties } from "react";
 import { useEffect, useRef, useState } from "react";
+import { BrandFlare } from "../BrandFlare";
 
 type ClarityThreadVisualProps = {
   hoverSuppressed: boolean;
@@ -110,23 +111,6 @@ function HeroShowcaseReel() {
         }
       `}</style>
     </div>
-  );
-}
-
-function DecorativeHeroAsterisk({ className = "" }: { className?: string }) {
-  return (
-    <svg
-      viewBox="0 0 500 500"
-      aria-hidden="true"
-      className={className}
-      preserveAspectRatio="xMidYMid meet"
-    >
-      <path
-        d="M255 145L243 212L190 185L223 234L110 205L205 258L160 300L230 262L230 365L257 262L345 325L282 250L390 130L278 222Z"
-        fill="currentColor"
-        shapeRendering="geometricPrecision"
-      />
-    </svg>
   );
 }
 
@@ -708,10 +692,10 @@ export default function Hero() {
       aria-label="Introduction"
       className="homepage-atmosphere home-hero-atmosphere relative overflow-hidden px-0 py-16 md:min-h-[90vh] md:py-24"
       style={{
-        "--homepage-atmosphere-color": "radial-gradient(circle, rgba(182, 255, 0, 0.08) 0%, rgba(9, 34, 18, 1) 100%), #092212",
+        "--homepage-atmosphere-color": "radial-gradient(circle closest-side, rgba(182, 255, 0, 0.08) 0%, rgba(9, 34, 18, 1) 100%), #092212",
         "--hero-heading-color": "#B6FF00",
         "--hero-body-color": "#D9EBE1",
-        background: "radial-gradient(circle, rgba(182, 255, 0, 0.08) 0%, rgba(9, 34, 18, 1) 100%), #092212",
+        background: "radial-gradient(circle closest-side, rgba(182, 255, 0, 0.08) 0%, rgba(9, 34, 18, 1) 100%), #092212",
       } as CSSProperties}
     >
       {showLegacyHeroArt && (
@@ -728,7 +712,9 @@ export default function Hero() {
       />
       <div className="pointer-events-none absolute inset-x-0 top-0 z-[1] hidden md:block">
         <div className="mx-auto w-full max-w-[1360px] px-6 md:px-10">
-          <DecorativeHeroAsterisk className="ml-[360px] mt-[112px] h-[56px] w-[56px] text-[#B6FF00] opacity-25" />
+          <div className="relative inline-flex items-center justify-center ml-[360px] mt-[112px] opacity-100">
+            <BrandFlare className="w-12 h-12 md:w-16 md:h-16" />
+          </div>
         </div>
       </div>
       <HeroShowcaseReel />

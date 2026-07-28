@@ -19,7 +19,7 @@ export default function About() {
   return (
     <section
       id="about"
-      className="homepage-atmosphere home-about-atmosphere px-6 pb-24 pt-0 md:px-10 md:pb-32 md:pt-0"
+      className="bg-[var(--about-background-color)] px-6 pb-24 pt-0 md:px-10 md:pb-32 md:pt-0"
     >
       <div className="mx-auto max-w-[1280px] pt-16">
         <p className="mb-10 text-xs font-medium uppercase tracking-widest text-[var(--about-eyebrow-color)]">
@@ -66,7 +66,7 @@ export default function About() {
 
             <motion.p
               {...reveal(0.14)}
-              className="mt-10 max-w-[420px] font-display text-[clamp(1.2rem,1.6vw,1.5rem)] font-black leading-[1.45] text-[var(--about-supporting-color)]"
+              className="mt-10 max-w-[420px] font-display text-[clamp(1.2rem,1.6vw,1.5rem)] font-semibold leading-relaxed text-[var(--about-supporting-color)]"
             >
               Think in systems.
               <br />
@@ -84,7 +84,7 @@ export default function About() {
               {FACTS.map((fact) => (
                 <span
                   key={fact}
-                  className="rounded-full border border-[var(--about-chip-border-color)] bg-[var(--about-chip-background-color)] px-3 py-1.5 text-xs font-medium text-[var(--about-chip-text-color)] transition-colors duration-200 hover:border-[var(--about-chip-border-hover)] hover:text-[var(--about-chip-text-hover)]"
+                  className="cursor-default rounded-full border border-[var(--about-chip-border-color)] bg-[var(--about-chip-background-color)] px-3 py-1.5 text-xs font-medium text-[var(--about-chip-text-color)]"
                 >
                   {fact}
                 </span>

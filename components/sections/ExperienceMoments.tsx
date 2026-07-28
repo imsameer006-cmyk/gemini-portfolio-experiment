@@ -69,9 +69,10 @@ function ExperiencePhotoCard({
   return (
     <motion.article
       {...reveal(staggerDelay(index))}
-      className="premium-white-surface group flex h-full flex-col overflow-hidden rounded-2xl border border-[var(--moments-card-border-color)] transition-[border-color,border-width,box-shadow] duration-300 hover:border-[1.5px] hover:border-[var(--moments-card-border-hover)] [--surface-shadow-hover:var(--moments-card-shadow-hover)] [--surface-shadow:var(--moments-card-shadow)]"
+      whileHover={{ y: -4, transition: { duration: 0.3, ease: "easeOut" } }}
+      className="group relative flex h-full flex-col overflow-hidden rounded-2xl bg-[var(--moments-card-background-color)] will-change-transform"
     >
-      <div className="relative aspect-[4/3] w-full overflow-hidden bg-[var(--moments-card-background-color)]">
+      <div className="relative aspect-[4/3] w-full overflow-hidden rounded-t-[inherit] bg-[var(--moments-card-background-color)]">
         {moment.imageSrc ? (
           <Image
             src={moment.imageSrc}
@@ -110,6 +111,8 @@ function ExperiencePhotoCard({
           {moment.location}
         </p>
       </div>
+
+      <div className="absolute inset-0 rounded-2xl pointer-events-none z-10 shadow-[inset_0_0_0_1px_rgba(182,255,0,0)] transition-shadow duration-300 group-hover:shadow-[inset_0_0_0_1px_rgba(182,255,0,0.8),0_0_16px_rgba(182,255,0,0.15)]" />
     </motion.article>
   );
 }

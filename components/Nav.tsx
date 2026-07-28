@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { LinkedinLogo } from "@phosphor-icons/react";
+import { BrandFlare } from "./BrandFlare";
 
 const links = [
   { label: "Work", href: "#work" },
@@ -14,23 +15,6 @@ const links = [
 ];
 
 type NavSurface = "light" | "dark";
-
-function NavAsterisk() {
-  return (
-    <svg
-      viewBox="0 0 500 500"
-      aria-hidden="true"
-      className="h-[15px] w-[15px] flex-shrink-0"
-      preserveAspectRatio="xMidYMid meet"
-    >
-      <path
-        d="M255 145L243 212L190 185L223 234L110 205L205 258L160 300L230 262L230 365L257 262L345 325L282 250L390 130L278 222Z"
-        fill="currentColor"
-        shapeRendering="geometricPrecision"
-      />
-    </svg>
-  );
-}
 
 function parseRgb(color: string) {
   const match = color.match(/rgba?\(([^)]+)\)/);
@@ -214,7 +198,7 @@ export default function Nav() {
                   : "text-[var(--nav-glass-light-logo-color)]",
               ].join(" ")}
             >
-              <NavAsterisk />
+              <BrandFlare className="w-[1.2em] h-[1.2em] inline-block align-middle" />
               <span className="font-display text-[13px] font-semibold tracking-[0.14em]">
                 Sameer G.
               </span>

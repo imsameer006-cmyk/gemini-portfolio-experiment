@@ -317,7 +317,7 @@ export default function SystemPage() {
           {[
             { tok: "type.home-hero", sample: "I discover patterns, and connect the dots.", style: "font-display text-[clamp(28px,4.2vw,44px)] font-black", rule: "Linik Sans 900 upright - homepage hero only" },
             { tok: "type.display-heading", sample: "The system behind the site.", style: "font-display text-[clamp(22px,3vw,30px)] font-bold", rule: "Linik Sans 700 upright - homepage sections, contact CTA, case-study heroes and sections, utility page headings" },
-            { tok: "type.mantra", sample: "Think in systems. Design for humans.", style: "font-display text-[clamp(19px,1.6vw,24px)] font-black", rule: "Linik Sans 900 upright - About mantra only" },
+            { tok: "type.mantra", sample: "Think in systems. Design for humans.", style: "font-display text-[clamp(19px,1.6vw,24px)] font-semibold", rule: "Linik Sans 600 upright - About mantra only" },
             { tok: "type.quote", sample: "Design starts where certainty ends.", style: "font-quote text-[clamp(18px,2vw,22px)]", rule: "Open Sans 400 upright - testimonials, pull quotes, closing lines, decorative quote marks" },
             { tok: "type.body", sample: "Explanatory paragraphs stay quiet and readable — secondary in tone, never in contrast.", style: "text-[15px] text-[#6A6764]", rule: "Geist 400 · relaxed leading" },
             { tok: "type.card-title", sample: "Gemini Digital Twin", style: "text-lg font-medium", rule: "Project names · truncate over prose" },
