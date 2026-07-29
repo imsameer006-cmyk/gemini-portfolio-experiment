@@ -65,7 +65,6 @@ export default function Testimonials() {
             <motion.div
               key={t.name}
               {...reveal(staggerDelay(i))}
-              whileHover={{ y: -4, transition: { duration: 0.3, ease: "easeOut" } }}
               className="group relative flex flex-col overflow-hidden rounded-2xl bg-[var(--testimonials-card-background-color)] p-7 will-change-transform"
             >
               <span
@@ -112,7 +111,7 @@ export default function Testimonials() {
                 </div>
               </div>
 
-              <div className="pointer-events-none absolute inset-0 z-10 rounded-2xl shadow-[inset_0_0_0_1px_rgba(255,255,255,0.1)] transition-shadow duration-300 group-hover:shadow-[inset_0_0_0_1px_rgba(182,255,0,0.7),0_0_20px_rgba(182,255,0,0.12)]" />
+              <div className="pointer-events-none absolute inset-0 z-10 rounded-2xl shadow-[inset_0_0_0_1px_rgba(182,255,0,0.4)]" />
             </motion.div>
           ))}
         </div>

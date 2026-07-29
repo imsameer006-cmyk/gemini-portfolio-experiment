@@ -10,22 +10,9 @@ export function FooterAsterisk() {
         className="h-[50px] w-[50px]"
         aria-hidden="true"
       >
-        <defs>
-          <radialGradient
-            id="footerAsteriskMetallic"
-            cx="0"
-            cy="0"
-            r="90"
-            gradientUnits="userSpaceOnUse"
-          >
-            <stop offset="0%" stopColor="#89B5CC" />
-            <stop offset="55%" stopColor="#6497B1" />
-            <stop offset="100%" stopColor="#426F8A" />
-          </radialGradient>
-        </defs>
         <path
-          d="M255 145L243 212L190 185L223 234L110 205L205 258L160 300L230 262L230 365L257 262L345 325L282 250L390 130L278 222Z"
-          fill="url(#footerAsteriskMetallic)"
+          d="M 211.23 246.77 L 211.23 40 L 288.77 40 L 288.77 246.77 L 233.41 214.81 L 412.48 111.42 L 451.25 178.58 L 272.18 281.96 L 272.18 218.04 L 451.25 321.42 L 412.48 388.58 L 233.41 285.19 L 288.77 253.23 L 288.77 460 L 211.23 460 L 211.23 253.23 L 266.59 285.19 L 87.52 388.58 L 48.75 321.42 L 227.82 218.04 L 227.82 281.96 L 48.75 178.58 L 87.52 111.42 L 266.59 214.81 Z"
+          fill="currentColor"
           shapeRendering="geometricPrecision"
         />
       </svg>

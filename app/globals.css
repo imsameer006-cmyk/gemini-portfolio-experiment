@@ -94,17 +94,18 @@
   --hero-heading-color:    var(--color-text-hero);
   --hero-body-color:       var(--color-text-hero);
   --hero-scrim-color:      var(--color-bg-hero);
-  --nav-glass-light-background:       rgba(255,255,255,.22);
-  --nav-glass-light-border:           rgba(1,31,75,.10);
+  /* Light-surface nav tokens realigned from process-blue/slate to the site's forest/sage palette */
+  --nav-glass-light-background:       rgba(7,26,14,.75);
+  --nav-glass-light-border:           rgba(176,188,100,.25);
   --nav-glass-light-shadow:           0 4px 20px rgba(1,31,75,.05);
-  --nav-glass-light-logo-color:       var(--process-blue-900);
-  --nav-glass-light-link-color:       var(--blue-grey-600);
-  --nav-glass-light-link-active-color: var(--process-blue-900);
-  --nav-glass-light-pill-background:  rgba(255,255,255,.55);
-  --nav-glass-light-pill-border:      rgba(1,31,75,.42);
+  --nav-glass-light-logo-color:       #B6FF00;
+  --nav-glass-light-link-color:       #B0BC64;
+  --nav-glass-light-link-active-color: #B6FF00;
+  --nav-glass-light-pill-background:  rgba(14,40,24,.85);
+  --nav-glass-light-pill-border:      rgba(176,188,100,.4);
   --nav-glass-light-hover-background: rgba(255,255,255,.22);
   --nav-glass-light-hover-border:     rgba(1,31,75,.16);
-  --nav-glass-light-link-hover-color: #011F4B;
+  --nav-glass-light-link-hover-color: #B6FF00;
 
   --nav-glass-dark-background:        rgba(6,30,16,.45);
   --nav-glass-dark-border:            rgba(255,255,255,.14);
