@@ -6,11 +6,20 @@ import { useEffect, useId, useMemo, useRef, useState } from "react";
 const SPOKE_ANGLES = [270, 330, 30, 90, 150, 210];
 const BASE_CELL = 40;
 const BASE_LENGTH = BASE_CELL * 6.5;
-const BASE_HALF_WIDTH = BASE_CELL;
+const BASE_HALF_WIDTH = BASE_CELL * 1.2;
 const BASE_INNER_R = BASE_CELL * 0.1;
 const BASE_OFFSET = 12;
 const BASE_SIZE = 640;
-const ASTERISK_SIZE_MULTIPLIER = 1.90125;
+// The ring-extent container spans the full Hero section (so rings can ripple
+// across it), but the asterisk's own size and anchor point are pinned —
+// frozen at the exact pixel size/position established through prior
+// scale/position iterations, expressed as a fraction of the Hero section so
+// they stay put regardless of the section's own dimensions. Without this,
+// both would balloon/shift the moment the measurement box grew to fill the
+// whole section, since they used to be derived from that same box.
+const PINNED_TARGET_DIAMETER = 145.41;
+const PINNED_CENTER_X_FRACTION = 0.18379;
+const PINNED_CENTER_Y_FRACTION = 0.20255;
 
 type Point = {
   x: number;
@@ -145,15 +154,14 @@ export default function StructuralAsteriskHeroArt() {
   const uid = useId().replace(/:/g, "");
 
   const geometry = useMemo(() => {
-    const shortSide = Math.min(bounds.width, bounds.height);
-    const centerX = bounds.width / 2;
-    const centerY = bounds.height * (bounds.width < 768 ? 0.38 : 0.32) - 20;
-    const baseTargetDiameter = Math.min(
-      Math.max(shortSide * (bounds.width < 768 ? 0.3915 : bounds.width < 1024 ? 0.28 : 0.24), bounds.width < 768 ? 71 : 130),
-      bounds.width < 768 ? 131 : bounds.width < 1024 ? 220 : 280,
-    );
-    const targetDiameter = baseTargetDiameter * ASTERISK_SIZE_MULTIPLIER;
+    const centerX = bounds.width * PINNED_CENTER_X_FRACTION;
+    const targetDiameter = PINNED_TARGET_DIAMETER;
     const scale = targetDiameter / BASE_SIZE;
+    const half = BASE_SIZE * scale * 0.5;
+    const rawCenterY = bounds.height * PINNED_CENTER_Y_FRACTION;
+    // Guarantee the shape is always fully contained, regardless of container size —
+    // clamp so its top/bottom edges never cross the container bounds.
+    const centerY = Math.min(Math.max(rawCenterY, half), Math.max(bounds.height - half, half));
     const asteriskVerts = getAsteriskVertices(scale);
     const { offsetVerts } = getOffsetPolygonData(asteriskVerts, BASE_OFFSET * scale);
     const diagonal = Math.hypot(bounds.width, bounds.height);
@@ -167,7 +175,7 @@ export default function StructuralAsteriskHeroArt() {
     return {
       centerX,
       centerY,
-      half: BASE_SIZE * scale * 0.5,
+      half,
       asteriskPathData: toPath(asteriskVerts),
       offsetPathData: toPath(offsetVerts),
       structuralRings,
@@ -292,21 +300,14 @@ export default function StructuralAsteriskHeroArt() {
                 r={r}
                 stroke="#B0BC64"
                 strokeWidth="0.5"
+                strokeLinejoin="round"
+                strokeLinecap="round"
                 fill="none"
                 opacity="0.3"
               />
             ))}
           </g>
         </g>
-
-        <path
-          d={geometry.offsetPathData}
-          transform={`translate(${geometry.centerX} ${geometry.centerY})`}
-          stroke="#B0BC64"
-          strokeWidth="0.5"
-          fill="none"
-          opacity="0.3"
-        />
 
         <g mask={`url(#${uid}-continuousSweepMask)`}>
           <g mask={`url(#${uid}-outsideOffsetMask)`}>
@@ -325,19 +326,13 @@ export default function StructuralAsteriskHeroArt() {
                 r={r}
                 stroke="#B0BC64"
                 strokeWidth="0.75"
+                strokeLinejoin="round"
+                strokeLinecap="round"
                 fill="none"
                 opacity="0.85"
               />
             ))}
           </g>
-          <path
-            d={geometry.offsetPathData}
-            transform={`translate(${geometry.centerX} ${geometry.centerY})`}
-            stroke="#B0BC64"
-            strokeWidth="0.75"
-            fill="none"
-            opacity="0.85"
-          />
         </g>
 
         <g mask={`url(#${uid}-structuralSweepMask)`}>
@@ -351,18 +346,12 @@ export default function StructuralAsteriskHeroArt() {
                 fill="none"
                 stroke="#B0BC64"
                 strokeWidth="0.5"
+                strokeLinejoin="round"
+                strokeLinecap="round"
                 opacity="0.28"
               />
             ))}
           </g>
-          <path
-            d={geometry.offsetPathData}
-            transform={`translate(${geometry.centerX} ${geometry.centerY})`}
-            fill="none"
-            stroke="#B0BC64"
-            strokeWidth="0.5"
-            opacity="0.28"
-          />
         </g>
 
         <g clipPath={`url(#${uid}-asteriskClip)`} shapeRendering="geometricPrecision">
@@ -371,7 +360,7 @@ export default function StructuralAsteriskHeroArt() {
             y={geometry.centerY - geometry.half}
             width={geometry.half * 2}
             height={geometry.half * 2}
-            fill="#1C2B1D"
+            fill="#243427"
             shapeRendering="geometricPrecision"
           />
         </g>
