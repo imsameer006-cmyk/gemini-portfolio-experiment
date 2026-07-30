@@ -24,9 +24,22 @@ const NATIVE_CENTER_Y = 271.505;
 const OFFSET_RING_COUNT = 8;
 const OFFSET_STEP = 20; // native units per ring
 
-const UNIT_SCALE_MOBILE = 300 / 514;
-const UNIT_SCALE_DESKTOP = 440 / 514;
-const DESKTOP_BREAKPOINT = 768;
+// Position and scale carried over from the last committed StructuralAsteriskHeroArt
+// (its PINNED_TARGET_DIAMETER / PINNED_CENTER_X/Y_FRACTION) — this is a swap of the
+// art, not the placement, so the new motif sits where the old one did. The old
+// pinned diameter (145.41px) was measured for a square mark; this shape's own
+// native bounding box is ~403x420 units, so UNIT_SCALE approximates the same
+// visual size rather than matching it to the pixel — close enough by design, not
+// meant to be exact.
+const PINNED_TARGET_DIAMETER = 145.41;
+const NATIVE_BBOX_MAX = 420; // solid mark's native bounding box, larger dimension
+const UNIT_SCALE = PINNED_TARGET_DIAMETER / NATIVE_BBOX_MAX;
+const PINNED_CENTER_X_FRACTION = 0.18379;
+// Nudged down from the old fraction (0.20255) to compensate: this shape's
+// centroid sits higher relative to its own bounding box than the old symmetric
+// asterisk's did, so using the same raw fraction rendered visibly higher
+// on screen (overlapping the nav) than the original mark did.
+const PINNED_CENTER_Y_FRACTION = 0.2293;
 
 type Point = { x: number; y: number };
 type Bounds = { width: number; height: number };
@@ -170,11 +183,10 @@ export default function HeroPinwheelEchoArt() {
   }, []);
 
   const geometry = useMemo(() => {
-    const unitScale = bounds.width >= DESKTOP_BREAKPOINT ? UNIT_SCALE_DESKTOP : UNIT_SCALE_MOBILE;
-    const centerX = bounds.width / 2;
-    const centerY = bounds.height / 2;
+    const centerX = bounds.width * PINNED_CENTER_X_FRACTION;
+    const centerY = bounds.height * PINNED_CENTER_Y_FRACTION;
 
-    return { unitScale, centerX, centerY };
+    return { unitScale: UNIT_SCALE, centerX, centerY };
   }, [bounds]);
 
   const baseTransform = `translate(${geometry.centerX} ${geometry.centerY}) scale(${geometry.unitScale}) translate(${-NATIVE_CENTER_X} ${-NATIVE_CENTER_Y})`;
