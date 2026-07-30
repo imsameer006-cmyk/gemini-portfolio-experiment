@@ -4,6 +4,7 @@ import { motion, useReducedMotion } from "framer-motion";
 import type { CSSProperties } from "react";
 import { useEffect, useRef, useState } from "react";
 import StructuralAsteriskHeroArt from "./StructuralAsteriskHeroArt";
+import HeroPinwheelEchoArt from "./HeroPinwheelEchoArt";
 
 type ClarityThreadVisualProps = {
   hoverSuppressed: boolean;
@@ -13,6 +14,7 @@ type ClarityThreadVisualProps = {
 };
 
 const showLegacyHeroArt = false;
+const showStructuralAsteriskArt = false;
 
 const heroShowcaseItems = [
   { id: "01", fill: "#F8FCFD" },
@@ -710,7 +712,8 @@ export default function Hero() {
         isOpen={isPhilosophyOpen}
         onComplete={closePhilosophy}
       />
-      <StructuralAsteriskHeroArt />
+      {showStructuralAsteriskArt && <StructuralAsteriskHeroArt />}
+      <HeroPinwheelEchoArt />
       <HeroShowcaseReel />
 
       <div className="relative z-10 mx-auto grid w-full max-w-[1360px] grid-cols-1 items-center gap-12 px-6 pt-10 md:grid-cols-12 md:gap-12 md:px-10 md:pt-16 lg:gap-20">
