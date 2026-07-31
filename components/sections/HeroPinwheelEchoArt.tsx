@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useId, useLayoutEffect, useMemo, useRef, useState } from "react";
 
 // Hand-authored solid mark (see user-provided Frame 17.svg). Verified star-shaped
 // around its own centroid — every ray from the center crosses the boundary exactly
@@ -43,6 +43,17 @@ const TIP_EDGE_INDICES = [0, 4, 7, 10, 13, 16];
 // this step size on a typical desktop width. Capped well above that with margin.
 const HEXAGON_RING_SAFETY_CAP = 140;
 
+// Every ring — near offset rings and far hexagon rings alike — shares this
+// exact same stroke treatment. Previously each ring had its own opacity
+// (linear decay for the near rings, exponential decay for the far ones),
+// which made the field read as a sequence of individually-styled lines. The
+// only thing that varies visibility across the field now is the single
+// radial fade mask below (see radialFadeGeometry / contourFadeMask) — the
+// rings themselves are one uniform material, like engraved contour lines.
+const CONTOUR_STROKE_COLOR = "#C3CA8F";
+const CONTOUR_STROKE_WIDTH = 1.2;
+const CONTOUR_STROKE_OPACITY = 0.14; // within the requested 12-16% range
+
 // Position and scale carried over from the last committed StructuralAsteriskHeroArt
 // (its PINNED_TARGET_DIAMETER / PINNED_CENTER_X/Y_FRACTION) — this is a swap of the
 // art, not the placement, so the new motif sits where the old one did. The old
@@ -62,6 +73,26 @@ const PINNED_CENTER_Y_FRACTION = 0.2293;
 // Fixed pixel nudge, not folded into the fraction above — 25px should stay
 // 25px regardless of viewport height, not scale proportionally with it.
 const VERTICAL_OFFSET_PX = -25;
+
+// Spatial attenuation layer for the rings, stacked ON TOP of the existing
+// per-index fade (never replaces it) — a very soft elliptical dip in ring
+// opacity roughly matching where the headline + supporting paragraph sit in
+// Hero.tsx (that text column runs roughly x:[80,840]px / y:[215,670]px on a
+// typical 1440x900 viewport, i.e. fractionally x:[0.055,0.583] y:[0.24,0.74]).
+// Centered on the TEXT BLOCK's own centroid, not the motif's — at the motif's
+// position (0.18379, 0.2293) this ellipse's falloff is already back to ~99%
+// of full strength, so the near rings around the asterisk are essentially
+// untouched, while the dip is strongest in the middle of the reading column
+// and fades back to full strength well before the empty right side.
+const TEXT_DIM_CENTER_X_FRACTION = 0.319;
+const TEXT_DIM_CENTER_Y_FRACTION = 0.49;
+const TEXT_DIM_RADIUS_X_FRACTION = 0.3;
+const TEXT_DIM_RADIUS_Y_FRACTION = 0.3;
+// Minimum opacity multiplier at the dead center of the dim zone. Deliberately
+// gentle (roughly half, not a hard cut) since this multiplies rings that are
+// often already faint from the per-index fade — the goal is a calmer overall
+// composition, not a visible mask edge or shape.
+const TEXT_DIM_MIN_OPACITY = 0.45;
 
 type Point = { x: number; y: number };
 type Bounds = { width: number; height: number };
@@ -252,14 +283,26 @@ function getHexagonOffset(tipLines: Line[], dist: number): Point[] {
 function useElementBounds<T extends HTMLElement>() {
   const ref = useRef<T | null>(null);
   const [bounds, setBounds] = useState<Bounds>({ width: 1440, height: 960 });
+  // Tracks whether `bounds` has ever been set from a real measurement, as
+  // opposed to still holding the {1440, 960} fallback. The fallback can't be
+  // avoided — getBoundingClientRect needs a real DOM node, which doesn't exist
+  // until this component mounts on the client — so callers should not render
+  // fallback-derived geometry at all; they should wait for this flag instead.
+  const [hasMeasured, setHasMeasured] = useState(false);
 
-  useEffect(() => {
+  // useLayoutEffect (fires before paint), not useEffect (fires after paint):
+  // this only closes the gap between mount and the first real measurement —
+  // it does NOT remove the wait for the JS bundle to load and hydrate in the
+  // first place, which is the larger part of the delay. That's why callers
+  // also need `hasMeasured` rather than relying on this alone.
+  useLayoutEffect(() => {
     const node = ref.current;
     if (!node) return;
 
     const update = () => {
       const rect = node.getBoundingClientRect();
       setBounds({ width: rect.width, height: rect.height });
+      setHasMeasured(true);
     };
 
     update();
@@ -269,11 +312,26 @@ function useElementBounds<T extends HTMLElement>() {
     return () => observer.disconnect();
   }, []);
 
-  return [ref, bounds] as const;
+  return [ref, bounds, hasMeasured] as const;
 }
 
 export default function HeroPinwheelEchoArt() {
-  const [containerRef, bounds] = useElementBounds<HTMLDivElement>();
+  const uid = useId().replace(/:/g, "");
+  const [containerRef, bounds, hasMeasured] = useElementBounds<HTMLDivElement>();
+
+  // Native bounding box of the solid mark, used to size the grain overlay rect
+  // (clipped to the mark's own shape below) so the filter's noise fills it edge
+  // to edge with no gaps.
+  const nativeBBox = useMemo(() => {
+    const solidVertices = parseAbsolutePath(SOLID_PATH);
+    const xs = solidVertices.map((p) => p.x);
+    const ys = solidVertices.map((p) => p.y);
+    const minX = Math.min(...xs);
+    const maxX = Math.max(...xs);
+    const minY = Math.min(...ys);
+    const maxY = Math.max(...ys);
+    return { minX, minY, width: maxX - minX, height: maxY - minY };
+  }, []);
 
   const offsetRingPaths = useMemo(() => {
     const solidVertices = parseAbsolutePath(SOLID_PATH);
@@ -293,6 +351,36 @@ export default function HeroPinwheelEchoArt() {
 
     return { unitScale: UNIT_SCALE, centerX, centerY };
   }, [bounds]);
+
+  const spatialMaskGeometry = useMemo(
+    () => ({
+      centerX: bounds.width * TEXT_DIM_CENTER_X_FRACTION,
+      centerY: bounds.height * TEXT_DIM_CENTER_Y_FRACTION,
+      radiusX: bounds.width * TEXT_DIM_RADIUS_X_FRACTION,
+      radiusY: bounds.height * TEXT_DIM_RADIUS_Y_FRACTION,
+    }),
+    [bounds],
+  );
+
+  // Single global radial fade, replacing the old per-ring index-based opacity
+  // entirely. Centered on the asterisk's own on-screen position — the same
+  // point the motif and baseTransform use — with its radius reaching the
+  // FARTHEST canvas corner from that point, so the fade-to-invisible
+  // completes smoothly across the whole visible field. A circle of that
+  // radius fully encloses the bounds rectangle (every point in a rectangle
+  // is at most as far from an interior point as its farthest corner is), so
+  // there's no need for a background rect the way spatialMask needed one —
+  // this mask alone already covers every pixel with no hard edge anywhere.
+  const radialFadeGeometry = useMemo(() => {
+    const farthestCornerDistance = Math.max(
+      Math.hypot(geometry.centerX, geometry.centerY),
+      Math.hypot(bounds.width - geometry.centerX, geometry.centerY),
+      Math.hypot(geometry.centerX, bounds.height - geometry.centerY),
+      Math.hypot(bounds.width - geometry.centerX, bounds.height - geometry.centerY),
+    );
+
+    return { centerX: geometry.centerX, centerY: geometry.centerY, radius: farthestCornerDistance };
+  }, [bounds, geometry]);
 
   // Keep adding hexagon rings (continuing the same distance progression Phase 1
   // left off at) until the ring's closest point to center — not just its
@@ -338,6 +426,15 @@ export default function HeroPinwheelEchoArt() {
       aria-hidden="true"
       className="pointer-events-none absolute inset-0 z-0 overflow-hidden select-none"
     >
+      {/* Gated on hasMeasured, not just rendered with the {1440, 960} fallback:
+          every path/mask/gradient below is derived from `bounds`, so painting
+          them before the container's real size is known would show the art at
+          the wrong scale for a frame, then visibly snap once the real
+          measurement lands. Rendering nothing until then reads as normal
+          page-load, not as a shape resizing itself. The ref-bearing div above
+          still always renders, so the measurement in useElementBounds can
+          actually happen. */}
+      {hasMeasured && (
       <svg
         viewBox={`0 0 ${bounds.width} ${bounds.height}`}
         width="100%"
@@ -345,41 +442,130 @@ export default function HeroPinwheelEchoArt() {
         className="h-full w-full"
         preserveAspectRatio="none"
       >
-        {/* Near rings, true perpendicular offset, uniform gaps */}
-        {offsetRingPaths.map((d, index) => (
-          <path
-            key={`pinwheel-offset-${index}`}
-            d={d}
-            fill="none"
-            stroke="#D2E823"
-            strokeWidth={1.2}
-            vectorEffect="non-scaling-stroke"
-            opacity={Math.max(0.18, 0.85 - index * 0.08)}
-            transform={baseTransform}
-          />
-        ))}
+        <defs>
+          {/* Grain effect ported from the pre-dark-forest StructuralAsteriskHeroArt
+              (commit 8b29604) — same feTurbulence/feColorMatrix/feComponentTransfer
+              mechanics, recolored with the current #B0BC64 accent token instead of
+              that commit's now-deleted gray palette. */}
+          <filter id={`${uid}-grainNoise`} x="-20%" y="-20%" width="140%" height="140%">
+            <feTurbulence
+              type="fractalNoise"
+              baseFrequency="0.38"
+              numOctaves="2"
+              stitchTiles="stitch"
+              result="noise"
+            />
+            <feColorMatrix
+              in="noise"
+              type="matrix"
+              values="0 0 0 0 0
+                      0 0 0 0 0
+                      0 0 0 0 0
+                      0.33 0.33 0.33 0 0"
+              result="grainAlpha"
+            />
+            <feComponentTransfer in="grainAlpha">
+              <feFuncA type="discrete" tableValues="0 0 0.15 0.15 0.4 0.4 0.6" />
+            </feComponentTransfer>
+          </filter>
 
-        {/* Far rings, hexagon built from the tip edges only — safe at any distance */}
-        {hexagonRingPaths.map((d, index) => (
-          <path
-            key={`pinwheel-hexagon-${index}`}
-            d={d}
-            fill="none"
-            stroke="#D2E823"
-            strokeWidth={1.2}
-            vectorEffect="non-scaling-stroke"
-            // Exponential decay, not a linear ramp with a floor — there can be
-            // dozens of these rings reaching out to the far walls, and a shared
-            // opacity floor made that many overlapping faint strokes read as a
-            // visible wash/crosshatch. Decaying smoothly toward (but never
-            // exactly reaching) zero keeps only the near rings clearly visible.
-            opacity={0.5 * Math.pow(0.965, index)}
-            transform={baseTransform}
-          />
-        ))}
+          <clipPath id={`${uid}-solidClip`}>
+            <path d={SOLID_PATH} />
+          </clipPath>
 
-        <path d={SOLID_PATH} fill="#243427" stroke="#243427" transform={baseTransform} />
+          {/* objectBoundingBox (the default) stretches this gradient's circle to
+              fit whatever shape it fills — painting it onto an ellipse below
+              gives an elliptical falloff for free, no manual x/y scaling math
+              needed. Edge stop is full-white/opacity-1, matching the base rect
+              behind it, so there's no visible seam at the ellipse boundary. */}
+          <radialGradient id={`${uid}-textDimGradient`} cx="50%" cy="50%" r="50%">
+            <stop offset="0%" stopColor="white" stopOpacity={TEXT_DIM_MIN_OPACITY} />
+            <stop offset="100%" stopColor="white" stopOpacity="1" />
+          </radialGradient>
+
+          <mask id={`${uid}-spatialMask`}>
+            <rect x="0" y="0" width={bounds.width} height={bounds.height} fill="white" />
+            <ellipse
+              cx={spatialMaskGeometry.centerX}
+              cy={spatialMaskGeometry.centerY}
+              rx={spatialMaskGeometry.radiusX}
+              ry={spatialMaskGeometry.radiusY}
+              fill={`url(#${uid}-textDimGradient)`}
+            />
+          </mask>
+
+          {/* Full strength at the center, fading linearly to fully transparent
+              at the edge — spread over a radius as large as the farthest
+              canvas corner, the transition is soft simply by virtue of being
+              stretched across hundreds of pixels; no extra easing stops
+              needed. */}
+          <radialGradient id={`${uid}-contourFadeGradient`} cx="50%" cy="50%" r="50%">
+            <stop offset="0%" stopColor="white" stopOpacity="1" />
+            <stop offset="100%" stopColor="white" stopOpacity="0" />
+          </radialGradient>
+
+          <mask id={`${uid}-contourFadeMask`}>
+            <circle
+              cx={radialFadeGeometry.centerX}
+              cy={radialFadeGeometry.centerY}
+              r={radialFadeGeometry.radius}
+              fill={`url(#${uid}-contourFadeGradient)`}
+            />
+          </mask>
+        </defs>
+
+        {/* One global radial fade centered on the asterisk (contourFadeMask),
+            nested with the existing text-column dip (spatialMask) — masks
+            compose multiplicatively when nested, so both attenuations apply
+            together. Every ring below shares one stroke treatment
+            (CONTOUR_STROKE_*); these masks are now the ONLY source of
+            visibility variation across the field. */}
+        <g mask={`url(#${uid}-contourFadeMask)`}>
+          <g mask={`url(#${uid}-spatialMask)`}>
+            {/* Near rings, true perpendicular offset, uniform gaps */}
+            {offsetRingPaths.map((d, index) => (
+              <path
+                key={`pinwheel-offset-${index}`}
+                d={d}
+                fill="none"
+                stroke={CONTOUR_STROKE_COLOR}
+                strokeWidth={CONTOUR_STROKE_WIDTH}
+                vectorEffect="non-scaling-stroke"
+                opacity={CONTOUR_STROKE_OPACITY}
+                transform={baseTransform}
+              />
+            ))}
+
+            {/* Far rings, hexagon built from the tip edges only — safe at any distance */}
+            {hexagonRingPaths.map((d, index) => (
+              <path
+                key={`pinwheel-hexagon-${index}`}
+                d={d}
+                fill="none"
+                stroke={CONTOUR_STROKE_COLOR}
+                strokeWidth={CONTOUR_STROKE_WIDTH}
+                vectorEffect="non-scaling-stroke"
+                opacity={CONTOUR_STROKE_OPACITY}
+                transform={baseTransform}
+              />
+            ))}
+          </g>
+        </g>
+
+        <g clipPath={`url(#${uid}-solidClip)`} transform={baseTransform}>
+          <path d={SOLID_PATH} fill="#243427" stroke="#243427" />
+          <rect
+            x={nativeBBox.minX}
+            y={nativeBBox.minY}
+            width={nativeBBox.width}
+            height={nativeBBox.height}
+            fill="#B0BC64"
+            filter={`url(#${uid}-grainNoise)`}
+            opacity="0.35"
+          />
+        </g>
       </svg>
+      )}
     </div>
   );
 }
