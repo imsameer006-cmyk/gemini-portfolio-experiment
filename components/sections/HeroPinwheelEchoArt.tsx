@@ -18,11 +18,30 @@ const NATIVE_CENTER_Y = 271.505;
 // rings is genuinely uniform everywhere (spoke tips and valley notches alike) —
 // unlike scaling from the center, where the gap grows proportional to how far a
 // point already is from center (tips drift apart much faster than valleys).
-// Verified self-intersection-free, and free of a subtler degeneracy (rays from
-// center failing to cross the boundary at all), through 180 native units of total
-// offset; stopping at 160 keeps real margin rather than riding the exact edge.
-const OFFSET_RING_COUNT = 8;
-const OFFSET_STEP = 20; // native units per ring
+//
+// Step size is half the spoke's own width (spoke width = 78 native units — the
+// vertical spoke spans x=218.183 to x=296.183). At this step, 4 rings stay
+// verified self-intersection-free (total offset 156): a 5th ring (195 total)
+// breaks with 5 crossings — the valley notches have flattened enough that the
+// offset math collapses the same way covered earlier. Ring count is capped
+// here accordingly.
+const OFFSET_RING_COUNT = 4;
+const OFFSET_STEP = 39; // native units per ring — half a spoke width
+
+// Beyond the safe star-offset zone, continue with a hexagon built from just the
+// star's 6 outward-facing tip edges (the ones with length ~78, aligned almost
+// exactly radially outward — see indices below). A hexagon has no reflex
+// vertices, so offsetting it is mathematically safe at ANY distance, unlike the
+// star shape. Continuing the SAME distance progression (rather than restarting
+// from 0) keeps the transition smooth: at a given distance, the hexagon's
+// vertices land at the same radius the star's tip vertices would have — verified
+// directly (both landed at radius 486 at distance 195) — so there's no visible
+// jump where Phase 1 hands off to Phase 2.
+const TIP_EDGE_INDICES = [0, 4, 7, 10, 13, 16];
+// The motif is pinned near the top-left corner, so bleeding past the far
+// (right/bottom) walls needs far more rings than the near ones — roughly 80 at
+// this step size on a typical desktop width. Capped well above that with margin.
+const HEXAGON_RING_SAFETY_CAP = 140;
 
 // Position and scale carried over from the last committed StructuralAsteriskHeroArt
 // (its PINNED_TARGET_DIAMETER / PINNED_CENTER_X/Y_FRACTION) — this is a swap of the
@@ -40,6 +59,9 @@ const PINNED_CENTER_X_FRACTION = 0.18379;
 // asterisk's did, so using the same raw fraction rendered visibly higher
 // on screen (overlapping the nav) than the original mark did.
 const PINNED_CENTER_Y_FRACTION = 0.2293;
+// Fixed pixel nudge, not folded into the fraction above — 25px should stay
+// 25px regardless of viewport height, not scale proportionally with it.
+const VERTICAL_OFFSET_PX = -25;
 
 type Point = { x: number; y: number };
 type Bounds = { width: number; height: number };
@@ -144,6 +166,89 @@ function getOffsetPolygon(vertices: Point[], dist: number, cx: number, cy: numbe
   return offsetVerts;
 }
 
+// A convex polygon's closest boundary point to an interior center is generally
+// along an EDGE (its perpendicular distance), not at a vertex — vertices are
+// always farther out than that. Used to find the polygon's true minimum reach
+// in any direction, not an overestimate from vertex distances alone.
+function minDistanceToPolygonBoundary(vertices: Point[], center: Point): number {
+  const n = vertices.length;
+  let min = Infinity;
+
+  for (let i = 0; i < n; i += 1) {
+    const a = vertices[i];
+    const b = vertices[(i + 1) % n];
+    const abx = b.x - a.x;
+    const aby = b.y - a.y;
+    const lenSq = abx * abx + aby * aby;
+    const t = Math.max(0, Math.min(1, ((center.x - a.x) * abx + (center.y - a.y) * aby) / lenSq));
+    const closest = { x: a.x + t * abx, y: a.y + t * aby };
+    const dist = Math.hypot(center.x - closest.x, center.y - closest.y);
+    if (dist < min) min = dist;
+  }
+
+  return min;
+}
+
+type Line = { p1: Point; p2: Point; nx: number; ny: number };
+
+// Extracts the 6 outward-facing tip edges (by index) as lines with their
+// pre-computed outward normal, ready to be offset by any distance.
+function getTipLines(vertices: Point[], indices: number[], cx: number, cy: number): Line[] {
+  const n = vertices.length;
+
+  return indices.map((i) => {
+    const p1 = vertices[i];
+    const p2 = vertices[(i + 1) % n];
+    const dx = p2.x - p1.x;
+    const dy = p2.y - p1.y;
+    const len = Math.hypot(dx, dy);
+
+    let nx = -dy / len;
+    let ny = dx / len;
+    const midX = (p1.x + p2.x) / 2;
+    const midY = (p1.y + p2.y) / 2;
+
+    if ((midX - cx) * nx + (midY - cy) * ny < 0) {
+      nx = -nx;
+      ny = -ny;
+    }
+
+    return { p1, p2, nx, ny };
+  });
+}
+
+// Offsets each tip line outward by dist and miters them against their
+// neighbors — since all 6 corners here are convex (no reflex vertices exist
+// once the valleys are skipped), this never self-intersects at any distance.
+function getHexagonOffset(tipLines: Line[], dist: number): Point[] {
+  const n = tipLines.length;
+  const offsetLines = tipLines.map((l) => ({
+    p1: { x: l.p1.x + l.nx * dist, y: l.p1.y + l.ny * dist },
+    p2: { x: l.p2.x + l.nx * dist, y: l.p2.y + l.ny * dist },
+  }));
+
+  const verts: Point[] = [];
+
+  for (let i = 0; i < n; i += 1) {
+    const l1 = offsetLines[i];
+    const l2 = offsetLines[(i + 1) % n];
+    const a1 = l1.p2.y - l1.p1.y;
+    const b1 = l1.p1.x - l1.p2.x;
+    const c1 = a1 * l1.p1.x + b1 * l1.p1.y;
+    const a2 = l2.p2.y - l2.p1.y;
+    const b2 = l2.p1.x - l2.p2.x;
+    const c2 = a2 * l2.p1.x + b2 * l2.p1.y;
+    const det = a1 * b2 - a2 * b1;
+
+    verts.push({
+      x: (b2 * c1 - b1 * c2) / det,
+      y: (a1 * c2 - a2 * c1) / det,
+    });
+  }
+
+  return verts;
+}
+
 function useElementBounds<T extends HTMLElement>() {
   const ref = useRef<T | null>(null);
   const [bounds, setBounds] = useState<Bounds>({ width: 1440, height: 960 });
@@ -184,10 +289,46 @@ export default function HeroPinwheelEchoArt() {
 
   const geometry = useMemo(() => {
     const centerX = bounds.width * PINNED_CENTER_X_FRACTION;
-    const centerY = bounds.height * PINNED_CENTER_Y_FRACTION;
+    const centerY = bounds.height * PINNED_CENTER_Y_FRACTION + VERTICAL_OFFSET_PX;
 
     return { unitScale: UNIT_SCALE, centerX, centerY };
   }, [bounds]);
+
+  // Keep adding hexagon rings (continuing the same distance progression Phase 1
+  // left off at) until the ring's closest point to center — not just its
+  // farthest — clears the distance to the farthest wall. Using the closest
+  // point rather than the farthest is deliberate: the motif is pinned near the
+  // top-left corner, so "bleed past all four walls" means every direction of
+  // the ring's silhouette has to reach far enough, not just whichever vertex
+  // happens to point toward the nearest edge.
+  const hexagonRingPaths = useMemo(() => {
+    const solidVertices = parseAbsolutePath(SOLID_PATH);
+    const tipLines = getTipLines(solidVertices, TIP_EDGE_INDICES, NATIVE_CENTER_X, NATIVE_CENTER_Y);
+    const paths: string[] = [];
+
+    const farthestWallDistance =
+      Math.max(
+        geometry.centerX,
+        bounds.width - geometry.centerX,
+        geometry.centerY,
+        bounds.height - geometry.centerY,
+      ) + 40;
+
+    const nativeCenter = { x: NATIVE_CENTER_X, y: NATIVE_CENTER_Y };
+    let i = 1;
+    let minBoundaryDistancePx = 0;
+
+    while (minBoundaryDistancePx < farthestWallDistance && i <= HEXAGON_RING_SAFETY_CAP) {
+      const dist = OFFSET_STEP * (OFFSET_RING_COUNT + i);
+      const ring = getHexagonOffset(tipLines, dist);
+      paths.push(toPath(ring));
+
+      minBoundaryDistancePx = minDistanceToPolygonBoundary(ring, nativeCenter) * geometry.unitScale;
+      i += 1;
+    }
+
+    return paths;
+  }, [bounds, geometry]);
 
   const baseTransform = `translate(${geometry.centerX} ${geometry.centerY}) scale(${geometry.unitScale}) translate(${-NATIVE_CENTER_X} ${-NATIVE_CENTER_Y})`;
 
@@ -214,6 +355,25 @@ export default function HeroPinwheelEchoArt() {
             strokeWidth={1.2}
             vectorEffect="non-scaling-stroke"
             opacity={Math.max(0.18, 0.85 - index * 0.08)}
+            transform={baseTransform}
+          />
+        ))}
+
+        {/* Far rings, hexagon built from the tip edges only — safe at any distance */}
+        {hexagonRingPaths.map((d, index) => (
+          <path
+            key={`pinwheel-hexagon-${index}`}
+            d={d}
+            fill="none"
+            stroke="#D2E823"
+            strokeWidth={1.2}
+            vectorEffect="non-scaling-stroke"
+            // Exponential decay, not a linear ramp with a floor — there can be
+            // dozens of these rings reaching out to the far walls, and a shared
+            // opacity floor made that many overlapping faint strokes read as a
+            // visible wash/crosshatch. Decaying smoothly toward (but never
+            // exactly reaching) zero keeps only the near rings clearly visible.
+            opacity={0.5 * Math.pow(0.965, index)}
             transform={baseTransform}
           />
         ))}
