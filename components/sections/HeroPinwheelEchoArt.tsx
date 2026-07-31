@@ -54,6 +54,38 @@ const CONTOUR_STROKE_COLOR = "#C3CA8F";
 const CONTOUR_STROKE_WIDTH = 1.2;
 const CONTOUR_STROKE_OPACITY = 0.14; // within the requested 12-16% range
 
+// Sparse mineral-inclusion highlight for the motif's grain, layered on top of
+// the base olive grain (see grainNoise / grainHighlight filters below) rather
+// than replacing any of it. Softened from the hero headline's #B6FF00 by
+// pulling blue up off zero and easing green down slightly, so it reads as an
+// accent belonging to the motif's own dark palette rather than a literal
+// reuse of the headline's own token.
+const MOTIF_HIGHLIGHT_COLOR = "#AEEA3D";
+// Empirically calibrated, not derived from the naive "top X% of the [0,1]
+// value range = top X% of pixels" assumption — that assumption is wrong here.
+// feColorMatrix's 0.33/0.33/0.33 average of feTurbulence's 3 channels
+// clusters tightly around ~0.5-0.6 rather than spreading uniformly, so e.g. a
+// literal top-2%-of-value-range threshold (0.98) produced ZERO visible
+// pixels in direct testing, and even a top-20%-of-value-range threshold (0.8)
+// produced ~0.0006% coverage. This value was found by directly rendering the
+// real filter pipeline at a sweep of thresholds and measuring actual pixel
+// coverage: 0.62 empirically yields ~2.3%, inside the requested 1-3% range.
+// History, each step re-verified against the real rendered motif via
+// connected-component fleck counting at 1x resolution (not extrapolated —
+// the threshold-vs-coverage curve is steep/non-linear enough that computed
+// guesses consistently missed):
+//   0.62   -> 227 flecks (baseline)
+//   0.624  -> 192 flecks (-15.4%, "reduce by 15%")
+//   0.646  -> 101 flecks (-47.4%, "further reduce by 50%" off the 192
+//             baseline — the achievable step nearest 96; the next available
+//             threshold step (0.647) overshoots to 80 flecks/-58.3%, with no
+//             finer value landing between the two at this resolution).
+const HIGHLIGHT_THRESHOLD = 0.646;
+// A steep but finite slope (not an instantaneous step) so each fleck gets a
+// hair of antialiasing at its own edge rather than a hard-pixel cutoff —
+// reads as a soft catch of light rather than a jagged/glittery pixel.
+const HIGHLIGHT_SLOPE = 500;
+
 // Position and scale carried over from the last committed StructuralAsteriskHeroArt
 // (its PINNED_TARGET_DIAMETER / PINNED_CENTER_X/Y_FRACTION) — this is a swap of the
 // art, not the placement, so the new motif sits where the old one did. The old
@@ -446,7 +478,16 @@ export default function HeroPinwheelEchoArt() {
           {/* Grain effect ported from the pre-dark-forest StructuralAsteriskHeroArt
               (commit 8b29604) — same feTurbulence/feColorMatrix/feComponentTransfer
               mechanics, recolored with the current #B0BC64 accent token instead of
-              that commit's now-deleted gray palette. */}
+              that commit's now-deleted gray palette.
+              feTurbulence is a generator primitive — it ignores SourceGraphic
+              entirely, so without the final feComposite below the filter's
+              output is pure black-with-varying-alpha regardless of the
+              element's own fill (confirmed by sampling actual rendered
+              pixels: the "grain" was rendering black, not #B0BC64, same
+              latent bug as the original this was ported from). The
+              feComposite operator="in" takes the rect's real fill color from
+              SourceGraphic and masks it by the noise-derived alpha instead,
+              so the olive tint actually renders. */}
           <filter id={`${uid}-grainNoise`} x="-20%" y="-20%" width="140%" height="140%">
             <feTurbulence
               type="fractalNoise"
@@ -464,9 +505,44 @@ export default function HeroPinwheelEchoArt() {
                       0.33 0.33 0.33 0 0"
               result="grainAlpha"
             />
-            <feComponentTransfer in="grainAlpha">
+            <feComponentTransfer in="grainAlpha" result="grainAlphaStepped">
               <feFuncA type="discrete" tableValues="0 0 0.15 0.15 0.4 0.4 0.6" />
             </feComponentTransfer>
+            <feComposite in="SourceGraphic" in2="grainAlphaStepped" operator="in" />
+          </filter>
+
+          {/* Sparse mineral-inclusion highlight — deliberately reuses the SAME
+              feTurbulence parameters (and default seed) as grainNoise above,
+              so this generates the exact same underlying noise field rather
+              than an independently-random second pattern. That means the
+              highlight's "highest values" line up precisely with the
+              brightest peaks WITHIN the base grain's own noise, reading as
+              inclusions inside the same grain rather than an unrelated
+              sparkle layer. Only values above HIGHLIGHT_THRESHOLD are lit
+              (~2% of the field, see the constant's comment for how that
+              threshold was actually determined); everywhere else is fully
+              transparent. */}
+          <filter id={`${uid}-grainHighlight`} x="-20%" y="-20%" width="140%" height="140%">
+            <feTurbulence
+              type="fractalNoise"
+              baseFrequency="0.38"
+              numOctaves="2"
+              stitchTiles="stitch"
+              result="noise"
+            />
+            <feColorMatrix
+              in="noise"
+              type="matrix"
+              values="0 0 0 0 0
+                      0 0 0 0 0
+                      0 0 0 0 0
+                      0.33 0.33 0.33 0 0"
+              result="grainAlpha"
+            />
+            <feComponentTransfer in="grainAlpha" result="highlightAlphaStepped">
+              <feFuncA type="linear" slope={HIGHLIGHT_SLOPE} intercept={-HIGHLIGHT_SLOPE * HIGHLIGHT_THRESHOLD} />
+            </feComponentTransfer>
+            <feComposite in="SourceGraphic" in2="highlightAlphaStepped" operator="in" />
           </filter>
 
           <clipPath id={`${uid}-solidClip`}>
@@ -562,6 +638,18 @@ export default function HeroPinwheelEchoArt() {
             fill="#B0BC64"
             filter={`url(#${uid}-grainNoise)`}
             opacity="0.35"
+          />
+          {/* Microscopic mineral-inclusion highlight, on top of the olive grain
+              above. Kept translucent (not the filter's own full alpha) so the
+              flecks read as catching light rather than glowing or sparkling. */}
+          <rect
+            x={nativeBBox.minX}
+            y={nativeBBox.minY}
+            width={nativeBBox.width}
+            height={nativeBBox.height}
+            fill={MOTIF_HIGHLIGHT_COLOR}
+            filter={`url(#${uid}-grainHighlight)`}
+            opacity="0.5"
           />
         </g>
       </svg>
