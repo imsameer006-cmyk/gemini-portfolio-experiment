@@ -20,6 +20,7 @@ export default function ProjectCard({ project, index }: ProjectCardProps) {
     >
       <Link
         href={`/work/${project.slug}`}
+        prefetch={false}
         className="group flex h-full flex-col overflow-hidden rounded-2xl border border-[var(--work-card-border-color)] bg-[var(--work-card-surface-color)] backdrop-blur-sm transition-colors duration-300 hover:border-[var(--work-card-border-color-hover)]"
         aria-label={`View case study: ${project.title}`}
       >

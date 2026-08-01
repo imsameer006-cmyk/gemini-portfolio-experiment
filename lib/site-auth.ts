@@ -1,4 +1,4 @@
-export const SITE_AUTH_COOKIE = "site-auth";
+export const SITE_AUTH_COOKIE = "project-auth";
 export const SITE_AUTH_MAX_AGE_SECONDS = 60 * 60 * 24 * 30;
 
 const encoder = new TextEncoder();
