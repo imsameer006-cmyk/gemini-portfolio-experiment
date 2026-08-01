@@ -71,7 +71,7 @@ export default async function EnterPage({ searchParams }: EnterPageProps) {
               type="password"
               autoComplete="current-password"
               required
-              className="min-h-12 rounded-none border border-[#B0BC64]/40 bg-white/[0.045] px-4 text-base text-[#D9EBE1] shadow-none outline-none ring-0 transition-colors duration-200 focus:border-[#B6FF00] focus:bg-white/[0.065] focus:shadow-none focus:outline-none focus:ring-0 focus-visible:outline-none focus-visible:ring-0"
+              className="password-gate-input min-h-12 rounded-none border border-[#B0BC64]/40 bg-white/[0.045] px-4 text-base text-[#D9EBE1] shadow-none outline-none ring-0 transition-colors duration-200 focus:border-[#B6FF00] focus:bg-white/[0.065] focus:shadow-none focus:outline-none focus:ring-0 focus-visible:outline-none focus-visible:ring-0"
             />
           </label>
 
@@ -88,6 +88,15 @@ export default async function EnterPage({ searchParams }: EnterPageProps) {
             Continue
           </button>
         </form>
+
+        <style>{`
+          .password-gate-input:focus,
+          .password-gate-input:focus-visible {
+            border-color: #B6FF00 !important;
+            outline: none !important;
+            box-shadow: none !important;
+          }
+        `}</style>
       </section>
     </main>
   );
