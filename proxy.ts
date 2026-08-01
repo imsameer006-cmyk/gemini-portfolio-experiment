@@ -3,6 +3,10 @@ import { isValidSiteAuthCookie, SITE_AUTH_COOKIE } from "@/lib/site-auth";
 
 const PUBLIC_PATHS = new Set(["/enter", "/api/verify-password"]);
 
+function isProtectedPath(pathname: string) {
+  return pathname === "/work" || pathname.startsWith("/work/");
+}
+
 function isStaticAsset(pathname: string) {
   return (
     pathname.startsWith("/_next/static") ||
@@ -22,6 +26,10 @@ export async function proxy(request: NextRequest) {
   }
 
   if (PUBLIC_PATHS.has(pathname) || isStaticAsset(pathname)) {
+    return NextResponse.next();
+  }
+
+  if (!isProtectedPath(pathname)) {
     return NextResponse.next();
   }
 
