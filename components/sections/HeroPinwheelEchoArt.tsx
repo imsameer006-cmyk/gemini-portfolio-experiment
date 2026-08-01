@@ -97,6 +97,9 @@ const PINNED_TARGET_DIAMETER = 145.41;
 const NATIVE_BBOX_MAX = 420; // solid mark's native bounding box, larger dimension
 const UNIT_SCALE = PINNED_TARGET_DIAMETER / NATIVE_BBOX_MAX;
 const PINNED_CENTER_X_FRACTION = 0.18379;
+const MOBILE_MOTIF_SCALE_MULTIPLIER = 0.5;
+const MOBILE_BREAKPOINT_PX = 768;
+const MOBILE_VERTICAL_OFFSET_PX = -20;
 // Nudged down from the old fraction (0.20255) to compensate: this shape's
 // centroid sits higher relative to its own bounding box than the old symmetric
 // asterisk's did, so using the same raw fraction rendered visibly higher
@@ -127,7 +130,7 @@ const TEXT_DIM_RADIUS_Y_FRACTION = 0.3;
 const TEXT_DIM_MIN_OPACITY = 0.45;
 
 type Point = { x: number; y: number };
-type Bounds = { width: number; height: number };
+type Bounds = { left: number; width: number; height: number };
 
 function parseAbsolutePath(d: string): Point[] {
   const commands = d.match(/[MLHVZ][^MLHVZ]*/g) ?? [];
@@ -314,7 +317,7 @@ function getHexagonOffset(tipLines: Line[], dist: number): Point[] {
 
 function useElementBounds<T extends HTMLElement>() {
   const ref = useRef<T | null>(null);
-  const [bounds, setBounds] = useState<Bounds>({ width: 1440, height: 960 });
+  const [bounds, setBounds] = useState<Bounds>({ left: 0, width: 1440, height: 960 });
   // Tracks whether `bounds` has ever been set from a real measurement, as
   // opposed to still holding the {1440, 960} fallback. The fallback can't be
   // avoided — getBoundingClientRect needs a real DOM node, which doesn't exist
@@ -333,7 +336,7 @@ function useElementBounds<T extends HTMLElement>() {
 
     const update = () => {
       const rect = node.getBoundingClientRect();
-      setBounds({ width: rect.width, height: rect.height });
+      setBounds({ left: rect.left, width: rect.width, height: rect.height });
       setHasMeasured(true);
     };
 
@@ -378,10 +381,16 @@ export default function HeroPinwheelEchoArt() {
   }, []);
 
   const geometry = useMemo(() => {
-    const centerX = bounds.width * PINNED_CENTER_X_FRACTION;
-    const centerY = bounds.height * PINNED_CENTER_Y_FRACTION + VERTICAL_OFFSET_PX;
+    const isMobile = bounds.width < MOBILE_BREAKPOINT_PX;
+    const screenCenterX =
+      typeof window === "undefined" ? bounds.width / 2 : window.innerWidth / 2 - bounds.left;
+    const centerX =
+      isMobile ? screenCenterX : bounds.width * PINNED_CENTER_X_FRACTION;
+    const centerY =
+      bounds.height * PINNED_CENTER_Y_FRACTION + VERTICAL_OFFSET_PX + (isMobile ? MOBILE_VERTICAL_OFFSET_PX : 0);
+    const unitScale = UNIT_SCALE * (isMobile ? MOBILE_MOTIF_SCALE_MULTIPLIER : 1);
 
-    return { unitScale: UNIT_SCALE, centerX, centerY };
+    return { unitScale, centerX, centerY };
   }, [bounds]);
 
   const spatialMaskGeometry = useMemo(
