@@ -37,7 +37,9 @@ export async function proxy(request: NextRequest) {
   const authenticated = await isValidSiteAuthCookie(cookie);
 
   if (authenticated) {
-    return NextResponse.next();
+    const response = NextResponse.next();
+    response.cookies.delete(SITE_AUTH_COOKIE);
+    return response;
   }
 
   const enterUrl = request.nextUrl.clone();
