@@ -30,32 +30,40 @@ export default async function EnterPage({ searchParams }: EnterPageProps) {
   const errorMessage = getErrorMessage(params.error);
 
   return (
-    <main className="relative flex min-h-screen items-center justify-center overflow-hidden bg-[var(--color-warm-bg)] px-6 py-20 text-[var(--color-text)] md:px-10">
+    <main className="relative flex min-h-screen items-center justify-center overflow-hidden bg-[#092212] px-6 py-20 text-[#D9EBE1] md:px-10">
       <div
         aria-hidden="true"
         className="pointer-events-none absolute inset-0"
         style={{
-          backgroundImage: "radial-gradient(circle at 1px 1px, var(--color-border) 1px, transparent 0)",
+          background:
+            "radial-gradient(circle closest-side at 50% 34%, rgba(182,255,0,0.08), rgba(9,34,18,0) 58%), #092212",
+        }}
+      />
+      <div
+        aria-hidden="true"
+        className="pointer-events-none absolute inset-0"
+        style={{
+          backgroundImage: "radial-gradient(circle at 1px 1px, rgba(176,188,100,0.22) 1px, transparent 0)",
           backgroundSize: "40px 40px",
-          opacity: 0.45,
+          opacity: 0.38,
         }}
       />
 
-      <section className="relative z-10 w-full max-w-[420px] border-t border-[var(--color-border)] pt-10">
-        <p className="mb-3 text-xs font-medium uppercase tracking-widest text-[var(--color-text-accent)]">
+      <section className="relative z-10 w-full max-w-[420px] border-t border-[#B0BC64]/35 pt-10">
+        <p className="mb-3 text-xs font-medium uppercase tracking-widest text-[#B6FF00]">
           Private Portfolio
         </p>
-        <h1 className="font-display text-[clamp(2rem,4.5vw,3.5rem)] font-bold leading-tight text-[var(--color-text)]">
+        <h1 className="font-display text-[clamp(2rem,4.5vw,3.5rem)] font-bold leading-tight text-[#B6FF00]">
           Enter password
         </h1>
-        <p className="mt-5 text-body-compact leading-relaxed text-[var(--color-text-secondary)]">
+        <p className="mt-5 text-body-compact leading-relaxed text-[#D9EBE1]/75">
           This portfolio is currently shared by invitation. Enter the access password to continue.
         </p>
 
         <form action="/api/verify-password" method="post" className="mt-8 flex flex-col gap-4">
           <input type="hidden" name="next" value={nextPath} />
           <label className="flex flex-col gap-2">
-            <span className="text-[11px] font-medium uppercase tracking-widest text-[var(--color-text-muted)]">
+            <span className="text-[11px] font-medium uppercase tracking-widest text-[#B0BC64]">
               Password
             </span>
             <input
@@ -63,19 +71,19 @@ export default async function EnterPage({ searchParams }: EnterPageProps) {
               type="password"
               autoComplete="current-password"
               required
-              className="min-h-12 rounded-none border border-[var(--color-border)] bg-[var(--color-surface)] px-4 text-base text-[var(--color-text)] outline-none transition-colors duration-200 focus:border-[var(--color-focus-ring)]"
+              className="min-h-12 rounded-none border border-[#B0BC64]/40 bg-white/[0.045] px-4 text-base text-[#D9EBE1] outline-none transition-colors duration-200 focus:border-[#B6FF00] focus:bg-white/[0.065]"
             />
           </label>
 
           {errorMessage && (
-            <p className="text-body-compact leading-relaxed text-[var(--color-text-accent)]" role="alert">
+            <p className="text-body-compact leading-relaxed text-[#B6FF00]" role="alert">
               {errorMessage}
             </p>
           )}
 
           <button
             type="submit"
-            className="mt-2 inline-flex min-h-[44px] items-center justify-center rounded-full bg-[var(--color-text)] px-5 py-3 text-sm font-medium text-[var(--color-warm-bg)] transition-colors duration-200 hover:bg-[var(--color-accent-hover)]"
+            className="mt-2 inline-flex min-h-[44px] items-center justify-center rounded-full bg-[#B6FF00] px-5 py-3 text-sm font-semibold text-[#092212] transition-colors duration-200 hover:bg-[#D9EBE1] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#B6FF00]"
           >
             Continue
           </button>
