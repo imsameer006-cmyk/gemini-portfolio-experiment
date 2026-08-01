@@ -2,7 +2,6 @@ import { NextResponse, type NextRequest } from "next/server";
 import {
   createSiteAuthCookieValue,
   SITE_AUTH_COOKIE,
-  SITE_AUTH_MAX_AGE_SECONDS,
 } from "@/lib/site-auth";
 
 function getSafeRedirectPath(value: FormDataEntryValue | null) {
@@ -59,7 +58,6 @@ export async function POST(request: NextRequest) {
     secure: process.env.NODE_ENV === "production",
     sameSite: "lax",
     path: "/",
-    maxAge: SITE_AUTH_MAX_AGE_SECONDS,
   });
 
   return response;
