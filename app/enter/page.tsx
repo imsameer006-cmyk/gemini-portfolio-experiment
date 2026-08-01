@@ -53,7 +53,7 @@ export default async function EnterPage({ searchParams }: EnterPageProps) {
         <p className="mb-3 text-xs font-medium uppercase tracking-widest text-[#B6FF00]">
           Private Portfolio
         </p>
-        <h1 className="font-display text-[clamp(2rem,4.5vw,3.5rem)] font-bold leading-tight text-[#B6FF00]">
+        <h1 className="font-display text-[clamp(2rem,4.5vw,3.5rem)] font-bold leading-tight text-[#E8E3D5]">
           Enter password
         </h1>
         <p className="mt-5 text-body-compact leading-relaxed text-[#D9EBE1]/75">
@@ -71,7 +71,7 @@ export default async function EnterPage({ searchParams }: EnterPageProps) {
               type="password"
               autoComplete="current-password"
               required
-              className="min-h-12 rounded-none border border-[#B0BC64]/40 bg-white/[0.045] px-4 text-base text-[#D9EBE1] outline-none transition-colors duration-200 focus:border-[#B6FF00] focus:bg-white/[0.065]"
+              className="min-h-12 rounded-none border border-[#B0BC64]/40 bg-white/[0.045] px-4 text-base text-[#D9EBE1] shadow-none outline-none ring-0 transition-colors duration-200 focus:border-[#B6FF00] focus:bg-white/[0.065] focus:shadow-none focus:outline-none focus:ring-0 focus-visible:outline-none focus-visible:ring-0"
             />
           </label>
 
