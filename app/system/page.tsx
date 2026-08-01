@@ -98,6 +98,35 @@ function TokenRow({
   );
 }
 
+function TokenGroup({
+  title,
+  description,
+  children,
+}: {
+  title: string;
+  description: string;
+  children: React.ReactNode;
+}) {
+  return (
+    <Reveal className="mt-5 border border-[#E6E3DD] rounded-2xl bg-white overflow-hidden overflow-x-auto">
+      <div className="border-b border-[#E6E3DD] bg-[#F2F0EB] px-4 py-3">
+        <p className="text-[10px] font-medium uppercase tracking-widest text-[var(--color-text)]">{title}</p>
+        <p className="mt-1 text-[11.5px] text-[var(--color-text-muted)]">{description}</p>
+      </div>
+      <table className="w-full border-collapse min-w-[720px]">
+        <thead>
+          <tr className="bg-white">
+            {["Component token", "References", "Resolved value", "Usage"].map((h) => (
+              <th key={h} className="text-left text-[10px] font-medium uppercase tracking-widest text-[var(--color-text-muted)] px-4 py-3 border-b border-[#E6E3DD]">{h}</th>
+            ))}
+          </tr>
+        </thead>
+        <tbody>{children}</tbody>
+      </table>
+    </Reveal>
+  );
+}
+
 export default function SystemPage() {
   return (
     <main className="bg-[#F9F8F5] pb-32">
@@ -120,7 +149,7 @@ export default function SystemPage() {
           <div className="grid grid-cols-2 sm:grid-cols-3 gap-px bg-[#E6E3DD] border border-[#E6E3DD] rounded-xl overflow-hidden max-w-[720px]">
             {[
               { k: "Token layers", v: "3 — Primitive · Semantic · Component" },
-              { k: "Color tokens", v: "13 light + 6 dark + copper ramp" },
+              { k: "Color tokens", v: "46 primitives + semantic/component roles" },
               { k: "Components", v: "20 React components" },
               { k: "Case-study blocks", v: "26 block types" },
               { k: "Motion", v: "1 easing consumed · untokenized durations" },
@@ -140,7 +169,7 @@ export default function SystemPage() {
 
       {/* ── 01 Hierarchy ──────────────────────────────────────── */}
       <Chapter num="01" eyebrow="Hierarchy" heading="Three tiers." headingItalic="One system."
-        description="Primitives hold raw values. Semantics describe intent. Components consume semantics only — never a raw hex, px, or ms. Skipping a tier is the defect this whole audit exists to catch.">
+        description="Primitive tokens hold raw color values. Semantic tokens assign role and intent by referencing primitives. Component tokens capture local decisions by referencing semantics, so component color can change without rewriting the global palette.">
         <Reveal className="mt-8 border border-[#E6E3DD] rounded-2xl bg-white overflow-hidden overflow-x-auto">
           <table className="w-full text-sm border-collapse min-w-[560px]">
             <thead>
@@ -153,21 +182,21 @@ export default function SystemPage() {
             <tbody className="text-[13px]">
               <tr className="border-b border-[#E6E3DD]">
                 <td className="px-4 py-3 font-medium">1 · Primitive</td>
-                <td className="px-4 py-3 text-[#6A6764]">Raw hex / px / ms / curves</td>
-                <td className="px-4 py-3 font-[family-name:var(--font-geist-mono)] text-[11.5px]">#C07B50 · 16px</td>
-                <td className="px-4 py-3 text-[#6A6764]">Meaningless until referenced</td>
+                <td className="px-4 py-3 text-[#6A6764]">Raw values with hue/shade names</td>
+                <td className="px-4 py-3 font-[family-name:var(--font-geist-mono)] text-[11.5px]">primitive-copper-500</td>
+                <td className="px-4 py-3 text-[#6A6764]">No role or component meaning</td>
               </tr>
               <tr className="border-b border-[#E6E3DD]">
                 <td className="px-4 py-3 font-medium">2 · Semantic</td>
-                <td className="px-4 py-3 text-[#6A6764]">Intent</td>
-                <td className="px-4 py-3 font-[family-name:var(--font-geist-mono)] text-[11.5px]">color.accent · space.section</td>
-                <td className="px-4 py-3 text-[#6A6764]">The only layer components see</td>
+                <td className="px-4 py-3 text-[#6A6764]">Role and intent</td>
+                <td className="px-4 py-3 font-[family-name:var(--font-geist-mono)] text-[11.5px]">color.accent</td>
+                <td className="px-4 py-3 text-[#6A6764]">References primitives only</td>
               </tr>
               <tr>
                 <td className="px-4 py-3 font-medium">3 · Component</td>
-                <td className="px-4 py-3 text-[#6A6764]">Specific decisions</td>
-                <td className="px-4 py-3 font-[family-name:var(--font-geist-mono)] text-[11.5px]">card.border.hover</td>
-                <td className="px-4 py-3 text-[#6A6764]">One decision, made once</td>
+                <td className="px-4 py-3 text-[#6A6764]">Scoped component decisions</td>
+                <td className="px-4 py-3 font-[family-name:var(--font-geist-mono)] text-[11.5px]">hero.heading-color</td>
+                <td className="px-4 py-3 text-[#6A6764]">References semantic tokens</td>
               </tr>
             </tbody>
           </table>
@@ -176,7 +205,7 @@ export default function SystemPage() {
 
       {/* ── 02 Color ──────────────────────────────────────────── */}
       <Chapter num="02" eyebrow="Color" heading="Every color." headingItalic="Every constraint."
-        description="Thirteen light-palette tokens, a self-contained dark set, and the copper ramp — as they exist in app/globals.css right now, including the five remediated in the July 2026 audit.">
+        description="The palette now resolves through three layers: primitives for raw values, semantic tokens for roles, and component tokens grouped under three umbrellas: Homepage, Projects, and Auth.">
         <Reveal className="mt-8 border border-[#E6E3DD] rounded-2xl bg-white overflow-hidden overflow-x-auto">
           <table className="w-full border-collapse min-w-[640px]">
             <thead>
@@ -219,6 +248,66 @@ export default function SystemPage() {
             </tbody>
           </table>
         </Reveal>
+        <TokenGroup
+          title="Homepage Umbrella"
+          description="Hero, Selected Work, About, Selected Moments/In Practice, Philosophy, Process, Testimonials, and Contact. Runtime names stay unchanged; this atlas groups them by umbrella."
+        >
+          <TokenRow swatch="#D2E823" token="hero.background-color" value="color.bg-hero -> primitive-lime-500" usage="Homepage Hero background only" notFor="Case studies or other sections" badge="new" />
+          <TokenRow swatch="#254F1A" token="hero.heading-color" value="color.text-hero -> primitive-green-800" usage="Homepage Hero headline" notFor="Global headings" badge="new" />
+          <TokenRow swatch="#254F1A" token="hero.body-color" value="color.text-hero -> primitive-green-800" usage="Homepage Hero body/subtext" notFor="Global body copy" badge="new" />
+          <TokenRow swatch="#D2E823" token="hero.scrim-color" value="color.bg-hero -> primitive-lime-500" usage="Existing Hero scrim migrated into the component tier" notFor="New overlay patterns" badge="migrated" />
+          <TokenRow swatch="#254F1A" token="nav.wordmark-color-at-rest" value="color.text-hero -> primitive-green-800" usage="Transparent nav over homepage Hero" notFor="Scrolled/floating nav" badge="new" />
+          <TokenRow swatch="#254F1A" token="nav.link-color-at-rest" value="color.text-hero -> primitive-green-800" usage="Transparent nav over homepage Hero" notFor="Scrolled/floating nav" badge="new" />
+          <TokenRow swatch="#254F1A" token="nav.link-indicator-color-at-rest" value="color.text-hero -> primitive-green-800" usage="Existing active-page underline in Hero rest state" notFor="Scrolled/floating nav" badge="migrated" />
+          <TokenRow swatch="#18171A" token="nav.wordmark-color-scrolled" value="color.text -> primitive-ink-900" usage="Existing scrolled nav ink treatment" notFor="Hero rest state" />
+          <TokenRow swatch="#18171A" token="nav.link-color-scrolled" value="color.text -> primitive-ink-900" usage="Existing scrolled nav ink treatment" notFor="Hero rest state" />
+          <TokenRow swatch="#C07B50" token="nav.link-indicator-color-scrolled" value="color.accent -> primitive-copper-500" usage="Existing scrolled active underline" notFor="Hero rest state" />
+          <TokenRow swatch="#43EBFF" token="work.background-color" value="color.surface-page-work -> turquoise-400" usage="Selected Work section environment only" notFor="Cards, pills, thumbnails, typography" badge="new" />
+          <TokenRow swatch="#003A76" token="work.heading/title/cta-color" value="color-text-primary / interactive -> navy-900" usage="Selected Work heading, project titles, CTAs, key illustration strokes" notFor="Section background" badge="new" />
+          <TokenRow swatch="#5F7388" token="work.description/default-pill-text" value="color-text-secondary -> blue-grey-600" usage="Selected Work description, body copy, default pill text" notFor="Primary headings" badge="new" />
+          <TokenRow swatch="#8599AD" token="work.metadata/achievement-text" value="color-text-muted -> blue-grey-400" usage="Selected Work year metadata and achievement pill text" notFor="Body copy requiring higher emphasis" badge="new" />
+          <TokenRow swatch="#FFFFFF" token="work.card-surface-color" value="color-surface-card -> white" usage="Project card surface" notFor="Section environment" badge="new" />
+          <TokenRow swatch="#F8FCFD" token="work.thumbnail-background-color" value="color-surface-thumbnail -> cool-white" usage="Project thumbnail panel surface" notFor="Page background" badge="new" />
+          <TokenRow swatch="#EEF6F9" token="work.thumbnail-grid/nested-color" value="surface-nested" usage="Thumbnail nested UI fills and quiet grid texture" notFor="Hero art grid" badge="new" />
+          <TokenRow swatch="#D8E7EE" token="work.card-border-color" value="color-border-primary -> border-light" usage="Resting project-card edge" notFor="Hover edge" badge="new" />
+          <TokenRow swatch="#8DD7F2" token="work.card-border-color-hover" value="card-hover-blue" usage="Sharper project-card hover silhouette" notFor="Resting edge" badge="new" />
+          <TokenRow swatch="#A9D5E8" token="work.connector/cta-hover-color" value="connector-blue" usage="Thumbnail connector lines and CTA hover border" notFor="Primary text" badge="new" />
+          <TokenRow swatch="#3B76D8" token="work.thumbnail-secondary-color" value="royal-blue" usage="Supporting thumbnail nodes/icons" notFor="Primary nodes" badge="new" />
+          <TokenRow swatch="#0094FB" token="work.thumbnail-interactive-color" value="bright-blue" usage="Tiny active/interaction highlight inside thumbnails" notFor="Static broad accents" badge="new" />
+          <TokenRow swatch="#B83F77" token="work.eyebrow/lotus-color" value="color-accent-lotus -> lotus-pink" usage="Selected Work eyebrow and tiny thumbnail accents" notFor="Large surfaces" badge="new" />
+          <TokenRow swatch="#F3E8F7" token="about.background-color" value="lavender-50" usage="About section environment only" notFor="Typography or controls" badge="new" />
+          <TokenRow swatch="#003A76" token="about.heading/chip-hover-color" value="navy-900" usage="About heading and chip hover text" notFor="Body copy" badge="new" />
+          <TokenRow swatch="#5F7388" token="about.body/chip-text-color" value="blue-grey-600" usage="About body copy and chip text" notFor="Low-emphasis metadata" badge="new" />
+          <TokenRow swatch="#8599AD" token="about.supporting-color" value="blue-grey-400" usage="About mantra/supporting text" notFor="Primary headings" badge="new" />
+          <TokenRow swatch="#C74F86" token="about.eyebrow/chip-hover-border" value="lotus-pink-strong" usage="About label and small chip interaction state" notFor="Filled controls or large accents" badge="new" />
+          <TokenRow swatch="#E7D4EC" token="about.border-color" value="lavender-border" usage="About divider, portrait border, chip border" notFor="Neutral sections" badge="new" />
+          <TokenRow swatch="#FFFFFF" token="moments.background/card-background" value="white" usage="In Practice section and photo card surfaces" notFor="About environment" badge="new" />
+          <TokenRow swatch="#C74F86" token="moments.eyebrow/indicator-active" value="lotus-pink-strong" usage="Selected Moments label and active carousel dots" notFor="Photo cards or broad UI" badge="new" />
+          <TokenRow swatch="#003A76" token="moments.heading/title-color" value="navy-900" usage="In Practice heading and photo card titles" notFor="Metadata" badge="new" />
+          <TokenRow swatch="#5F7388" token="moments.body-color" value="blue-grey-600" usage="In Practice intro body copy" notFor="Low-emphasis metadata" badge="new" />
+          <TokenRow swatch="#8599AD" token="moments.metadata-color" value="blue-grey-400" usage="Photo card company/location metadata" notFor="Titles" badge="new" />
+          <TokenRow swatch="#DCE6EC" token="moments.card-border-color" value="moments-border" usage="Quiet resting photo-card edge" notFor="Hover edge" badge="new" />
+          <TokenRow swatch="#A9D5E8" token="moments.card-border-hover" value="moments-border-hover" usage="Sharper photo-card hover edge" notFor="Primary accents" badge="new" />
+          <TokenRow swatch="#D8E7EE" token="moments.indicator-inactive" value="border-light" usage="Inactive carousel dots" notFor="Active state" badge="new" />
+        </TokenGroup>
+        <TokenGroup
+          title="Projects Umbrella"
+          description="Gemini, Collabspace, and Design System case-study pages currently consume the shared global semantic tokens; no project-specific color component tier has been introduced in this pass."
+        >
+          <TokenRow swatch="#F9F8F5" token="project.page-background" value="color.warm-bg -> primitive-cream-50" usage="Case-study page and hero shells" notFor="Homepage-only section environments" />
+          <TokenRow swatch="#18171A" token="project.text-primary" value="color.text -> primitive-ink-900" usage="Case-study hero titles, section headings, narrative blocks" notFor="Homepage Hero green" />
+          <TokenRow swatch="#96552F" token="project.eyebrow-accent" value="color.text-accent -> primitive-copper-800" usage="Case-study labels at body/label size" notFor="Large decorative accents" />
+          <TokenRow swatch="#E6E3DD" token="project.border" value="color.border -> primitive-sand-200" usage="Case-study dividers, cards, tables, block boundaries" notFor="Selected Work cards" />
+        </TokenGroup>
+        <TokenGroup
+          title="Auth Umbrella"
+          description="/enter password page uses the shared global semantic palette; no auth-specific component color tokens exist yet."
+        >
+          <TokenRow swatch="#F9F8F5" token="auth.page-background" value="color.warm-bg -> primitive-cream-50" usage="/enter page background" notFor="Homepage section environments" />
+          <TokenRow swatch="#18171A" token="auth.heading/action-color" value="color.text -> primitive-ink-900" usage="/enter heading and primary button" notFor="Hero green" />
+          <TokenRow swatch="#6A6764" token="auth.body-color" value="color.text-secondary -> primitive-taupe-600" usage="/enter supporting copy" notFor="Error state" />
+          <TokenRow swatch="#96552F" token="auth.label/error-color" value="color.text-accent -> primitive-copper-800" usage="/enter label and temporary unavailable message" notFor="Large decorative accents" />
+        </TokenGroup>
       </Chapter>
 
       {/* ── 03 Typography ──────────────────────────────────────── */}
@@ -228,7 +317,7 @@ export default function SystemPage() {
           {[
             { tok: "type.home-hero", sample: "I discover patterns, and connect the dots.", style: "font-display text-[clamp(28px,4.2vw,44px)] font-black", rule: "Linik Sans 900 upright - homepage hero only" },
             { tok: "type.display-heading", sample: "The system behind the site.", style: "font-display text-[clamp(22px,3vw,30px)] font-bold", rule: "Linik Sans 700 upright - homepage sections, contact CTA, case-study heroes and sections, utility page headings" },
-            { tok: "type.mantra", sample: "Think in systems. Design for humans.", style: "font-display text-[clamp(19px,1.6vw,24px)] font-black", rule: "Linik Sans 900 upright - About mantra only" },
+            { tok: "type.mantra", sample: "Think in systems. Design for humans.", style: "font-display text-[clamp(19px,1.6vw,24px)] font-semibold", rule: "Linik Sans 600 upright - About mantra only" },
             { tok: "type.quote", sample: "Design starts where certainty ends.", style: "font-quote text-[clamp(18px,2vw,22px)]", rule: "Open Sans 400 upright - testimonials, pull quotes, closing lines, decorative quote marks" },
             { tok: "type.body", sample: "Explanatory paragraphs stay quiet and readable — secondary in tone, never in contrast.", style: "text-[15px] text-[#6A6764]", rule: "Geist 400 · relaxed leading" },
             { tok: "type.card-title", sample: "Gemini Digital Twin", style: "text-lg font-medium", rule: "Project names · truncate over prose" },

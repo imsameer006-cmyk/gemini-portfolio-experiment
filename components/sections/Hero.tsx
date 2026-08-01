@@ -1,8 +1,11 @@
 "use client";
 
 import { motion, useReducedMotion } from "framer-motion";
+import Image from "next/image";
+import type { CSSProperties } from "react";
 import { useEffect, useRef, useState } from "react";
 import StructuralAsteriskHeroArt from "./StructuralAsteriskHeroArt";
+import HeroPinwheelEchoArt from "./HeroPinwheelEchoArt";
 
 type ClarityThreadVisualProps = {
   hoverSuppressed: boolean;
@@ -12,6 +15,314 @@ type ClarityThreadVisualProps = {
 };
 
 const showLegacyHeroArt = false;
+const showStructuralAsteriskArt = false;
+
+const heroShowcaseItems: {
+  id: string;
+  fill: string;
+  imageSrc?: string;
+  imageAlt?: string;
+  imagePosition?: string;
+  imageOffsetXPx?: number;
+  imageScale?: number;
+  imageRotationDeg?: number;
+}[] = [
+  {
+    id: "01",
+    fill: "#F8FCFD",
+    imageSrc: "/hero-showcase/spiderweb.webp",
+    imageAlt: "Orb-weaver spider at the center of its web, backlit in golden light",
+  },
+  {
+    id: "02",
+    fill: "#EEF6F9",
+    imageSrc: "/hero-showcase/Road-network.png",
+    imageAlt: "Aerial view of a multi-level highway interchange with traffic",
+    // Source is a tall portrait photo; cover-fit here crops vertically and
+    // keeps the full width, so only the Y value has any visible effect.
+    // Measured directly from the source pixels (the bright crossing-plaza
+    // band sits at 39.0% down the full image) rather than eyeballed, then
+    // solved for the Y% that lands that band at the card's own center.
+    imagePosition: "50% 27%",
+    // This source is portrait or vertically-cropped bridge is landscape, so
+    // cover-fit is architecturally forced to always show 100% of the
+    // source's width — enlarging the wrapper UNIFORMLY (same aspect ratio)
+    // does not change that; it re-renders the identical proportional crop
+    // at a bigger absolute size, still 100% width. The only real margin
+    // this creates is the wrapper's absolute-pixel excess over the card
+    // (from the negative inset), which must be >= the shift amount or a
+    // gap appears on the far edge. 1.06 only gave ~16px margin at a
+    // typical card width — less than the 25px shift below — which is
+    // exactly the gap that showed up. Sized 1.15 against the SMALLEST
+    // observed card width (~501px, at short/narrow viewports, since card
+    // size tracks viewport height not width) so margin (~38px) clears the
+    // shift with room at every card size, not just the one I happened to
+    // test at.
+    imageScale: 1.15,
+    imageOffsetXPx: -25,
+  },
+  {
+    id: "03",
+    fill: "#EAF3FA",
+    imageSrc: "/hero-showcase/semiconductor.png",
+    imageAlt: "Close-up of a semiconductor chip on a circuit board",
+    // Source is a wide photo; cover-fit crops horizontally and keeps the
+    // full height, so only the X value matters here. Measured the chip
+    // die's actual centroid in the source pixels (36.0% across) and solved
+    // for the X% that centers it in the card.
+    imagePosition: "5% 50%",
+    // Fixed CSS-pixel nudge on top of the centering above, not folded into
+    // imagePosition — a percentage shift would be a different number of
+    // actual pixels at every viewport size (card width varies with
+    // viewport height, not a fixed size), so a literal px request is
+    // applied as a real translateX, not a percentage. -30px applied first,
+    // then a further -15px requested on top -> -45px total.
+    imageOffsetXPx: -45,
+    // Required, contrary to earlier assumption: object-fit/object-position
+    // only ever paint WITHIN the element's own fixed layout box — the
+    // "824px-equivalent" cover-fit scale is just which source region gets
+    // sampled, not an actually-larger rendered box. transform: translateX
+    // on an unenlarged fill box always creates a gap exactly equal to the
+    // shift amount, regardless of aspect ratio or object-position — that
+    // omission is what caused the right-edge gap. Sized against the
+    // smallest observed card width (~436px) the same way as the bridge.
+    imageScale: 1.25,
+  },
+  {
+    id: "04",
+    fill: "#F3E8F7",
+    imageSrc: "/hero-showcase/leaf.webp",
+    imageAlt: "Macro close-up of a leaf's veins",
+    // "Rotate clockwise" with no angle given — reading this as a clean 90°
+    // turn (the standard meaning of an unqualified "rotate"). Flagged as an
+    // assumption; easy to change if a different angle was meant.
+    imageRotationDeg: 90,
+    // A box rotated in place within its own container needs to be bigger
+    // than the container to still fully cover it after rotating — same
+    // underlying issue as the translateX gap bug. The minimum scale needed
+    // is max(cardW/cardH, cardH/cardW) — I initially assumed this stays
+    // near the card's "usual" ~1.07 aspect ratio and used 1.15, but
+    // measured directly across viewports and found the aspect ratio is NOT
+    // stable: card width tracks 90svh while card height has its own floor
+    // (from the frame's cqh), so short/wide windows push the card toward
+    // portrait (e.g. 436x528 at 1440x700, needing S=1.21; 339x528 at
+    // 1440x550, needing S=1.56). This has no finite upper bound as window
+    // height keeps shrinking, so there's no value that's exactly correct
+    // for every possible window — 1.4 comfortably covers realistic desktop
+    // window heights (down to ~630px, already unusually short) without
+    // over-cropping the photo for the common case.
+    imageScale: 1.4,
+  },
+  {
+    id: "05",
+    fill: "#F4FAFC",
+    imageSrc: "/hero-showcase/flower.jpg",
+    imageAlt: "Bee gathering pollen on a pink coneflower",
+  },
+  {
+    id: "06",
+    fill: "#E8F0F4",
+    imageSrc: "/hero-showcase/river.jpg",
+    imageAlt: "Aerial view of a branching river delta at sunrise",
+  },
+];
+
+function HeroShowcaseReel() {
+  const shouldReduceMotion = useReducedMotion();
+  // Always render both groups — do NOT branch this on shouldReduceMotion.
+  // useReducedMotion() reflects the OS-level media query, which SSR can't
+  // know; branching the rendered DOM structure on it causes a real hydration
+  // mismatch for any visitor with reduced-motion enabled (server always
+  // renders the "not reduced" 2-group tree, since it has no way to know
+  // otherwise). The existing `@media (prefers-reduced-motion: reduce)` CSS
+  // below already hides the duplicate group/cards for those users — that's
+  // hydration-safe because it's evaluated identically by the browser at
+  // paint time, not baked into which DOM nodes exist.
+  const groups = [heroShowcaseItems, heroShowcaseItems];
+
+  const trackRef = useRef<HTMLDivElement | null>(null);
+  const groupRef = useRef<HTMLDivElement | null>(null);
+  const isPausedRef = useRef(false);
+
+  // Drives the scroll from JS instead of a CSS @keyframes animation, and
+  // rounds the offset to a whole pixel every frame. A continuous CSS
+  // translateY animation lands on a fractional pixel position almost every
+  // frame, which forces the GPU to bilinear-filter the layer's texture
+  // between positions — that filtering is what reads as the image going
+  // soft while scrolling, and why it only looked sharp once
+  // animation-play-state: paused stopped the sub-pixel movement. Snapping to
+  // Math.round() means every frame is a natively-rasterized whole-pixel
+  // position, so it stays sharp during motion too, not just at rest.
+  useEffect(() => {
+    if (shouldReduceMotion) return;
+
+    const track = trackRef.current;
+    const group = groupRef.current;
+    if (!track || !group) return;
+
+    // 32s to travel one full group's height — same speed as the previous
+    // CSS keyframe (0 -> -50% of a two-group track = one group height).
+    const DURATION_MS = 32000;
+
+    let groupHeight = group.getBoundingClientRect().height;
+    const resizeObserver = new ResizeObserver(() => {
+      groupHeight = group.getBoundingClientRect().height;
+    });
+    resizeObserver.observe(group);
+
+    let offsetPx = 0;
+    let lastTime: number | null = null;
+    let frameId: number;
+
+    const step = (time: number) => {
+      if (lastTime === null) lastTime = time;
+      const deltaMs = time - lastTime;
+      lastTime = time;
+
+      if (!isPausedRef.current && groupHeight > 0) {
+        offsetPx = (offsetPx + (deltaMs / DURATION_MS) * groupHeight) % groupHeight;
+      }
+
+      track.style.transform = `translate3d(0, ${-Math.round(offsetPx)}px, 0)`;
+      frameId = requestAnimationFrame(step);
+    };
+
+    frameId = requestAnimationFrame(step);
+
+    return () => {
+      cancelAnimationFrame(frameId);
+      resizeObserver.disconnect();
+    };
+  }, [shouldReduceMotion]);
+
+  return (
+    <div
+      className="pointer-events-none absolute inset-x-0 inset-y-0 z-0 hidden md:block"
+      aria-label="Project preview reel"
+    >
+      <div className="mx-auto flex h-full w-full max-w-[1360px] justify-end px-6 md:px-10">
+        <div className="hero-showcase-frame h-full">
+          <div
+            className="hero-showcase-mask pointer-events-auto h-full overflow-hidden"
+            onMouseEnter={() => {
+              isPausedRef.current = true;
+            }}
+            onMouseLeave={() => {
+              isPausedRef.current = false;
+            }}
+            style={{
+              WebkitMaskImage: "linear-gradient(to bottom, transparent 0%, black 15%, black 85%, transparent 100%)",
+              maskImage: "linear-gradient(to bottom, transparent 0%, black 15%, black 85%, transparent 100%)",
+            }}
+          >
+            <div ref={trackRef} className="hero-showcase-track">
+              {groups.map((group, groupIndex) => (
+                <div
+                  key={groupIndex}
+                  ref={groupIndex === 0 ? groupRef : undefined}
+                  className="hero-showcase-group flex flex-col items-end gap-6 pb-6"
+                >
+                  {group.map((item) => (
+                    <div
+                      key={`${groupIndex}-${item.id}`}
+                      data-hero-showcase-card
+                      className="hero-showcase-card relative flex items-end overflow-hidden rounded-2xl border border-[rgba(182,255,0,0.2)] bg-transparent p-7"
+                      style={{ borderWidth: "1.5px" }}
+                    >
+                      {item.imageSrc ? (
+                        <div
+                          className="absolute inset-0"
+                          style={{
+                            inset: item.imageScale ? `${-((item.imageScale - 1) * 50)}%` : undefined,
+                            // Rotation goes on THIS wrapper, not the <Image>
+                            // below — object-fit/object-position compute
+                            // against the wrapper's own LAYOUT size
+                            // (unaffected by the wrapper's own transform),
+                            // so the image is fully cover-fit into its
+                            // enlarged box first, and only THEN the whole
+                            // already-fitted result rotates as one rigid
+                            // unit. Rotating the <Image> itself instead
+                            // would rotate a box that was cover-fit against
+                            // its un-rotated size, which is the same "gap"
+                            // mistake as the earlier translateX bug.
+                            transform: item.imageRotationDeg ? `rotate(${item.imageRotationDeg}deg)` : undefined,
+                          }}
+                        >
+                          {/* The inset above (not a CSS transform: scale())
+                              is what creates real pan/rotation room. object-fit/
+                              object-position compute the crop against the
+                              element's LAYOUT box size, which a `transform`
+                              never changes (transforms are a paint-stage
+                              effect applied after layout) — so scaling the
+                              <Image> itself would only zoom into the crop
+                              already decided, not pull in more of the actual
+                              source photo. Enlarging the wrapper's layout
+                              box first means object-fit: cover recomputes
+                              against that bigger box and genuinely reveals
+                              more source pixels around the edges, which the
+                              translateX/rotate below then pans/turns across. */}
+                          <Image
+                            src={item.imageSrc}
+                            alt={item.imageAlt ?? ""}
+                            fill
+                            unoptimized
+                            className="object-cover"
+                            style={{
+                              objectPosition: item.imagePosition ?? "50% 50%",
+                              transform: item.imageOffsetXPx
+                                ? `translateX(${item.imageOffsetXPx}px)`
+                                : undefined,
+                            }}
+                          />
+                        </div>
+                      ) : (
+                        <span className="font-display text-[56px] font-black leading-none text-[#B6FF00]">
+                          {item.id}
+                        </span>
+                      )}
+                    </div>
+                  ))}
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      </div>
+      <style>{`
+        .hero-showcase-frame {
+          --hero-showcase-gap: 24px;
+          container-type: size;
+          width: calc(((90svh - var(--hero-showcase-gap)) / 1.5) * 1.08);
+        }
+
+        .hero-showcase-mask {
+          width: 100%;
+        }
+
+        .hero-showcase-track {
+          will-change: transform;
+        }
+
+        .hero-showcase-card {
+          height: calc((100cqh - var(--hero-showcase-gap)) / 1.5);
+          width: 100%;
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+          .hero-showcase-track {
+            animation: none;
+            transform: none;
+          }
+
+          .hero-showcase-track > div:not(:first-child),
+          .hero-showcase-track > div:first-child > div:not(:first-child) {
+            display: none;
+          }
+        }
+      `}</style>
+    </div>
+  );
+}
 
 function ClarityThreadVisual({
   hoverSuppressed,
@@ -532,7 +843,6 @@ function PhilosophyOverlay({ isOpen, onComplete }: { isOpen: boolean; onComplete
 export default function Hero() {
   const [hoverSuppressed, setHoverSuppressed] = useState(false);
   const [isPhilosophyOpen, setIsPhilosophyOpen] = useState(false);
-  const [isHeroIntroExpanded, setIsHeroIntroExpanded] = useState(false);
   const unlockTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const hoverTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
@@ -590,7 +900,13 @@ export default function Hero() {
   return (
     <section
       aria-label="Introduction"
-      className="relative overflow-hidden px-6 pb-10 pt-[76px] md:min-h-[100svh] md:px-10 md:pb-12 md:pt-[92px]"
+      className="homepage-atmosphere home-hero-atmosphere relative overflow-hidden px-0 py-16 md:min-h-[90vh] md:py-24"
+      style={{
+        "--homepage-atmosphere-color": "radial-gradient(circle closest-side, rgba(182, 255, 0, 0.08) 0%, rgba(9, 34, 18, 1) 100%), #092212",
+        "--hero-heading-color": "#B6FF00",
+        "--hero-body-color": "#D9EBE1",
+        background: "radial-gradient(circle closest-side, rgba(182, 255, 0, 0.08) 0%, rgba(9, 34, 18, 1) 100%), #092212",
+      } as CSSProperties}
     >
       {showLegacyHeroArt && (
         <ClarityThreadVisual
@@ -604,24 +920,17 @@ export default function Hero() {
         isOpen={isPhilosophyOpen}
         onComplete={closePhilosophy}
       />
+      {showStructuralAsteriskArt && <StructuralAsteriskHeroArt />}
+      <HeroPinwheelEchoArt />
+      <HeroShowcaseReel />
 
-      <StructuralAsteriskHeroArt />
-
-      <div className="pointer-events-none relative z-10 mx-auto flex w-full max-w-[1280px] justify-center pt-3 md:min-h-[calc(100svh-4rem)] md:items-end md:pb-12 md:pt-0">
-        <div className="pointer-events-none relative isolate w-full max-w-[800px] text-center">
-          <div
-            aria-hidden="true"
-            className="pointer-events-none absolute -inset-x-10 -inset-y-8 -z-10"
-            style={{
-              background:
-                "radial-gradient(ellipse at center, color-mix(in srgb, var(--color-warm-bg) 96%, transparent) 0%, color-mix(in srgb, var(--color-warm-bg) 82%, transparent) 48%, color-mix(in srgb, var(--color-warm-bg) 0%, transparent) 78%)",
-            }}
-          />
+      <div className="pointer-events-none relative z-10 mx-auto grid w-full max-w-[1360px] grid-cols-1 items-center gap-12 px-6 pt-10 md:grid-cols-12 md:gap-12 md:px-10 md:pt-16 lg:gap-20">
+        <div className="pointer-events-auto col-span-12 flex max-w-[760px] translate-y-[55px] flex-col items-start text-left md:col-span-9">
           <motion.h1
             initial={{ opacity: 0, y: 28 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.65, delay: 0.12, ease: [0.16, 1, 0.3, 1] }}
-            className="mx-auto mb-4 w-fit max-w-none font-display text-[clamp(2rem,4.5vw,3.5rem)] font-black leading-tight text-[#18171A]"
+            className="mt-0 mb-[15px] w-fit max-w-[760px] font-display text-[clamp(3rem,6.5vw,5.5rem)] font-black leading-[1.05] text-[var(--hero-heading-color)]"
           >
             Hi, I discover patterns, & connect the dots.
           </motion.h1>
@@ -630,45 +939,12 @@ export default function Hero() {
             initial={{ opacity: 0, y: 18 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.55, delay: 0.24, ease: [0.16, 1, 0.3, 1] }}
-            className="max-w-[800px] text-body-compact leading-relaxed text-[#6A6764]"
+            className="max-w-[684px] text-[1.0625rem] leading-relaxed text-[var(--hero-body-color)] md:text-lg"
           >
-            I&apos;m curious and inquisitive by nature — I guess it&apos;s my hidden superpower. For me, nature is the biggest design inspiration.
-            {isHeroIntroExpanded && (
-              <>
-                {" "}Desert heat from the Middle East warms Europe, ocean water becomes clouds, and travels far to water distant lands. Nothing in an ecosystem is wasted — everything is interwoven, serving the system or failing to survive. I think in systems the same way, treating data, feedback, and failure as signal, not noise. And I prefer honest feedback over praise that sounds good but gives nothing to course-correct on.{" "}
-                <button
-                  type="button"
-                  onClick={() => setIsHeroIntroExpanded(false)}
-                  className="pointer-events-auto inline text-[#18171A] underline decoration-[#C07B50]/60 underline-offset-4 transition-colors duration-200 hover:text-[#C07B50] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#C07B50]"
-                >
-                  Less
-                </button>
-              </>
-            )}
-            {!isHeroIntroExpanded && (
-              <>
-                {" "}
-                <button
-                  type="button"
-                  onClick={() => setIsHeroIntroExpanded(true)}
-                  className="pointer-events-auto inline text-[#18171A] underline decoration-[#C07B50]/60 underline-offset-4 transition-colors duration-200 hover:text-[#C07B50] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#C07B50]"
-                >
-                  More
-                </button>
-              </>
-            )}
+            I&apos;m curious and inquisitive by nature — I guess it&apos;s my hidden superpower. For me, nature is the biggest design inspiration. Desert heat from the Middle East warms Europe, ocean water becomes clouds, and travels far to water distant lands. Nothing in an ecosystem is wasted — everything is interwoven, serving the system or failing to survive. I think in systems the same way, treating data, feedback, and failure as signal, not noise. And I prefer honest feedback over praise that sounds good but gives nothing to course-correct on.
           </motion.p>
         </div>
-
       </div>
-
-      {/* Decorative accent line at bottom */}
-      <motion.div
-        initial={{ scaleX: 0 }}
-        animate={{ scaleX: 1 }}
-        transition={{ duration: 0.8, delay: 0.5, ease: [0.16, 1, 0.3, 1] }}
-        className="absolute bottom-0 left-6 md:left-10 right-6 md:right-10 h-px bg-[#E6E3DD] origin-left"
-      />
     </section>
   );
 }

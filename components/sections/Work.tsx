@@ -12,20 +12,23 @@ export default function Work() {
   const revealFade = useRevealFade();
 
   return (
-    <section id="work" className="px-6 pb-16 pt-10 md:px-10 md:pb-24 md:pt-36">
+    <section
+      id="work"
+      className="bg-gradient-to-b from-[#092212] via-[#071A0E] to-[#051209] px-6 pb-16 pt-10 md:px-10 md:pb-24 md:pt-[104px]"
+    >
       <div className="max-w-[1280px] mx-auto">
         {/* Section header */}
         <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-14">
           <div>
             <motion.p
               {...reveal()}
-              className="text-xs text-[var(--color-text-accent)] tracking-widest uppercase font-medium mb-3"
+              className="mb-3 font-mono text-xs uppercase tracking-widest text-[#B6FF00] opacity-90"
             >
               Selected Work
             </motion.p>
             <motion.h2
               {...reveal(0.06)}
-              className="font-display text-[clamp(2rem,4.5vw,3.5rem)] font-bold leading-tight text-[#18171A]"
+              className="font-display text-4xl font-bold tracking-tight text-[#E8E3D5] md:text-5xl"
             >
               What I&apos;ve shipped.
             </motion.h2>
@@ -33,7 +36,7 @@ export default function Work() {
 
           <motion.p
             {...revealFade(0.15)}
-            className="text-sm text-[#6E6D69] md:text-right max-w-[28ch] leading-relaxed"
+            className="max-w-sm text-sm font-normal leading-relaxed text-[#D9EBE1]/70 md:text-right"
           >
             Each project is a case study in systems thinking and human-centered design.
           </motion.p>

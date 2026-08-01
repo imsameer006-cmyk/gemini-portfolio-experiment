@@ -17,9 +17,12 @@ export default function About() {
   const reveal = useReveal();
 
   return (
-    <section id="about" className="px-6 pb-24 pt-0 md:px-10 md:pb-32 md:pt-0">
-      <div className="mx-auto max-w-[1280px] border-t border-[#E6E3DD] pt-16">
-        <p className="mb-10 text-xs font-medium uppercase tracking-widest text-[var(--color-text-accent)]">
+    <section
+      id="about"
+      className="bg-[#051209] px-6 pb-24 pt-0 md:px-10 md:pb-32 md:pt-0"
+    >
+      <div className="mx-auto max-w-[1280px] pt-16">
+        <p className="mb-10 text-xs font-medium uppercase tracking-widest text-[var(--about-eyebrow-color)]">
           About
         </p>
 
@@ -29,7 +32,7 @@ export default function About() {
             className="lg:h-full"
             {...reveal()}
           >
-            <div className="relative aspect-[4/5] overflow-hidden rounded-lg border border-[#E6E3DD] bg-[#F4F1EC] lg:aspect-auto lg:h-full">
+            <div className="relative aspect-[4/5] overflow-hidden rounded-lg border border-[var(--about-border-color)] bg-[var(--about-portrait-surface-color)] shadow-[var(--about-portrait-shadow)] lg:aspect-auto lg:h-full">
               <Image
                 src="/about-portrait-2026.jpeg"
                 alt="Sameer Gautam seated in a workspace"
@@ -45,14 +48,14 @@ export default function About() {
           <div>
             <motion.h2
               {...reveal()}
-              className="font-display text-[clamp(2rem,4.5vw,3.5rem)] font-bold leading-tight text-[#18171A]"
+              className="font-display text-[clamp(2rem,4.5vw,3.5rem)] font-bold leading-tight text-[var(--about-heading-color)]"
             >
               The designer behind the systems.
             </motion.h2>
 
             <motion.p
               {...reveal(0.08)}
-              className="mt-10 max-w-[760px] text-lg leading-relaxed text-[#3A3836] md:text-xl"
+              className="mt-10 max-w-[760px] text-lg leading-relaxed text-[var(--about-body-color)] md:text-xl"
             >
               Product Designer with 10+ years across digital products — engineering, customer
               research, and business — specialising in enterprise UX for complex workflows. At
@@ -63,7 +66,7 @@ export default function About() {
 
             <motion.p
               {...reveal(0.14)}
-              className="mt-10 max-w-[420px] font-display text-[clamp(1.2rem,1.6vw,1.5rem)] font-black leading-[1.45] text-[#5F5A54]"
+              className="mt-10 max-w-[420px] font-display text-[clamp(1.2rem,1.6vw,1.5rem)] font-semibold leading-relaxed text-[var(--about-supporting-color)]"
             >
               Think in systems.
               <br />
@@ -81,7 +84,7 @@ export default function About() {
               {FACTS.map((fact) => (
                 <span
                   key={fact}
-                  className="rounded-full border border-[#E6E3DD] bg-white px-3 py-1.5 text-xs font-medium text-[#6A6764]"
+                  className="cursor-default rounded-full border border-[var(--about-chip-border-color)] bg-[var(--about-chip-background-color)] px-3 py-1.5 text-xs font-medium text-[var(--about-chip-text-color)]"
                 >
                   {fact}
                 </span>

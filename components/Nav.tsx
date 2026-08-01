@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { LinkedinLogo } from "@phosphor-icons/react";
@@ -13,8 +13,56 @@ const links = [
   { label: "Contact", href: "#contact" },
 ];
 
+function NavAsterisk() {
+  return (
+    <svg
+      viewBox="0 0 500 500"
+      aria-hidden="true"
+      className="h-[15px] w-[15px] flex-shrink-0"
+      preserveAspectRatio="xMidYMid meet"
+    >
+      <path
+        d="M 211.23 246.77 L 211.23 40 L 288.77 40 L 288.77 246.77 L 233.41 214.81 L 412.48 111.42 L 451.25 178.58 L 272.18 281.96 L 272.18 218.04 L 451.25 321.42 L 412.48 388.58 L 233.41 285.19 L 288.77 253.23 L 288.77 460 L 211.23 460 L 211.23 253.23 L 266.59 285.19 L 87.52 388.58 L 48.75 321.42 L 227.82 218.04 L 227.82 281.96 L 48.75 178.58 L 87.52 111.42 L 266.59 214.81 Z"
+        fill="currentColor"
+        shapeRendering="geometricPrecision"
+      />
+    </svg>
+  );
+}
+
+type NavSurface = "light" | "dark";
+
+function parseRgb(color: string) {
+  const match = color.match(/rgba?\(([^)]+)\)/);
+  if (!match) return null;
+
+  const [r, g, b, a = "1"] = match[1].split(",").map((part) => part.trim());
+  const alpha = Number.parseFloat(a);
+
+  if (alpha <= 0.05) return null;
+
+  return {
+    r: Number.parseFloat(r),
+    g: Number.parseFloat(g),
+    b: Number.parseFloat(b),
+  };
+}
+
+function relativeLuminance({ r, g, b }: { r: number; g: number; b: number }) {
+  const toLinear = (value: number) => {
+    const channel = value / 255;
+    return channel <= 0.03928 ? channel / 12.92 : ((channel + 0.055) / 1.055) ** 2.4;
+  };
+
+  return 0.2126 * toLinear(r) + 0.7152 * toLinear(g) + 0.0722 * toLinear(b);
+}
+
 export default function Nav() {
+  const headerRef = useRef<HTMLElement>(null);
+  const dialogRef = useRef<HTMLDivElement>(null);
+  const menuToggleRef = useRef<HTMLButtonElement>(null);
   const [scrolled, setScrolled] = useState(false);
+  const [surface, setSurface] = useState<NavSurface>("light");
   const [mobileOpen, setMobileOpen] = useState(false);
   const [activeSection, setActiveSection] = useState<string | null>(null);
   const pathname = usePathname();
@@ -22,14 +70,91 @@ export default function Nav() {
   const isWorkPage = pathname.startsWith("/work/");
 
   useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 40);
-    window.addEventListener("scroll", onScroll, { passive: true });
-    return () => window.removeEventListener("scroll", onScroll);
+    let frame = 0;
+
+    const readSurface = () => {
+      frame = 0;
+      setScrolled(window.scrollY > 16);
+
+      const header = headerRef.current;
+      const rect = header?.getBoundingClientRect();
+      const sampleX = Math.round(window.innerWidth / 2);
+      const sampleY = Math.round((rect?.bottom ?? 56) + 8);
+      const stack = document.elementsFromPoint(sampleX, sampleY);
+      const target = stack.find((el) => !header?.contains(el));
+      let node = target instanceof HTMLElement ? target : null;
+
+      while (node && node !== document.body) {
+        const declared = node.dataset.navSurface;
+        if (declared === "light" || declared === "dark") {
+          setSurface(declared);
+          return;
+        }
+
+        const rgb = parseRgb(getComputedStyle(node).backgroundColor);
+        if (rgb) {
+          setSurface(relativeLuminance(rgb) < 0.28 ? "dark" : "light");
+          return;
+        }
+
+        node = node.parentElement;
+      }
+
+      const bodyRgb = parseRgb(getComputedStyle(document.body).backgroundColor);
+      setSurface(bodyRgb && relativeLuminance(bodyRgb) < 0.28 ? "dark" : "light");
+    };
+
+    const requestRead = () => {
+      if (frame) return;
+      frame = window.requestAnimationFrame(readSurface);
+    };
+
+    readSurface();
+    window.addEventListener("scroll", requestRead, { passive: true });
+    window.addEventListener("resize", requestRead);
+
+    return () => {
+      if (frame) window.cancelAnimationFrame(frame);
+      window.removeEventListener("scroll", requestRead);
+      window.removeEventListener("resize", requestRead);
+    };
   }, []);
 
   useEffect(() => {
     document.body.style.overflow = mobileOpen ? "hidden" : "";
-    return () => { document.body.style.overflow = ""; };
+
+    const main = document.querySelector("main");
+    const footer = document.querySelector("footer");
+
+    if (mobileOpen) {
+      main?.setAttribute("inert", "");
+      footer?.setAttribute("inert", "");
+      dialogRef.current?.focus();
+    } else {
+      main?.removeAttribute("inert");
+      footer?.removeAttribute("inert");
+    }
+
+    return () => {
+      document.body.style.overflow = "";
+      main?.removeAttribute("inert");
+      footer?.removeAttribute("inert");
+    };
+  }, [mobileOpen]);
+
+  // Close on Escape, restore focus to the toggle button
+  useEffect(() => {
+    if (!mobileOpen) return;
+
+    const onKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "Escape") {
+        setMobileOpen(false);
+        menuToggleRef.current?.focus();
+      }
+    };
+
+    window.addEventListener("keydown", onKeyDown);
+    return () => window.removeEventListener("keydown", onKeyDown);
   }, [mobileOpen]);
 
   // Track active section via IntersectionObserver on homepage
@@ -84,14 +209,24 @@ export default function Nav() {
     }
   };
 
+  const isDarkSurface = surface === "dark";
+
   return (
     <>
       <header
+        ref={headerRef}
+        data-nav-surface-state={surface}
+        data-nav-floating={scrolled ? "true" : "false"}
         className={[
-          "fixed z-50 transition-all duration-300",
+          "premium-glass-material fixed z-50 overflow-hidden border transition-[top,left,right,border-radius,background-color,border-color,box-shadow,backdrop-filter] duration-[250ms] ease-in-out",
           scrolled
-            ? "top-4 left-4 right-4 rounded-2xl border border-[#E6E3DD] bg-[#F9F8F5]/90 shadow-[0_2px_12px_rgba(0,0,0,0.08)] backdrop-blur-md md:left-6 md:right-6"
-            : "top-0 left-0 right-0 rounded-none border-0 bg-transparent shadow-none",
+            ? "top-4 left-4 right-4 rounded-2xl md:left-6 md:right-6"
+            : "top-0 left-0 right-0 rounded-none",
+          scrolled
+            ? isDarkSurface
+              ? "border-[var(--nav-glass-dark-border)] bg-[var(--nav-glass-dark-background)] shadow-[var(--nav-glass-dark-shadow)] backdrop-blur-[20px]"
+              : "border-[var(--nav-glass-light-border)] bg-[var(--nav-glass-light-background)] shadow-[var(--nav-glass-light-shadow)] backdrop-blur-[20px]"
+            : "border-transparent bg-transparent shadow-none backdrop-blur-none",
         ].join(" ")}
       >
         <nav className="max-w-[1360px] mx-auto px-6 md:px-10 h-[46px] flex items-center">
@@ -106,10 +241,16 @@ export default function Nav() {
                   window.scrollTo({ top: 0, behavior: "smooth" });
                 }
               }}
-              className="inline-flex min-h-11 items-center justify-center pr-3 text-[#18171A] md:pr-2"
+              className={[
+                "inline-flex min-h-11 items-center justify-center gap-[7px] pr-3 md:pr-2",
+                isDarkSurface
+                  ? "text-[var(--nav-glass-dark-logo-color)]"
+                  : "text-[var(--nav-glass-light-logo-color)]",
+              ].join(" ")}
             >
-              <span className="text-[13px] font-semibold uppercase tracking-[0.14em]">
-                SAMEER G.
+              <NavAsterisk />
+              <span className="font-display text-[13px] font-semibold tracking-[0.14em]">
+                Sameer G.
               </span>
             </Link>
           </div>
@@ -123,10 +264,14 @@ export default function Nav() {
                   data-analytics-nav-target={href.slice(1)}
                   data-analytics-nav-label={label}
                   className={[
-                    "text-[13px] font-normal transition-colors duration-200 cursor-pointer relative",
+                    "rounded-full border-[1.5px] px-[14px] py-2 text-[13px] font-medium transition-[background-color,border-color,color] duration-150 ease-out cursor-pointer",
                     isActive(href)
-                      ? "text-[#18171A]/80 after:absolute after:-bottom-0.5 after:left-0 after:w-full after:h-px after:bg-[#C07B50] after:content-['']"
-                      : "text-[#18171A]/45 hover:text-[#18171A]/70",
+                      ? isDarkSurface
+                        ? "border-[var(--nav-glass-dark-pill-border)] bg-[var(--nav-glass-dark-pill-background)] text-[var(--nav-glass-dark-link-active-color)]"
+                        : "border-[var(--nav-glass-light-pill-border)] bg-[var(--nav-glass-light-pill-background)] text-[var(--nav-glass-light-link-active-color)]"
+                      : isDarkSurface
+                        ? "border-transparent bg-transparent text-[var(--nav-glass-dark-link-color)] hover:border-[var(--nav-glass-dark-hover-border)] hover:bg-[var(--nav-glass-dark-hover-background)] hover:text-[var(--nav-glass-dark-link-hover-color)]"
+                        : "border-transparent bg-transparent text-[var(--nav-glass-light-link-color)] hover:border-[var(--nav-glass-light-hover-border)] hover:bg-[var(--nav-glass-light-hover-background)] hover:text-[var(--nav-glass-light-link-hover-color)]",
                   ].join(" ")}
                 >
                   {label}
@@ -142,13 +287,19 @@ export default function Nav() {
               target="_blank"
               rel="noopener noreferrer"
               aria-label="LinkedIn profile"
-              className="hidden md:inline-flex h-9 w-9 items-center justify-center text-[#18171A]/45 hover:text-[#18171A]/70 transition-colors duration-200"
+              className={[
+                "hidden md:inline-flex h-9 w-9 items-center justify-center opacity-70 transition-[color,opacity] duration-300 ease-[var(--ease-out-expo)] hover:opacity-100",
+                isDarkSurface
+                  ? "text-[var(--nav-glass-dark-link-active-color)]"
+                  : "text-[var(--nav-glass-light-link-active-color)]",
+              ].join(" ")}
             >
               <LinkedinLogo size={18} weight="fill" aria-hidden="true" />
             </a>
 
             {/* Mobile menu toggle */}
             <button
+              ref={menuToggleRef}
               aria-label={mobileOpen ? "Close menu" : "Open menu"}
               aria-expanded={mobileOpen}
               onClick={() => setMobileOpen((o) => !o)}
@@ -156,19 +307,22 @@ export default function Nav() {
             >
               <span
                 className={[
-                  "block h-px w-full bg-[#18171A] transition-all duration-300 origin-center",
+                  "block h-px w-full transition-all duration-300 origin-center",
+                  isDarkSurface ? "bg-[var(--nav-glass-dark-logo-color)]" : "bg-[var(--nav-glass-light-logo-color)]",
                   mobileOpen ? "rotate-45 translate-y-[4px]" : "",
                 ].join(" ")}
               />
               <span
                 className={[
-                  "block h-px w-full bg-[#18171A] transition-all duration-300",
+                  "block h-px w-full transition-all duration-300",
+                  isDarkSurface ? "bg-[var(--nav-glass-dark-logo-color)]" : "bg-[var(--nav-glass-light-logo-color)]",
                   mobileOpen ? "opacity-0 scale-x-0" : "",
                 ].join(" ")}
               />
               <span
                 className={[
-                  "block h-px w-full bg-[#18171A] transition-all duration-300 origin-center",
+                  "block h-px w-full transition-all duration-300 origin-center",
+                  isDarkSurface ? "bg-[var(--nav-glass-dark-logo-color)]" : "bg-[var(--nav-glass-light-logo-color)]",
                   mobileOpen ? "-rotate-45 -translate-y-[4px]" : "",
                 ].join(" ")}
               />
@@ -180,8 +334,11 @@ export default function Nav() {
       {/* Mobile overlay */}
       {mobileOpen && (
         <div
-          className="fixed inset-0 z-40 bg-[#F9F8F5] flex flex-col pt-[46px]"
+          ref={dialogRef}
+          tabIndex={-1}
+          className="fixed inset-0 z-40 bg-[var(--color-warm-bg)] flex flex-col pt-[46px] outline-none"
           role="dialog"
+          aria-modal="true"
           aria-label="Navigation menu"
         >
           <ul className="flex flex-col px-6 pt-12 gap-6">
@@ -193,7 +350,7 @@ export default function Nav() {
                   data-analytics-nav-label={label}
                   className={[
                     "text-3xl transition-colors duration-200 cursor-pointer",
-                    isActive(href) ? "text-[#C07B50] font-[450]" : "text-[#18171A] hover:text-[#C07B50] opacity-60 font-medium",
+                    isActive(href) ? "text-[var(--color-accent)] font-[450]" : "text-[var(--color-text)] hover:text-[var(--color-accent)] opacity-60 font-medium",
                   ].join(" ")}
                 >
                   {label}
@@ -201,13 +358,13 @@ export default function Nav() {
               </li>
             ))}
           </ul>
-          <div className="mt-auto border-t border-[#E6E3DD] px-6 py-8 flex items-center justify-end">
+          <div className="mt-auto border-t border-[var(--color-border)] px-6 py-8 flex items-center justify-end">
             <a
               href="https://www.linkedin.com/in/uxd-sameer/"
               target="_blank"
               rel="noopener noreferrer"
               aria-label="LinkedIn profile"
-              className="text-[#18171A]/50 hover:text-[#C07B50] transition-colors duration-200"
+              className="text-[var(--color-text)]/50 hover:text-[var(--color-accent)] transition-colors duration-200"
             >
               <LinkedinLogo size={18} weight="fill" aria-hidden="true" />
             </a>

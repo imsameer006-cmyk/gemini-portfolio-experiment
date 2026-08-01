@@ -11,13 +11,13 @@ export default function Philosophy() {
   return (
     <section
       id="philosophy"
-      className="bg-[#141310] px-6 md:px-10 py-24 md:py-36"
+      className="bg-[var(--philosophy-background-color)] px-6 md:px-10 py-24 md:py-32"
     >
       <div className="max-w-[1280px] mx-auto">
         {/* Section label */}
         <motion.p
           {...reveal()}
-          className="text-xs text-[var(--color-accent)] tracking-widest uppercase font-medium mb-10"
+          className="text-xs text-[var(--philosophy-eyebrow-color)] tracking-widest uppercase font-semibold mb-10"
         >
           My Design Philosophy
         </motion.p>
@@ -25,21 +25,21 @@ export default function Philosophy() {
         {/* Core statement */}
         <motion.blockquote
           {...reveal(0.08)}
-          className="mb-6 max-w-[26ch] font-quote text-[clamp(1.75rem,4vw,3.25rem)] leading-[1.2] text-[#EDEBE3]"
+          className="mb-6 max-w-[26ch] font-quote text-[clamp(1.75rem,4vw,3.25rem)] leading-tight text-[var(--philosophy-heading-color)]"
         >
           &ldquo;Design is the practice of understanding complexity, uncovering what matters, and shaping it into experiences people can understand and use.&rdquo;
         </motion.blockquote>
 
         <motion.p
           {...revealFade(0.2)}
-          className="text-[#847F76] text-sm mb-20 max-w-[36ch] leading-relaxed"
+          className="text-[var(--philosophy-body-color)] text-sm mb-20 max-w-[36ch] leading-relaxed"
         >
           Over the years, I&apos;ve learned that good design isn&apos;t about adding more&mdash;it&apos;s
           about understanding what matters and making it clear.
         </motion.p>
 
         {/* Divider */}
-        <div className="border-t border-[#2E2C27] mb-16" />
+        <div className="border-t border-white/10 my-8" />
 
         {/* Beliefs grid */}
         <div className="grid grid-cols-1 gap-12 md:grid-cols-3 md:gap-12">
@@ -49,13 +49,13 @@ export default function Philosophy() {
               {...reveal(staggerDelay(i))}
               className="grid h-full grid-rows-[auto_auto_1fr] content-start"
             >
-              <span className="mb-5 block text-xs font-medium uppercase tracking-widest text-[#847F76]">
+              <span className="mb-2 block font-mono text-sm font-semibold uppercase tracking-widest text-[var(--philosophy-secondary-color)]">
                 {String(i + 1).padStart(2, "0")}
               </span>
-              <h3 className="mb-4 max-w-[24ch] text-base font-medium leading-snug text-[#EDEBE3] md:text-lg">
+              <h3 className="mb-4 max-w-[24ch] text-base font-semibold leading-snug text-[var(--philosophy-principle-title-color)] md:text-lg">
                 {belief.heading}
               </h3>
-              <p className="max-w-[38ch] text-sm leading-relaxed text-[#847F76]">
+              <p className="max-w-[38ch] text-sm leading-relaxed text-[var(--philosophy-principle-body-color)]">
                 {belief.body}
               </p>
             </motion.div>

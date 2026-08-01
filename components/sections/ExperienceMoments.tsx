@@ -69,9 +69,10 @@ function ExperiencePhotoCard({
   return (
     <motion.article
       {...reveal(staggerDelay(index))}
-      className="group flex h-full flex-col overflow-hidden rounded-2xl border border-[#E6E3DD] bg-white transition-[border-color,box-shadow] duration-300 hover:border-[#C07B50]/35 hover:shadow-[0_8px_40px_-8px_rgba(0,0,0,0.1)]"
+      whileHover={{ y: -4, transition: { duration: 0.3, ease: "easeOut" } }}
+      className="group relative flex h-full flex-col overflow-hidden rounded-2xl bg-[var(--moments-card-background-color)] will-change-transform"
     >
-      <div className="relative aspect-[4/3] w-full overflow-hidden bg-[#F2F0EB]">
+      <div className="relative aspect-[4/3] w-full overflow-hidden rounded-t-[inherit] bg-[var(--moments-card-background-color)]">
         {moment.imageSrc ? (
           <Image
             src={moment.imageSrc}
@@ -82,34 +83,36 @@ function ExperiencePhotoCard({
           />
         ) : (
           <div className="flex h-full w-full items-center justify-center">
-            <span className="font-[family-name:var(--font-numeral)] text-5xl leading-none text-[#18171A]/15">
+            <span className="font-[family-name:var(--font-numeral)] text-5xl leading-none text-[var(--moments-metadata-color)]/25">
               {String(index + 1).padStart(2, "0")}
             </span>
           </div>
         )}
       </div>
 
-      <div className="flex min-h-[88px] flex-col justify-start border-t border-[#E6E3DD] px-4 py-4">
+      <div className="flex min-h-[88px] flex-col justify-start border-t border-[var(--moments-card-border-color)] px-4 py-4">
         {moment.title && (
-          <p className="overflow-hidden text-ellipsis whitespace-nowrap text-[13px] font-medium leading-[1.35] text-[#18171A] lg:text-[12px]">
+          <p className="overflow-hidden text-ellipsis whitespace-nowrap text-[13px] font-medium leading-[1.35] text-[var(--moments-title-color)] lg:text-[12px]">
             {moment.title}
           </p>
         )}
         <p
           className={[
             "overflow-hidden text-ellipsis whitespace-nowrap text-[11px] font-medium uppercase tracking-[0.06em]",
-            moment.title ? "mt-2 text-[#6E6D69]" : "text-[#C07B50]",
+            moment.title ? "mt-2 text-[var(--moments-metadata-color)]" : "text-[var(--moments-metadata-color)]",
           ].join(" ")}
         >
           {moment.company}
           {moment.company ? (
-            <span className="mx-1.5 text-[#CECAC2]" aria-hidden="true">
+            <span className="mx-1.5 text-[var(--moments-card-border-color)]" aria-hidden="true">
               ·
             </span>
           ) : null}
           {moment.location}
         </p>
       </div>
+
+      <div className="absolute inset-0 rounded-2xl pointer-events-none z-10 shadow-[inset_0_0_0_1px_rgba(182,255,0,0)] transition-shadow duration-300 group-hover:shadow-[inset_0_0_0_1px_rgba(182,255,0,0.8),0_0_16px_rgba(182,255,0,0.15)]" />
     </motion.article>
   );
 }
@@ -201,22 +204,22 @@ export default function ExperienceMoments() {
   return (
     <section
       id="experience-moments"
-      className="px-6 pb-24 pt-0 md:px-10 md:pb-32"
+      className="bg-[#051209] px-6 pb-24 pt-0 md:px-10 md:pb-32"
     >
-      <div className="mx-auto max-w-[1280px] border-t border-[#E6E3DD] pt-16">
+      <div className="mx-auto max-w-[1280px] pt-16">
         <motion.div
           {...reveal()}
           className="mb-12 grid gap-5 lg:grid-cols-[0.7fr_1fr] lg:items-end"
         >
           <div>
-            <p className="mb-3 text-xs font-medium uppercase tracking-widest text-[var(--color-text-accent)]">
+            <p className="mb-3 text-xs font-medium uppercase tracking-widest text-[var(--moments-eyebrow-color)]">
               Selected Moments
             </p>
-            <h2 className="font-display text-[clamp(2rem,4.5vw,3.5rem)] font-bold leading-tight text-[#18171A]">
+            <h2 className="font-display text-[clamp(2rem,4.5vw,3.5rem)] font-bold leading-tight text-[var(--moments-heading-color)]">
               In Practice.
             </h2>
           </div>
-          <p className="max-w-[640px] text-base leading-relaxed text-[#6A6764] md:text-lg lg:ml-auto">
+          <p className="max-w-[640px] text-base leading-relaxed text-[var(--moments-body-color)] md:text-lg lg:ml-auto">
             Product design is ultimately about working with people. These moments
             capture the conversations, workshops, and collaborations that transform
             ambiguity into shared understanding and shape the systems behind the
@@ -228,7 +231,7 @@ export default function ExperienceMoments() {
           <div
             ref={mobileScrollerRef}
             onScroll={updateActiveMoment}
-            className="-mx-6 flex snap-x snap-mandatory gap-4 overflow-x-auto scroll-smooth px-6 pb-2 [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
+            className="-mx-6 -my-20 flex snap-x snap-mandatory gap-4 overflow-x-auto scroll-smooth px-6 py-20 [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
             aria-label="Selected work moments"
           >
             {MOMENTS.map((moment, index) => (
@@ -245,7 +248,7 @@ export default function ExperienceMoments() {
             className="mt-5 flex justify-center"
             aria-label="Selected moment navigation"
           >
-            <div className="inline-flex items-center gap-3 rounded-full bg-[#F2F0EB] px-6 py-4">
+            <div className="inline-flex items-center gap-3 rounded-full bg-transparent px-6 py-4">
               {MOMENTS.map((moment, index) => (
                 <button
                   key={`${moment.company}-${index}-dot`}
@@ -254,8 +257,10 @@ export default function ExperienceMoments() {
                   aria-label={`Show ${moment.title ?? `moment ${index + 1}`}`}
                   aria-current={activeMoment === index ? "true" : undefined}
                   className={[
-                    "h-2 w-2 rounded-full border border-[#18171A] transition-colors duration-200",
-                    activeMoment === index ? "bg-[#18171A]" : "bg-transparent",
+                    "h-2 w-2 rounded-full border transition-colors duration-200",
+                    activeMoment === index
+                      ? "border-[var(--moments-indicator-active)] bg-[var(--moments-indicator-active)]"
+                      : "border-[var(--moments-indicator-inactive)] bg-[var(--moments-indicator-inactive)]",
                   ].join(" ")}
                 />
               ))}
@@ -267,7 +272,7 @@ export default function ExperienceMoments() {
           <div
             ref={desktopScrollerRef}
             onScroll={updateActiveDesktopPage}
-            className="flex snap-x snap-mandatory gap-5 overflow-x-auto scroll-smooth pb-2 [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
+            className="-my-20 flex snap-x snap-mandatory gap-5 overflow-x-auto scroll-smooth py-20 [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
             aria-label="Selected work moments"
           >
             {MOMENTS.map((moment, index) => (
@@ -284,7 +289,7 @@ export default function ExperienceMoments() {
             className="mt-5 flex justify-center"
             aria-label="Selected moment navigation"
           >
-            <div className="inline-flex items-center gap-3 rounded-full bg-[#F2F0EB] px-6 py-4">
+            <div className="inline-flex items-center gap-3 rounded-full bg-transparent px-6 py-4">
               {desktopPageStartIndexes.map((startIndex, index) => (
                 <button
                   key={`desktop-moment-page-${index}`}
@@ -296,8 +301,10 @@ export default function ExperienceMoments() {
                   )}`}
                   aria-current={activeDesktopPage === index ? "true" : undefined}
                   className={[
-                    "h-2 w-2 rounded-full border border-[#18171A] transition-colors duration-200",
-                    activeDesktopPage === index ? "bg-[#18171A]" : "bg-transparent",
+                    "h-2 w-2 rounded-full border transition-colors duration-200",
+                    activeDesktopPage === index
+                      ? "border-[var(--moments-indicator-active)] bg-[var(--moments-indicator-active)]"
+                      : "border-[var(--moments-indicator-inactive)] bg-[var(--moments-indicator-inactive)]",
                   ].join(" ")}
                 />
               ))}

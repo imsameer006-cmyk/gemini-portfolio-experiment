@@ -1,7 +1,6 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { REVEAL_VIEWPORT } from "@/lib/motion";
 
 const DRIFT_SWATCHES = [
   { x: 62, y: 96, size: 9, rotate: -8 },
@@ -23,7 +22,7 @@ export default function DesignSystemThumbnail() {
   const driftIn = {
     hidden: { opacity: 0, scale: 0.6 },
     visible: (i: number) => ({
-      opacity: 0.45,
+      opacity: 0.5,
       scale: 1,
       transition: { delay: 0.1 + i * 0.05, duration: 0.4, ease: [0.16, 1, 0.3, 1] as [number, number, number, number] },
     }),
@@ -33,7 +32,7 @@ export default function DesignSystemThumbnail() {
     hidden: { pathLength: 0, opacity: 0 },
     visible: {
       pathLength: 1,
-      opacity: 0.3,
+      opacity: 0.5,
       transition: {
         pathLength: { type: "spring" as const, duration: 1.2, bounce: 0, delay: 0.35 },
         opacity: { duration: 0.3 },
@@ -47,7 +46,7 @@ export default function DesignSystemThumbnail() {
       pathLength: [0, 1],
       opacity: [0, 1, 0],
       transition: {
-        pathLength: { duration: 3, ease: "easeInOut" as const, repeat: Infinity, delay },
+        pathLength: { duration: 3, ease: "linear" as const, repeat: Infinity, delay },
         opacity: { duration: 3, ease: "easeInOut" as const, repeat: Infinity, delay, times: [0, 0.5, 1] as [number, number, number] },
       },
     },
@@ -72,20 +71,20 @@ export default function DesignSystemThumbnail() {
       aria-hidden="true"
       initial="hidden"
       whileInView="visible"
-      viewport={REVEAL_VIEWPORT}
+      viewport={{ once: true, amount: 0.1 }}
     >
       <defs>
         <pattern id="grid-ds" width="40" height="40" patternUnits="userSpaceOnUse">
-          <path d="M 40 0 L 0 0 0 40" fill="none" stroke="#E6E3DD" strokeWidth="0.5" opacity="0.4" />
+          <path d="M 40 0 L 0 0 0 40" fill="none" stroke="#B6FF00" strokeWidth="0.5" opacity="0.08" />
         </pattern>
         <linearGradient id="line-shimmer-ds" x1="150" y1={Y} x2="340" y2={Y} gradientUnits="userSpaceOnUse">
-          <stop offset="0%" stopColor="#BFA391" stopOpacity="0" />
-          <stop offset="50%" stopColor="#C07B50" stopOpacity="1" />
-          <stop offset="100%" stopColor="#BFA391" stopOpacity="0" />
+          <stop offset="0%" stopColor="#B6FF00" stopOpacity="0" />
+          <stop offset="50%" stopColor="#B6FF00" stopOpacity="1" />
+          <stop offset="100%" stopColor="#B6FF00" stopOpacity="0" />
         </linearGradient>
       </defs>
 
-      <rect width="460" height="256" fill="#F9F8F5" />
+      <rect width="460" height="256" fill="#092212" />
       <rect width="460" height="256" fill="url(#grid-ds)" />
 
       {/* Drifted swatches — scattered, low opacity, representing pre-audit color drift */}
@@ -97,8 +96,8 @@ export default function DesignSystemThumbnail() {
           width={s.size}
           height={s.size}
           rx={2}
-          stroke="#9E7E6B"
-          strokeWidth="1"
+          stroke="#D9EBE1"
+          strokeWidth="1.5"
           transform={`rotate(${s.rotate} ${s.x} ${s.y})`}
           variants={driftIn}
           custom={i}
@@ -106,9 +105,9 @@ export default function DesignSystemThumbnail() {
       ))}
 
       {/* Connecting path — drift converging into the token chain */}
-      <motion.path d={`M150 ${Y}H340`} stroke="#9E7E6B" strokeWidth="1.6" strokeLinecap="round" variants={baseLineDraw} className="group-hover:opacity-60 transition-opacity duration-500" />
-      <motion.path d={`M150 ${Y}H340`} stroke="url(#line-shimmer-ds)" strokeWidth="2" strokeLinecap="round" variants={shimmerVariants(0.6)} />
-      <motion.path d={`M150 ${Y}H340`} stroke="url(#line-shimmer-ds)" strokeWidth="2" strokeLinecap="round" variants={shimmerVariants(2.1)} />
+      <motion.path d={`M150 ${Y}H340`} stroke="#B6FF00" strokeWidth="1.5" strokeLinecap="round" variants={baseLineDraw} className="group-hover:opacity-60 transition-opacity duration-500" />
+      <motion.path d={`M150 ${Y}H340`} stroke="url(#line-shimmer-ds)" strokeWidth="2" strokeLinecap="round" variants={shimmerVariants(0)} />
+      <motion.path d={`M150 ${Y}H340`} stroke="url(#line-shimmer-ds)" strokeWidth="2" strokeLinecap="round" variants={shimmerVariants(1.5)} />
 
       {/* Resolved swatches — the tokenized system */}
       {RESOLVED_SWATCHES.map((s, i) => (
@@ -119,14 +118,14 @@ export default function DesignSystemThumbnail() {
             width={30}
             height={30}
             rx={6}
-            fill="#FFFFFF"
-            stroke={s.accent ? "#C07B50" : "#9E7E6B"}
-            strokeWidth={s.accent ? 1.6 : 1}
+            fill={s.accent ? "#092212" : "#133920"}
+            stroke={s.accent ? "#B6FF00" : "#D9EBE1"}
+            strokeWidth={s.accent ? "1.6" : "1.5"}
             variants={resolvedIn}
             custom={i}
           />
           {s.accent && (
-            <motion.circle cx={s.x} cy={Y} r={4} fill="#C07B50" variants={resolvedIn} custom={i} />
+            <motion.circle cx={s.x} cy={Y} r={4} fill="#B6FF00" variants={resolvedIn} custom={i} />
           )}
         </g>
       ))}

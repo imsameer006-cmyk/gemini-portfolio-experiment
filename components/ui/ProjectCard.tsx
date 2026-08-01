@@ -20,13 +20,12 @@ export default function ProjectCard({ project, index }: ProjectCardProps) {
     >
       <Link
         href={`/work/${project.slug}`}
-        className="group flex flex-col h-full bg-[#FFFFFF] border border-[#E6E3DD] rounded-2xl overflow-hidden hover:border-[#C07B50]/40 hover:shadow-[0_8px_40px_-8px_rgba(0,0,0,0.12)] transition-[border-color,box-shadow] duration-300"
+        className="group flex h-full flex-col overflow-hidden rounded-2xl border border-[var(--work-card-border-color)] bg-[var(--work-card-surface-color)] backdrop-blur-sm transition-colors duration-300 hover:border-[var(--work-card-border-color-hover)]"
         aria-label={`View case study: ${project.title}`}
       >
         {/* Visual panel */}
         <div
-          className="w-full aspect-[460/256] overflow-hidden shrink-0 lg:transition-transform lg:duration-500 lg:group-hover:scale-[1.02] lg:origin-bottom"
-          style={{ backgroundColor: project.coverColor }}
+          className="w-full aspect-[460/256] shrink-0 rounded-t-2xl border-b border-[rgba(182,255,0,0.15)] bg-[#092212] lg:transition-[filter] lg:duration-500 lg:group-hover:saturate-[1.05]"
         >
           {project.thumbnail ? (
             <div className="w-full h-full">
@@ -34,7 +33,7 @@ export default function ProjectCard({ project, index }: ProjectCardProps) {
             </div>
           ) : (
             <div className="w-full h-full flex items-center justify-center">
-              <span className="font-[family-name:var(--font-numeral)] text-4xl md:text-5xl text-[#18171A]/20 select-none">
+              <span className="font-[family-name:var(--font-numeral)] text-4xl md:text-5xl text-[var(--work-card-title-color)]/20 select-none">
                 {String(index + 1).padStart(2, "0")}
               </span>
             </div>
@@ -44,34 +43,34 @@ export default function ProjectCard({ project, index }: ProjectCardProps) {
         {/* Content */}
         <div className="p-6 md:p-7 flex-1 flex flex-col">
           <div className="flex items-center justify-between mb-3">
-            <span className="text-xs font-medium text-[#C07B50] tracking-wide uppercase">
+            <span className="font-mono text-xs uppercase tracking-wider text-[#B6FF00]/80">
               {project.category}
             </span>
-            <span className="text-xs text-[#6E6D69]">{project.year}</span>
+            <span className="font-mono text-xs uppercase tracking-wider text-[#B6FF00]/80">{project.year}</span>
           </div>
 
-          <h3 className="text-lg md:text-xl font-medium text-[#18171A] leading-snug mb-2 group-hover:text-[#C07B50] transition-colors duration-200">
+          <h3 className="text-lg md:text-xl font-medium text-[#E8E3D5] leading-snug mb-2 transition-[font-weight,opacity] duration-200 group-hover:font-semibold group-hover:opacity-95">
             {project.title}
           </h3>
 
-          <p className="text-body-compact text-[#6A6764] leading-relaxed mb-6 line-clamp-2">
+          <p className="text-body-compact text-[#D9EBE1]/70 leading-relaxed mb-6 line-clamp-2">
             {project.description}
           </p>
 
           <div className="mt-auto">
             <div className="flex flex-wrap items-center gap-2 mb-4">
               {project.client && (
-                <span className="whitespace-nowrap text-xs font-medium text-[#18171A] bg-[#F2F0EB] px-2.5 py-1 rounded-full">
+                <span className="whitespace-nowrap rounded-full border border-[#B6FF00]/20 bg-white/5 px-2.5 py-1 text-xs font-medium text-[#D9EBE1]">
                   {project.client}
                 </span>
               )}
               <span className="basis-full md:basis-0 w-0 h-0" aria-hidden="true" />
-              <span className="whitespace-nowrap text-xs text-[#6A6764] border border-[#E6E3DD] px-2.5 py-1 rounded-full">
+              <span className="whitespace-nowrap rounded-full border border-[#B6FF00]/20 bg-white/5 px-2.5 py-1 text-xs font-medium text-[#D9EBE1]">
                 {project.impact}
               </span>
             </div>
             <div className="flex justify-end">
-              <span className="flex items-center gap-1 text-sm text-[#C07B50] font-medium opacity-0 group-hover:opacity-100 transition-opacity duration-200">
+              <span className="flex items-center gap-1 font-mono text-xs font-medium text-[#B6FF00] no-underline opacity-0 translate-y-1 transition-all duration-300 group-hover:opacity-100 group-hover:translate-y-0 group-focus-visible:opacity-100 group-focus-visible:translate-y-0">
                 View case study
                 <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true">
                   <path d="M2.5 7h9M7.5 3l4 4-4 4" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round" />

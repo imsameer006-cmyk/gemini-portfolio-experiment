@@ -2,32 +2,124 @@
 
 /* ── Design Tokens ─────────────────────────────────────────── */
 @theme {
-  /* Colors — Light palette */
-  --color-warm-bg:        #F9F8F5;
-  --color-surface:        #FFFFFF;
-  --color-surface-tinted: #F2F0EB;
-  --color-border:         #E6E3DD;
-  --color-border-strong:  #CECAC2;
+  /* Tier 1: Color primitives */
+  --primitive-cream-50:     #F9F8F5;
+  --primitive-white:        #FFFFFF;
+  --primitive-cream-100:    #F2F0EB;
+  --primitive-sand-200:     #E6E3DD;
+  --primitive-sand-300:     #CECAC2;
+  --primitive-ink-900:      #18171A;
+  --primitive-ink-700:      #3A3836;
+  --primitive-taupe-600:    #6A6764;
+  --primitive-gray-600:     #6E6D69;
+  --primitive-copper-800:   #96552F;
+  --primitive-copper-500:   #C07B50;
+  --primitive-copper-100:   #F5E8DC;
+  --primitive-copper-600:   #A8643C;
+  --primitive-charcoal-900: #141310;
+  --primitive-charcoal-850: #1C1B17;
+  --primitive-charcoal-800: #2E2C27;
+  --primitive-cream-200:    #EDEBE3;
+  --primitive-stone-500:    #9A9890;
+  --primitive-taupe-700:    #847F76;
+  --primitive-lime-500:     #D2E823;
+  --primitive-green-800:    #254F1A;
+  --turquoise-400:          #43EBFF;
+  --navy-900:               #003A76;
+  --blue-grey-600:          #5F7388;
+  --blue-grey-400:          #8599AD;
+  --blue-grey-300:          #B4C2CE;
+  --cool-white:             #F8FCFD;
+  --surface-nested:         #EEF6F9;
+  --border-light:           #D8E7EE;
+  --border-subtle:          #E8F0F4;
+  --divider:                #EEF4F7;
+  --connector-blue:         #A9D5E8;
+  --card-hover-blue:        #8DD7F2;
+  --royal-blue:             #3B76D8;
+  --bright-blue:            #0094FB;
+  --lotus-pink:             #B83F77;
+  --pill-default-bg:        #F4FAFC;
+  --pill-default-border:    #DCE8EE;
+  --pill-company-bg:        #EAF7FC;
+  --pill-achievement-bg:    #F8FBFC;
+  --thumbnail-border:       #DCE8EE;
+  --lavender-50:            #F3E8F7;
+  --lavender-border:        #E7D4EC;
+  --lotus-pink-strong:      #C74F86;
+  --moments-border:         #DCE6EC;
+  --moments-border-hover:   #A9D5E8;
+  --philosophy-navy-950:    #011640;
+  --philosophy-ice-50:      #F7FAFD;
+  --philosophy-blue-100:    #DCE8F1;
+  --philosophy-blue-200:    #8EA9BC;
+  --philosophy-blue-300:    #7F99AC;
+  --philosophy-blue-500:    #6497B1;
+  --process-blue-tint:      #EAF3FA;
+  --process-blue-900:       #011F4B;
+  --process-blue-800:       #03396C;
+  --process-body-blue:      #4E6782;
+  --process-note-blue:      #6F8497;
+  --footer-text-blue:       #B3CDE0;
 
-  --color-text:           #18171A;
-  --color-text-body:      #3A3836;
-  --color-text-secondary: #6A6764;
-  --color-text-muted:     #6E6D69; /* was #9C9A95 — failed WCAG AA (2.47–2.81:1); remediated 2026-07 */
-  --color-text-accent:    #96552F; /* copper at body/label sizes — #C07B50 fails 4.5:1 below display sizes */
+  /* Tier 2: Semantic colors */
+  --color-warm-bg:        var(--primitive-cream-50);
+  --color-surface:        var(--primitive-white);
+  --color-surface-tinted: var(--primitive-cream-100);
+  --color-border:         var(--primitive-sand-200);
+  --color-border-strong:  var(--primitive-sand-300);
 
-  --color-accent:         #C07B50; /* display sizes, decoration, dark surfaces only — not body text */
-  --color-accent-light:   #F5E8DC;
-  --color-accent-hover:   #A8643C;
-  --color-focus-ring:     var(--color-accent-hover); /* was var(--color-accent) — failed 3:1 on tinted surface */
+  --color-text:           var(--primitive-ink-900);
+  --color-text-body:      var(--primitive-ink-700);
+  --color-text-secondary: var(--primitive-taupe-600);
+  --color-text-muted:     var(--primitive-gray-600); /* was #9C9A95 - failed WCAG AA (2.47-2.81:1); remediated 2026-07 */
+  --color-text-accent:    var(--primitive-copper-800); /* copper at body/label sizes - #C07B50 fails 4.5:1 below display sizes */
 
-  /* Colors — Dark sections */
-  --color-dark:           #141310;
-  --color-dark-surface:   #1C1B17;
-  --color-dark-border:    #2E2C27;
-  --color-dark-text:      #EDEBE3;
-  --color-dark-secondary: #9A9890;
-  --color-dark-muted:     #847F76; /* was #6A6860 — failed WCAG AA at actual 12–16px usage (3.33:1); remediated 2026-07 */
+  --color-accent:         var(--primitive-copper-500); /* display sizes, decoration, dark surfaces only - not body text */
+  --color-accent-light:   var(--primitive-copper-100);
+  --color-accent-hover:   var(--primitive-copper-600);
+  --color-focus-ring:     var(--color-accent-hover); /* was var(--color-accent) - failed 3:1 on tinted surface */
+  --color-bg-hero:        var(--primitive-lime-500);
+  --color-text-hero:      var(--primitive-green-800);
 
+  --color-dark:           var(--primitive-charcoal-900);
+  --color-dark-surface:   var(--primitive-charcoal-850);
+  --color-dark-border:    var(--primitive-charcoal-800);
+  --color-dark-text:      var(--primitive-cream-200);
+  --color-dark-secondary: var(--primitive-stone-500);
+  --color-dark-muted:     var(--primitive-taupe-700); /* was #6A6860 - failed WCAG AA at actual 12-16px usage (3.33:1); remediated 2026-07 */
+
+  /* Tier 3: Homepage component colors */
+  --hero-background-color: var(--color-bg-hero);
+  --hero-heading-color:    var(--color-text-hero);
+  --hero-body-color:       var(--color-text-hero);
+  --hero-scrim-color:      var(--color-bg-hero);
+  /* Light-surface nav tokens realigned from process-blue/slate to the site's forest/sage palette */
+  --nav-glass-light-background:       rgba(7,26,14,.75);
+  --nav-glass-light-border:           rgba(176,188,100,.25);
+  --nav-glass-light-shadow:           0 4px 20px rgba(1,31,75,.05);
+  --nav-glass-light-logo-color:       #B6FF00;
+  --nav-glass-light-link-color:       #B0BC64;
+  --nav-glass-light-link-active-color: #B6FF00;
+  --nav-glass-light-pill-background:  rgba(14,40,24,.85);
+  --nav-glass-light-pill-border:      rgba(176,188,100,.4);
+  --nav-glass-light-hover-background: rgba(255,255,255,.22);
+  --nav-glass-light-hover-border:     rgba(1,31,75,.16);
+  --nav-glass-light-link-hover-color: #B6FF00;
+
+  --nav-glass-dark-background:        rgba(6,30,16,.45);
+  --nav-glass-dark-border:            rgba(255,255,255,.14);
+  --nav-glass-dark-shadow:            0 10px 28px rgba(0,0,0,.22);
+  --nav-glass-dark-logo-color:        var(--philosophy-ice-50);
+  --nav-glass-dark-link-color:        rgba(255,255,255,.72);
+  --nav-glass-dark-link-hover-color:  #FFFFFF;
+  --nav-glass-dark-link-active-color: #FFFFFF;
+  --nav-glass-dark-pill-background:   rgba(255,255,255,.10);
+  --nav-glass-dark-pill-border:       rgba(255,255,255,.42);
+  --nav-glass-dark-hover-background:  rgba(255,255,255,.10);
+  --nav-glass-dark-hover-border:      rgba(255,255,255,.10);
+  --material-white-surface: linear-gradient(180deg, #FFFFFF 0%, #FFFFFF 42%, #FBFCFD 100%);
+  --material-surface-highlight: inset 0 1px 0 rgba(255,255,255,.10);
   /* Typography */
   --font-sans:    var(--font-geist-sans), ui-sans-serif, system-ui, sans-serif;
   --font-display: var(--font-linik-sans), ui-sans-serif, system-ui, sans-serif;
@@ -41,6 +133,214 @@
   --ease-out-expo:    cubic-bezier(0.16, 1, 0.3, 1);
   --ease-in-out-soft: cubic-bezier(0.4, 0, 0.2, 1);
   --ease-spring:      cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+/* Tier 3: Homepage / Selected Work */
+#work {
+  --color-text-primary:       #E8E3D5;
+  --color-text-interactive:   #B6FF00;
+  --color-text-secondary:     #D9EBE1;
+  --color-text-muted:         rgba(217,235,225,.7);
+  --color-text-disabled:      var(--blue-grey-300);
+  --color-surface-page-work:  #092212;
+  --color-surface-card:       rgba(13,42,23,.5);
+  --color-surface-thumbnail:  var(--cool-white);
+  --color-surface-nested:     var(--surface-nested);
+  --color-border-primary:     rgba(182,255,0,.15);
+  --color-border-subtle:      rgba(255,255,255,.1);
+  --color-accent-lotus:       #B6FF00;
+
+  --work-background-color:             var(--color-surface-page-work);
+  --work-heading-color:                var(--color-text-primary);
+  --work-eyebrow-color:                var(--color-accent-lotus);
+  --work-description-color:            var(--color-text-secondary);
+  --work-card-surface-color:           var(--color-surface-card);
+  --work-card-border-color:            var(--color-border-primary);
+  --work-card-border-color-hover:      rgba(182,255,0,.4);
+  --work-card-shadow:                  none;
+  --work-card-shadow-hover:            none;
+  --work-card-title-color:             var(--color-text-primary);
+  --work-card-description-color:       var(--color-text-secondary);
+  --work-card-metadata-color:          var(--color-text-muted);
+  --work-card-cta-color:               var(--color-text-interactive);
+  --work-card-cta-border-color:        transparent;
+  --work-card-cta-border-color-hover:  transparent;
+  --work-pill-default-surface-color:   rgba(255,255,255,.04);
+  --work-pill-default-border-color:    rgba(255,255,255,.1);
+  --work-pill-default-text-color:      rgba(217,235,225,.8);
+  --work-pill-company-surface-color:   rgba(255,255,255,.04);
+  --work-pill-company-text-color:      rgba(217,235,225,.8);
+  --work-pill-achievement-surface-color: rgba(255,255,255,.04);
+  --work-pill-achievement-text-color:  rgba(217,235,225,.8);
+  --work-thumbnail-background-color:   var(--color-surface-thumbnail);
+  --work-thumbnail-border-color:       var(--thumbnail-border);
+  --work-thumbnail-nested-color:       var(--color-surface-nested);
+  --work-thumbnail-grid-color:         var(--surface-nested);
+  --work-thumbnail-primary-color:      var(--navy-900);
+  --work-thumbnail-secondary-color:    var(--royal-blue);
+  --work-thumbnail-interactive-color:  var(--bright-blue);
+  --work-thumbnail-connector-color:    var(--connector-blue);
+  --work-thumbnail-lotus-color:        var(--lotus-pink);
+  --work-thumbnail-node-fill-color:    var(--color-surface-nested);
+}
+
+.homepage-atmosphere {
+  background:
+    radial-gradient(circle at 50% 18%, rgba(255,255,255,.028), rgba(255,255,255,0) 48%),
+    radial-gradient(circle at 50% 115%, rgba(0,0,0,.022), rgba(0,0,0,0) 58%),
+    var(--homepage-atmosphere-color);
+}
+
+.home-hero-atmosphere {
+  --homepage-atmosphere-color: var(--hero-background-color);
+}
+
+.home-work-atmosphere {
+  --homepage-atmosphere-color: var(--work-background-color);
+}
+
+.home-about-atmosphere {
+  --homepage-atmosphere-color: var(--about-background-color);
+}
+
+.home-philosophy-atmosphere {
+  --homepage-atmosphere-color: var(--philosophy-background-color);
+}
+
+.home-process-atmosphere {
+  --homepage-atmosphere-color: var(--process-background-color);
+}
+
+.home-contact-atmosphere {
+  --homepage-atmosphere-color: var(--contact-background-color);
+}
+
+.premium-white-surface {
+  position: relative;
+  background: var(--material-white-surface);
+  box-shadow: var(--material-surface-highlight), var(--surface-shadow, none);
+}
+
+.premium-white-surface:hover {
+  box-shadow: var(--material-surface-highlight), var(--surface-shadow-hover, var(--surface-shadow, none));
+}
+
+.premium-glass-material[data-nav-floating="true"]::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  border-radius: inherit;
+  background: linear-gradient(180deg, rgba(255,255,255,.08), rgba(255,255,255,.015));
+}
+
+.premium-glass-material > nav {
+  position: relative;
+  z-index: 1;
+}
+
+/* Tier 3: Homepage / About */
+#about {
+  --about-background-color:       #092212;
+  --about-heading-color:          #E8E3D5;
+  --about-body-color:             rgba(217,235,225,.7);
+  --about-supporting-color:       #E8E3D5;
+  --about-eyebrow-color:          #B6FF00;
+  --about-border-color:           rgba(255,255,255,.1);
+  --about-portrait-surface-color: #092212;
+  --about-portrait-shadow:        none;
+  --about-chip-background-color:  rgba(255,255,255,.05);
+  --about-chip-border-color:      rgba(255,255,255,.1);
+  --about-chip-text-color:        #D9EBE1;
+}
+
+/* Tier 3: Homepage / Selected Moments */
+#experience-moments {
+  --moments-background-color:       #092212;
+  --moments-eyebrow-color:          #B6FF00;
+  --moments-heading-color:          #E8E3D5;
+  --moments-body-color:             rgba(217,235,225,.7);
+  --moments-card-background-color:  #061E10;
+  --moments-card-border-color:      rgba(255,255,255,.1);
+  --moments-card-border-hover:      #B6FF00;
+  --moments-card-shadow:            none;
+  --moments-card-shadow-hover:      0 0 20px rgba(182,255,0,.20);
+  --moments-title-color:            #D9EBE1;
+  --moments-metadata-color:         rgba(217,235,225,.7);
+  --moments-indicator-inactive:     rgba(255,255,255,.2);
+  --moments-indicator-active:       #B6FF00;
+}
+
+/* Tier 3: Homepage / Philosophy */
+#philosophy {
+  --philosophy-background-color:  #051209;
+  --philosophy-background-depth:  radial-gradient(circle at 50% 12%, rgba(255,255,255,.03), transparent 62%);
+  --philosophy-eyebrow-color:     #B6FF00;
+  --philosophy-heading-color:     #E8E3D5;
+  --philosophy-body-color:        rgba(217,235,225,.7);
+  --philosophy-secondary-color:   #B6FF00;
+  --philosophy-principle-title-color: #E8E3D5;
+  --philosophy-principle-body-color:  rgba(217,235,225,.7);
+  --philosophy-divider-color:     rgba(255,255,255,.1);
+  --philosophy-interactive-color: var(--turquoise-400);
+}
+
+/* Tier 3: Homepage / Process */
+#process {
+  --process-background-color:    #051209;
+  --process-eyebrow-color:       #B6FF00;
+  --process-heading-color:       #E8E3D5;
+  --process-number-color:        #B6FF00;
+  --process-title-color:         #E8E3D5;
+  --process-description-color:   rgba(217,235,225,.7);
+  --process-divider-color:       rgba(255,255,255,.1);
+  --process-note-color:          rgba(217,235,225,.7);
+  --process-connector-color:     rgba(255,255,255,.1);
+  --process-connector-soft-color: rgba(255,255,255,.03);
+}
+
+/* Tier 3: Homepage / Testimonials */
+#testimonials {
+  --testimonials-background-color:       #092212;
+  --testimonials-heading-color:          #E8E3D5;
+  --testimonials-eyebrow-color:          #B6FF00;
+  --testimonials-card-background-color:  #061E10;
+  --testimonials-card-border-color:      rgba(255,255,255,.1);
+  --testimonials-card-border-hover:      #B6FF00;
+  --testimonials-card-shadow:            none;
+  --testimonials-card-shadow-hover:      0 0 20px rgba(182,255,0,.12);
+  --testimonials-quote-mark-color:       #B6FF00;
+  --testimonials-quote-text-color:       rgba(232,227,213,.9);
+  --testimonials-person-name-color:      #E8E3D5;
+  --testimonials-person-meta-color:      rgba(217,235,225,.7);
+  --testimonials-divider-color:          rgba(255,255,255,.1);
+}
+
+/* Tier 3: Homepage / Contact */
+#contact {
+  --contact-background-color:             #B6FF00;
+  --contact-eyebrow-color:                rgba(6,30,16,.7);
+  --contact-heading-color:                #061E10;
+  --contact-body-color:                   rgba(6,30,16,.8);
+  --contact-primary-button-background:    #061E10;
+  --contact-primary-button-text:          #E8E3D5;
+  --contact-primary-button-background-hover: #000000;
+  --contact-primary-button-text-hover:    #E8E3D5;
+  --contact-secondary-button-border:      #061E10;
+  --contact-secondary-button-text:        #061E10;
+  --contact-secondary-button-background-hover: #061E10;
+  --contact-secondary-button-text-hover:  #B6FF00;
+}
+
+/* Tier 3: Homepage / Footer */
+footer {
+  --footer-background-color: #061E10;
+  --footer-border-color:    rgba(255,255,255,.08);
+  --footer-logo-color:      #B6FF00;
+  --footer-link-color:      rgba(217,235,225,.7);
+  --footer-link-hover:      #B6FF00;
+  --footer-copy-color:      rgba(217,235,225,.7);
 }
 
 /* ── Base Reset ─────────────────────────────────────────────── */
@@ -240,7 +540,7 @@ body {
     left: 50%;
     transform: translateX(-50%);
     background: #1a1a1a;
-    color: #fff;
+    color: var(--color-surface);
     font-size: 11px;
     font-weight: 500;
     letter-spacing: 0;
@@ -271,7 +571,7 @@ body {
   /* Hover — pill color shift */
   .role-pill:hover {
     background: #F5EAE0;
-    border-color: #C07B50;
+    border-color: var(--color-accent);
     color: var(--color-text-accent); /* was #A0622E — same remediation as resting state */
   }
 
