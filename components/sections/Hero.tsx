@@ -2,8 +2,8 @@
 
 import { motion, useReducedMotion } from "framer-motion";
 import Image from "next/image";
-import type { CSSProperties } from "react";
-import { useEffect, useRef, useState } from "react";
+import type { CSSProperties, RefObject } from "react";
+import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import StructuralAsteriskHeroArt from "./StructuralAsteriskHeroArt";
 import HeroPinwheelEchoArt from "./HeroPinwheelEchoArt";
 
@@ -127,7 +127,11 @@ const heroShowcaseItems: {
   },
 ];
 
-function HeroShowcaseReel() {
+function HeroShowcaseReel({
+  frameRef,
+}: {
+  frameRef?: RefObject<HTMLDivElement | null>;
+}) {
   const shouldReduceMotion = useReducedMotion();
   // Always render both groups — do NOT branch this on shouldReduceMotion.
   // useReducedMotion() reflects the OS-level media query, which SSR can't
@@ -197,11 +201,11 @@ function HeroShowcaseReel() {
 
   return (
     <div
-      className="pointer-events-none absolute inset-x-0 inset-y-0 z-0 hidden md:block"
+      className="hero-showcase-reel pointer-events-none absolute inset-x-0 inset-y-0 z-0 hidden md:block"
       aria-label="Project preview reel"
     >
       <div className="mx-auto flex h-full w-full max-w-[1360px] justify-end px-6 md:px-10">
-        <div className="hero-showcase-frame h-full">
+        <div ref={frameRef} className="hero-showcase-frame h-full">
           <div
             className="hero-showcase-mask pointer-events-auto h-full overflow-hidden"
             onMouseEnter={() => {
@@ -293,6 +297,7 @@ function HeroShowcaseReel() {
           --hero-showcase-gap: 24px;
           container-type: size;
           width: calc(((90svh - var(--hero-showcase-gap)) / 1.5) * 1.08);
+          max-width: var(--hero-reel-max-width, none);
         }
 
         .hero-showcase-mask {
@@ -841,6 +846,10 @@ function PhilosophyOverlay({ isOpen, onComplete }: { isOpen: boolean; onComplete
 }
 
 export default function Hero() {
+  const sectionRef = useRef<HTMLElement | null>(null);
+  const layoutGridRef = useRef<HTMLDivElement | null>(null);
+  const copyColumnRef = useRef<HTMLDivElement | null>(null);
+  const reelFrameRef = useRef<HTMLDivElement | null>(null);
   const [hoverSuppressed, setHoverSuppressed] = useState(false);
   const [isPhilosophyOpen, setIsPhilosophyOpen] = useState(false);
   const unlockTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
@@ -897,14 +906,86 @@ export default function Hero() {
     };
   }, []);
 
+  useLayoutEffect(() => {
+    const section = sectionRef.current;
+    const grid = layoutGridRef.current;
+    const copyColumn = copyColumnRef.current;
+    const reelFrame = reelFrameRef.current;
+
+    if (!section || !grid || !copyColumn || !reelFrame) return;
+
+    let frameId = 0;
+
+    const updateLayoutVars = () => {
+      frameId = 0;
+
+      const gridStyle = getComputedStyle(grid);
+      const gridRect = grid.getBoundingClientRect();
+      const contentWidth = Math.max(
+        0,
+        gridRect.width -
+          Number.parseFloat(gridStyle.paddingLeft) -
+          Number.parseFloat(gridStyle.paddingRight),
+      );
+      const reelStyle = getComputedStyle(reelFrame);
+      const reelVisible = reelStyle.display !== "none" && reelFrame.offsetParent !== null;
+      const gap = 24;
+
+      if (!reelVisible || contentWidth <= 0) {
+        section.style.setProperty("--hero-reel-width", "0px");
+        section.style.setProperty("--hero-reel-max-width", "none");
+        section.style.setProperty("--hero-copy-max-width", "760px");
+        return;
+      }
+
+      const minimumCopyWidth = Math.min(320, contentWidth);
+      const reelMaxWidth = Math.max(0, contentWidth - minimumCopyWidth - gap);
+      section.style.setProperty("--hero-reel-max-width", `${reelMaxWidth}px`);
+
+      requestAnimationFrame(() => {
+        const measuredReelWidth = reelFrame.getBoundingClientRect().width;
+        const copyMaxWidth = Math.max(
+          0,
+          Math.min(760, contentWidth - measuredReelWidth - gap),
+        );
+
+        section.style.setProperty("--hero-reel-width", `${measuredReelWidth}px`);
+        section.style.setProperty("--hero-copy-max-width", `${copyMaxWidth}px`);
+      });
+    };
+
+    const scheduleUpdate = () => {
+      if (frameId) return;
+      frameId = requestAnimationFrame(updateLayoutVars);
+    };
+
+    updateLayoutVars();
+
+    const resizeObserver = new ResizeObserver(scheduleUpdate);
+    resizeObserver.observe(grid);
+    resizeObserver.observe(copyColumn);
+    resizeObserver.observe(reelFrame);
+    window.addEventListener("resize", scheduleUpdate);
+
+    return () => {
+      if (frameId) cancelAnimationFrame(frameId);
+      resizeObserver.disconnect();
+      window.removeEventListener("resize", scheduleUpdate);
+    };
+  }, []);
+
   return (
     <section
+      ref={sectionRef}
       aria-label="Introduction"
       className="homepage-atmosphere home-hero-atmosphere relative overflow-hidden px-0 py-16 md:min-h-[90vh] md:py-24"
       style={{
         "--homepage-atmosphere-color": "radial-gradient(circle closest-side, rgba(182, 255, 0, 0.08) 0%, rgba(9, 34, 18, 1) 100%), #092212",
         "--hero-heading-color": "#B6FF00",
         "--hero-body-color": "#D9EBE1",
+        "--hero-copy-max-width": "760px",
+        "--hero-reel-width": "0px",
+        "--hero-reel-max-width": "none",
         background: "radial-gradient(circle closest-side, rgba(182, 255, 0, 0.08) 0%, rgba(9, 34, 18, 1) 100%), #092212",
       } as CSSProperties}
     >
@@ -922,15 +1003,15 @@ export default function Hero() {
       />
       {showStructuralAsteriskArt && <StructuralAsteriskHeroArt />}
       <HeroPinwheelEchoArt />
-      <HeroShowcaseReel />
+      <HeroShowcaseReel frameRef={reelFrameRef} />
 
-      <div className="pointer-events-none relative z-10 mx-auto grid w-full max-w-[1360px] grid-cols-1 items-center gap-12 px-6 pt-10 md:grid-cols-12 md:gap-12 md:px-10 md:pt-16 lg:gap-20">
-        <div className="pointer-events-auto col-span-12 flex max-w-[760px] translate-y-[55px] flex-col items-start text-left md:col-span-9">
+      <div ref={layoutGridRef} className="pointer-events-none relative z-10 mx-auto grid min-w-0 w-full max-w-[1360px] grid-cols-1 items-center gap-12 px-6 pt-10 md:grid-cols-12 md:gap-12 md:px-10 md:pt-16 lg:gap-20">
+        <div ref={copyColumnRef} className="hero-copy-column pointer-events-auto flex min-w-0 translate-y-[55px] flex-col items-start text-left md:col-span-9">
           <motion.h1
             initial={{ opacity: 0, y: 28 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.65, delay: 0.12, ease: [0.16, 1, 0.3, 1] }}
-            className="mt-0 mb-[15px] w-fit max-w-[760px] font-display text-[clamp(3rem,6.5vw,5.5rem)] font-black leading-[1.05] text-[var(--hero-heading-color)]"
+            className="mt-0 mb-[15px] w-fit min-w-0 max-w-full font-display text-[clamp(3rem,6.5vw,5.5rem)] font-black leading-[1.05] text-[var(--hero-heading-color)]"
           >
             Hi, I discover patterns, & connect the dots.
           </motion.h1>
@@ -939,12 +1020,17 @@ export default function Hero() {
             initial={{ opacity: 0, y: 18 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.55, delay: 0.24, ease: [0.16, 1, 0.3, 1] }}
-            className="max-w-[684px] text-[1.0625rem] leading-relaxed text-[var(--hero-body-color)] md:text-lg"
+            className="min-w-0 max-w-full text-[1.0625rem] leading-relaxed text-[var(--hero-body-color)] md:text-lg"
           >
             I&apos;m curious and inquisitive by nature — I guess it&apos;s my hidden superpower. For me, nature is the biggest design inspiration. Desert heat from the Middle East warms Europe, ocean water becomes clouds, and travels far to water distant lands. Nothing in an ecosystem is wasted — everything is interwoven, serving the system or failing to survive. I think in systems the same way, treating data, feedback, and failure as signal, not noise. And I prefer honest feedback over praise that sounds good but gives nothing to course-correct on.
           </motion.p>
         </div>
       </div>
+      <style>{`
+        .hero-copy-column {
+          max-width: min(760px, 100%, var(--hero-copy-max-width, 760px));
+        }
+      `}</style>
     </section>
   );
 }
