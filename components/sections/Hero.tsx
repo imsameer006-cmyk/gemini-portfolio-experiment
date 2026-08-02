@@ -978,7 +978,7 @@ export default function Hero() {
     <section
       ref={sectionRef}
       aria-label="Introduction"
-      className="homepage-atmosphere home-hero-atmosphere relative overflow-hidden px-0 py-16 md:min-h-[90vh] md:py-24"
+      className="homepage-atmosphere home-hero-atmosphere relative overflow-hidden px-0 pt-16 pb-[99px] md:pt-24 md:pb-[131px]"
       style={{
         "--homepage-atmosphere-color": "radial-gradient(circle closest-side, rgba(182, 255, 0, 0.08) 0%, rgba(9, 34, 18, 1) 100%), #092212",
         "--hero-heading-color": "#B6FF00",
@@ -1006,7 +1006,7 @@ export default function Hero() {
       <HeroShowcaseReel frameRef={reelFrameRef} />
 
       <div ref={layoutGridRef} className="pointer-events-none relative z-10 mx-auto grid min-w-0 w-full max-w-[1360px] grid-cols-1 items-center gap-12 px-6 pt-10 md:grid-cols-12 md:gap-12 md:px-10 md:pt-16 lg:gap-20">
-        <div ref={copyColumnRef} className="hero-copy-column pointer-events-auto flex min-w-0 translate-y-[55px] flex-col items-start text-left md:col-span-9">
+        <div ref={copyColumnRef} className="hero-copy-column pointer-events-auto flex min-w-0 translate-y-[95px] flex-col items-start text-left md:col-span-9">
           <motion.h1
             initial={{ opacity: 0, y: 28 }}
             animate={{ opacity: 1, y: 0 }}
