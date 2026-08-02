@@ -97,9 +97,9 @@ const PINNED_TARGET_DIAMETER = 130.869;
 const NATIVE_BBOX_MAX = 420; // solid mark's native bounding box, larger dimension
 const UNIT_SCALE = PINNED_TARGET_DIAMETER / NATIVE_BBOX_MAX;
 const PINNED_CENTER_X_FRACTION = 0.18379;
-const MOBILE_MOTIF_SCALE_MULTIPLIER = 0.5;
+const MOBILE_MOTIF_SCALE_MULTIPLIER = 1.2;
 const MOBILE_BREAKPOINT_PX = 768;
-const MOBILE_VERTICAL_OFFSET_PX = -20;
+const MOBILE_VERTICAL_OFFSET_PX = 80;
 // Nudged down from the old fraction (0.20255) to compensate: this shape's
 // centroid sits higher relative to its own bounding box than the old symmetric
 // asterisk's did, so using the same raw fraction rendered visibly higher
