@@ -336,7 +336,7 @@ export default function Nav() {
         <div
           ref={dialogRef}
           tabIndex={-1}
-          className="fixed inset-0 z-40 bg-[var(--color-warm-bg)] flex flex-col pt-[46px] outline-none"
+          className="fixed inset-0 z-40 flex flex-col bg-[#092212] pt-[46px] text-[#D9EBE1] outline-none"
           role="dialog"
           aria-modal="true"
           aria-label="Navigation menu"
@@ -350,7 +350,7 @@ export default function Nav() {
                   data-analytics-nav-label={label}
                   className={[
                     "text-3xl transition-colors duration-200 cursor-pointer",
-                    isActive(href) ? "text-[var(--color-accent)] font-[450]" : "text-[var(--color-text)] hover:text-[var(--color-accent)] opacity-60 font-medium",
+                    isActive(href) ? "text-[#B6FF00] font-[450]" : "text-[#E8E3D5]/65 hover:text-[#B6FF00] font-medium",
                   ].join(" ")}
                 >
                   {label}
@@ -358,13 +358,13 @@ export default function Nav() {
               </li>
             ))}
           </ul>
-          <div className="mt-auto border-t border-[var(--color-border)] px-6 py-8 flex items-center justify-end">
+          <div className="mt-auto flex items-center justify-end border-t border-[#B0BC64]/25 px-6 py-8">
             <a
               href="https://www.linkedin.com/in/uxd-sameer/"
               target="_blank"
               rel="noopener noreferrer"
               aria-label="LinkedIn profile"
-              className="text-[var(--color-text)]/50 hover:text-[var(--color-accent)] transition-colors duration-200"
+              className="text-[#D9EBE1]/55 transition-colors duration-200 hover:text-[#B6FF00]"
             >
               <LinkedinLogo size={18} weight="fill" aria-hidden="true" />
             </a>
