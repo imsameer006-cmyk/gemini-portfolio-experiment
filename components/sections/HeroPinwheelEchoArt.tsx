@@ -99,6 +99,7 @@ const UNIT_SCALE = PINNED_TARGET_DIAMETER / NATIVE_BBOX_MAX;
 const PINNED_CENTER_X_FRACTION = 0.18379;
 const MOBILE_MOTIF_SCALE_MULTIPLIER = 1.2;
 const MOBILE_BREAKPOINT_PX = 768;
+const DESKTOP_SHIMMER_BREAKPOINT_PX = 1200;
 const MOBILE_VERTICAL_OFFSET_PX = 80;
 // Nudged down from the old fraction (0.20255) to compensate: this shape's
 // centroid sits higher relative to its own bounding box than the old symmetric
@@ -394,6 +395,8 @@ export default function HeroPinwheelEchoArt() {
     return { unitScale, centerX, centerY };
   }, [bounds]);
 
+  const shouldRenderRingShimmer = bounds.width >= DESKTOP_SHIMMER_BREAKPOINT_PX;
+
   const spatialMaskGeometry = useMemo(
     () => ({
       centerX: bounds.width * TEXT_DIM_CENTER_X_FRACTION,
@@ -686,23 +689,25 @@ export default function HeroPinwheelEchoArt() {
             ))}
           </g>
 
-          <g mask={`url(#${uid}-spatialMask)`}>
-            {shimmerRingPaths.map(({ d, keyPrefix }, index) => (
-              <path
-                key={`pinwheel-shimmer-${keyPrefix}-${index}`}
-                className="hero-ring-shimmer"
-                data-active={isMotifHovered ? "true" : "false"}
-                d={d}
-                fill="none"
-                stroke={`url(#${uid}-ringShimmerGradient)`}
-                strokeLinecap="round"
-                strokeWidth={CONTOUR_STROKE_WIDTH * 1.65}
-                vectorEffect="non-scaling-stroke"
-                transform={baseTransform}
-                style={{ animationDelay: `${index * 23}ms` }}
-              />
-            ))}
-          </g>
+          {shouldRenderRingShimmer && (
+            <g mask={`url(#${uid}-spatialMask)`}>
+              {shimmerRingPaths.map(({ d, keyPrefix }, index) => (
+                <path
+                  key={`pinwheel-shimmer-${keyPrefix}-${index}`}
+                  className="hero-ring-shimmer"
+                  data-active={isMotifHovered ? "true" : "false"}
+                  d={d}
+                  fill="none"
+                  stroke={`url(#${uid}-ringShimmerGradient)`}
+                  strokeLinecap="round"
+                  strokeWidth={CONTOUR_STROKE_WIDTH * 1.65}
+                  vectorEffect="non-scaling-stroke"
+                  transform={baseTransform}
+                  style={{ animationDelay: `${index * 23}ms` }}
+                />
+              ))}
+            </g>
+          )}
         </g>
 
         <g
