@@ -107,7 +107,7 @@ const MOBILE_VERTICAL_OFFSET_PX = -20;
 const PINNED_CENTER_Y_FRACTION = 0.2293;
 // Fixed pixel nudge, not folded into the fraction above — 25px should stay
 // 25px regardless of viewport height, not scale proportionally with it.
-const VERTICAL_OFFSET_PX = -5;
+const VERTICAL_OFFSET_PX = -15;
 
 // Spatial attenuation layer for the rings, stacked ON TOP of the existing
 // per-index fade (never replaces it) — a very soft elliptical dip in ring
