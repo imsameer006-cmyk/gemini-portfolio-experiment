@@ -849,7 +849,9 @@ export default function Hero() {
   const sectionRef = useRef<HTMLElement | null>(null);
   const layoutGridRef = useRef<HTMLDivElement | null>(null);
   const copyColumnRef = useRef<HTMLDivElement | null>(null);
+  const copyParagraphRef = useRef<HTMLParagraphElement | null>(null);
   const reelFrameRef = useRef<HTMLDivElement | null>(null);
+  const copyOffsetPxRef = useRef(95);
   const [hoverSuppressed, setHoverSuppressed] = useState(false);
   const [isPhilosophyOpen, setIsPhilosophyOpen] = useState(false);
   const unlockTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
@@ -910,9 +912,10 @@ export default function Hero() {
     const section = sectionRef.current;
     const grid = layoutGridRef.current;
     const copyColumn = copyColumnRef.current;
+    const copyParagraph = copyParagraphRef.current;
     const reelFrame = reelFrameRef.current;
 
-    if (!section || !grid || !copyColumn || !reelFrame) return;
+    if (!section || !grid || !copyColumn || !copyParagraph || !reelFrame) return;
 
     let frameId = 0;
 
@@ -930,6 +933,23 @@ export default function Hero() {
       const reelStyle = getComputedStyle(reelFrame);
       const reelVisible = reelStyle.display !== "none" && reelFrame.offsetParent !== null;
       const gap = 24;
+      const isTabletViewport = window.innerWidth >= 768 && window.innerWidth < 1200;
+      const copyParagraphStyle = getComputedStyle(copyParagraph);
+      const copyParagraphLineHeight = Number.parseFloat(copyParagraphStyle.lineHeight);
+
+      if (isTabletViewport && Number.isFinite(copyParagraphLineHeight)) {
+        const paragraphTopWithoutOffset =
+          copyParagraph.getBoundingClientRect().top - copyOffsetPxRef.current;
+        const targetOffset = Math.max(
+          95,
+          window.innerHeight - paragraphTopWithoutOffset - copyParagraphLineHeight * 2 + 24,
+        );
+        copyOffsetPxRef.current = Math.round(targetOffset);
+        section.style.setProperty("--hero-copy-offset", `${copyOffsetPxRef.current}px`);
+      } else {
+        copyOffsetPxRef.current = 95;
+        section.style.setProperty("--hero-copy-offset", "95px");
+      }
 
       if (!reelVisible || contentWidth <= 0) {
         section.style.setProperty("--hero-reel-width", "0px");
@@ -978,12 +998,13 @@ export default function Hero() {
     <section
       ref={sectionRef}
       aria-label="Introduction"
-      className="homepage-atmosphere home-hero-atmosphere relative overflow-hidden px-0 pt-16 pb-[99px] md:pt-24 md:pb-[131px]"
+      className="homepage-atmosphere home-hero-atmosphere relative overflow-x-hidden px-0 pt-16 pb-[99px] md:pt-24 md:pb-[131px]"
       style={{
         "--homepage-atmosphere-color": "radial-gradient(circle closest-side, rgba(182, 255, 0, 0.08) 0%, rgba(9, 34, 18, 1) 100%), #092212",
         "--hero-heading-color": "#B6FF00",
         "--hero-body-color": "#D9EBE1",
         "--hero-copy-max-width": "760px",
+        "--hero-copy-offset": "95px",
         "--hero-reel-width": "0px",
         "--hero-reel-max-width": "none",
         background: "radial-gradient(circle closest-side, rgba(182, 255, 0, 0.08) 0%, rgba(9, 34, 18, 1) 100%), #092212",
@@ -1006,7 +1027,7 @@ export default function Hero() {
       <HeroShowcaseReel frameRef={reelFrameRef} />
 
       <div ref={layoutGridRef} className="pointer-events-none relative z-10 mx-auto grid min-w-0 w-full max-w-[1360px] grid-cols-1 items-center gap-12 px-6 pt-10 md:grid-cols-12 md:gap-12 md:px-10 md:pt-16 lg:gap-20">
-        <div ref={copyColumnRef} className="hero-copy-column pointer-events-auto flex min-w-0 translate-y-[95px] flex-col items-start text-left md:col-span-9">
+        <div ref={copyColumnRef} className="hero-copy-column pointer-events-auto flex min-w-0 translate-y-[var(--hero-copy-offset)] flex-col items-start text-left md:col-span-9">
           <motion.h1
             initial={{ opacity: 0, y: 28 }}
             animate={{ opacity: 1, y: 0 }}
@@ -1017,6 +1038,7 @@ export default function Hero() {
           </motion.h1>
 
           <motion.p
+            ref={copyParagraphRef}
             initial={{ opacity: 0, y: 18 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.55, delay: 0.24, ease: [0.16, 1, 0.3, 1] }}
