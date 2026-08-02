@@ -852,8 +852,10 @@ export default function Hero() {
   const copyParagraphRef = useRef<HTMLParagraphElement | null>(null);
   const reelFrameRef = useRef<HTMLDivElement | null>(null);
   const copyOffsetPxRef = useRef(95);
+  const isHeroParagraphExpandedRef = useRef(false);
   const [hoverSuppressed, setHoverSuppressed] = useState(false);
   const [isPhilosophyOpen, setIsPhilosophyOpen] = useState(false);
+  const [isHeroParagraphExpanded, setIsHeroParagraphExpanded] = useState(false);
   const unlockTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const hoverTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
@@ -898,6 +900,10 @@ export default function Hero() {
   };
 
   useEffect(() => {
+    isHeroParagraphExpandedRef.current = isHeroParagraphExpanded;
+  }, [isHeroParagraphExpanded]);
+
+  useEffect(() => {
     return () => {
       if (unlockTimeoutRef.current) {
         clearTimeout(unlockTimeoutRef.current);
@@ -933,11 +939,23 @@ export default function Hero() {
       const reelStyle = getComputedStyle(reelFrame);
       const reelVisible = reelStyle.display !== "none" && reelFrame.offsetParent !== null;
       const gap = 24;
+      const isMobileViewport = window.innerWidth < 768;
       const isTabletViewport = window.innerWidth >= 768 && window.innerWidth < 1200;
       const copyParagraphStyle = getComputedStyle(copyParagraph);
       const copyParagraphLineHeight = Number.parseFloat(copyParagraphStyle.lineHeight);
 
-      if (isTabletViewport && Number.isFinite(copyParagraphLineHeight)) {
+      if (isMobileViewport) {
+        if (!isHeroParagraphExpandedRef.current) {
+          const copyRect = copyColumn.getBoundingClientRect();
+          const copyTopWithoutOffset = copyRect.top - copyOffsetPxRef.current;
+          const targetOffset = Math.max(
+            95,
+            window.innerHeight - copyTopWithoutOffset - copyRect.height - 10,
+          );
+          copyOffsetPxRef.current = Math.round(targetOffset);
+        }
+        section.style.setProperty("--hero-copy-offset", `${copyOffsetPxRef.current}px`);
+      } else if (isTabletViewport && Number.isFinite(copyParagraphLineHeight)) {
         const paragraphTopWithoutOffset =
           copyParagraph.getBoundingClientRect().top - copyOffsetPxRef.current;
         const targetOffset = Math.max(
@@ -1027,7 +1045,7 @@ export default function Hero() {
       <HeroShowcaseReel frameRef={reelFrameRef} />
 
       <div ref={layoutGridRef} className="pointer-events-none relative z-10 mx-auto grid min-w-0 w-full max-w-[1360px] grid-cols-1 items-center gap-12 px-6 pt-10 md:grid-cols-12 md:gap-12 md:px-10 md:pt-16 lg:gap-20">
-        <div ref={copyColumnRef} className="hero-copy-column pointer-events-auto flex min-w-0 translate-y-[var(--hero-copy-offset)] flex-col items-start text-left md:col-span-9">
+        <div ref={copyColumnRef} className="hero-copy-column pointer-events-auto mt-[var(--hero-copy-offset)] flex min-w-0 flex-col items-start text-left md:col-span-9 md:mt-0 md:translate-y-[var(--hero-copy-offset)]">
           <motion.h1
             initial={{ opacity: 0, y: 28 }}
             animate={{ opacity: 1, y: 0 }}
@@ -1042,10 +1060,25 @@ export default function Hero() {
             initial={{ opacity: 0, y: 18 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.55, delay: 0.24, ease: [0.16, 1, 0.3, 1] }}
-            className="min-w-0 max-w-full text-[1.0625rem] leading-relaxed text-[var(--hero-body-color)] md:text-lg"
+            className={[
+              "min-w-0 max-w-full text-[1.0625rem] leading-relaxed text-[var(--hero-body-color)] md:text-lg",
+              isHeroParagraphExpanded ? "" : "line-clamp-2 md:line-clamp-none",
+            ].join(" ")}
           >
-            I&apos;m curious and inquisitive by nature — I guess it&apos;s my hidden superpower. For me, nature is the biggest design inspiration. Desert heat from the Middle East warms Europe, ocean water becomes clouds, and travels far to water distant lands. Nothing in an ecosystem is wasted — everything is interwoven, serving the system or failing to survive. I think in systems the same way, treating data, feedback, and failure as signal, not noise. And I prefer honest feedback over praise that sounds good but gives nothing to course-correct on.
+            I&apos;m curious and inquisitive by nature — I guess it&apos;s my hidden superpower. For me, nature is the biggest design inspiration. Nothing in an ecosystem is wasted — everything is interwoven and connected, serving the system or failing to survive. I think in systems the same way, treating data, feedback, and failure as signal, not noise.
           </motion.p>
+          <button
+            type="button"
+            className="mt-3 font-mono text-xs font-semibold uppercase tracking-[0.18em] text-[#B6FF00] underline decoration-[#B6FF00]/35 underline-offset-4 transition-colors duration-200 hover:text-[#E8E3D5] md:hidden"
+            aria-expanded={isHeroParagraphExpanded}
+            onClick={() => {
+              const nextExpanded = !isHeroParagraphExpandedRef.current;
+              isHeroParagraphExpandedRef.current = nextExpanded;
+              setIsHeroParagraphExpanded(nextExpanded);
+            }}
+          >
+            {isHeroParagraphExpanded ? "Less" : "More"}
+          </button>
         </div>
       </div>
       <style>{`
