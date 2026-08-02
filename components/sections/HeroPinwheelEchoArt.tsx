@@ -93,7 +93,7 @@ const HIGHLIGHT_SLOPE = 500;
 // native bounding box is ~403x420 units, so UNIT_SCALE approximates the same
 // visual size rather than matching it to the pixel — close enough by design, not
 // meant to be exact.
-const PINNED_TARGET_DIAMETER = 145.41;
+const PINNED_TARGET_DIAMETER = 130.869;
 const NATIVE_BBOX_MAX = 420; // solid mark's native bounding box, larger dimension
 const UNIT_SCALE = PINNED_TARGET_DIAMETER / NATIVE_BBOX_MAX;
 const PINNED_CENTER_X_FRACTION = 0.18379;
@@ -107,7 +107,7 @@ const MOBILE_VERTICAL_OFFSET_PX = -20;
 const PINNED_CENTER_Y_FRACTION = 0.2293;
 // Fixed pixel nudge, not folded into the fraction above — 25px should stay
 // 25px regardless of viewport height, not scale proportionally with it.
-const VERTICAL_OFFSET_PX = -25;
+const VERTICAL_OFFSET_PX = -5;
 
 // Spatial attenuation layer for the rings, stacked ON TOP of the existing
 // per-index fade (never replaces it) — a very soft elliptical dip in ring
@@ -353,6 +353,7 @@ function useElementBounds<T extends HTMLElement>() {
 export default function HeroPinwheelEchoArt() {
   const uid = useId().replace(/:/g, "");
   const [containerRef, bounds, hasMeasured] = useElementBounds<HTMLDivElement>();
+  const [isMotifHovered, setIsMotifHovered] = useState(false);
 
   // Native bounding box of the solid mark, used to size the grain overlay rect
   // (clipped to the mark's own shape below) so the filter's noise fills it edge
@@ -460,6 +461,13 @@ export default function HeroPinwheelEchoArt() {
   }, [bounds, geometry]);
 
   const baseTransform = `translate(${geometry.centerX} ${geometry.centerY}) scale(${geometry.unitScale}) translate(${-NATIVE_CENTER_X} ${-NATIVE_CENTER_Y})`;
+  const shimmerRingPaths = useMemo(
+    () => [
+      ...offsetRingPaths.map((d) => ({ d, keyPrefix: "offset" })),
+      ...hexagonRingPaths.map((d) => ({ d, keyPrefix: "hexagon" })),
+    ],
+    [hexagonRingPaths, offsetRingPaths],
+  );
 
   return (
     <div
@@ -484,6 +492,35 @@ export default function HeroPinwheelEchoArt() {
         preserveAspectRatio="none"
       >
         <defs>
+          <style>{`
+            .hero-ring-shimmer {
+              opacity: 0;
+            }
+
+            .hero-ring-shimmer[data-active="true"] {
+              animation: hero-ring-shimmer-sweep 546ms cubic-bezier(0.16, 1, 0.3, 1) both;
+            }
+
+            @keyframes hero-ring-shimmer-sweep {
+              0% {
+                opacity: 0;
+              }
+              34% {
+                opacity: 0.78;
+              }
+              100% {
+                opacity: 0;
+              }
+            }
+
+            @media (prefers-reduced-motion: reduce) {
+              .hero-ring-shimmer[data-active="true"] {
+                animation: none;
+                opacity: 0.45;
+              }
+            }
+          `}</style>
+
           {/* Grain effect ported from the pre-dark-forest StructuralAsteriskHeroArt
               (commit 8b29604) — same feTurbulence/feColorMatrix/feComponentTransfer
               mechanics, recolored with the current #B0BC64 accent token instead of
@@ -597,6 +634,19 @@ export default function HeroPinwheelEchoArt() {
               fill={`url(#${uid}-contourFadeGradient)`}
             />
           </mask>
+
+          <radialGradient
+            id={`${uid}-ringShimmerGradient`}
+            cx={geometry.centerX}
+            cy={geometry.centerY}
+            r={radialFadeGeometry.radius}
+            gradientUnits="userSpaceOnUse"
+          >
+            <stop offset="0%" stopColor="#E8E3D5" stopOpacity="0.75" />
+            <stop offset="35%" stopColor="#B6FF00" stopOpacity="0.25" />
+            <stop offset="70%" stopColor="#D9EBE1" stopOpacity="0.38" />
+            <stop offset="100%" stopColor="#D9EBE1" stopOpacity="0.12" />
+          </radialGradient>
         </defs>
 
         {/* One global radial fade centered on the asterisk (contourFadeMask),
@@ -635,9 +685,33 @@ export default function HeroPinwheelEchoArt() {
               />
             ))}
           </g>
+
+          <g mask={`url(#${uid}-spatialMask)`}>
+            {shimmerRingPaths.map(({ d, keyPrefix }, index) => (
+              <path
+                key={`pinwheel-shimmer-${keyPrefix}-${index}`}
+                className="hero-ring-shimmer"
+                data-active={isMotifHovered ? "true" : "false"}
+                d={d}
+                fill="none"
+                stroke={`url(#${uid}-ringShimmerGradient)`}
+                strokeLinecap="round"
+                strokeWidth={CONTOUR_STROKE_WIDTH * 1.65}
+                vectorEffect="non-scaling-stroke"
+                transform={baseTransform}
+                style={{ animationDelay: `${index * 23}ms` }}
+              />
+            ))}
+          </g>
         </g>
 
-        <g clipPath={`url(#${uid}-solidClip)`} transform={baseTransform}>
+        <g
+          clipPath={`url(#${uid}-solidClip)`}
+          transform={baseTransform}
+          onPointerEnter={() => setIsMotifHovered(true)}
+          onPointerLeave={() => setIsMotifHovered(false)}
+          style={{ cursor: "pointer", pointerEvents: "auto" }}
+        >
           <path d={SOLID_PATH} fill="#243427" stroke="#243427" />
           <rect
             x={nativeBBox.minX}
