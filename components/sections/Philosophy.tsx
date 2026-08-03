@@ -27,7 +27,7 @@ export default function Philosophy() {
           {...reveal(0.08)}
           className="mb-6 max-w-[26ch] font-quote text-[clamp(1.75rem,4vw,3.25rem)] leading-tight text-[var(--philosophy-heading-color)]"
         >
-          &ldquo;Design is the practice of understanding complexity, uncovering what matters, and shaping it into experiences people can understand and use.&rdquo;
+          &ldquo;For me, design is the practice of understanding complexity, uncovering what matters, and shaping it into experiences people can understand and use.&rdquo;
         </motion.blockquote>
 
         <motion.p

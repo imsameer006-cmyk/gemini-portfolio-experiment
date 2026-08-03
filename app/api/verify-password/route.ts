@@ -4,6 +4,10 @@ import {
   SITE_AUTH_COOKIE,
 } from "@/lib/site-auth";
 
+const FAILURE_NOTIFICATION_WINDOW_MS = 60_000;
+
+let lastFailedAttemptNotificationAt = 0;
+
 function getSafeRedirectPath(value: FormDataEntryValue | null) {
   if (typeof value !== "string" || !value.startsWith("/") || value.startsWith("//")) {
     return "/";
@@ -25,6 +29,65 @@ function isTransitionRequest(request: NextRequest) {
 
 function jsonError(error: "config" | "invalid", status: number) {
   return NextResponse.json({ ok: false as const, error }, { status });
+}
+
+function formatNotificationTimestamp(date: Date) {
+  return date.toISOString();
+}
+
+function logNotificationError(error: unknown) {
+  console.error("[ntfy] Failed to send password gate notification", error);
+}
+
+function sendNtfyNotification({
+  message,
+  title,
+  tags,
+}: {
+  message: string;
+  title: string;
+  tags: string;
+}) {
+  const topic = process.env.NTFY_TOPIC;
+
+  if (!topic) {
+    return;
+  }
+
+  void fetch(`https://ntfy.sh/${topic}`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "text/plain; charset=utf-8",
+      "X-Title": title,
+      "X-Tags": tags,
+    },
+    body: message,
+    cache: "no-store",
+  }).catch(logNotificationError);
+}
+
+function notifySuccessfulPasswordEntry() {
+  sendNtfyNotification({
+    title: "Portfolio unlocked",
+    tags: "unlock",
+    message: `Password entered successfully\n${formatNotificationTimestamp(new Date())}`,
+  });
+}
+
+function notifyFailedPasswordAttempt() {
+  const now = Date.now();
+
+  if (now - lastFailedAttemptNotificationAt < FAILURE_NOTIFICATION_WINDOW_MS) {
+    return;
+  }
+
+  lastFailedAttemptNotificationAt = now;
+
+  sendNtfyNotification({
+    title: "Failed attempt",
+    tags: "warning,no_entry",
+    message: `Failed password attempt\n${formatNotificationTimestamp(new Date(now))}`,
+  });
 }
 
 function constantTimeEqual(a: string, b: string) {
@@ -50,6 +113,7 @@ export async function POST(request: NextRequest) {
   }
 
   if (typeof submittedPassword !== "string" || !constantTimeEqual(submittedPassword, configuredPassword)) {
+    notifyFailedPasswordAttempt();
     return transitionRequest ? jsonError("invalid", 401) : redirectToEnter(request, nextPath, "invalid");
   }
 
@@ -71,6 +135,8 @@ export async function POST(request: NextRequest) {
     sameSite: "lax",
     path: "/",
   });
+
+  notifySuccessfulPasswordEntry();
 
   return response;
 }
