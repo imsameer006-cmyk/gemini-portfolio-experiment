@@ -241,6 +241,14 @@ export default function Nav() {
                 if (pathname === "/") {
                   e.preventDefault();
                   window.scrollTo({ top: 0, behavior: "smooth" });
+                  return;
+                }
+
+                if (pathname === "/enter") {
+                  const passwordPanel = document.querySelector<HTMLElement>("[data-password-panel-root='true']");
+                  if (passwordPanel) {
+                    passwordPanel.style.viewTransitionName = "none";
+                  }
                 }
               }}
               className={[

@@ -252,8 +252,28 @@ function HeroShowcaseReel({
       className="hero-showcase-reel pointer-events-none absolute inset-x-0 inset-y-0 z-0 hidden md:block"
       aria-label="Project preview reel"
     >
-      <div className="mx-auto flex h-full w-full max-w-[1360px] justify-end px-6 md:px-10">
-        <div ref={frameRef} className="hero-showcase-frame h-full">
+      <div
+        className="mx-auto flex h-full w-full max-w-[1360px] justify-end px-6 md:px-10"
+        style={{
+          display: "flex",
+          height: "100%",
+          width: "100%",
+          maxWidth: "1360px",
+          marginInline: "auto",
+          justifyContent: "flex-end",
+          paddingInline: "clamp(1.5rem, 3vw, 2.5rem)",
+        }}
+      >
+        <div
+          ref={frameRef}
+          className="hero-showcase-frame h-full"
+          style={{
+            height: "100%",
+            width: "calc(((90svh - 24px) / 1.5) * 1.08)",
+            maxWidth: "var(--hero-reel-max-width, none)",
+            containerType: "size",
+          }}
+        >
           <div
             className="hero-showcase-mask pointer-events-auto h-full overflow-hidden"
             onMouseEnter={() => {
@@ -343,9 +363,6 @@ function HeroShowcaseReel({
       <style>{`
         .hero-showcase-frame {
           --hero-showcase-gap: 24px;
-          container-type: size;
-          width: calc(((90svh - var(--hero-showcase-gap)) / 1.5) * 1.08);
-          max-width: var(--hero-reel-max-width, none);
         }
 
         .hero-showcase-mask {
@@ -1015,17 +1032,14 @@ export default function Hero() {
       const minimumCopyWidth = Math.min(320, contentWidth);
       const reelMaxWidth = Math.max(0, contentWidth - minimumCopyWidth - gap);
       section.style.setProperty("--hero-reel-max-width", `${reelMaxWidth}px`);
+      const measuredReelWidth = reelFrame.getBoundingClientRect().width;
+      const copyMaxWidth = Math.max(
+        0,
+        Math.min(760, contentWidth - measuredReelWidth - gap),
+      );
 
-      requestAnimationFrame(() => {
-        const measuredReelWidth = reelFrame.getBoundingClientRect().width;
-        const copyMaxWidth = Math.max(
-          0,
-          Math.min(760, contentWidth - measuredReelWidth - gap),
-        );
-
-        section.style.setProperty("--hero-reel-width", `${measuredReelWidth}px`);
-        section.style.setProperty("--hero-copy-max-width", `${copyMaxWidth}px`);
-      });
+      section.style.setProperty("--hero-reel-width", `${measuredReelWidth}px`);
+      section.style.setProperty("--hero-copy-max-width", `${copyMaxWidth}px`);
     };
 
     const scheduleUpdate = () => {

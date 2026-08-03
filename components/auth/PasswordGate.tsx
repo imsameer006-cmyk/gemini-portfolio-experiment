@@ -1,6 +1,6 @@
 "use client";
 
-import { motion, useAnimationControls, useReducedMotion } from "framer-motion";
+import { useReducedMotion } from "framer-motion";
 import { useRouter } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 
@@ -17,32 +17,17 @@ type ViewTransitionDocument = Document & {
   };
 };
 
-const gateTransition = {
-  duration: 1.8,
-  ease: [0.16, 1, 0.3, 1] as [number, number, number, number],
-};
-
 export default function PasswordGate({ errorMessage, nextPath }: PasswordGateProps) {
   const router = useRouter();
   const shouldReduceMotion = useReducedMotion();
-  const controls = useAnimationControls();
   const inputRef = useRef<HTMLInputElement | null>(null);
+  const panelRef = useRef<HTMLElement | null>(null);
   const [error, setError] = useState(errorMessage);
   const [pending, setPending] = useState(false);
 
   useEffect(() => {
     inputRef.current?.focus();
   }, []);
-
-  useEffect(() => {
-    if (shouldReduceMotion) {
-      controls.set({ opacity: 1, y: 0 });
-      return;
-    }
-
-    controls.set({ opacity: 0, y: 28 });
-    void controls.start({ opacity: 1, y: 0 });
-  }, [controls, shouldReduceMotion]);
 
   useEffect(() => {
     setError(errorMessage);
@@ -81,10 +66,10 @@ export default function PasswordGate({ errorMessage, nextPath }: PasswordGatePro
         }}
       />
 
-      <motion.section
-        initial={shouldReduceMotion ? false : { opacity: 0, y: 28 }}
-        animate={controls}
-        transition={gateTransition}
+      <section
+        ref={panelRef}
+        data-password-panel-root="true"
+        style={shouldReduceMotion ? undefined : { viewTransitionName: "password-panel" }}
         className="relative z-10 w-full max-w-[420px] border-t border-[#B0BC64]/35 pt-10"
       >
         <p className="mb-3 text-xs font-medium uppercase tracking-widest text-[#B6FF00]">
@@ -141,10 +126,6 @@ export default function PasswordGate({ errorMessage, nextPath }: PasswordGatePro
                 return;
               }
 
-              if (!shouldReduceMotion) {
-                await controls.start({ opacity: 0, y: -28 });
-              }
-
               navigateToProject(payload.redirectTo);
             } catch {
               setError("This site is temporarily unavailable. Please try again later.");
@@ -193,7 +174,7 @@ export default function PasswordGate({ errorMessage, nextPath }: PasswordGatePro
             box-shadow: none !important;
           }
         `}</style>
-      </motion.section>
+      </section>
     </section>
   );
 }

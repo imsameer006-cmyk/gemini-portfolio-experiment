@@ -8,7 +8,7 @@ export default function PageTransitionShell({ children }: { children: ReactNode 
 
   return (
     <div
-      className="min-h-full"
+      className="min-h-screen"
       style={shouldReduceMotion ? undefined : { viewTransitionName: "page-body" }}
     >
       {children}

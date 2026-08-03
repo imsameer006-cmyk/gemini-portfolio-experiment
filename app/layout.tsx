@@ -93,7 +93,7 @@ export default function RootLayout({
       data-scroll-behavior="smooth"
       className={`${geistSans.variable} ${geistMono.variable} ${openSans.variable} ${linikSans.variable} ${archivoBlack.variable}`}
     >
-      <body className="bg-[var(--color-warm-bg)] text-[var(--color-text)] antialiased min-h-screen flex flex-col">
+      <body className="bg-[#092212] text-[#E8E3D5] antialiased min-h-screen flex flex-col">
         <MotionProvider>
           {analyticsEnabled && <AnalyticsTracker />}
           <Nav />

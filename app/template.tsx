@@ -2,7 +2,15 @@
 
 import { motion, useReducedMotion } from "framer-motion";
 import { usePathname } from "next/navigation";
-import type { ReactNode } from "react";
+import { useEffect, useState, type ReactNode } from "react";
+
+type ViewTransitionDocument = Document & {
+  startViewTransition?: (callback: () => void | Promise<void>) => {
+    finished: Promise<void>;
+    ready: Promise<void>;
+    updateCallbackDone: Promise<void>;
+  };
+};
 
 const pageTransition = {
   duration: 1.64,
@@ -13,19 +21,23 @@ const pageTransition = {
 export default function Template({ children }: { children: ReactNode }) {
   const pathname = usePathname();
   const shouldReduceMotion = useReducedMotion();
-  const isProjectPage = pathname.startsWith("/work/");
-  const initial = shouldReduceMotion
-    ? false
-    : isProjectPage
-      ? { opacity: 0, y: 16 }
-      : { opacity: 0 };
-  const animate = { opacity: 1, y: 0 };
+  const [hasNativeViewTransitions, setHasNativeViewTransitions] = useState(false);
+
+  useEffect(() => {
+    setHasNativeViewTransitions(
+      typeof (document as ViewTransitionDocument).startViewTransition === "function",
+    );
+  }, []);
+
+  if (shouldReduceMotion || hasNativeViewTransitions) {
+    return <>{children}</>;
+  }
 
   return (
     <motion.div
       key={pathname}
-      initial={initial}
-      animate={animate}
+      initial={pathname.startsWith("/work/") ? { opacity: 0, y: 16 } : { opacity: 0 }}
+      animate={{ opacity: 1, y: 0 }}
       transition={pageTransition}
     >
       {children}
