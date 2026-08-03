@@ -19,6 +19,14 @@ function redirectToEnter(request: NextRequest, nextPath: string, error: "config"
   return NextResponse.redirect(url, { status: 303 });
 }
 
+function isTransitionRequest(request: NextRequest) {
+  return request.headers.get("x-site-transition") === "1";
+}
+
+function jsonError(error: "config" | "invalid", status: number) {
+  return NextResponse.json({ ok: false as const, error }, { status });
+}
+
 function constantTimeEqual(a: string, b: string) {
   if (a.length !== b.length) return false;
 
@@ -35,22 +43,26 @@ export async function POST(request: NextRequest) {
   const submittedPassword = formData.get("password");
   const nextPath = getSafeRedirectPath(formData.get("next"));
   const configuredPassword = process.env.SITE_PASSWORD;
+  const transitionRequest = isTransitionRequest(request);
 
   if (!configuredPassword) {
-    return redirectToEnter(request, nextPath, "config");
+    return transitionRequest ? jsonError("config", 503) : redirectToEnter(request, nextPath, "config");
   }
 
   if (typeof submittedPassword !== "string" || !constantTimeEqual(submittedPassword, configuredPassword)) {
-    return redirectToEnter(request, nextPath, "invalid");
+    return transitionRequest ? jsonError("invalid", 401) : redirectToEnter(request, nextPath, "invalid");
   }
 
   const cookieValue = await createSiteAuthCookieValue();
 
   if (!cookieValue) {
-    return redirectToEnter(request, nextPath, "config");
+    return transitionRequest ? jsonError("config", 503) : redirectToEnter(request, nextPath, "config");
   }
 
-  const response = NextResponse.redirect(new URL(nextPath, request.url), { status: 303 });
+  const response = transitionRequest
+    ? NextResponse.json({ ok: true as const, redirectTo: nextPath })
+    : NextResponse.redirect(new URL(nextPath, request.url), { status: 303 });
+
   response.cookies.set({
     name: SITE_AUTH_COOKIE,
     value: cookieValue,

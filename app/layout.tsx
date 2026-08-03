@@ -7,6 +7,7 @@ import Nav from "@/components/Nav";
 import Footer from "@/components/Footer";
 import AnalyticsTracker from "@/components/analytics/AnalyticsTracker";
 import MotionProvider from "@/components/providers/MotionProvider";
+import PageTransitionShell from "@/components/providers/PageTransitionShell";
 import { isAnalyticsEnabled } from "@/lib/analytics/enabled";
 import "./globals.css";
 
@@ -96,7 +97,9 @@ export default function RootLayout({
         <MotionProvider>
           {analyticsEnabled && <AnalyticsTracker />}
           <Nav />
-          <main className="flex-1">{children}</main>
+          <main className="flex-1">
+            <PageTransitionShell>{children}</PageTransitionShell>
+          </main>
           <Footer />
         </MotionProvider>
         {analyticsEnabled && gaId && <GoogleAnalytics gaId={gaId} />}

@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { LinkedinLogo } from "@phosphor-icons/react";
+import TransitionLink from "@/components/ui/TransitionLink";
 
 const links = [
   { label: "Work", href: "#work" },
@@ -217,6 +218,7 @@ export default function Nav() {
         ref={headerRef}
         data-nav-surface-state={surface}
         data-nav-floating={scrolled ? "true" : "false"}
+        style={{ viewTransitionName: "site-nav" }}
         className={[
           "premium-glass-material fixed z-50 overflow-hidden border transition-[top,left,right,border-radius,background-color,border-color,box-shadow,backdrop-filter] duration-[250ms] ease-in-out",
           scrolled
@@ -232,7 +234,7 @@ export default function Nav() {
         <nav className="max-w-[1360px] mx-auto px-6 md:px-10 h-[46px] flex items-center">
           {/* Wordmark — flex-1 to balance the CTA on the right */}
           <div className="flex-1 flex items-center">
-            <Link
+            <TransitionLink
               href="/"
               onClick={(e) => {
                 setMobileOpen(false);
@@ -252,7 +254,7 @@ export default function Nav() {
               <span className="font-display text-[13px] font-semibold tracking-[0.14em]">
                 Sameer G.
               </span>
-            </Link>
+            </TransitionLink>
           </div>
 
           {/* Desktop links — sits at true center */}

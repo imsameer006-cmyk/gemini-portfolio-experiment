@@ -1,9 +1,9 @@
 "use client";
 
 import { motion } from "framer-motion";
-import Link from "next/link";
 import type { Project } from "@/lib/types";
 import { useReveal, staggerDelay } from "@/lib/motion";
+import TransitionLink from "@/components/ui/TransitionLink";
 
 interface ProjectCardProps {
   project: Project;
@@ -18,8 +18,8 @@ export default function ProjectCard({ project, index }: ProjectCardProps) {
       {...reveal(staggerDelay(index))}
       className="h-full"
     >
-      <Link
-        href={`/work/${project.slug}`}
+      <TransitionLink
+        href={`/enter?next=${encodeURIComponent(`/work/${project.slug}`)}`}
         prefetch={false}
         className={[
           // Base layout & structure
@@ -99,7 +99,7 @@ export default function ProjectCard({ project, index }: ProjectCardProps) {
             </div>
           </div>
         </div>
-      </Link>
+      </TransitionLink>
     </motion.article>
   );
 }

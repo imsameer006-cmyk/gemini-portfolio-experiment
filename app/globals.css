@@ -361,6 +361,63 @@ body {
   text-rendering: optimizeLegibility;
 }
 
+::view-transition-group(root) {
+  animation: none;
+}
+
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation: none;
+  mix-blend-mode: normal;
+}
+
+::view-transition-group(site-nav),
+::view-transition-old(site-nav),
+::view-transition-new(site-nav) {
+  animation: none;
+}
+
+::view-transition-old(site-nav) {
+  display: none;
+}
+
+::view-transition-group(page-body) {
+  background-color: #092212;
+}
+
+::view-transition-old(page-body) {
+  animation: page-body-fade-out 520ms cubic-bezier(0.22, 1, 0.36, 1) both;
+  background-color: #092212;
+}
+
+::view-transition-new(page-body) {
+  animation: page-body-fade-in 620ms cubic-bezier(0.22, 1, 0.36, 1) both;
+  background-color: #092212;
+}
+
+::view-transition-image-pair(page-body) {
+  isolation: isolate;
+  background-color: #092212;
+}
+
+@keyframes page-body-fade-out {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}
+
+@keyframes page-body-fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
 /* ── Typography Helpers ─────────────────────────────────────── */
 .font-display {
   font-family: var(--font-display);
@@ -437,6 +494,13 @@ body {
   }
   html {
     scroll-behavior: auto;
+  }
+
+  ::view-transition-old(*),
+  ::view-transition-new(*),
+  ::view-transition-group(*) {
+    animation-duration: 0.01ms !important;
+    animation-delay: 0ms !important;
   }
 }
 
