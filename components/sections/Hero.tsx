@@ -14,6 +14,54 @@ type ClarityThreadVisualProps = {
   onNodeUnlock: () => void;
 };
 
+const heroArtVariants = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: {
+      duration: 0.6,
+      delay: 0,
+      ease: [0.16, 1, 0.3, 1] as [number, number, number, number],
+    },
+  },
+};
+
+const heroCopyVariants = {
+  hidden: { opacity: 1 },
+  visible: {
+    opacity: 1,
+    transition: {
+      staggerChildren: 0.06,
+      delayChildren: 0.1,
+    },
+  },
+};
+
+const heroCopyItemVariants = {
+  hidden: { opacity: 0, y: 6 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: {
+      duration: 0.6,
+      ease: [0.16, 1, 0.3, 1] as [number, number, number, number],
+    },
+  },
+};
+
+const heroCardsVariants = {
+  hidden: { opacity: 0, y: 6 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: {
+      duration: 0.6,
+      delay: 0.22,
+      ease: [0.16, 1, 0.3, 1] as [number, number, number, number],
+    },
+  },
+};
+
 const showLegacyHeroArt = false;
 const showStructuralAsteriskArt = false;
 
@@ -846,6 +894,7 @@ function PhilosophyOverlay({ isOpen, onComplete }: { isOpen: boolean; onComplete
 }
 
 export default function Hero() {
+  const shouldReduceMotion = useReducedMotion();
   const sectionRef = useRef<HTMLElement | null>(null);
   const layoutGridRef = useRef<HTMLDivElement | null>(null);
   const copyColumnRef = useRef<HTMLDivElement | null>(null);
@@ -1028,15 +1077,33 @@ export default function Hero() {
         onComplete={closePhilosophy}
       />
       {showStructuralAsteriskArt && <StructuralAsteriskHeroArt />}
-      <HeroPinwheelEchoArt />
-      <HeroShowcaseReel frameRef={reelFrameRef} />
+      <motion.div
+        initial={shouldReduceMotion ? false : "hidden"}
+        animate={shouldReduceMotion ? undefined : "visible"}
+        variants={heroArtVariants}
+        className="absolute inset-0 z-0"
+      >
+        <HeroPinwheelEchoArt />
+      </motion.div>
+      <motion.div
+        initial={shouldReduceMotion ? false : "hidden"}
+        animate={shouldReduceMotion ? undefined : "visible"}
+        variants={heroCardsVariants}
+        className="absolute inset-0 z-0"
+      >
+        <HeroShowcaseReel frameRef={reelFrameRef} />
+      </motion.div>
 
       <div ref={layoutGridRef} className="pointer-events-none relative z-10 mx-auto grid min-w-0 w-full max-w-[1360px] grid-cols-1 items-start gap-12 px-6 pt-[max(2.5rem,calc(100svh-374px))] md:grid-cols-12 md:items-center md:gap-12 md:px-10 md:pt-16 lg:gap-20">
-        <div ref={copyColumnRef} className="hero-copy-column pointer-events-auto flex min-w-0 flex-col items-start text-left md:col-span-9 md:translate-y-[var(--hero-copy-offset)]">
+        <motion.div
+          ref={copyColumnRef}
+          initial={shouldReduceMotion ? false : "hidden"}
+          animate={shouldReduceMotion ? undefined : "visible"}
+          variants={heroCopyVariants}
+          className="hero-copy-column pointer-events-auto flex min-w-0 flex-col items-start text-left md:col-span-9 md:translate-y-[var(--hero-copy-offset)]"
+        >
           <motion.h1
-            initial={{ opacity: 0, y: 28 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.65, delay: 0.12, ease: [0.16, 1, 0.3, 1] }}
+            variants={heroCopyItemVariants}
             className="mt-0 mb-[15px] w-fit min-w-0 max-w-full font-display text-[clamp(3rem,6.5vw,5.5rem)] font-black leading-[1.05] text-[var(--hero-heading-color)]"
           >
             Hi, I discover patterns, & connect the dots.
@@ -1044,9 +1111,7 @@ export default function Hero() {
 
           <motion.p
             ref={copyParagraphRef}
-            initial={{ opacity: 0, y: 18 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.55, delay: 0.24, ease: [0.16, 1, 0.3, 1] }}
+            variants={heroCopyItemVariants}
             className={[
               "min-w-0 max-w-full text-[1.0625rem] leading-relaxed text-[var(--hero-body-color)] md:text-lg",
               isHeroParagraphExpanded ? "" : "line-clamp-2 md:line-clamp-none",
@@ -1054,15 +1119,16 @@ export default function Hero() {
           >
             I&apos;m curious and inquisitive by nature — I guess it&apos;s my hidden superpower. For me, nature is the biggest design inspiration. Nothing in an ecosystem is wasted — everything is interwoven and connected, serving the system or failing to survive. I think in systems the same way, treating data, feedback, and failure as signal, not noise.
           </motion.p>
-          <button
+          <motion.button
             type="button"
+            variants={heroCopyItemVariants}
             className="mt-3 font-mono text-xs font-semibold uppercase tracking-[0.18em] text-[#B6FF00] underline decoration-[#B6FF00]/35 underline-offset-4 transition-colors duration-200 hover:text-[#E8E3D5] md:hidden"
             aria-expanded={isHeroParagraphExpanded}
             onClick={() => setIsHeroParagraphExpanded((isExpanded) => !isExpanded)}
           >
             {isHeroParagraphExpanded ? "Less" : "More"}
-          </button>
-        </div>
+          </motion.button>
+        </motion.div>
       </div>
       <style>{`
         .hero-copy-column {
