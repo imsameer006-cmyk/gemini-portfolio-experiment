@@ -1,4 +1,4 @@
-import { NextResponse, type NextRequest } from "next/server";
+import { after, NextResponse, type NextRequest } from "next/server";
 import {
   createSiteAuthCookieValue,
   SITE_AUTH_COOKIE,
@@ -39,7 +39,7 @@ function logNotificationError(error: unknown) {
   console.error("[ntfy] Failed to send password gate notification", error);
 }
 
-function sendNtfyNotification({
+async function sendNtfyNotification({
   message,
   title,
   tags,
@@ -54,20 +54,46 @@ function sendNtfyNotification({
     return;
   }
 
-  void fetch(`https://ntfy.sh/${topic}`, {
-    method: "POST",
-    headers: {
-      "Content-Type": "text/plain; charset=utf-8",
-      "X-Title": title,
-      "X-Tags": tags,
-    },
-    body: message,
-    cache: "no-store",
-  }).catch(logNotificationError);
+  const controller = new AbortController();
+  const timeoutId = setTimeout(() => controller.abort(), 5_000);
+
+  try {
+    const response = await fetch(`https://ntfy.sh/${topic}`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "text/plain; charset=utf-8",
+        "X-Title": title,
+        "X-Tags": tags,
+      },
+      body: message,
+      cache: "no-store",
+      signal: controller.signal,
+    });
+
+    if (!response.ok) {
+      logNotificationError(
+        new Error(`ntfy.sh responded with ${response.status} ${response.statusText}`),
+      );
+    }
+  } catch (error) {
+    logNotificationError(error);
+  } finally {
+    clearTimeout(timeoutId);
+  }
+}
+
+function scheduleNtfyNotification(payload: {
+  message: string;
+  title: string;
+  tags: string;
+}) {
+  after(async () => {
+    await sendNtfyNotification(payload);
+  });
 }
 
 function notifySuccessfulPasswordEntry() {
-  sendNtfyNotification({
+  scheduleNtfyNotification({
     title: "Portfolio unlocked",
     tags: "unlock",
     message: `Password entered successfully\n${formatNotificationTimestamp(new Date())}`,
@@ -83,7 +109,7 @@ function notifyFailedPasswordAttempt() {
 
   lastFailedAttemptNotificationAt = now;
 
-  sendNtfyNotification({
+  scheduleNtfyNotification({
     title: "Failed attempt",
     tags: "warning,no_entry",
     message: `Failed password attempt\n${formatNotificationTimestamp(new Date(now))}`,

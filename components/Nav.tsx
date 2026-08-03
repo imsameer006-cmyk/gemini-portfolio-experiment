@@ -216,6 +216,7 @@ export default function Nav() {
     <>
       <header
         ref={headerRef}
+        data-site-nav-root="true"
         data-nav-surface-state={surface}
         data-nav-floating={scrolled ? "true" : "false"}
         style={{ viewTransitionName: "site-nav" }}

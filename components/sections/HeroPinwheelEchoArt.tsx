@@ -133,6 +133,10 @@ const TEXT_DIM_MIN_OPACITY = 0.45;
 type Point = { x: number; y: number };
 type Bounds = { left: number; width: number; height: number };
 
+type HeroPinwheelEchoArtProps = {
+  centerYOverridePx?: number | null;
+};
+
 function parseAbsolutePath(d: string): Point[] {
   const commands = d.match(/[MLHVZ][^MLHVZ]*/g) ?? [];
   const pts: Point[] = [];
@@ -351,7 +355,7 @@ function useElementBounds<T extends HTMLElement>() {
   return [ref, bounds, hasMeasured] as const;
 }
 
-export default function HeroPinwheelEchoArt() {
+export default function HeroPinwheelEchoArt({ centerYOverridePx = null }: HeroPinwheelEchoArtProps) {
   const uid = useId().replace(/:/g, "");
   const [containerRef, bounds, hasMeasured] = useElementBounds<HTMLDivElement>();
   const [isMotifHovered, setIsMotifHovered] = useState(false);
@@ -388,12 +392,12 @@ export default function HeroPinwheelEchoArt() {
       typeof window === "undefined" ? bounds.width / 2 : window.innerWidth / 2 - bounds.left;
     const centerX =
       isMobile ? screenCenterX : bounds.width * PINNED_CENTER_X_FRACTION;
-    const centerY =
-      bounds.height * PINNED_CENTER_Y_FRACTION + VERTICAL_OFFSET_PX + (isMobile ? MOBILE_VERTICAL_OFFSET_PX : 0);
+    const centerY = centerYOverridePx ??
+      (bounds.height * PINNED_CENTER_Y_FRACTION + VERTICAL_OFFSET_PX + (isMobile ? MOBILE_VERTICAL_OFFSET_PX : 0));
     const unitScale = UNIT_SCALE * (isMobile ? MOBILE_MOTIF_SCALE_MULTIPLIER : 1);
 
     return { unitScale, centerX, centerY };
-  }, [bounds]);
+  }, [bounds, centerYOverridePx]);
 
   const shouldRenderRingShimmer = bounds.width >= DESKTOP_SHIMMER_BREAKPOINT_PX;
 
@@ -486,7 +490,7 @@ export default function HeroPinwheelEchoArt() {
           page-load, not as a shape resizing itself. The ref-bearing div above
           still always renders, so the measurement in useElementBounds can
           actually happen. */}
-      {hasMeasured && (
+      {hasMeasured && centerYOverridePx !== null && (
       <svg
         viewBox={`0 0 ${bounds.width} ${bounds.height}`}
         width="100%"

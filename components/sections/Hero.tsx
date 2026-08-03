@@ -915,12 +915,14 @@ export default function Hero() {
   const sectionRef = useRef<HTMLElement | null>(null);
   const layoutGridRef = useRef<HTMLDivElement | null>(null);
   const copyColumnRef = useRef<HTMLDivElement | null>(null);
+  const headingRef = useRef<HTMLHeadingElement | null>(null);
   const copyParagraphRef = useRef<HTMLParagraphElement | null>(null);
   const reelFrameRef = useRef<HTMLDivElement | null>(null);
   const copyOffsetPxRef = useRef(95);
   const [hoverSuppressed, setHoverSuppressed] = useState(false);
   const [isPhilosophyOpen, setIsPhilosophyOpen] = useState(false);
   const [isHeroParagraphExpanded, setIsHeroParagraphExpanded] = useState(false);
+  const [motifCenterYOverride, setMotifCenterYOverride] = useState<number | null>(null);
   const unlockTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const hoverTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
@@ -1062,6 +1064,49 @@ export default function Hero() {
     };
   }, []);
 
+  useLayoutEffect(() => {
+    let frameId = 0;
+
+    const updateMotifCenter = () => {
+      frameId = 0;
+      const section = sectionRef.current;
+      const heading = headingRef.current;
+      const nav = document.querySelector<HTMLElement>("[data-site-nav-root='true']");
+
+      if (!section || !heading || !nav) {
+        frameId = requestAnimationFrame(updateMotifCenter);
+        return;
+      }
+
+      const sectionRect = section.getBoundingClientRect();
+      const navRect = nav.getBoundingClientRect();
+      const headingRect = heading.getBoundingClientRect();
+      const midpointViewportY = (navRect.bottom + headingRect.top) / 2;
+
+      setMotifCenterYOverride(midpointViewportY - sectionRect.top);
+    };
+
+    const scheduleUpdate = () => {
+      if (frameId) return;
+      frameId = requestAnimationFrame(updateMotifCenter);
+    };
+
+    updateMotifCenter();
+
+    const resizeObserver = new ResizeObserver(scheduleUpdate);
+    if (sectionRef.current) resizeObserver.observe(sectionRef.current);
+    if (headingRef.current) resizeObserver.observe(headingRef.current);
+    const navNode = document.querySelector<HTMLElement>("[data-site-nav-root='true']");
+    if (navNode) resizeObserver.observe(navNode);
+    window.addEventListener("resize", scheduleUpdate);
+
+    return () => {
+      if (frameId) cancelAnimationFrame(frameId);
+      resizeObserver.disconnect();
+      window.removeEventListener("resize", scheduleUpdate);
+    };
+  }, []);
+
   return (
     <section
       ref={sectionRef}
@@ -1097,7 +1142,7 @@ export default function Hero() {
         variants={heroArtVariants}
         className="absolute inset-0 z-0"
       >
-        <HeroPinwheelEchoArt />
+        <HeroPinwheelEchoArt centerYOverridePx={motifCenterYOverride} />
       </motion.div>
       <motion.div
         initial={shouldReduceMotion ? false : "hidden"}
@@ -1117,6 +1162,7 @@ export default function Hero() {
           className="hero-copy-column pointer-events-auto flex min-w-0 flex-col items-start text-left md:col-span-9 md:translate-y-[var(--hero-copy-offset)]"
         >
           <motion.h1
+            ref={headingRef}
             variants={heroCopyItemVariants}
             className="mt-0 mb-[15px] w-fit min-w-0 max-w-full font-display text-[clamp(3rem,6.5vw,5.5rem)] font-black leading-[1.05] text-[var(--hero-heading-color)]"
           >
