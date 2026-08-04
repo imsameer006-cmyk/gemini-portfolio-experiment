@@ -204,12 +204,13 @@ export default function ExperienceMoments() {
   return (
     <section
       id="experience-moments"
-      className="bg-[#051209] px-6 pb-24 pt-0 md:px-10 md:pb-32"
+      className="relative bg-[#051209] px-6 pb-10 pt-8 md:px-10 md:pb-16 md:pt-12"
     >
-      <div className="mx-auto max-w-[1280px] pt-16">
+      <div aria-hidden="true" className="pointer-events-none absolute left-1/2 top-0 w-[calc(100%-3rem)] max-w-[1280px] -translate-x-1/2 border-t border-white/10 md:w-[calc(100%-5rem)]" />
+      <div className="mx-auto max-w-[1280px]">
         <motion.div
           {...reveal()}
-          className="mb-12 grid gap-5 lg:grid-cols-[0.7fr_1fr] lg:items-end"
+          className="mb-12 grid gap-5 lg:grid-cols-[0.7fr_1fr] lg:items-start"
         >
           <div>
             <p className="mb-3 text-xs font-semibold uppercase tracking-widest text-[var(--moments-eyebrow-color)]">

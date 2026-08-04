@@ -19,9 +19,10 @@ export default function About() {
   return (
     <section
       id="about"
-      className="bg-[#051209] px-6 pb-24 pt-0 md:px-10 md:pb-32 md:pt-0"
+      className="relative bg-[#051209] px-6 pb-8 pt-10 md:px-10 md:pb-12 md:pt-16"
     >
-      <div className="mx-auto max-w-[1280px] pt-16">
+      <div aria-hidden="true" className="pointer-events-none absolute left-1/2 top-0 w-[calc(100%-3rem)] max-w-[1280px] -translate-x-1/2 border-t border-white/10 md:w-[calc(100%-5rem)]" />
+      <div className="mx-auto max-w-[1280px]">
         <p className="mb-10 text-xs font-semibold uppercase tracking-widest text-[var(--about-eyebrow-color)]">
           About
         </p>

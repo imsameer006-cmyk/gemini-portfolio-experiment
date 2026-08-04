@@ -18,7 +18,8 @@ export default function Process() {
   const revealFade = useRevealFade();
 
   return (
-    <section id="process" className="bg-[var(--process-background-color)] px-6 md:px-10 py-24 md:py-32">
+    <section id="process" className="relative bg-[var(--process-background-color)] px-6 pb-10 pt-8 md:px-10 md:pb-16 md:pt-12">
+      <div aria-hidden="true" className="pointer-events-none absolute left-1/2 top-0 w-[calc(100%-3rem)] max-w-[1280px] -translate-x-1/2 border-t border-white/10 md:w-[calc(100%-5rem)]" />
       <div className="max-w-[1280px] mx-auto">
         {/* Section header */}
         <div className="mb-16">

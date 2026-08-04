@@ -10,7 +10,7 @@ export default function Contact() {
   return (
     <section
       id="contact"
-      className="bg-[var(--contact-background-color)] px-6 md:px-10 py-24 md:py-36"
+      className="bg-[var(--contact-background-color)] px-6 pb-24 pt-12 md:px-10 md:pb-36 md:pt-20"
     >
       <div className="max-w-[1280px] mx-auto">
         <motion.p

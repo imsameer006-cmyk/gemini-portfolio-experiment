@@ -11,8 +11,9 @@ export default function Philosophy() {
   return (
     <section
       id="philosophy"
-      className="bg-[var(--philosophy-background-color)] px-6 md:px-10 py-24 md:py-32"
+      className="relative bg-[var(--philosophy-background-color)] px-6 pb-8 pt-10 md:px-10 md:pb-12 md:pt-16"
     >
+      <div aria-hidden="true" className="pointer-events-none absolute left-1/2 top-0 w-[calc(100%-3rem)] max-w-[1280px] -translate-x-1/2 border-t border-white/10 md:w-[calc(100%-5rem)]" />
       <div className="max-w-[1280px] mx-auto">
         {/* Section label */}
         <motion.p
@@ -39,7 +40,7 @@ export default function Philosophy() {
         </motion.p>
 
         {/* Divider */}
-        <div className="border-t border-white/10 my-8" />
+        <div className="my-8 h-px bg-gradient-to-r from-transparent via-white/10 to-transparent" />
 
         {/* Beliefs grid */}
         <div className="grid grid-cols-1 gap-12 md:grid-cols-3 md:gap-12">

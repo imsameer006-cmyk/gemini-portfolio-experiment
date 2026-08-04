@@ -45,9 +45,9 @@ export default function Testimonials() {
   return (
     <section
       id="testimonials"
-      className="bg-[var(--testimonials-background-color)] px-6 pb-24 pt-0 md:px-10 md:pb-32"
+      className="relative bg-[var(--testimonials-background-color)] px-6 pb-12 pt-10 md:px-10 md:pb-20 md:pt-16"
     >
-      <div className="mx-auto max-w-[1280px] pt-16">
+      <div className="mx-auto max-w-[1280px]">
         <motion.div
           {...reveal()}
           className="mb-12"
