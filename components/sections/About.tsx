@@ -22,7 +22,7 @@ export default function About() {
       className="bg-[#051209] px-6 pb-24 pt-0 md:px-10 md:pb-32 md:pt-0"
     >
       <div className="mx-auto max-w-[1280px] pt-16">
-        <p className="mb-10 text-xs font-medium uppercase tracking-widest text-[var(--about-eyebrow-color)]">
+        <p className="mb-10 text-xs font-semibold uppercase tracking-widest text-[var(--about-eyebrow-color)]">
           About
         </p>
 

@@ -15,7 +15,7 @@ export default function Contact() {
       <div className="max-w-[1280px] mx-auto">
         <motion.p
           {...reveal()}
-          className="text-xs text-[var(--contact-eyebrow-color)] tracking-widest uppercase font-bold mb-8"
+          className="text-xs text-[var(--contact-eyebrow-color)] tracking-widest uppercase font-semibold mb-8"
         >
           Get in Touch
         </motion.p>

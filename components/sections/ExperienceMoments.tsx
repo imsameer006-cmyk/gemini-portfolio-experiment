@@ -212,7 +212,7 @@ export default function ExperienceMoments() {
           className="mb-12 grid gap-5 lg:grid-cols-[0.7fr_1fr] lg:items-end"
         >
           <div>
-            <p className="mb-3 text-xs font-medium uppercase tracking-widest text-[var(--moments-eyebrow-color)]">
+            <p className="mb-3 text-xs font-semibold uppercase tracking-widest text-[var(--moments-eyebrow-color)]">
               Selected Moments
             </p>
             <h2 className="font-display text-[clamp(2rem,4.5vw,3.5rem)] font-bold leading-tight text-[var(--moments-heading-color)]">

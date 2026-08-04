@@ -22,7 +22,7 @@ export default function Work() {
           <div>
             <motion.p
               {...reveal()}
-              className="mb-3 font-mono text-xs uppercase tracking-widest text-[#B6FF00] opacity-90"
+              className="mb-3 text-xs font-semibold uppercase tracking-widest text-[var(--work-eyebrow-color)]"
             >
               Selected Work
             </motion.p>

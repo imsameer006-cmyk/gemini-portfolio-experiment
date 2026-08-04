@@ -63,10 +63,10 @@ export default function ProjectCard({ project, index }: ProjectCardProps) {
         {/* Content */}
         <div className="p-6 md:p-7 flex-1 flex flex-col">
           <div className="flex items-center justify-between mb-3">
-            <span className="font-mono text-xs uppercase tracking-wider text-[#B6FF00]/80">
+            <span className="text-xs font-semibold uppercase tracking-widest text-[#B6FF00]/80">
               {project.category}
             </span>
-            <span className="font-mono text-xs uppercase tracking-wider text-[#B6FF00]/80">{project.year}</span>
+            <span className="text-xs font-semibold uppercase tracking-widest text-[#B6FF00]/80">{project.year}</span>
           </div>
 
           <h3 className="text-lg md:text-xl font-medium text-[#E8E3D5] leading-snug mb-2 transition-[font-weight,opacity] duration-200 group-hover:font-semibold group-hover:opacity-95">
@@ -78,7 +78,7 @@ export default function ProjectCard({ project, index }: ProjectCardProps) {
           </p>
 
           <div className="mt-auto">
-            <div className="flex flex-wrap items-center gap-2 mb-4">
+            <div className="flex flex-wrap items-center gap-2 mb-8">
               {project.client && (
                 <span className="whitespace-nowrap rounded-full border border-[#B6FF00]/20 bg-white/5 px-2.5 py-1 text-xs font-medium text-[#D9EBE1]">
                   {project.client}
