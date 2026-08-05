@@ -254,7 +254,11 @@ function HeroShowcaseReel({
 
   return (
     <div
-      className="hero-showcase-reel pointer-events-none absolute inset-x-0 inset-y-0 z-0 hidden md:block"
+      // md:bottom pinned to the section's pre-existing height (not inset-0's
+      // "stretch to fill"): the +68px added to Hero's md:pb creates bottom
+      // whitespace to match Work's headroom without this reel growing taller
+      // and along with it.
+      className="hero-showcase-reel pointer-events-none absolute inset-x-0 inset-y-0 z-0 hidden md:block md:bottom-[68px]"
       aria-label="Project preview reel"
     >
       <div
@@ -1102,7 +1106,7 @@ export default function Hero() {
     <section
       ref={sectionRef}
       aria-label="Introduction"
-      className="homepage-atmosphere home-hero-atmosphere relative overflow-hidden px-0 pt-16 pb-[99px] md:pt-24 md:pb-[131px]"
+      className="homepage-atmosphere home-hero-atmosphere relative overflow-hidden px-0 pt-16 pb-[99px] md:pt-24 md:pb-[199px]"
       style={{
         "--homepage-atmosphere-color": "radial-gradient(circle closest-side, rgba(182, 255, 0, 0.08) 0%, rgba(9, 34, 18, 1) 100%), #092212",
         "--hero-heading-color": "#B6FF00",
