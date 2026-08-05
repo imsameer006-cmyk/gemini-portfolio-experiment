@@ -112,7 +112,7 @@ function ExperiencePhotoCard({
         </p>
       </div>
 
-      <div className="absolute inset-0 rounded-2xl pointer-events-none z-10 shadow-[inset_0_0_0_1px_rgba(182,255,0,0)] transition-shadow duration-300 group-hover:shadow-[inset_0_0_0_1px_rgba(182,255,0,0.8),0_0_16px_rgba(182,255,0,0.15)]" />
+      <div className="absolute inset-0 rounded-2xl pointer-events-none z-10 shadow-[inset_0_0_0_1px_rgba(182,255,0,0.1)] transition-shadow duration-300 group-hover:shadow-[inset_0_0_0_1px_rgba(182,255,0,0.8),0_0_16px_rgba(182,255,0,0.15)]" />
     </motion.article>
   );
 }
