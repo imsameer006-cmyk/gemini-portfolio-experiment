@@ -46,7 +46,7 @@ export default function ProjectCard({ project, index }: ProjectCardProps) {
       >
         {/* Visual panel */}
         <div
-          className="w-full aspect-[460/256] shrink-0 rounded-t-2xl border-b border-[rgba(182,255,0,0.15)] bg-[#092212] lg:transition-[filter] lg:duration-500 lg:group-hover:saturate-[1.05]"
+          className="w-full aspect-[460/256] shrink-0 rounded-t-2xl bg-[#092212] lg:transition-[filter] lg:duration-500 lg:group-hover:saturate-[1.05]"
         >
           {project.thumbnail ? (
             <div className="w-full h-full">
