@@ -14,8 +14,16 @@ export default function Work() {
   return (
     <section
       id="work"
-      className="relative bg-[var(--testimonials-background-color)] px-6 pb-10 pt-10 md:px-10 md:pb-16 md:pt-[104px]"
+      className="relative bg-gradient-to-b from-[#092212] via-[#071A0E] to-[#051209] px-6 pb-10 pt-10 md:px-10 md:pb-16 md:pt-[104px]"
     >
+      <div
+        aria-hidden="true"
+        className="pointer-events-none absolute inset-0"
+        style={{
+          background:
+            "radial-gradient(ellipse 75% 65% at 15% 12%, rgba(182,255,0,0.035), transparent 100%), radial-gradient(ellipse 75% 65% at 85% 90%, rgba(184,63,119,0.03), transparent 100%)",
+        }}
+      />
       <div className="max-w-[1280px] mx-auto">
         {/* Section header */}
         <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-14">

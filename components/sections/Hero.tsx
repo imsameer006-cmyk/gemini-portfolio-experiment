@@ -14,6 +14,11 @@ type ClarityThreadVisualProps = {
   onNodeUnlock: () => void;
 };
 
+// Nav (Nav.tsx) is `fixed`, pinned to viewport Y 0 at rest — its resting bottom edge is
+// these known values, not a live measurement: a live read would capture whatever
+// floating/scrolled geometry Nav happens to be in at read time, not its resting one.
+const NAV_RESTING_BOTTOM_PX = 48; // 46px inner nav height (Nav.tsx `h-[46px]`) + 2px header border
+
 const heroArtVariants = {
   hidden: { opacity: 0 },
   visible: {
@@ -299,7 +304,7 @@ function HeroShowcaseReel({
                       key={`${groupIndex}-${item.id}`}
                       data-hero-showcase-card
                       className="hero-showcase-card relative flex items-end overflow-hidden rounded-2xl border border-[rgba(182,255,0,0.2)] bg-transparent p-7"
-                      style={{ borderWidth: "1.5px" }}
+                      style={{ borderWidth: "2px" }}
                     >
                       {item.imageSrc ? (
                         <div
@@ -983,14 +988,13 @@ export default function Hero() {
     const copyColumn = copyColumnRef.current;
     const copyParagraph = copyParagraphRef.current;
     const reelFrame = reelFrameRef.current;
+    const heading = headingRef.current;
 
-    if (!section || !grid || !copyColumn || !copyParagraph || !reelFrame) return;
+    if (!section || !grid || !copyColumn || !copyParagraph || !reelFrame || !heading) return;
 
     let frameId = 0;
 
     const updateLayoutVars = () => {
-      frameId = 0;
-
       const gridStyle = getComputedStyle(grid);
       const gridRect = grid.getBoundingClientRect();
       const contentWidth = Math.max(
@@ -1044,12 +1048,33 @@ export default function Hero() {
       section.style.setProperty("--hero-copy-max-width", `${copyMaxWidth}px`);
     };
 
-    const scheduleUpdate = () => {
-      if (frameId) return;
-      frameId = requestAnimationFrame(updateLayoutVars);
+    // Section-local Y: the art wrapper is `absolute inset-0` on this same section,
+    // so subtracting sectionRect.top converts the viewport-space nav/heading
+    // midpoint into the coordinate space the SVG actually draws in. This is a
+    // one-time coordinate conversion, not scroll compensation — it does not need
+    // to run on scroll, only whenever the locked value is (re)computed.
+    const updateMotifCenter = () => {
+      const sectionRect = section.getBoundingClientRect();
+      const headingRect = heading.getBoundingClientRect();
+      const midpointViewportY = (NAV_RESTING_BOTTOM_PX + headingRect.top) / 2;
+
+      setMotifCenterYOverride(midpointViewportY - sectionRect.top);
     };
 
-    updateLayoutVars();
+    // Runs copy-offset first, then motif-center, in the same frame — motif-center
+    // depends on the heading's post-copy-offset position, so it must read after.
+    const runUpdate = () => {
+      frameId = 0;
+      updateLayoutVars();
+      updateMotifCenter();
+    };
+
+    const scheduleUpdate = () => {
+      if (frameId) return;
+      frameId = requestAnimationFrame(runUpdate);
+    };
+
+    runUpdate();
 
     const resizeObserver = new ResizeObserver(scheduleUpdate);
     resizeObserver.observe(grid);
@@ -1057,50 +1082,16 @@ export default function Hero() {
     resizeObserver.observe(reelFrame);
     window.addEventListener("resize", scheduleUpdate);
 
-    return () => {
-      if (frameId) cancelAnimationFrame(frameId);
-      resizeObserver.disconnect();
-      window.removeEventListener("resize", scheduleUpdate);
-    };
-  }, []);
-
-  useLayoutEffect(() => {
-    let frameId = 0;
-
-    const updateMotifCenter = () => {
-      frameId = 0;
-      const section = sectionRef.current;
-      const heading = headingRef.current;
-      const nav = document.querySelector<HTMLElement>("[data-site-nav-root='true']");
-
-      if (!section || !heading || !nav) {
-        frameId = requestAnimationFrame(updateMotifCenter);
-        return;
-      }
-
-      const sectionRect = section.getBoundingClientRect();
-      const navRect = nav.getBoundingClientRect();
-      const headingRect = heading.getBoundingClientRect();
-      const midpointViewportY = (navRect.bottom + headingRect.top) / 2;
-
-      setMotifCenterYOverride(midpointViewportY - sectionRect.top);
-    };
-
-    const scheduleUpdate = () => {
-      if (frameId) return;
-      frameId = requestAnimationFrame(updateMotifCenter);
-    };
-
-    updateMotifCenter();
-
-    const resizeObserver = new ResizeObserver(scheduleUpdate);
-    if (sectionRef.current) resizeObserver.observe(sectionRef.current);
-    if (headingRef.current) resizeObserver.observe(headingRef.current);
-    const navNode = document.querySelector<HTMLElement>("[data-site-nav-root='true']");
-    if (navNode) resizeObserver.observe(navNode);
-    window.addEventListener("resize", scheduleUpdate);
+    // Guards against the headline's line-wrap (and therefore its top position,
+    // since the copy column is vertically centered via md:items-center, not
+    // top-anchored) shifting once the real font swaps in after fallback paint.
+    let fontSwapCancelled = false;
+    document.fonts.ready.then(() => {
+      if (!fontSwapCancelled) updateMotifCenter();
+    });
 
     return () => {
+      fontSwapCancelled = true;
       if (frameId) cancelAnimationFrame(frameId);
       resizeObserver.disconnect();
       window.removeEventListener("resize", scheduleUpdate);
@@ -1111,7 +1102,7 @@ export default function Hero() {
     <section
       ref={sectionRef}
       aria-label="Introduction"
-      className="homepage-atmosphere home-hero-atmosphere relative overflow-x-hidden px-0 pt-16 pb-[99px] md:pt-24 md:pb-[131px]"
+      className="homepage-atmosphere home-hero-atmosphere relative overflow-hidden px-0 pt-16 pb-[99px] md:pt-24 md:pb-[131px]"
       style={{
         "--homepage-atmosphere-color": "radial-gradient(circle closest-side, rgba(182, 255, 0, 0.08) 0%, rgba(9, 34, 18, 1) 100%), #092212",
         "--hero-heading-color": "#B6FF00",
@@ -1140,7 +1131,7 @@ export default function Hero() {
         initial={shouldReduceMotion ? false : "hidden"}
         animate={shouldReduceMotion ? undefined : "visible"}
         variants={heroArtVariants}
-        className="absolute inset-0 z-0"
+        className="absolute inset-0 z-0 overflow-hidden"
       >
         <HeroPinwheelEchoArt centerYOverridePx={motifCenterYOverride} />
       </motion.div>
