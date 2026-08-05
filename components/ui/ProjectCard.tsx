@@ -26,18 +26,19 @@ export default function ProjectCard({ project, index }: ProjectCardProps) {
           "group flex h-full flex-col overflow-hidden rounded-2xl relative border-[1.5px] border-[rgba(182,255,0,0.1)]",
 
           // 1. HIGH-CONTRAST FROSTED COLOR TINT
-          // Shifted from dark base to a richer, higher-contrast emerald tint with high blur
-          "bg-[#0D2E1A]/40 backdrop-blur-xl",
+          // Translucent white tint (not dark green) so backdrop-blur-xl has
+          // something visually distinct from the dark section bg to refract
+          "bg-white/[0.04] backdrop-blur-xl",
 
           // 2. INTERNAL SURFACE SHEEN (Top-down ambient light reflection)
           // Adds a soft specular highlight across the card face so it catches ambient light
-          "bg-gradient-to-b from-white/[0.08] via-transparent to-black/30",
+          "bg-gradient-to-b from-white/[0.08] via-transparent to-black/10",
 
           // HOVER STATE
           // Brightens the internal glass medium when hovered for immediate feedback
           "transition-all duration-500 ease-[cubic-bezier(0.22,1,0.36,1)]",
           "hover:border-[rgba(182,255,0,0.3)]",
-          "hover:bg-[#133F25]/55 hover:from-white/[0.14]",
+          "hover:bg-white/[0.10] hover:from-white/[0.14]",
           "hover:-translate-y-1.5",
           "hover:shadow-[0_16px_36px_-12px_rgba(3,15,8,0.8)]"
         ].join(" ")}
