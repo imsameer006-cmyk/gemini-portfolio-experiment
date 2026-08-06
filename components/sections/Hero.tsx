@@ -313,8 +313,8 @@ function HeroShowcaseReel({
                     <div
                       key={`${groupIndex}-${item.id}`}
                       data-hero-showcase-card
-                      className="hero-showcase-card relative flex items-end overflow-hidden rounded-2xl border border-[rgba(182,255,0,0.2)] bg-transparent p-7"
-                      style={{ borderWidth: "2px" }}
+                      className="hero-showcase-card relative flex items-end overflow-hidden rounded-[45px] border border-[rgba(182,255,0,0.2)] bg-transparent p-7"
+                      style={{ borderWidth: "3px" }}
                     >
                       {item.imageSrc ? (
                         <div
