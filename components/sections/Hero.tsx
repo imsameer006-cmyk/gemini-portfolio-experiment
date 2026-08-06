@@ -79,12 +79,14 @@ const heroShowcaseItems: {
   imageOffsetXPx?: number;
   imageScale?: number;
   imageRotationDeg?: number;
+  quote: string;
 }[] = [
   {
     id: "01",
     fill: "#F8FCFD",
     imageSrc: "/hero-showcase/spiderweb.webp",
     imageAlt: "Orb-weaver spider at the center of its web, backlit in golden light",
+    quote: "Built under real constraints, holds under real load — that's the whole job.",
   },
   {
     id: "02",
@@ -113,6 +115,7 @@ const heroShowcaseItems: {
     // test at.
     imageScale: 1.15,
     imageOffsetXPx: -25,
+    quote: "We built our own rivers. Same logic, different material.",
   },
   {
     id: "03",
@@ -140,6 +143,7 @@ const heroShowcaseItems: {
     // omission is what caused the right-edge gap. Sized against the
     // smallest observed card width (~436px) the same way as the bridge.
     imageScale: 1.25,
+    quote: "Complexity isn't the enemy. Undirected complexity is.",
   },
   {
     id: "04",
@@ -165,17 +169,20 @@ const heroShowcaseItems: {
     // window heights (down to ~630px, already unusually short) without
     // over-cropping the photo for the common case.
     imageScale: 1.4,
+    quote: "Every vein, be it in the human body or in software, carries the flow — the key is to have no blockage.",
   },
   {
     id: "05",
     fill: "#F4FAFC",
     imageSrc: "/hero-showcase/flower.jpg",
     imageAlt: "Bee gathering pollen on a pink coneflower",
+    quote: "Structure and alignment invite participation — the bee doesn't need instructions.",
   },
   {
     id: "06",
     fill: "#E8F0F4",
     imageSrc: "/hero-showcase/river.jpg",
+    quote: "Water never asks permission to find the efficient path. Neither should a system.",
     imageAlt: "Aerial view of a branching river delta at sunrise",
   },
   {
@@ -183,6 +190,7 @@ const heroShowcaseItems: {
     fill: "#F5F0E8",
     imageSrc: "/hero-showcase/eyes.png",
     imageAlt: "Macro close-up of a human eye with an amber iris",
+    quote: "Most patterns are already there. Clear perception is what makes them available.",
   },
 ];
 
@@ -313,12 +321,12 @@ function HeroShowcaseReel({
                     <div
                       key={`${groupIndex}-${item.id}`}
                       data-hero-showcase-card
-                      className="hero-showcase-card relative flex items-end overflow-hidden rounded-[45px] border border-[rgba(182,255,0,0.2)] bg-transparent p-7"
+                      className="hero-showcase-card group cursor-pointer relative flex items-end overflow-hidden rounded-[45px] border border-[rgba(182,255,0,0.2)] bg-transparent p-7 select-none"
                       style={{ borderWidth: "3px" }}
                     >
                       {item.imageSrc ? (
                         <div
-                          className="absolute inset-0"
+                          className="absolute inset-0 transition-transform duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:scale-105"
                           style={{
                             inset: item.imageScale ? `${-((item.imageScale - 1) * 50)}%` : undefined,
                             // Rotation goes on THIS wrapper, not the <Image>
@@ -367,6 +375,19 @@ function HeroShowcaseReel({
                           {item.id}
                         </span>
                       )}
+
+                      {/* Frosted Forest Green Glass Overlay (#092212) */}
+                      <div 
+                        className="pointer-events-none absolute inset-0 bg-[#092212]/85 backdrop-blur-md opacity-0 transition-opacity duration-500 ease-out group-hover:opacity-100 motion-reduce:transition-none" 
+                        aria-hidden="true"
+                      />
+
+                      {/* Quote Text Container (Electric Lime #B6FF00) */}
+                      <div className="pointer-events-none absolute inset-0 p-6 flex items-center justify-center opacity-0 translate-y-2 transition-all duration-500 delay-75 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:opacity-100 group-hover:translate-y-0 motion-reduce:translate-y-0 motion-reduce:transition-none">
+                        <p className="text-[#B6FF00] font-medium text-base sm:text-lg leading-snug text-center select-none drop-shadow-sm">
+                          “{item.quote}”
+                        </p>
+                      </div>
                     </div>
                   ))}
                 </div>
