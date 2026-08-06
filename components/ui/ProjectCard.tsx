@@ -40,7 +40,7 @@ export default function ProjectCard({ project, index }: ProjectCardProps) {
           "hover:border-[rgba(182,255,0,0.3)]",
           "hover:bg-[#B6FF00]/[0.10] hover:from-white/[0.14]",
           "hover:-translate-y-1.5",
-          "hover:shadow-[0_16px_36px_-12px_rgba(3,15,8,0.8)]"
+          "hover:shadow-[0_16px_36px_-12px_rgba(3,15,8,0.8),0_0_20px_rgba(182,255,0,0.10)]"
         ].join(" ")}
         aria-label={`View case study: ${project.title}`}
       >

@@ -321,8 +321,7 @@ function HeroShowcaseReel({
                     <div
                       key={`${groupIndex}-${item.id}`}
                       data-hero-showcase-card
-                      className="hero-showcase-card group cursor-pointer relative flex items-end overflow-hidden rounded-[45px] border border-[rgba(182,255,0,0.2)] bg-transparent p-7 select-none isolate transform-gpu"
-                      style={{ borderWidth: "3px" }}
+                      className="hero-showcase-card group cursor-pointer relative flex items-end overflow-hidden rounded-[45px] border-[3px] border-[rgba(182,255,0,0.2)] bg-transparent p-7 select-none isolate transform-gpu transition-[border-color,border-width,box-shadow] duration-500 ease-out hover:border-[2px] hover:border-[rgba(182,255,0,0.6)] hover:shadow-[0_0_20px_rgba(182,255,0,0.20)]"
                     >
                       {item.imageSrc ? (
                         <div
@@ -378,13 +377,13 @@ function HeroShowcaseReel({
 
                       {/* Frosted Forest Green Glass Overlay (Adjusted Opacity & Edge Clip) */}
                       <div 
-                        className="pointer-events-none absolute -inset-[1px] rounded-[45px] bg-[#092212]/35 backdrop-blur-sm opacity-0 transition-opacity duration-500 ease-out group-hover:opacity-100 motion-reduce:transition-none transform-gpu" 
+                        className="pointer-events-none absolute -inset-[1px] rounded-[45px] border-t border-white/20 bg-[radial-gradient(circle_at_50%_35%,rgba(255,255,255,0.12),rgba(255,255,255,0)_60%)] bg-[#092212]/55 backdrop-blur-[15px] opacity-0 transition-opacity duration-500 ease-out group-hover:opacity-100 motion-reduce:transition-none transform-gpu"
                         aria-hidden="true"
                       />
 
-                      {/* Quote Text Container (Electric Lime #B6FF00) */}
-                      <div className="pointer-events-none absolute inset-0 p-6 flex items-center justify-center opacity-0 translate-y-2 transition-all duration-500 delay-75 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:opacity-100 group-hover:translate-y-0 motion-reduce:translate-y-0 motion-reduce:transition-none">
-                        <p className="text-[#B6FF00] font-medium text-base sm:text-lg leading-snug text-center select-none drop-shadow-md">
+                      {/* Quote Text Container (Ivory White #E8E3D5) */}
+                      <div className="pointer-events-none absolute inset-0 p-6 flex items-center justify-start opacity-0 translate-y-2 transition-all duration-500 delay-75 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:opacity-100 group-hover:translate-y-0 motion-reduce:translate-y-0 motion-reduce:transition-none">
+                        <p className="text-[#E8E3D5] font-medium text-base sm:text-lg leading-snug text-left select-none drop-shadow-md transition-[font-weight] duration-200 group-hover:font-semibold">
                           “{item.quote}”
                         </p>
                       </div>
