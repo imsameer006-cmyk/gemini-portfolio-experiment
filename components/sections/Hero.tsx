@@ -321,7 +321,7 @@ function HeroShowcaseReel({
                     <div
                       key={`${groupIndex}-${item.id}`}
                       data-hero-showcase-card
-                      className="hero-showcase-card group cursor-pointer relative flex items-end overflow-hidden rounded-[45px] border border-[rgba(182,255,0,0.2)] bg-transparent p-7 select-none"
+                      className="hero-showcase-card group cursor-pointer relative flex items-end overflow-hidden rounded-[45px] border border-[rgba(182,255,0,0.2)] bg-transparent p-7 select-none isolate transform-gpu"
                       style={{ borderWidth: "3px" }}
                     >
                       {item.imageSrc ? (
@@ -376,15 +376,15 @@ function HeroShowcaseReel({
                         </span>
                       )}
 
-                      {/* Frosted Forest Green Glass Overlay (#092212) */}
+                      {/* Frosted Forest Green Glass Overlay (Adjusted Opacity & Edge Clip) */}
                       <div 
-                        className="pointer-events-none absolute inset-0 bg-[#092212]/85 backdrop-blur-md opacity-0 transition-opacity duration-500 ease-out group-hover:opacity-100 motion-reduce:transition-none" 
+                        className="pointer-events-none absolute -inset-[1px] rounded-[45px] bg-[#092212]/35 backdrop-blur-sm opacity-0 transition-opacity duration-500 ease-out group-hover:opacity-100 motion-reduce:transition-none transform-gpu" 
                         aria-hidden="true"
                       />
 
                       {/* Quote Text Container (Electric Lime #B6FF00) */}
                       <div className="pointer-events-none absolute inset-0 p-6 flex items-center justify-center opacity-0 translate-y-2 transition-all duration-500 delay-75 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:opacity-100 group-hover:translate-y-0 motion-reduce:translate-y-0 motion-reduce:transition-none">
-                        <p className="text-[#B6FF00] font-medium text-base sm:text-lg leading-snug text-center select-none drop-shadow-sm">
+                        <p className="text-[#B6FF00] font-medium text-base sm:text-lg leading-snug text-center select-none drop-shadow-md">
                           “{item.quote}”
                         </p>
                       </div>
