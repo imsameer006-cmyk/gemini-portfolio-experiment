@@ -152,7 +152,7 @@ export default function PasswordGate({ errorMessage, nextPath }: PasswordGatePro
           </label>
 
           {error && (
-            <p className="text-body-compact leading-relaxed text-[#B6FF00]" role="alert">
+            <p className="text-body-compact leading-relaxed text-[#B95A48]" role="alert">
               {error}
             </p>
           )}
