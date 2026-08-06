@@ -18,9 +18,9 @@ export default function Icon() {
         }}
       >
         <div style={{ position: "relative", width: 20, height: 20, display: "flex" }}>
-          <div style={{ position: "absolute", width: 2.6, height: 18, background: "#E8E3D5", borderRadius: 2, top: 1, left: 8.7 }} />
-          <div style={{ position: "absolute", width: 2.6, height: 18, background: "#E8E3D5", borderRadius: 2, top: 1, left: 8.7, transform: "rotate(60deg)" }} />
-          <div style={{ position: "absolute", width: 2.6, height: 18, background: "#E8E3D5", borderRadius: 2, top: 1, left: 8.7, transform: "rotate(-60deg)" }} />
+          <div style={{ position: "absolute", width: 2.6, height: 18, background: "#FFFFFF", borderRadius: 2, top: 1, left: 8.7 }} />
+          <div style={{ position: "absolute", width: 2.6, height: 18, background: "#FFFFFF", borderRadius: 2, top: 1, left: 8.7, transform: "rotate(60deg)" }} />
+          <div style={{ position: "absolute", width: 2.6, height: 18, background: "#FFFFFF", borderRadius: 2, top: 1, left: 8.7, transform: "rotate(-60deg)" }} />
         </div>
       </div>
     ),
