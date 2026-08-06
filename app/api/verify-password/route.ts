@@ -4,10 +4,6 @@ import {
   SITE_AUTH_COOKIE,
 } from "@/lib/site-auth";
 
-const FAILURE_NOTIFICATION_WINDOW_MS = 60_000;
-
-let lastFailedAttemptNotificationAt = 0;
-
 function getSafeRedirectPath(value: FormDataEntryValue | null) {
   if (typeof value !== "string" || !value.startsWith("/") || value.startsWith("//")) {
     return "/";
@@ -101,18 +97,10 @@ function notifySuccessfulPasswordEntry() {
 }
 
 function notifyFailedPasswordAttempt() {
-  const now = Date.now();
-
-  if (now - lastFailedAttemptNotificationAt < FAILURE_NOTIFICATION_WINDOW_MS) {
-    return;
-  }
-
-  lastFailedAttemptNotificationAt = now;
-
   scheduleNtfyNotification({
     title: "Failed attempt",
     tags: "warning,no_entry",
-    message: `Failed password attempt\n${formatNotificationTimestamp(new Date(now))}`,
+    message: `Failed password attempt\n${formatNotificationTimestamp(new Date())}`,
   });
 }
 
