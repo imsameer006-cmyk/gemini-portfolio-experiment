@@ -1032,11 +1032,22 @@ export default function Hero() {
         copyOffsetPxRef.current = 0;
         section.style.setProperty("--hero-copy-offset", "0px");
       } else if (isTabletViewport && Number.isFinite(copyParagraphLineHeight)) {
-        const paragraphTopWithoutOffset =
-          copyParagraph.getBoundingClientRect().top - copyOffsetPxRef.current;
+        // Momentarily zero the transform and measure both rects in the same
+        // synchronous pass (before paint, so this is never visible) rather
+        // than algebraically subtracting the previous offset from an
+        // already-transformed, scroll-tainted read. This cancels both the
+        // transform contribution (offset is genuinely 0 here) and the
+        // scroll contribution (sectionRectNow.top taken at the same
+        // instant) without any dependency on copyOffsetPxRef.current, so
+        // the result is the same regardless of how many times or when this
+        // runs.
+        section.style.setProperty("--hero-copy-offset", "0px");
+        const sectionRectNow = section.getBoundingClientRect();
+        const paragraphOffsetFromSectionTop =
+          copyParagraph.getBoundingClientRect().top - sectionRectNow.top;
         const targetOffset = Math.max(
           95,
-          window.innerHeight - paragraphTopWithoutOffset - copyParagraphLineHeight * 2 + 24,
+          window.innerHeight - paragraphOffsetFromSectionTop - copyParagraphLineHeight * 2 + 24,
         );
         copyOffsetPxRef.current = Math.round(targetOffset);
         section.style.setProperty("--hero-copy-offset", `${copyOffsetPxRef.current}px`);
@@ -1065,17 +1076,22 @@ export default function Hero() {
       section.style.setProperty("--hero-copy-max-width", `${copyMaxWidth}px`);
     };
 
-    // Section-local Y: the art wrapper is `absolute inset-0` on this same section,
-    // so subtracting sectionRect.top converts the viewport-space nav/heading
-    // midpoint into the coordinate space the SVG actually draws in. This is a
-    // one-time coordinate conversion, not scroll compensation — it does not need
-    // to run on scroll, only whenever the locked value is (re)computed.
+    // Section-local Y, computed as a single local delta rather than a
+    // viewport-space midpoint corrected afterward: headingRect.top and
+    // sectionRect.top both shift by the same -scrollY at the same instant,
+    // so their difference is scroll-invariant by construction, always, not
+    // just when read at scroll position 0. Averaging that directly against
+    // the (already scroll-invariant) nav constant never mixes a
+    // viewport-anchored quantity with a local one, so there's no residual
+    // to correct — unlike computing a viewport-space midpoint first and
+    // subtracting sectionRect.top at the end, which only cancels cleanly
+    // when every input to the midpoint is equally scroll-variant.
     const updateMotifCenter = () => {
       const sectionRect = section.getBoundingClientRect();
       const headingRect = heading.getBoundingClientRect();
-      const midpointViewportY = (NAV_RESTING_BOTTOM_PX + headingRect.top) / 2;
+      const headingOffsetFromSectionTop = headingRect.top - sectionRect.top;
 
-      setMotifCenterYOverride(midpointViewportY - sectionRect.top);
+      setMotifCenterYOverride((NAV_RESTING_BOTTOM_PX + headingOffsetFromSectionTop) / 2);
     };
 
     // Runs copy-offset first, then motif-center, in the same frame — motif-center
