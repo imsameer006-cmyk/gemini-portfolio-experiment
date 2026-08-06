@@ -204,7 +204,7 @@ export default function ExperienceMoments() {
   return (
     <section
       id="experience-moments"
-      className="relative bg-[#051209] px-6 pb-10 pt-8 md:px-10 md:pb-16 md:pt-12"
+      className="relative bg-[#051209] px-6 pb-10 pt-[47px] md:px-10 md:pb-16 md:pt-[63px]"
     >
       <div aria-hidden="true" className="pointer-events-none absolute left-1/2 top-0 w-[calc(100%-3rem)] max-w-[1280px] -translate-x-1/2 border-t border-white/10 md:w-[calc(100%-5rem)]" />
       <div className="mx-auto max-w-[1280px]">

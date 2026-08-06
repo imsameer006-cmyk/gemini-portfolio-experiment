@@ -19,7 +19,7 @@ export default function About() {
   return (
     <section
       id="about"
-      className="relative bg-[#051209] px-6 pb-8 pt-10 md:px-10 md:pb-12 md:pt-16"
+      className="relative bg-[#051209] px-6 pb-[52px] pt-10 md:px-10 md:pb-[68px] md:pt-16"
     >
       <div aria-hidden="true" className="pointer-events-none absolute left-1/2 top-0 w-[calc(100%-3rem)] max-w-[1280px] -translate-x-1/2 border-t border-white/10 md:w-[calc(100%-5rem)]" />
       <div className="mx-auto max-w-[1280px]">

@@ -14,7 +14,7 @@ export default function Work() {
   return (
     <section
       id="work"
-      className="relative bg-gradient-to-b from-[#092212] via-[#071A0E] to-[#051209] px-6 pb-10 pt-10 md:px-10 md:pb-16 md:pt-[104px]"
+      className="relative bg-gradient-to-b from-[#092212] via-[#071A0E] to-[#051209] px-6 pb-[50px] pt-10 md:px-10 md:pb-[74px] md:pt-[104px]"
     >
       <div
         aria-hidden="true"

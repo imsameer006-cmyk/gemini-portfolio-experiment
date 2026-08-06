@@ -11,7 +11,7 @@ export default function Philosophy() {
   return (
     <section
       id="philosophy"
-      className="relative bg-[var(--philosophy-background-color)] px-6 pb-8 pt-10 md:px-10 md:pb-12 md:pt-16"
+      className="relative bg-[var(--philosophy-background-color)] px-6 pb-[62px] pt-[50px] md:px-10 md:pb-[78px] md:pt-[74px]"
     >
       <div aria-hidden="true" className="pointer-events-none absolute left-1/2 top-0 w-[calc(100%-3rem)] max-w-[1280px] -translate-x-1/2 border-t border-white/10 md:w-[calc(100%-5rem)]" />
       <div className="max-w-[1280px] mx-auto">
@@ -33,14 +33,14 @@ export default function Philosophy() {
 
         <motion.p
           {...revealFade(0.2)}
-          className="text-[var(--philosophy-body-color)] text-sm mb-20 max-w-[36ch] leading-relaxed"
+          className="text-[var(--philosophy-body-color)] text-sm mb-10 max-w-[36ch] leading-relaxed"
         >
           Over the years, I&apos;ve learned that good design isn&apos;t about adding more&mdash;it&apos;s
           about understanding what matters and making it clear.
         </motion.p>
 
         {/* Divider */}
-        <div className="my-8 h-px bg-gradient-to-r from-transparent via-white/10 to-transparent" />
+        <div className="my-[23px] h-px bg-gradient-to-r from-transparent via-white/10 to-transparent" />
 
         {/* Beliefs grid */}
         <div className="grid grid-cols-1 gap-12 md:grid-cols-3 md:gap-12">
