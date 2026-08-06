@@ -1128,6 +1128,16 @@ export default function Hero() {
     resizeObserver.observe(reelFrame);
     window.addEventListener("resize", scheduleUpdate);
 
+    // window.resize alone misses some mobile/tablet browsers' address-bar
+    // collapse-on-scroll, which is reported through the visualViewport API
+    // instead (sometimes without also firing a plain window resize). Listen
+    // on both of its events — browsers split chrome-collapse reporting
+    // between them inconsistently — as a backup trigger, additive to the
+    // window listener above, not a replacement for it.
+    const visualViewport = window.visualViewport;
+    visualViewport?.addEventListener("resize", scheduleUpdate);
+    visualViewport?.addEventListener("scroll", scheduleUpdate);
+
     // Guards against the headline's line-wrap (and therefore its top position,
     // since the copy column is vertically centered via md:items-center, not
     // top-anchored) shifting once the real font swaps in after fallback paint.
@@ -1141,6 +1151,8 @@ export default function Hero() {
       if (frameId) cancelAnimationFrame(frameId);
       resizeObserver.disconnect();
       window.removeEventListener("resize", scheduleUpdate);
+      visualViewport?.removeEventListener("resize", scheduleUpdate);
+      visualViewport?.removeEventListener("scroll", scheduleUpdate);
     };
   }, []);
 
