@@ -181,15 +181,8 @@ const heroShowcaseItems: {
   {
     id: "07",
     fill: "#F5F0E8",
-    imageSrc: "/hero-showcase/eyes.jpg",
-    imageAlt: "Grid of close-up eyes from humans and animals, including cats, birds, reptiles, and fish",
-    // Source has a thin black margin baked into its own canvas (measured via
-    // pixel sampling: 11-20px on a 963x1024 source). Cover-fit is
-    // width-constrained here so it already crops enough off top/bottom to
-    // clear those margins, but 0% off left/right, leaving that margin
-    // visible. 1.03 is the minimum scale that clears the worse side (left,
-    // 12px) with a small buffer for JPEG edge softness.
-    imageScale: 1.03,
+    imageSrc: "/hero-showcase/eyes.png",
+    imageAlt: "Macro close-up of a human eye with an amber iris",
   },
 ];
 
