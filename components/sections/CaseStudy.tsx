@@ -163,7 +163,7 @@ function StoryMap({ moments }: { moments: StoryMoment[] }) {
       className="lg:hidden max-w-[640px] rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] px-5 py-5"
       style={{ boxShadow: "0 2px 8px rgba(0,0,0,0.05)" }}
     >
-      <p className="text-[10px] font-medium tracking-[0.08em] uppercase text-[var(--color-text-accent)] mb-4">
+      <p className="text-[10px] font-medium tracking-[0.08em] uppercase text-[#577A00] mb-4">
         Story map
       </p>
       <ul className="space-y-4">
@@ -375,13 +375,13 @@ function RoleList({ items }: { items: { abbr: string; fullName: string; descript
                     display: "inline-block",
                     position: "relative",
                     background:   active ? "#F5EAE0" : "#FBF5EF",
-                    border:       `1px solid ${active ? "var(--color-accent)" : "#EDD9C8"}`,
+                    border:       `1px solid ${active ? "#577A00" : "#EDD9C8"}`,
                     borderRadius: "4px",
                     padding:      "3px 8px",
                     fontSize:     "10px",
                     fontWeight:   700,
                     letterSpacing:"0.08em",
-                    color:        "var(--color-text-accent)",
+                    color:        "#577A00",
                     cursor:       canInteract ? "default" : undefined,
                     transition:   canInteract
                       ? "background 150ms ease, border-color 150ms ease, color 150ms ease"
@@ -406,7 +406,7 @@ function RoleList({ items }: { items: { abbr: string; fullName: string; descript
                           bottom:       "calc(100% + 8px)",
                           left:         "50%",
                           transform:    "translateX(-50%)",
-                          background:   "#1a1a1a",
+                          background:   "var(--color-text)",
                           color:        "var(--color-surface)",
                           fontSize:     "11px",
                           fontWeight:   500,
@@ -432,7 +432,7 @@ function RoleList({ items }: { items: { abbr: string; fullName: string; descript
                           height:      0,
                           borderLeft:  "5px solid transparent",
                           borderRight: "5px solid transparent",
-                          borderTop:   "5px solid #1a1a1a",
+                          borderTop:   "5px solid var(--color-text)",
                           pointerEvents:"none",
                           zIndex:      20,
                         }}
@@ -445,7 +445,7 @@ function RoleList({ items }: { items: { abbr: string; fullName: string; descript
                 padding:      "13px 0",
                 verticalAlign:"top",
                 fontSize:     "13px",
-                color:        "#444",
+                color:        "var(--color-text-body)",
                 lineHeight:   1.5,
               }}>
                 {description}
@@ -826,7 +826,7 @@ function CaseStudyImage({ src, caption, alt, mobileDetail = false }: { src: stri
           <button
             type="button"
             onClick={() => setOpen(true)}
-            className="sm:hidden self-center text-xs font-medium text-[var(--color-text-secondary)] underline underline-offset-4"
+            className="sm:hidden self-center text-xs font-medium text-[#577A00] underline underline-offset-4 hover:text-[var(--color-text)] transition-colors duration-200"
           >
             Inspect full-size visual
           </button>
@@ -898,7 +898,7 @@ function CaseStudyVideo({ src, caption, poster, mobileDetail = false, controls =
           <button
             type="button"
             onClick={() => setOpen(true)}
-            className="sm:hidden self-center text-xs font-medium text-[var(--color-text-secondary)] underline underline-offset-4"
+            className="sm:hidden self-center text-xs font-medium text-[#577A00] underline underline-offset-4 hover:text-[var(--color-text)] transition-colors duration-200"
           >
             Inspect video full-screen
           </button>
@@ -1060,7 +1060,7 @@ function DecisionsCDO({
                 <p className="text-sm text-[var(--color-text-body)] leading-relaxed">{renderMomentHighlights(item.challenge)}</p>
               </div>
               <div>
-                <span className="text-[10px] font-semibold tracking-widest uppercase text-[var(--color-accent)]/70 block mb-1">
+                <span className="text-[10px] font-semibold tracking-widest uppercase text-[#577A00] block mb-1">
                   Decision
                 </span>
                 <p className="text-sm text-[var(--color-text-body)] leading-relaxed">{renderMomentHighlights(item.decision)}</p>
@@ -1137,7 +1137,7 @@ function DriftAudit({
                   style={{ background: r.hex }}
                   aria-hidden="true"
                 />
-                <span className="mt-1 font-[family-name:var(--font-geist-mono)] text-[9px] text-[var(--color-text-accent)]">
+                <span className="mt-1 font-[family-name:var(--font-geist-mono)] text-[9px] text-[#577A00]">
                   {r.label}
                 </span>
               </span>
@@ -1165,7 +1165,7 @@ function TokenChain({ steps }: { steps: { tier: string; token: string; why: stri
     <div className="mt-8 grid gap-px bg-[var(--color-border)] border border-[var(--color-border)] rounded-2xl overflow-hidden md:grid-cols-4">
       {steps.map((s, i) => (
         <div key={i} className="bg-white px-6 py-6">
-          <p className="text-[10px] font-medium uppercase tracking-widest text-[var(--color-text-accent)] mb-2.5">
+          <p className="text-[10px] font-medium uppercase tracking-widest text-[#577A00] mb-2.5">
             {s.tier}
           </p>
           <span className="inline-block font-[family-name:var(--font-geist-mono)] text-[13px] bg-[var(--color-surface-tinted)] rounded-lg px-3 py-2">
@@ -1270,7 +1270,7 @@ function ComponentAnatomy({
           <div className="h-[100px]" style={{ background: "linear-gradient(135deg, var(--color-surface-tinted), var(--color-accent-light))" }} aria-hidden="true" />
           <div className="p-5">
             <div className="flex items-center justify-between mb-2.5">
-              <span className="text-[10px] font-medium uppercase tracking-wide text-[var(--color-accent)]">Enterprise UX</span>
+              <span className="text-[10px] font-medium uppercase tracking-wide text-[#577A00]">Enterprise UX</span>
               <span className="text-[10px] text-[var(--color-text-muted)]">2025</span>
             </div>
             <h4 className="text-[15px] font-medium text-[var(--color-text)] mb-1.5">{componentName}</h4>
@@ -1284,7 +1284,7 @@ function ComponentAnatomy({
             key={i}
             className={`grid grid-cols-[24px_1fr] gap-3.5 py-3 items-baseline ${i > 0 ? "border-t border-[var(--color-border)]" : ""}`}
           >
-            <span className="font-[family-name:var(--font-geist-mono)] text-[11px] text-[var(--color-text-accent)]">
+            <span className="font-[family-name:var(--font-geist-mono)] text-[11px] text-[#577A00]">
               {String(i + 1).padStart(2, "0")}
             </span>
             <div>
@@ -1308,7 +1308,7 @@ function BenchmarkMatrix({
   const Cell = ({ v }: { v: boolean | "roadmap" }) => {
     if (v === "roadmap")
       return (
-        <span className="text-[10px] font-medium uppercase tracking-wide text-[var(--color-text-accent)] border border-[var(--color-accent)]/45 rounded-full px-2.5 py-0.5">
+        <span className="text-[10px] font-medium uppercase tracking-wide text-[#577A00] border border-[#577A00]/45 rounded-full px-2.5 py-0.5">
           Roadmap
         </span>
       );
@@ -1414,7 +1414,7 @@ function Section({
       />
 
       <div className="pt-6 md:pt-12">
-        <span className="block text-[10px] text-[var(--color-text-accent)] tracking-widest uppercase font-medium mb-3">
+        <span className="block text-[10px] text-[#577A00] tracking-widest uppercase font-medium mb-3">
           {section.label}
         </span>
 
@@ -1443,7 +1443,7 @@ function GenericBody() {
       <div className="border-t border-[var(--color-border)] pt-12 space-y-6">
         <p className="text-[var(--color-text-secondary)] text-base leading-relaxed">
           Full case study coming soon. In the meantime, feel free to{" "}
-          <a href="mailto:hi@withsameer.design" className="text-[var(--color-accent)] underline underline-offset-2">
+          <a href="mailto:hi@withsameer.design" className="text-[#577A00] underline underline-offset-2 hover:text-[var(--color-text)] transition-colors duration-200">
             reach out
           </a>{" "}
           to discuss this project in detail.
@@ -1648,41 +1648,46 @@ export default function CaseStudy({ project, content }: Props) {
       {/* Jump-to navigation — sections derived from content so each project gets its own nav */}
       {content && <JumpToNav sections={content.sections.map((s) => ({ label: s.label }))} moments={storyMoments} />}
 
-      {/* Case study body — pb-[80px] on mobile/tablet clears the fixed 52px bottom bar */}
-      {content ? (
-        <div className="max-w-[900px] mx-auto px-6 md:px-10 lg:pl-[150px] xl:pl-10 pt-4 md:pt-16 pb-[80px] xl:pb-16 space-y-0">
-          {content.sections.map((section) => (
-            <Section
-              key={section.label}
-              section={section}
-              storyMoments={storyMoments}
-              neutralCallouts={isGemini || isCollabspace}
-            />
-          ))}
-        </div>
-      ) : (
-        <GenericBody />
-      )}
-
-      {project.slug === "design-system" && (
-        <div className="max-w-[900px] mx-auto px-6 md:px-10 lg:pl-[150px] xl:pl-10 pb-16">
-          <div className="border-t border-[var(--color-border)] pt-10 flex flex-wrap items-center justify-between gap-4">
-            <div>
-              <p className="text-xs text-[var(--color-text-accent)] tracking-widest uppercase font-medium mb-1">Go deeper</p>
-              <p className="text-[var(--color-text)] font-medium">Every token, every rule, in one reference.</p>
-            </div>
-            <Link
-              href="/system"
-              className="inline-flex items-center gap-2 bg-[var(--color-text)] text-[var(--color-warm-bg)] text-sm font-medium px-5 py-3 rounded-full hover:bg-[var(--color-accent)] transition-colors duration-200 min-h-[44px]"
-            >
-              View the Token Atlas
-              <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true">
-                <path d="M2.5 7h9M7.5 3l4 4-4 4" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round" />
-              </svg>
-            </Link>
+      {/* Case study body — explicit light background, since it can no longer rely on
+          <body>'s color (that's dark-theme forest green sitewide; this content's text/
+          border tokens are the original light-theme set, tuned against --color-warm-bg). */}
+      <div className="bg-[var(--color-warm-bg)]">
+        {/* pb-[80px] on mobile/tablet clears the fixed 52px bottom bar */}
+        {content ? (
+          <div className="max-w-[900px] mx-auto px-6 md:px-10 lg:pl-[150px] xl:pl-10 pt-4 md:pt-16 pb-[80px] xl:pb-16 space-y-0">
+            {content.sections.map((section) => (
+              <Section
+                key={section.label}
+                section={section}
+                storyMoments={storyMoments}
+                neutralCallouts={isGemini || isCollabspace}
+              />
+            ))}
           </div>
-        </div>
-      )}
+        ) : (
+          <GenericBody />
+        )}
+
+        {project.slug === "design-system" && (
+          <div className="max-w-[900px] mx-auto px-6 md:px-10 lg:pl-[150px] xl:pl-10 pb-16">
+            <div className="border-t border-[var(--color-border)] pt-10 flex flex-wrap items-center justify-between gap-4">
+              <div>
+                <p className="text-xs text-[#577A00] tracking-widest uppercase font-medium mb-1">Go deeper</p>
+                <p className="text-[var(--color-text)] font-medium">Every token, every rule, in one reference.</p>
+              </div>
+              <Link
+                href="/system"
+                className="inline-flex items-center gap-2 bg-[var(--color-text)] text-[var(--color-warm-bg)] text-sm font-medium px-5 py-3 rounded-full hover:bg-[var(--color-accent)] transition-colors duration-200 min-h-[44px]"
+              >
+                View the Token Atlas
+                <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true">
+                  <path d="M2.5 7h9M7.5 3l4 4-4 4" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round" />
+                </svg>
+              </Link>
+            </div>
+          </div>
+        )}
+      </div>
 
       {/* Adjacent project */}
       <div
@@ -1691,7 +1696,7 @@ export default function CaseStudy({ project, content }: Props) {
       >
         <div className="max-w-[1280px] mx-auto flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
           <div>
-            <p className="text-xs text-[var(--color-text-accent)] tracking-widest uppercase font-medium mb-1">
+            <p className="text-xs text-[#577A00] tracking-widest uppercase font-medium mb-1">
               {adjacentLabel}
             </p>
             <p className="text-[var(--color-text)] font-medium">{adjacentProject.title}</p>

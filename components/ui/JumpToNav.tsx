@@ -72,14 +72,14 @@ function DrawerList({
                 ? "text-[var(--color-text-muted)] opacity-35 pointer-events-none cursor-default"
                 : [
                     "transition-colors duration-150 focus-visible:outline-none focus-visible:bg-[var(--color-surface-tinted)]",
-                    isActive ? "text-[var(--color-text)] font-medium" : "text-[var(--color-text-secondary)] hover:text-[var(--color-text)]",
+                    isActive ? "text-[#577A00] font-medium" : "text-[var(--color-text-secondary)] hover:text-[var(--color-text)]",
                   ].join(" "),
             ].join(" ")}
           >
             <span
               className={[
                 "w-[2px] h-[14px] rounded-full shrink-0 transition-all duration-200",
-                isActive ? "bg-[var(--color-accent)]" : "bg-transparent",
+                isActive ? "bg-[#577A00]" : "bg-transparent",
               ].join(" ")}
               aria-hidden="true"
             />
@@ -284,7 +284,7 @@ export default function JumpToNav({
                         <span
                           className={[
                             "w-[2px] h-3 rounded-full shrink-0",
-                            isActive ? "bg-[var(--color-accent)]" : "bg-transparent",
+                            isActive ? "bg-[#577A00]" : "bg-transparent",
                           ].join(" ")}
                           aria-hidden="true"
                         />
@@ -301,10 +301,9 @@ export default function JumpToNav({
                             "focus-visible:outline-none",
                             disabled
                               ? "text-[var(--color-text)] opacity-35 pointer-events-none cursor-default"
-                              : [
-                                  "text-[var(--color-text)] hover:font-medium",
-                                  isGroupActive ? "font-medium" : "",
-                                ].join(" "),
+                              : isGroupActive
+                                ? "text-[#577A00] font-medium"
+                                : "text-[var(--color-text-secondary)] hover:text-[var(--color-text)] hover:font-medium",
                           ].join(" ")}
                         >
                           {label}
@@ -319,7 +318,7 @@ export default function JumpToNav({
                               <span
                                 className={[
                                   "w-[2px] h-3 rounded-full shrink-0",
-                                  isMomentActive ? "bg-[var(--color-accent)]" : "bg-transparent",
+                                  isMomentActive ? "bg-[#577A00]" : "bg-transparent",
                                 ].join(" ")}
                                 aria-hidden="true"
                               />
@@ -337,7 +336,7 @@ export default function JumpToNav({
                                     ? "text-[var(--color-text-muted)] opacity-35 pointer-events-none cursor-default"
                                     : [
                                         isMomentActive
-                                          ? "text-[var(--color-text)] font-medium"
+                                          ? "text-[#577A00] font-medium"
                                           : "text-[var(--color-text-muted)] hover:text-[var(--color-text)]",
                                       ].join(" "),
                                 ].join(" ")}
@@ -415,7 +414,7 @@ export default function JumpToNav({
                   <span className="text-[#D4D0C8] shrink-0 select-none">|</span>
                   <span className={[
                     "text-sm truncate",
-                    disabled ? "text-[var(--color-text-muted)] opacity-50" : "font-medium text-[var(--color-text)]",
+                    disabled ? "text-[var(--color-text-muted)] opacity-50" : "font-medium text-[#577A00]",
                   ].join(" ")}>
                     {disabled ? "In progress" : activeLabel}
                   </span>
