@@ -51,10 +51,6 @@ const INTERACTIVE_NODES = GRID_NODES.map((node) => ({
   ...getGridCoords(node.col, node.row),
 }));
 
-const WORKFLOW_NODE_ORDER = [3, 0, 1, 2, 4] as const;
-
-const getStepNumber = (id: number) => WORKFLOW_NODE_ORDER.findIndex((nodeId) => nodeId === id) + 1;
-
 function getSteppedPath(fromId: number, toId: number, turn: "horizontal" | "vertical" = "horizontal") {
   const from = INTERACTIVE_NODES.find((node) => node.id === fromId);
   const to = INTERACTIVE_NODES.find((node) => node.id === toId);
@@ -147,41 +143,24 @@ const MICRO_STARS = (() => {
 })();
 
 function ReactiveMeshNetwork({
-  activated,
   hovered,
-  lastActivated,
-  nextNodeId,
-  completionArrived,
   onHover,
-  onActivate,
 }: {
-  activated: Set<number>;
   hovered: number | null;
-  lastActivated: number | null;
-  nextNodeId: number | undefined;
-  completionArrived: boolean;
   onHover: (id: number | null) => void;
-  onActivate: (id: number) => void;
 }) {
   const focusPoints = useMemo(() => {
-    const points = Array.from(activated).map((id) => ({
-      id,
-      col: GRID_NODES[id].col,
-      row: GRID_NODES[id].row,
-      weight: id === lastActivated ? 0.56 : 0.34,
-    }));
+    if (hovered === null) return [];
 
-    if (hovered !== null && !activated.has(hovered)) {
-      points.push({
+    return [
+      {
         id: hovered,
         col: GRID_NODES[hovered].col,
         row: GRID_NODES[hovered].row,
         weight: 0.58,
-      });
-    }
-
-    return points;
-  }, [activated, hovered, lastActivated]);
+      },
+    ];
+  }, [hovered]);
 
   const getProximityOpacity = (itemCol: number, itemRow: number, baseWeight: number) => {
     const xRatio = itemCol / MATRIX_COLS;
@@ -277,7 +256,7 @@ function ReactiveMeshNetwork({
               (focus) => dot.col === focus.col && dot.row === focus.row
             );
             const isFocused = Boolean(focusedPoint);
-            const focusedFill = completionArrived && focusedPoint?.id !== hovered ? "#E8E3D5" : "#B6FF00";
+            const focusedFill = "#B6FF00";
 
             return (
               <motion.circle
@@ -300,63 +279,27 @@ function ReactiveMeshNetwork({
         </g>
 
         <g className="hidden lg:block" fill="none" strokeLinecap="square" strokeLinejoin="miter">
-          {WORKFLOW_STEP_PATHS.map((path) => {
-            const settled = activated.has(path.from) && activated.has(path.to);
-            const preview =
-              hovered === path.to && activated.has(path.from) && !activated.has(path.to);
-            const visible = settled || preview;
-
-            return (
-              <g key={path.id}>
-                <path d={path.d} stroke="rgba(217,235,225,0.6)" strokeWidth={0.85} opacity={0.28} />
-                <motion.path
-                  d={path.d}
-                  stroke="#B6FF00"
-                  strokeWidth={1.15}
-                  initial={{ opacity: 0, pathLength: 0 }}
-                  animate={{
-                    opacity: completionArrived ? 0.34 : settled ? 0.5 : preview ? 0.34 : 0,
-                    pathLength: visible ? 1 : 0,
-                  }}
-                  transition={{ duration: 0.55, ease: EASE }}
-                />
-              </g>
-            );
-          })}
+          {WORKFLOW_STEP_PATHS.map((path) => (
+            <path key={path.id} d={path.d} stroke="rgba(217,235,225,0.6)" strokeWidth={0.85} opacity={0.28} />
+          ))}
         </g>
 
         <g className="pointer-events-none lg:pointer-events-auto">
           {INTERACTIVE_NODES.map((node, nodeIndex) => {
-            const active = activated.has(node.id);
             const preview = hovered === node.id;
-            const available = active || node.id === nextNodeId;
-            const finalComplete = completionArrived;
             const accent = node.id === 2 ? "#B6FF00" : "rgba(217,235,225,0.32)";
-            const isLatest = lastActivated === node.id;
-            const nodeScale = finalComplete ? 1 : preview || isLatest ? 1.2 : active ? 1.06 : 1;
-            const stepNumber = getStepNumber(node.id);
+            const nodeScale = preview ? 1.2 : 1;
+            const stepNumber = node.id + 1;
 
             return (
               <g
                 key={node.id}
-                role="button"
                 tabIndex={0}
-                aria-disabled={!available}
-                aria-label={`${active ? "Activated" : "Activate"} workflow step ${stepNumber}`}
-                style={{ cursor: available ? "pointer" : "default", outline: "none" }}
-                onMouseEnter={() => onHover(available ? node.id : null)}
+                style={{ cursor: "default", outline: "none" }}
+                onMouseEnter={() => onHover(node.id)}
                 onMouseLeave={() => onHover(null)}
-                onFocus={() => onHover(available ? node.id : null)}
+                onFocus={() => onHover(node.id)}
                 onBlur={() => onHover(null)}
-                onClick={() => {
-                  if (available) onActivate(node.id);
-                }}
-                onKeyDown={(event) => {
-                  if (available && (event.key === "Enter" || event.key === " ")) {
-                    event.preventDefault();
-                    onActivate(node.id);
-                  }
-                }}
               >
                 <circle cx={node.x} cy={node.y} r={18} fill="transparent" pointerEvents="auto" />
 
@@ -364,7 +307,7 @@ function ReactiveMeshNetwork({
                   pointerEvents="none"
                   initial={false}
                   animate={{
-                    opacity: finalComplete ? 0.36 : active || preview ? 0.48 : available ? 0.38 : 0.22,
+                    opacity: preview ? 0.48 : 0.38,
                   }}
                   transition={{ duration: 0.3, ease: EASE }}
                 >
@@ -387,9 +330,9 @@ function ReactiveMeshNetwork({
                   filter="url(#gemini-node-glow)"
                   pointerEvents="none"
                   initial={{ opacity: 0 }}
-                  animate={{ opacity: active ? 0 : [0.06, 0.3, 0.06] }}
+                  animate={{ opacity: preview ? 0 : [0.06, 0.3, 0.06] }}
                   transition={
-                    active
+                    preview
                       ? { duration: 0.4, ease: "easeOut" }
                       : { duration: 3, repeat: Infinity, ease: "easeInOut", delay: nodeIndex * 0.5 }
                   }
@@ -404,7 +347,7 @@ function ReactiveMeshNetwork({
                   pointerEvents="none"
                   initial={{ opacity: 0 }}
                   animate={{
-                    opacity: finalComplete ? 0.05 : isLatest ? 0.12 : active ? 0.055 : 0,
+                    opacity: preview ? 0.12 : 0,
                   }}
                   transition={{ duration: 0.35, ease: EASE }}
                 />
@@ -415,8 +358,8 @@ function ReactiveMeshNetwork({
                     y={node.y - 5}
                     width={10}
                     height={10}
-                    fill={finalComplete ? "#E8E3D5" : active ? "rgba(217,235,225,0.32)" : "#133920"}
-                    stroke={finalComplete ? "#E8E3D5" : "rgba(217,235,225,0.32)"}
+                    fill={preview ? "rgba(217,235,225,0.32)" : "#133920"}
+                    stroke="rgba(217,235,225,0.32)"
                     strokeWidth={1.5}
                     pointerEvents="none"
                     animate={{ scale: nodeScale }}
@@ -429,8 +372,8 @@ function ReactiveMeshNetwork({
                     y={node.y - 5}
                     width={10}
                     height={10}
-                    fill={finalComplete ? "#E8E3D5" : active ? "#B6FF00" : "#133920"}
-                    stroke={finalComplete ? "#E8E3D5" : "rgba(217,235,225,0.32)"}
+                    fill={preview ? "#B6FF00" : "#133920"}
+                    stroke="rgba(217,235,225,0.32)"
                     strokeWidth={1.5}
                     pointerEvents="none"
                     animate={{ scale: nodeScale, rotate: 45 }}
@@ -448,16 +391,16 @@ function ReactiveMeshNetwork({
                       cx={node.x}
                       cy={node.y}
                       r={7}
-                      fill={finalComplete ? "#E8E3D5" : active ? "rgba(217,235,225,0.32)" : "#133920"}
-                      stroke={finalComplete ? "#E8E3D5" : "rgba(217,235,225,0.32)"}
+                      fill={preview ? "rgba(217,235,225,0.32)" : "#133920"}
+                      stroke="rgba(217,235,225,0.32)"
                       strokeWidth={1.5}
                     />
                     <circle
                       cx={node.x}
                       cy={node.y}
                       r={2}
-                      fill={finalComplete || active ? "#133920" : "rgba(217,235,225,0.32)"}
-                      opacity={finalComplete || active ? 0.95 : 0.52}
+                      fill={preview ? "#133920" : "rgba(217,235,225,0.32)"}
+                      opacity={preview ? 0.95 : 0.52}
                     />
                   </motion.g>
                 ) : (
@@ -465,8 +408,8 @@ function ReactiveMeshNetwork({
                     cx={node.x}
                     cy={node.y}
                     r={5}
-                    fill={finalComplete ? "#E8E3D5" : active ? "rgba(217,235,225,0.32)" : "#133920"}
-                    stroke={finalComplete ? "#E8E3D5" : "rgba(217,235,225,0.32)"}
+                    fill={preview ? "rgba(217,235,225,0.32)" : "#133920"}
+                    stroke="rgba(217,235,225,0.32)"
                     strokeWidth={1.5}
                     pointerEvents="none"
                     animate={{ scale: nodeScale }}
@@ -512,29 +455,8 @@ export function GeminiProjectHero({
   metadata = DEFAULT_METADATA,
 }: GeminiProjectHeroProps) {
   const reduceMotion = useReducedMotion();
-  const [activated, setActivated] = useState<Set<number>>(() => new Set());
   const [hovered, setHovered] = useState<number | null>(null);
-  const [lastActivated, setLastActivated] = useState<number | null>(null);
   const [hasInteracted, setHasInteracted] = useState(false);
-  const [showCompletionSweep, setShowCompletionSweep] = useState(false);
-  const [completionArrived, setCompletionArrived] = useState(false);
-  const nextNodeId = WORKFLOW_NODE_ORDER[activated.size];
-
-  const activateNode = (id: number) => {
-    if (activated.has(id)) return;
-    if (id !== nextNodeId) return;
-
-    setHasInteracted(true);
-    const next = new Set(activated);
-    next.add(id);
-    setActivated(next);
-    setLastActivated(id);
-
-    if (next.size === GRID_NODES.length) {
-      setShowCompletionSweep(true);
-      window.setTimeout(() => setCompletionArrived(true), 1200);
-    }
-  };
 
   const handleHover = (id: number | null) => {
     if (id !== null) setHasInteracted(true);
@@ -543,41 +465,11 @@ export function GeminiProjectHero({
 
   return (
     <div className="relative isolate overflow-hidden bg-[#092212]">
-      <AnimatePresence>
-        {showCompletionSweep ? (
-          <motion.div
-            aria-hidden="true"
-            data-completion-sweep="true"
-            className="pointer-events-none absolute -inset-y-[18%] -left-[62%] z-[3] w-[56%] skew-x-[-26deg] blur-[22px]"
-            style={{
-              background:
-                "linear-gradient(90deg, transparent 0%, rgba(192,123,80,0.05) 15%, rgba(255,255,255,0.92) 48%, rgba(192,123,80,0.1) 70%, transparent 100%)",
-            }}
-            initial={{ x: "0%", opacity: 0.08 }}
-            animate={{ x: "225%", opacity: [0, 0.85, 0] }}
-            exit={{ opacity: 0 }}
-            transition={{
-              duration: reduceMotion ? 0 : 1.85,
-              ease: EASE,
-              times: [0, 0.48, 1],
-            }}
-          />
-        ) : null}
-      </AnimatePresence>
-
       <section
         aria-labelledby="hero-lab-title"
         className="relative flex md:min-h-screen flex-col justify-start overflow-x-hidden px-6 pb-16 md:pb-[88px] pt-[72px] md:px-10"
       >
-        <ReactiveMeshNetwork
-          activated={activated}
-          hovered={hovered}
-          lastActivated={lastActivated}
-          nextNodeId={nextNodeId}
-          completionArrived={completionArrived}
-          onHover={handleHover}
-          onActivate={activateNode}
-        />
+        <ReactiveMeshNetwork hovered={hovered} onHover={handleHover} />
 
         <div className="pointer-events-none relative z-[10] mx-auto w-full max-w-[1280px]">
           <motion.div

@@ -1,6 +1,6 @@
 "use client";
 
-import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
+import { motion, useReducedMotion } from "framer-motion";
 import { useMemo, useState } from "react";
 
 const MATRIX_COLS = 24;
@@ -52,14 +52,11 @@ const getDistance = (a: { x: number; y: number }, b: { x: number; y: number }) =
 const roundCoord = (value: number) => Math.round(value * 1e4) / 1e4;
 
 export default function CollabNetworkArt({
-  onActivate,
   onInteract,
 }: {
-  onActivate?: () => void;
   onInteract?: () => void;
 }) {
   const reduceMotion = useReducedMotion();
-  const [activated, setActivated] = useState(false);
   const [hovered, setHovered] = useState(false);
 
   const rings = useMemo<Ring[]>(() => {
@@ -89,13 +86,15 @@ export default function CollabNetworkArt({
 
   const allNodes = useMemo(() => rings.flatMap((ring) => ring.nodes), [rings]);
 
+  // Resting/baseline is what used to be the hover-boosted tier (always on now);
+  // hovering adds what used to be the click-activated tier on top of that.
   const getRingOpacity = (ringIndex: number) => {
     const distanceWeight = 1 - (ringIndex - 1) / RING_COUNT;
     const resting = 0.09 + distanceWeight * 0.11;
-    const hoverBoost = hovered ? 0.18 + distanceWeight * 0.22 : 0;
-    const activeBoost = activated ? 0.3 + distanceWeight * 0.16 : 0;
+    const baseline = 0.18 + distanceWeight * 0.22;
+    const hoverBoost = hovered ? 0.3 + distanceWeight * 0.16 : 0;
 
-    return Math.min(0.72, resting + hoverBoost + activeBoost);
+    return Math.min(0.72, resting + baseline + hoverBoost);
   };
 
   const getNodeOpacity = (node: RingNode) => {
@@ -103,16 +102,10 @@ export default function CollabNetworkArt({
     const hoverRadius = rings[Math.min(2, rings.length - 1)]?.radius ?? 240;
     const proximity = Math.max(0, 1 - centerDistance / hoverRadius);
     const resting = node.ring <= 2 ? 0.32 : 0.16;
-    const hoverBoost = hovered ? proximity * 0.55 : 0;
-    const activeBoost = activated ? 0.42 : 0;
+    const baseline = proximity * 0.55;
+    const hoverBoost = hovered ? 0.42 : 0;
 
-    return Math.min(0.88, resting + hoverBoost + activeBoost);
-  };
-
-  const handleActivate = () => {
-    if (activated) return;
-    setActivated(true);
-    onActivate?.();
+    return Math.min(0.88, resting + baseline + hoverBoost);
   };
 
   const handleHover = (nextHovered: boolean) => {
@@ -147,9 +140,6 @@ export default function CollabNetworkArt({
           role="group"
         >
           <defs>
-            <filter id="collab-radial-glow" x="-200%" y="-200%" width="500%" height="500%">
-              <feGaussianBlur stdDeviation="7" />
-            </filter>
             <filter id="collab-hub-glow" x="-200%" y="-200%" width="500%" height="500%">
               <feGaussianBlur stdDeviation="3" />
             </filter>
@@ -165,7 +155,7 @@ export default function CollabNetworkArt({
                   cx={COLLAB_ART_CENTER.x}
                   cy={COLLAB_ART_CENTER.y}
                   r={ring.radius}
-                  stroke={activated ? "#B6FF00" : "rgba(217,235,225,0.6)"}
+                  stroke={hovered ? "#B6FF00" : "rgba(217,235,225,0.6)"}
                   strokeWidth={ring.index === 1 ? 0.9 : 0.68}
                   strokeDasharray={ring.index % 2 === 0 ? "4 14" : "1 11"}
                   initial={false}
@@ -186,7 +176,7 @@ export default function CollabNetworkArt({
                   d={`M ${COLLAB_ART_CENTER.x} ${COLLAB_ART_CENTER.y} L ${node.x} ${node.y}`}
                   initial={false}
                   animate={{
-                    opacity: activated ? 0.14 : hovered && node.ring <= 3 ? 0.12 : 0.07,
+                    opacity: hovered ? 0.14 : node.ring <= 3 ? 0.12 : 0.07,
                   }}
                   transition={{
                     duration: reduceMotion ? 0 : 0.5,
@@ -213,9 +203,9 @@ export default function CollabNetworkArt({
                   r={innerNode ? 1.85 : 1.15}
                   initial={false}
                   animate={{
-                    fill: activated ? (node.ring <= 2 ? "#B6FF00" : "#E8E3D5") : "rgba(217,235,225,0.32)",
+                    fill: hovered ? (node.ring <= 2 ? "#B6FF00" : "#E8E3D5") : "rgba(217,235,225,0.32)",
                     opacity: getNodeOpacity(node),
-                    scale: activated ? 1.18 : hovered && node.ring <= 2 ? 1.14 : 1,
+                    scale: hovered ? 1.18 : node.ring <= 2 ? 1.14 : 1,
                   }}
                   transition={{ duration: reduceMotion ? 0 : 0.44, delay: sequenceDelay, ease: EASE }}
                   style={{ transformOrigin: `${node.x}px ${node.y}px` }}
@@ -223,40 +213,6 @@ export default function CollabNetworkArt({
               );
             })}
           </g>
-
-          <AnimatePresence>
-            {activated && (
-              <motion.g aria-hidden="true" exit={{ opacity: 0 }}>
-                <motion.g
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: [0, 0.42, 0] }}
-                  transition={{ duration: reduceMotion ? 0 : 2.1, ease: EASE, times: [0, 0.42, 1] }}
-                >
-                  {rings.map((ring) => (
-                    <motion.circle
-                      key={`ripple-wash-${ring.index}`}
-                      cx={COLLAB_ART_CENTER.x}
-                      cy={COLLAB_ART_CENTER.y}
-                      r={ring.radius}
-                      fill="none"
-                      stroke="#F5E8DC"
-                      strokeWidth={8}
-                      filter="url(#collab-radial-glow)"
-                      initial={{ opacity: 0, scale: 0.96 }}
-                      animate={{ opacity: [0, 0.72, 0], scale: [0.96, 1, 1.02] }}
-                      transition={{
-                        duration: reduceMotion ? 0 : 0.72,
-                        delay: reduceMotion ? 0 : ring.index * 0.24,
-                        ease: EASE,
-                        times: [0, 0.45, 1],
-                      }}
-                      style={{ transformOrigin: `${COLLAB_ART_CENTER.x}px ${COLLAB_ART_CENTER.y}px` }}
-                    />
-                  ))}
-                </motion.g>
-              </motion.g>
-            )}
-          </AnimatePresence>
 
           <g className="pointer-events-none lg:pointer-events-auto">
             <motion.circle
@@ -266,35 +222,19 @@ export default function CollabNetworkArt({
               fill="rgba(217,235,225,0.32)"
               filter="url(#collab-hub-glow)"
               pointerEvents="none"
-              initial={{ opacity: 0 }}
               animate={{
-                opacity: activated ? 0 : hovered ? 0.18 : [0.06, 0.3, 0.06],
+                opacity: hovered ? 0 : 0.18,
               }}
-              transition={
-                activated || hovered
-                  ? { duration: reduceMotion ? 0 : 0.35, ease: EASE }
-                  : { duration: reduceMotion ? 0 : 3, repeat: Infinity, ease: "easeInOut" }
-              }
+              transition={{ duration: reduceMotion ? 0 : 0.35, ease: EASE }}
             />
 
             <g
-              role="button"
               tabIndex={0}
-              aria-label={
-                activated ? "Collabspace radial network activated" : "Activate Collabspace radial network"
-              }
-              style={{ cursor: "pointer", outline: "none" }}
+              style={{ cursor: "default", outline: "none" }}
               onMouseEnter={() => handleHover(true)}
               onMouseLeave={() => handleHover(false)}
               onFocus={() => handleHover(true)}
               onBlur={() => handleHover(false)}
-              onClick={handleActivate}
-              onKeyDown={(event) => {
-                if (event.key === "Enter" || event.key === " ") {
-                  event.preventDefault();
-                  handleActivate();
-                }
-              }}
             >
               <circle
                 cx={COLLAB_ART_CENTER.x}
@@ -307,11 +247,11 @@ export default function CollabNetworkArt({
                 cx={COLLAB_ART_CENTER.x}
                 cy={COLLAB_ART_CENTER.y}
                 r={9}
-                fill={activated ? "#B6FF00" : "#133920"}
-                stroke={activated ? "#B6FF00" : "rgba(217,235,225,0.32)"}
+                fill={hovered ? "#B6FF00" : "#133920"}
+                stroke={hovered ? "#B6FF00" : "rgba(217,235,225,0.32)"}
                 strokeWidth={1.5}
                 pointerEvents="none"
-                animate={{ scale: hovered || activated ? 1.16 : 1 }}
+                animate={{ scale: hovered ? 1.16 : 1 }}
                 transition={{ duration: reduceMotion ? 0 : 0.28, ease: EASE }}
                 style={{ transformOrigin: `${COLLAB_ART_CENTER.x}px ${COLLAB_ART_CENTER.y}px` }}
               />
@@ -319,8 +259,8 @@ export default function CollabNetworkArt({
                 cx={COLLAB_ART_CENTER.x}
                 cy={COLLAB_ART_CENTER.y}
                 r={2.5}
-                fill={activated ? "#133920" : "rgba(217,235,225,0.32)"}
-                opacity={activated ? 0.95 : 0.58}
+                fill={hovered ? "#133920" : "rgba(217,235,225,0.32)"}
+                opacity={hovered ? 0.95 : 0.58}
                 pointerEvents="none"
                 animate={{ scale: hovered ? 1.22 : 1 }}
                 transition={{ duration: reduceMotion ? 0 : 0.28, ease: EASE }}

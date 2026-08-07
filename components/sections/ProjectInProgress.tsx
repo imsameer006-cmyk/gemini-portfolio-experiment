@@ -2,7 +2,7 @@
 
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import { useState } from "react";
-import CollabNetworkArt, { COLLAB_ART_CENTER } from "@/components/sections/CollabNetworkArt";
+import CollabNetworkArt from "@/components/sections/CollabNetworkArt";
 import type { Project } from "@/lib/types";
 
 const EASE = [0.16, 1, 0.3, 1] as const;
@@ -12,15 +12,9 @@ export function InProgressHero({ project }: { project: Project }) {
   const metadata = project.heroMetadata ?? [];
 
   const [hasInteracted, setHasInteracted] = useState(false);
-  const [artActivated, setArtActivated] = useState(false);
 
   const handleInteraction = () => {
     setHasInteracted(true);
-  };
-
-  const handleActivation = () => {
-    setHasInteracted(true);
-    setArtActivated(true);
   };
 
   return (
@@ -39,39 +33,9 @@ export function InProgressHero({ project }: { project: Project }) {
         aria-labelledby="project-hero-title"
         className="relative flex md:min-h-screen flex-col justify-start px-6 pb-16 md:pb-[88px] pt-[72px] md:px-10"
       >
-        <AnimatePresence>
-          {artActivated && (
-            <motion.div
-              aria-hidden="true"
-              data-collab-radial-sweep="true"
-              className="pointer-events-none absolute z-[3] rounded-full"
-              style={{
-                left: COLLAB_ART_CENTER.x,
-                top: COLLAB_ART_CENTER.y,
-                transform: "translate(-50%, -50%)",
-                background:
-                  "radial-gradient(circle, transparent 20%, rgba(192,123,80,0.3) 45%, rgba(255,255,255,1) 50%, transparent 70%)",
-                filter: "blur(40px)",
-              }}
-              initial={{ width: 40, height: 40, opacity: 0.08 }}
-              animate={{ width: 4600, height: 4600, opacity: [0, 0.52, 0] }}
-              exit={{ opacity: 0 }}
-              transition={{
-                width: { duration: reduceMotion ? 0 : 2.4, ease: [0.4, 0, 0.2, 1] },
-                height: { duration: reduceMotion ? 0 : 2.4, ease: [0.4, 0, 0.2, 1] },
-                opacity: {
-                  duration: reduceMotion ? 0 : 2.4,
-                  ease: [0.4, 0, 0.2, 1],
-                  times: [0, 0.48, 1],
-                },
-              }}
-            />
-          )}
-        </AnimatePresence>
-
         {/* Hero art — radial community network, desktop only */}
         <div className="hidden md:block">
-          <CollabNetworkArt onActivate={handleActivation} onInteract={handleInteraction} />
+          <CollabNetworkArt onInteract={handleInteraction} />
         </div>
 
         <div className="pointer-events-none relative z-10 mx-auto w-full max-w-[1280px]">
