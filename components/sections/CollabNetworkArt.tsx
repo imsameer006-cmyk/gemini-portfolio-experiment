@@ -91,7 +91,7 @@ export default function CollabNetworkArt({
 
   const getRingOpacity = (ringIndex: number) => {
     const distanceWeight = 1 - (ringIndex - 1) / RING_COUNT;
-    const resting = 0.055 + distanceWeight * 0.075;
+    const resting = 0.09 + distanceWeight * 0.11;
     const hoverBoost = hovered ? 0.18 + distanceWeight * 0.22 : 0;
     const activeBoost = activated ? 0.3 + distanceWeight * 0.16 : 0;
 
@@ -126,16 +126,16 @@ export default function CollabNetworkArt({
         className="absolute inset-x-0 inset-y-0 z-[20] pointer-events-none"
         style={{
           background:
-            "linear-gradient(to right, #F9F8F5 0%, #F9F8F5 28%, rgba(249,248,245,0.82) 42%, transparent 52%)",
+            "linear-gradient(to right, #092212 0%, #092212 28%, rgba(9,34,18,0.82) 42%, transparent 52%)",
         }}
       />
       <div
         className="absolute inset-y-0 right-0 z-[20] w-[6%] pointer-events-none"
-        style={{ background: "linear-gradient(90deg, rgba(249,248,245,0), #F9F8F5)" }}
+        style={{ background: "linear-gradient(90deg, rgba(9,34,18,0), #092212)" }}
       />
       <div
         className="absolute inset-x-0 bottom-0 z-[20] h-16 pointer-events-none"
-        style={{ background: "linear-gradient(180deg, rgba(249,248,245,0), #F9F8F5)" }}
+        style={{ background: "linear-gradient(180deg, rgba(9,34,18,0), #092212)" }}
       />
 
       <div className="relative h-full w-full">
@@ -165,8 +165,8 @@ export default function CollabNetworkArt({
                   cx={COLLAB_ART_CENTER.x}
                   cy={COLLAB_ART_CENTER.y}
                   r={ring.radius}
-                  stroke={activated ? "#C07B50" : "#9E7E6B"}
-                  strokeWidth={ring.index === 1 ? 0.72 : 0.52}
+                  stroke={activated ? "#B6FF00" : "rgba(217,235,225,0.6)"}
+                  strokeWidth={ring.index === 1 ? 0.9 : 0.68}
                   strokeDasharray={ring.index % 2 === 0 ? "4 14" : "1 11"}
                   initial={false}
                   animate={{ opacity: getRingOpacity(ring.index) }}
@@ -176,7 +176,7 @@ export default function CollabNetworkArt({
             })}
           </g>
 
-          <g stroke="#9E7E6B" strokeWidth="0.45" fill="none">
+          <g stroke="rgba(217,235,225,0.6)" strokeWidth="0.6" fill="none">
             {allNodes.map((node) => {
               if (node.index % 4 !== 0) return null;
 
@@ -186,7 +186,7 @@ export default function CollabNetworkArt({
                   d={`M ${COLLAB_ART_CENTER.x} ${COLLAB_ART_CENTER.y} L ${node.x} ${node.y}`}
                   initial={false}
                   animate={{
-                    opacity: activated ? 0.14 : hovered && node.ring <= 3 ? 0.12 : 0.035,
+                    opacity: activated ? 0.14 : hovered && node.ring <= 3 ? 0.12 : 0.07,
                   }}
                   transition={{
                     duration: reduceMotion ? 0 : 0.5,
@@ -198,7 +198,7 @@ export default function CollabNetworkArt({
             })}
           </g>
 
-          <g fill="#9E7E6B">
+          <g fill="rgba(217,235,225,0.32)">
             {allNodes.map((node) => {
               const sequenceDelay = reduceMotion
                 ? 0
@@ -213,7 +213,7 @@ export default function CollabNetworkArt({
                   r={innerNode ? 1.85 : 1.15}
                   initial={false}
                   animate={{
-                    fill: activated ? (node.ring <= 2 ? "#C07B50" : "#BFA391") : "#9E7E6B",
+                    fill: activated ? (node.ring <= 2 ? "#B6FF00" : "#E8E3D5") : "rgba(217,235,225,0.32)",
                     opacity: getNodeOpacity(node),
                     scale: activated ? 1.18 : hovered && node.ring <= 2 ? 1.14 : 1,
                   }}
@@ -263,7 +263,7 @@ export default function CollabNetworkArt({
               cx={COLLAB_ART_CENTER.x}
               cy={COLLAB_ART_CENTER.y}
               r={8}
-              fill="#9E7E6B"
+              fill="rgba(217,235,225,0.32)"
               filter="url(#collab-hub-glow)"
               pointerEvents="none"
               initial={{ opacity: 0 }}
@@ -307,8 +307,8 @@ export default function CollabNetworkArt({
                 cx={COLLAB_ART_CENTER.x}
                 cy={COLLAB_ART_CENTER.y}
                 r={9}
-                fill={activated ? "#C07B50" : "#F9F8F5"}
-                stroke={activated ? "#C07B50" : "#9E7E6B"}
+                fill={activated ? "#B6FF00" : "#133920"}
+                stroke={activated ? "#B6FF00" : "rgba(217,235,225,0.32)"}
                 strokeWidth={1.5}
                 pointerEvents="none"
                 animate={{ scale: hovered || activated ? 1.16 : 1 }}
@@ -319,7 +319,7 @@ export default function CollabNetworkArt({
                 cx={COLLAB_ART_CENTER.x}
                 cy={COLLAB_ART_CENTER.y}
                 r={2.5}
-                fill={activated ? "#F9F8F5" : "#9E7E6B"}
+                fill={activated ? "#133920" : "rgba(217,235,225,0.32)"}
                 opacity={activated ? 0.95 : 0.58}
                 pointerEvents="none"
                 animate={{ scale: hovered ? 1.22 : 1 }}

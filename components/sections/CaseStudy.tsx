@@ -1485,7 +1485,7 @@ export default function CaseStudy({ project, content }: Props) {
       ) : isCollabspace ? (
         <InProgressHero project={project} />
       ) : isDesignSystem ? (
-        <div className="relative isolate overflow-hidden bg-[var(--color-warm-bg)]">
+        <div className="relative isolate overflow-hidden bg-[#092212]">
           <section className="relative flex md:min-h-screen flex-col justify-start px-6 pb-16 md:pb-[88px] pt-[72px] md:px-10">
             <motion.div
               initial={{ opacity: 0, y: 24, scale: 0.98 }}
@@ -1502,7 +1502,7 @@ export default function CaseStudy({ project, content }: Props) {
                 initial={{ opacity: 0, y: 12 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.45, ease: [0.16, 1, 0.3, 1] }}
-                className="text-xs text-[var(--color-text-accent)] tracking-widest uppercase font-medium mb-4"
+                className="text-xs text-[#B6FF00] tracking-widest uppercase font-medium mb-4"
               >
                 {project.category}
               </motion.p>
@@ -1510,7 +1510,7 @@ export default function CaseStudy({ project, content }: Props) {
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.55, delay: 0.08, ease: [0.16, 1, 0.3, 1] }}
-                className="font-display max-w-[670px] text-[clamp(2.50rem,3.74vw,4.06rem)] font-bold leading-tight text-[var(--color-text)]"
+                className="font-display max-w-[670px] text-[clamp(2.50rem,3.74vw,4.06rem)] font-bold leading-tight text-[#E8E3D5]"
               >
                 {project.title}
               </motion.h1>
@@ -1518,7 +1518,7 @@ export default function CaseStudy({ project, content }: Props) {
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 transition={{ duration: 0.4, delay: 0.2 }}
-                className="mt-5 text-base text-[var(--color-text)]/65 max-w-[48ch] leading-relaxed mb-6 pointer-events-auto"
+                className="mt-5 text-base text-[#D9EBE1]/70 max-w-[48ch] leading-relaxed mb-6 pointer-events-auto"
               >
                 {project.description}
               </motion.p>
@@ -1530,7 +1530,7 @@ export default function CaseStudy({ project, content }: Props) {
               >
                 <Link
                   href="/system"
-                  className="inline-flex items-center gap-1.5 text-sm font-medium text-[var(--color-text-accent)] hover:text-[var(--color-accent-hover)] transition-colors duration-200"
+                  className="inline-flex items-center gap-1.5 text-sm font-medium text-[#B6FF00] hover:text-[#E8E3D5] transition-colors duration-200"
                 >
                   Browse the full Token Atlas
                   <svg width="12" height="12" viewBox="0 0 14 14" fill="none" aria-hidden="true">
@@ -1543,15 +1543,15 @@ export default function CaseStudy({ project, content }: Props) {
                   initial={{ opacity: 0, y: 12 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.45, delay: 0.25, ease: [0.16, 1, 0.3, 1] }}
-                  className="grid w-fit grid-cols-[auto_auto] sm:grid-cols-[auto_auto_auto] overflow-hidden rounded-xl border border-[var(--color-border)] bg-[var(--color-border)] gap-px mb-8 pointer-events-auto"
+                  className="grid w-fit grid-cols-[auto_auto] sm:grid-cols-[auto_auto_auto] overflow-hidden rounded-xl border border-[rgba(255,255,255,.1)] bg-[rgba(255,255,255,.1)] gap-px mb-8 pointer-events-auto"
                   style={{ boxShadow: "0 2px 8px rgba(0,0,0,0.05)" }}
                 >
                   {project.heroMetadata.map(({ label, value }) => (
-                    <div key={label} className="flex flex-col gap-1.5 bg-white px-6 py-3">
-                      <span className="text-[10px] font-medium uppercase tracking-widest text-[var(--color-text)]/[0.38]">
+                    <div key={label} className="flex flex-col gap-1.5 bg-[#061E10] px-6 py-3">
+                      <span className="text-[10px] font-medium uppercase tracking-widest text-[#D9EBE1]/40">
                         {label}
                       </span>
-                      <span className="text-[15px] font-normal text-[var(--color-text)]/85 leading-snug">
+                      <span className="text-[15px] font-normal text-[#E8E3D5]/85 leading-snug">
                         {value}
                       </span>
                     </div>
@@ -1564,11 +1564,11 @@ export default function CaseStudy({ project, content }: Props) {
                 transition={{ duration: 0.4, delay: 0.3, ease: [0.16, 1, 0.3, 1] }}
                 className="flex flex-wrap gap-2 pointer-events-auto max-w-[640px]"
               >
-                <span className="text-sm font-medium text-[var(--color-text)] bg-[var(--color-text)]/8 px-3 py-1.5 rounded-full">
+                <span className="text-sm font-medium text-[#E8E3D5] bg-[#E8E3D5]/10 px-3 py-1.5 rounded-full">
                   {project.impact}
                 </span>
                 {project.tags.map((tag) => (
-                  <span key={tag} className="text-xs text-[var(--color-text)]/50 border border-[var(--color-text)]/15 px-3 py-1.5 rounded-full">
+                  <span key={tag} className="text-xs text-[#D9EBE1]/70 border border-[#D9EBE1]/30 px-3 py-1.5 rounded-full">
                     {tag}
                   </span>
                 ))}
@@ -1578,8 +1578,7 @@ export default function CaseStudy({ project, content }: Props) {
         </div>
       ) : (
         <div
-          className="min-h-screen flex flex-col justify-center pt-24 pb-16"
-          style={{ backgroundColor: project.coverColor }}
+          className="min-h-screen flex flex-col justify-center pt-24 pb-16 bg-[#092212]"
         >
           <div className="max-w-[900px] lg:pl-[150px] xl:pl-10 mx-auto w-full px-6 md:px-10">
             <div>
@@ -1587,7 +1586,7 @@ export default function CaseStudy({ project, content }: Props) {
                 initial={{ opacity: 0, y: 12 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.45, ease: [0.16, 1, 0.3, 1] }}
-                className="text-xs text-[var(--color-text-accent)] tracking-widest uppercase font-medium mb-4"
+                className="text-xs text-[#B6FF00] tracking-widest uppercase font-medium mb-4"
               >
                 {project.category}
               </motion.p>
@@ -1595,7 +1594,7 @@ export default function CaseStudy({ project, content }: Props) {
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.55, delay: 0.08, ease: [0.16, 1, 0.3, 1] }}
-                className="mb-5 max-w-[22ch] font-display text-[clamp(2rem,5vw,4rem)] font-bold leading-tight text-[var(--color-text)]"
+                className="mb-5 max-w-[22ch] font-display text-[clamp(2rem,5vw,4rem)] font-bold leading-tight text-[#E8E3D5]"
               >
                 {project.title}
               </motion.h1>
@@ -1603,7 +1602,7 @@ export default function CaseStudy({ project, content }: Props) {
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 transition={{ duration: 0.4, delay: 0.2 }}
-                className="text-base text-[var(--color-text)]/65 max-w-[48ch] leading-relaxed mb-8"
+                className="text-base text-[#D9EBE1]/70 max-w-[48ch] leading-relaxed mb-8"
               >
                 {project.description}
               </motion.p>
@@ -1612,14 +1611,14 @@ export default function CaseStudy({ project, content }: Props) {
                   initial={{ opacity: 0, y: 12 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.45, delay: 0.25, ease: [0.16, 1, 0.3, 1] }}
-                  className="grid w-fit grid-cols-[auto_auto] sm:grid-cols-[auto_auto_auto] overflow-hidden rounded-xl border border-[var(--color-text)]/10 bg-[var(--color-text)]/10 gap-px mb-8"
+                  className="grid w-fit grid-cols-[auto_auto] sm:grid-cols-[auto_auto_auto] overflow-hidden rounded-xl border border-[rgba(255,255,255,.1)] bg-[rgba(255,255,255,.1)] gap-px mb-8"
                 >
                   {project.heroMetadata.map(({ label, value }) => (
-                    <div key={label} className="flex flex-col gap-1.5 bg-white/70 px-6 py-3">
-                      <span className="text-[10px] font-medium uppercase tracking-widest text-[var(--color-text)]/40">
+                    <div key={label} className="flex flex-col gap-1.5 bg-[#061E10] px-6 py-3">
+                      <span className="text-[10px] font-medium uppercase tracking-widest text-[#D9EBE1]/40">
                         {label}
                       </span>
-                      <span className="text-[15px] font-normal text-[var(--color-text)]/85 leading-snug">
+                      <span className="text-[15px] font-normal text-[#E8E3D5]/85 leading-snug">
                         {value}
                       </span>
                     </div>
@@ -1632,11 +1631,11 @@ export default function CaseStudy({ project, content }: Props) {
                 transition={{ duration: 0.4, delay: 0.3, ease: [0.16, 1, 0.3, 1] }}
                 className="flex flex-wrap gap-2"
               >
-                <span className="text-sm font-medium text-[var(--color-text)] bg-[var(--color-text)]/8 px-3 py-1.5 rounded-full">
+                <span className="text-sm font-medium text-[#E8E3D5] bg-[#E8E3D5]/10 px-3 py-1.5 rounded-full">
                   {project.impact}
                 </span>
                 {project.tags.map((tag) => (
-                  <span key={tag} className="text-xs text-[var(--color-text)]/50 border border-[var(--color-text)]/15 px-3 py-1.5 rounded-full">
+                  <span key={tag} className="text-xs text-[#D9EBE1]/70 border border-[#D9EBE1]/30 px-3 py-1.5 rounded-full">
                     {tag}
                   </span>
                 ))}

@@ -211,18 +211,18 @@ function ReactiveMeshNetwork({
         className="absolute inset-x-0 inset-y-0 z-[20] pointer-events-none"
         style={{
           background:
-            "linear-gradient(to right, #F9F8F5 0%, #F9F8F5 28%, rgba(249,248,245,0.82) 42%, transparent 52%)",
+            "linear-gradient(to right, #092212 0%, #092212 28%, rgba(9,34,18,0.82) 42%, transparent 52%)",
         }}
       />
       <div
         aria-hidden="true"
         className="absolute inset-y-0 right-0 z-[20] w-[6%] pointer-events-none"
-        style={{ background: "linear-gradient(90deg, rgba(249,248,245,0), #F9F8F5)" }}
+        style={{ background: "linear-gradient(90deg, rgba(9,34,18,0), #092212)" }}
       />
       <div
         aria-hidden="true"
         className="absolute inset-x-0 bottom-0 z-[20] h-16 pointer-events-none"
-        style={{ background: "linear-gradient(180deg, rgba(249,248,245,0), #F9F8F5)" }}
+        style={{ background: "linear-gradient(180deg, rgba(9,34,18,0), #092212)" }}
       />
 
       <svg
@@ -237,7 +237,7 @@ function ReactiveMeshNetwork({
           </filter>
         </defs>
 
-        <g className="hidden lg:block" fill="#9E7E6B">
+        <g className="hidden lg:block" fill="rgba(217,235,225,0.32)">
           {MICRO_STARS.map((star) => (
             <motion.path
               key={star.id}
@@ -254,9 +254,9 @@ function ReactiveMeshNetwork({
           ))}
         </g>
 
-        <g fill="none" stroke="#9E7E6B" strokeWidth="0.5">
+        <g fill="none" stroke="rgba(217,235,225,0.6)" strokeWidth="0.65">
           {BACKDROP_FABRIC.meshLines.map((line) => {
-            const currentOpacity = getProximityOpacity(line.col, line.row, 0.1);
+            const currentOpacity = getProximityOpacity(line.col, line.row, 0.16);
 
             return (
               <motion.path
@@ -270,14 +270,14 @@ function ReactiveMeshNetwork({
           })}
         </g>
 
-        <g fill="#9E7E6B">
+        <g fill="rgba(217,235,225,0.6)">
           {BACKDROP_FABRIC.dots.map((dot) => {
-            const currentOpacity = getProximityOpacity(dot.col, dot.row, 0.24);
+            const currentOpacity = getProximityOpacity(dot.col, dot.row, 0.34);
             const focusedPoint = focusPoints.find(
               (focus) => dot.col === focus.col && dot.row === focus.row
             );
             const isFocused = Boolean(focusedPoint);
-            const focusedFill = completionArrived && focusedPoint?.id !== hovered ? "#BFA391" : "#C07B50";
+            const focusedFill = completionArrived && focusedPoint?.id !== hovered ? "#E8E3D5" : "#B6FF00";
 
             return (
               <motion.circle
@@ -287,11 +287,11 @@ function ReactiveMeshNetwork({
                 r={isFocused ? "1.75" : "0.85"}
                 initial={{
                   opacity: currentOpacity,
-                  fill: isFocused ? focusedFill : "#9E7E6B",
+                  fill: isFocused ? focusedFill : "rgba(217,235,225,0.6)",
                 }}
                 animate={{
                   opacity: currentOpacity,
-                  fill: isFocused ? focusedFill : "#9E7E6B",
+                  fill: isFocused ? focusedFill : "rgba(217,235,225,0.6)",
                 }}
                 transition={{ duration: 0.4, ease: EASE }}
               />
@@ -308,10 +308,10 @@ function ReactiveMeshNetwork({
 
             return (
               <g key={path.id}>
-                <path d={path.d} stroke="#9E7E6B" strokeWidth={0.65} opacity={0.18} />
+                <path d={path.d} stroke="rgba(217,235,225,0.6)" strokeWidth={0.85} opacity={0.28} />
                 <motion.path
                   d={path.d}
-                  stroke="#C07B50"
+                  stroke="#B6FF00"
                   strokeWidth={1.15}
                   initial={{ opacity: 0, pathLength: 0 }}
                   animate={{
@@ -331,7 +331,7 @@ function ReactiveMeshNetwork({
             const preview = hovered === node.id;
             const available = active || node.id === nextNodeId;
             const finalComplete = completionArrived;
-            const accent = node.id === 2 ? "#C07B50" : "#9E7E6B";
+            const accent = node.id === 2 ? "#B6FF00" : "rgba(217,235,225,0.32)";
             const isLatest = lastActivated === node.id;
             const nodeScale = finalComplete ? 1 : preview || isLatest ? 1.2 : active ? 1.06 : 1;
             const stepNumber = getStepNumber(node.id);
@@ -372,7 +372,7 @@ function ReactiveMeshNetwork({
                     x={node.x}
                     y={node.y + 24}
                     textAnchor="middle"
-                    className="fill-[#18171A] text-[9px] font-semibold"
+                    className="fill-[#E8E3D5] text-[9px] font-semibold"
                     letterSpacing="0.08em"
                   >
                     {stepNumber}
@@ -415,8 +415,8 @@ function ReactiveMeshNetwork({
                     y={node.y - 5}
                     width={10}
                     height={10}
-                    fill={finalComplete ? "#BFA391" : active ? "#9E7E6B" : "#F9F8F5"}
-                    stroke={finalComplete ? "#BFA391" : "#9E7E6B"}
+                    fill={finalComplete ? "#E8E3D5" : active ? "rgba(217,235,225,0.32)" : "#133920"}
+                    stroke={finalComplete ? "#E8E3D5" : "rgba(217,235,225,0.32)"}
                     strokeWidth={1.5}
                     pointerEvents="none"
                     animate={{ scale: nodeScale }}
@@ -429,8 +429,8 @@ function ReactiveMeshNetwork({
                     y={node.y - 5}
                     width={10}
                     height={10}
-                    fill={finalComplete ? "#BFA391" : active ? "#C07B50" : "#F9F8F5"}
-                    stroke={finalComplete ? "#BFA391" : "#C07B50"}
+                    fill={finalComplete ? "#E8E3D5" : active ? "#B6FF00" : "#133920"}
+                    stroke={finalComplete ? "#E8E3D5" : "rgba(217,235,225,0.32)"}
                     strokeWidth={1.5}
                     pointerEvents="none"
                     animate={{ scale: nodeScale, rotate: 45 }}
@@ -448,15 +448,15 @@ function ReactiveMeshNetwork({
                       cx={node.x}
                       cy={node.y}
                       r={7}
-                      fill={finalComplete ? "#BFA391" : active ? "#9E7E6B" : "#F9F8F5"}
-                      stroke={finalComplete ? "#BFA391" : "#9E7E6B"}
+                      fill={finalComplete ? "#E8E3D5" : active ? "rgba(217,235,225,0.32)" : "#133920"}
+                      stroke={finalComplete ? "#E8E3D5" : "rgba(217,235,225,0.32)"}
                       strokeWidth={1.5}
                     />
                     <circle
                       cx={node.x}
                       cy={node.y}
                       r={2}
-                      fill={finalComplete || active ? "#F9F8F5" : "#9E7E6B"}
+                      fill={finalComplete || active ? "#133920" : "rgba(217,235,225,0.32)"}
                       opacity={finalComplete || active ? 0.95 : 0.52}
                     />
                   </motion.g>
@@ -465,8 +465,8 @@ function ReactiveMeshNetwork({
                     cx={node.x}
                     cy={node.y}
                     r={5}
-                    fill={finalComplete ? "#BFA391" : active ? "#9E7E6B" : "#F9F8F5"}
-                    stroke={finalComplete ? "#BFA391" : "#9E7E6B"}
+                    fill={finalComplete ? "#E8E3D5" : active ? "rgba(217,235,225,0.32)" : "#133920"}
+                    stroke={finalComplete ? "#E8E3D5" : "rgba(217,235,225,0.32)"}
                     strokeWidth={1.5}
                     pointerEvents="none"
                     animate={{ scale: nodeScale }}
@@ -542,7 +542,7 @@ export function GeminiProjectHero({
   };
 
   return (
-    <div className="relative isolate overflow-hidden bg-[#F9F8F5]">
+    <div className="relative isolate overflow-hidden bg-[#092212]">
       <AnimatePresence>
         {showCompletionSweep ? (
           <motion.div
@@ -587,13 +587,13 @@ export function GeminiProjectHero({
             className="mb-8"
           >
             <div className="mb-[28px] w-fit">
-              <p className="text-[12px] font-[525] uppercase tracking-widest text-[var(--color-text-accent)]">
+              <p className="text-[12px] font-[525] uppercase tracking-widest text-[#B6FF00]">
                 {category}
               </p>
             </div>
             <h1
               id="hero-lab-title"
-              className="font-display max-w-[670px] text-[clamp(2.50rem,3.74vw,4.06rem)] font-bold leading-tight text-[#18171A]"
+              className="font-display max-w-[670px] text-[clamp(2.50rem,3.74vw,4.06rem)] font-bold leading-tight text-[#E8E3D5]"
             >
               {title}
             </h1>
@@ -605,20 +605,20 @@ export function GeminiProjectHero({
             transition={{ duration: reduceMotion ? 0 : 0.55, delay: 0.1, ease: EASE }}
             className="pointer-events-none"
           >
-            <p className="mb-[32px] max-w-[560px] text-base leading-relaxed text-[#18171A]/60">
+            <p className="mb-[32px] max-w-[560px] text-base leading-relaxed text-[#D9EBE1]/70">
               {description}
             </p>
 
             <div
-              className="grid w-fit grid-cols-[auto_auto] sm:grid-cols-[auto_auto_auto] overflow-hidden rounded-xl border border-[#E6E3DD] bg-[#E6E3DD] gap-px"
+              className="grid w-fit grid-cols-[auto_auto] sm:grid-cols-[auto_auto_auto] overflow-hidden rounded-xl border border-[rgba(255,255,255,.1)] bg-[rgba(255,255,255,.1)] gap-px"
               style={{ boxShadow: "0 2px 8px rgba(0,0,0,0.05)" }}
             >
               {metadata.map(({ label, value }) => (
-                <div key={label} className="flex flex-col gap-1.5 bg-white px-6 py-3">
-                  <span className="text-[10px] font-medium uppercase tracking-widest text-[#18171A]/[0.38]">
+                <div key={label} className="flex flex-col gap-1.5 bg-[#061E10] px-6 py-3">
+                  <span className="text-[10px] font-medium uppercase tracking-widest text-[#D9EBE1]/40">
                     {label}
                   </span>
-                  <span className="text-[15px] font-normal text-[#18171A]/85 leading-snug">
+                  <span className="text-[15px] font-normal text-[#E8E3D5]/85 leading-snug">
                     {value}
                   </span>
                 </div>
@@ -628,17 +628,17 @@ export function GeminiProjectHero({
             <div className="mt-[20px] flex max-w-[1280px] items-end justify-between">
               <div className="flex max-w-[583px] flex-wrap gap-[10px]">
                 {client && (
-                  <span className="rounded-full bg-[#18171A]/[0.09] px-3 py-1.5 text-sm font-medium text-[#18171A]">
+                  <span className="rounded-full bg-[#E8E3D5]/10 px-3 py-1.5 text-sm font-medium text-[#E8E3D5]">
                     {client}
                   </span>
                 )}
-                <span className="rounded-full border border-[#C8BFB2] px-3 py-1.5 text-[12.5px] text-[#18171A]/55">
+                <span className="rounded-full border border-[#D9EBE1]/30 px-3 py-1.5 text-[12.5px] text-[#D9EBE1]/70">
                   {impact}
                 </span>
                 {tags.map((tag) => (
                   <span
                     key={tag}
-                    className="rounded-full border border-[#C8BFB2] px-3 py-1.5 text-[12.5px] text-[#18171A]/55"
+                    className="rounded-full border border-[#D9EBE1]/30 px-3 py-1.5 text-[12.5px] text-[#D9EBE1]/70"
                   >
                     {tag}
                   </span>

@@ -24,14 +24,14 @@ export function InProgressHero({ project }: { project: Project }) {
   };
 
   return (
-    <div data-cs-hero="true" className="relative isolate overflow-hidden bg-[#F9F8F5]">
+    <div data-cs-hero="true" className="relative isolate overflow-hidden bg-[#092212]">
       <div
         aria-hidden="true"
         className="pointer-events-none absolute inset-0"
         style={{
-          backgroundImage: "radial-gradient(circle at 1px 1px, #E6E3DD 1px, transparent 0)",
+          backgroundImage: "radial-gradient(circle at 1px 1px, rgba(176,188,100,0.22) 1px, transparent 0)",
           backgroundSize: "40px 40px",
-          opacity: 0.5,
+          opacity: 0.38,
         }}
       />
 
@@ -81,12 +81,12 @@ export function InProgressHero({ project }: { project: Project }) {
             transition={{ duration: reduceMotion ? 0 : 0.55, ease: EASE }}
             className="mb-8"
           >
-            <p className="mb-[28px] text-[12px] font-[525] uppercase tracking-widest text-[var(--color-text-accent)]">
+            <p className="mb-[28px] text-[12px] font-[525] uppercase tracking-widest text-[#B6FF00]">
               {project.category}
             </p>
             <h1
               id="project-hero-title"
-              className="font-display max-w-[670px] text-[clamp(2.50rem,3.74vw,4.06rem)] font-bold leading-tight text-[#18171A]"
+              className="font-display max-w-[670px] text-[clamp(2.50rem,3.74vw,4.06rem)] font-bold leading-tight text-[#E8E3D5]"
             >
               {project.title}
             </h1>
@@ -97,21 +97,21 @@ export function InProgressHero({ project }: { project: Project }) {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: reduceMotion ? 0 : 0.55, delay: 0.1, ease: EASE }}
           >
-            <p className="mb-[32px] max-w-[560px] text-base leading-relaxed text-[#18171A]/60">
+            <p className="mb-[32px] max-w-[560px] text-base leading-relaxed text-[#D9EBE1]/70">
               {project.description}
             </p>
 
             {metadata.length > 0 && (
               <div
-                className="grid w-fit grid-cols-[auto_auto] sm:grid-cols-[auto_auto_auto] overflow-hidden rounded-xl border border-[#E6E3DD] bg-[#E6E3DD] gap-px"
+                className="grid w-fit grid-cols-[auto_auto] sm:grid-cols-[auto_auto_auto] overflow-hidden rounded-xl border border-[rgba(255,255,255,.1)] bg-[rgba(255,255,255,.1)] gap-px"
                 style={{ boxShadow: "0 2px 8px rgba(0,0,0,0.05)" }}
               >
                 {metadata.map(({ label, value }) => (
-                  <div key={label} className="flex flex-col gap-1.5 bg-white px-6 py-3">
-                    <span className="text-[10px] font-medium uppercase tracking-widest text-[#18171A]/[0.38]">
+                  <div key={label} className="flex flex-col gap-1.5 bg-[#061E10] px-6 py-3">
+                    <span className="text-[10px] font-medium uppercase tracking-widest text-[#D9EBE1]/40">
                       {label}
                     </span>
-                    <span className="text-[15px] font-normal text-[#18171A]/85 leading-snug">
+                    <span className="text-[15px] font-normal text-[#E8E3D5]/85 leading-snug">
                       {value}
                     </span>
                   </div>
@@ -122,19 +122,19 @@ export function InProgressHero({ project }: { project: Project }) {
             <div className="mt-[20px] flex max-w-[1280px] items-end justify-between">
               <div className="flex max-w-[720px] flex-wrap gap-[10px]">
                 {project.client && (
-                  <span className="rounded-full bg-[#18171A]/[0.09] px-3 py-1.5 text-sm font-medium text-[#18171A]">
+                  <span className="rounded-full bg-[#E8E3D5]/10 px-3 py-1.5 text-sm font-medium text-[#E8E3D5]">
                     {project.client}
                   </span>
                 )}
                 {project.impact && (
-                  <span className="rounded-full border border-[#C8BFB2] px-3 py-1.5 text-[12.5px] text-[#18171A]/55">
+                  <span className="rounded-full border border-[#D9EBE1]/30 px-3 py-1.5 text-[12.5px] text-[#D9EBE1]/70">
                     {project.impact}
                   </span>
                 )}
                 {project.tags?.map((tag) => (
                   <span
                     key={tag}
-                    className="rounded-full border border-[#C8BFB2] px-3 py-1.5 text-[12.5px] text-[#18171A]/55"
+                    className="rounded-full border border-[#D9EBE1]/30 px-3 py-1.5 text-[12.5px] text-[#D9EBE1]/70"
                   >
                     {tag}
                   </span>
