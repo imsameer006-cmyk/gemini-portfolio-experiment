@@ -36,7 +36,7 @@ const COLLABSPACE_STORY_MOMENTS: StoryMoment[] = [
 ];
 
 const MOMENT_HIGHLIGHT_CLASS =
-  "scroll-mt-24 rounded-[3px] bg-[var(--color-accent-light)] px-[3px] py-[1px] [box-decoration-break:clone] [-webkit-box-decoration-break:clone]";
+  "scroll-mt-24 rounded-[3px] bg-[var(--casestudy-highlight-color)]/35 px-[3px] py-[1px] [box-decoration-break:clone] [-webkit-box-decoration-break:clone]";
 
 const MOMENT_HIGHLIGHTS: { id: string; fragments: string[] }[] = [
   {
@@ -585,7 +585,7 @@ function Decisions({
           className="grid grid-cols-[2rem_1fr] gap-4"
           {...reveal(staggerDelay(i))}
         >
-          <span className="font-[family-name:var(--font-numeral)] text-2xl text-[var(--color-accent)]/50 leading-none pt-0.5">
+          <span className="font-[family-name:var(--font-numeral)] text-2xl text-[var(--casestudy-numeral-color)]/50 leading-none pt-0.5">
             {String(startIndex + i + 1).padStart(2, "0")}
           </span>
           <div className="space-y-3">
@@ -959,7 +959,7 @@ function ContextCards({ items }: { items: { heading: string; body: string }[] })
     <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
       {items.map((card, i) => (
         <div key={i} className="bg-white border border-[var(--color-border)] rounded-2xl p-5 flex flex-col gap-3">
-          <span className="font-[family-name:var(--font-numeral)] text-2xl text-[var(--color-accent)]/50 leading-none">
+          <span className="font-[family-name:var(--font-numeral)] text-2xl text-[var(--casestudy-numeral-color)]/50 leading-none">
             {String(i + 1).padStart(2, "0")}
           </span>
           <h4 className="font-medium text-[var(--color-text)] text-sm leading-snug">{card.heading}</h4>
@@ -1047,7 +1047,7 @@ function DecisionsCDO({
           className="grid grid-cols-[2rem_1fr] gap-4"
           {...reveal(staggerDelay(i))}
         >
-          <span className="font-[family-name:var(--font-numeral)] text-2xl text-[var(--color-accent)]/50 leading-none pt-0.5">
+          <span className="font-[family-name:var(--font-numeral)] text-2xl text-[var(--casestudy-numeral-color)]/50 leading-none pt-0.5">
             {String(startIndex + i + 1).padStart(2, "0")}
           </span>
           <div className="space-y-4">
@@ -1414,7 +1414,7 @@ function Section({
       />
 
       <div className="pt-6 md:pt-12">
-        <span className="block text-[10px] text-[#577A00] tracking-widest uppercase font-medium mb-3">
+        <span className="block text-xs text-[var(--casestudy-eyebrow-color)] tracking-widest uppercase font-semibold mb-3">
           {section.label}
         </span>
 

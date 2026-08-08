@@ -72,14 +72,14 @@ function DrawerList({
                 ? "text-[var(--color-text-muted)] opacity-35 pointer-events-none cursor-default"
                 : [
                     "transition-colors duration-150 focus-visible:outline-none focus-visible:bg-[var(--color-surface-tinted)]",
-                    isActive ? "text-[#577A00] font-medium" : "text-[var(--color-text-secondary)] hover:text-[var(--color-text)]",
+                    isActive ? "text-[var(--jumpnav-text-color)] font-medium" : "text-[var(--jumpnav-text-color)] hover:text-[var(--color-text)]",
                   ].join(" "),
             ].join(" ")}
           >
             <span
               className={[
-                "w-[2px] h-[14px] rounded-full shrink-0 transition-all duration-200",
-                isActive ? "bg-[#577A00]" : "bg-transparent",
+                "w-[4px] h-[14px] rounded-full shrink-0 transition-all duration-200",
+                isActive ? "bg-[var(--jumpnav-indicator-color)]" : "bg-transparent",
               ].join(" ")}
               aria-hidden="true"
             />
@@ -283,8 +283,8 @@ export default function JumpToNav({
                       <div className="flex items-center gap-2">
                         <span
                           className={[
-                            "w-[2px] h-3 rounded-full shrink-0",
-                            isActive ? "bg-[#577A00]" : "bg-transparent",
+                            "w-[4px] h-3 rounded-full shrink-0",
+                            isActive ? "bg-[var(--jumpnav-indicator-color)]" : "bg-transparent",
                           ].join(" ")}
                           aria-hidden="true"
                         />
@@ -302,8 +302,8 @@ export default function JumpToNav({
                             disabled
                               ? "text-[var(--color-text)] opacity-35 pointer-events-none cursor-default"
                               : isGroupActive
-                                ? "text-[#577A00] font-medium"
-                                : "text-[var(--color-text-secondary)] hover:text-[var(--color-text)] hover:font-medium",
+                                ? "text-[var(--jumpnav-text-color)] font-medium"
+                                : "text-[var(--jumpnav-text-color)] hover:text-[var(--color-text)] hover:font-medium",
                           ].join(" ")}
                         >
                           {label}
@@ -317,8 +317,8 @@ export default function JumpToNav({
                             <div key={moment.anchorId} className="ml-3.5 flex items-center gap-2">
                               <span
                                 className={[
-                                  "w-[2px] h-3 rounded-full shrink-0",
-                                  isMomentActive ? "bg-[#577A00]" : "bg-transparent",
+                                  "w-[4px] h-3 rounded-full shrink-0",
+                                  isMomentActive ? "bg-[var(--jumpnav-indicator-color)]" : "bg-transparent",
                                 ].join(" ")}
                                 aria-hidden="true"
                               />
@@ -336,8 +336,8 @@ export default function JumpToNav({
                                     ? "text-[var(--color-text-muted)] opacity-35 pointer-events-none cursor-default"
                                     : [
                                         isMomentActive
-                                          ? "text-[#577A00] font-medium"
-                                          : "text-[var(--color-text-muted)] hover:text-[var(--color-text)]",
+                                          ? "text-[var(--jumpnav-text-color)] font-medium"
+                                          : "text-[var(--jumpnav-text-color)] hover:text-[var(--color-text)]",
                                       ].join(" "),
                                 ].join(" ")}
                               >
@@ -414,7 +414,7 @@ export default function JumpToNav({
                   <span className="text-[#D4D0C8] shrink-0 select-none">|</span>
                   <span className={[
                     "text-sm truncate",
-                    disabled ? "text-[var(--color-text-muted)] opacity-50" : "font-medium text-[#577A00]",
+                    disabled ? "text-[var(--color-text-muted)] opacity-50" : "font-medium text-[var(--jumpnav-text-color)]",
                   ].join(" ")}>
                     {disabled ? "In progress" : activeLabel}
                   </span>

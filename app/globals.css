@@ -24,6 +24,9 @@
   --primitive-taupe-700:    #847F76;
   --primitive-lime-500:     #D2E823;
   --primitive-green-800:    #254F1A;
+  --primitive-olive-700:    #6E7734; /* H68/S39 lime family, darkened to the max lightness that still clears 4.5:1 on cream-50 - see fine sweep, 2026-08 */
+  --primitive-lime-700:     #6D9900; /* H77/S100 #B6FF00 family, darkened to clear 3:1 (large-text/graphical floor) on both white and cream-50 - see fine sweep, 2026-08 */
+  --primitive-electric-lime: #B6FF00; /* full-brightness H77/S100 lime - the site's signature accent; --primitive-lime-700 above is its darkened, small-text-safe derivative */
   --turquoise-400:          #43EBFF;
   --navy-900:               #003A76;
   --blue-grey-600:          #5F7388;
@@ -94,6 +97,13 @@
   --hero-heading-color:    var(--color-text-hero);
   --hero-body-color:       var(--color-text-hero);
   --hero-scrim-color:      var(--color-bg-hero);
+
+  /* Tier 3: Case study body + JumpToNav component colors */
+  --casestudy-eyebrow-color:  var(--primitive-olive-700);
+  --jumpnav-text-color:       var(--primitive-olive-700);
+  --jumpnav-indicator-color:  var(--primitive-lime-700);
+  --casestudy-numeral-color:  var(--primitive-lime-700);
+  --casestudy-highlight-color: var(--primitive-electric-lime);
   /* Light-surface nav tokens realigned from process-blue/slate to the site's forest/sage palette */
   --nav-glass-light-background:       rgba(7,26,14,.75);
   --nav-glass-light-border:           rgba(176,188,100,.25);
