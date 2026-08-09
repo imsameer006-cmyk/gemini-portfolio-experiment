@@ -55,6 +55,18 @@ const heroCopyItemVariants = {
   },
 };
 
+const mobileHeroCopyItemVariants = {
+  hidden: { opacity: 0, y: 0 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: {
+      duration: 0.72,
+      ease: EASE_IN_OUT_SOFT,
+    },
+  },
+};
+
 const heroCardsVariants = {
   hidden: { opacity: 0, y: 6 },
   visible: {
@@ -958,6 +970,9 @@ export default function Hero() {
   const [hoverSuppressed, setHoverSuppressed] = useState(false);
   const [isPhilosophyOpen, setIsPhilosophyOpen] = useState(false);
   const [isHeroParagraphExpanded, setIsHeroParagraphExpanded] = useState(false);
+  const [isMobileHeroViewport, setIsMobileHeroViewport] = useState(() =>
+    typeof window === "undefined" ? false : window.matchMedia("(max-width: 767px)").matches,
+  );
   const [motifCenterYOverride, setMotifCenterYOverride] = useState<number | null>(null);
   const unlockTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const hoverTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
@@ -1011,6 +1026,15 @@ export default function Hero() {
         clearTimeout(hoverTimeoutRef.current);
       }
     };
+  }, []);
+
+  useEffect(() => {
+    const mediaQuery = window.matchMedia("(max-width: 767px)");
+    const update = () => setIsMobileHeroViewport(mediaQuery.matches);
+
+    update();
+    mediaQuery.addEventListener("change", update);
+    return () => mediaQuery.removeEventListener("change", update);
   }, []);
 
   useLayoutEffect(() => {
@@ -1157,6 +1181,8 @@ export default function Hero() {
     };
   }, []);
 
+  const copyItemVariants = isMobileHeroViewport ? mobileHeroCopyItemVariants : heroCopyItemVariants;
+
   return (
     <section
       ref={sectionRef}
@@ -1213,7 +1239,7 @@ export default function Hero() {
         >
           <motion.h1
             ref={headingRef}
-            variants={heroCopyItemVariants}
+            variants={copyItemVariants}
             className="mt-0 mb-[15px] w-fit min-w-0 max-w-full font-display text-[clamp(3rem,6.5vw,5.5rem)] font-black leading-[1.05] text-[var(--hero-heading-color)]"
           >
             Hi, I discover patterns, & connect the dots.
@@ -1221,7 +1247,7 @@ export default function Hero() {
 
           <motion.p
             ref={copyParagraphRef}
-            variants={heroCopyItemVariants}
+            variants={copyItemVariants}
             className={[
               "min-w-0 max-w-full text-[1.0625rem] leading-relaxed text-[var(--hero-body-color)] md:text-lg",
               isHeroParagraphExpanded ? "" : "line-clamp-2 md:line-clamp-none",
@@ -1231,7 +1257,7 @@ export default function Hero() {
           </motion.p>
           <motion.button
             type="button"
-            variants={heroCopyItemVariants}
+            variants={copyItemVariants}
             className="mt-3 font-mono text-xs font-semibold uppercase tracking-[0.18em] text-[#B6FF00] underline decoration-[#B6FF00]/35 underline-offset-4 transition-colors duration-200 hover:text-[#E8E3D5] md:hidden"
             aria-expanded={isHeroParagraphExpanded}
             onClick={() => setIsHeroParagraphExpanded((isExpanded) => !isExpanded)}
