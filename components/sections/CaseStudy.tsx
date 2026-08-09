@@ -826,7 +826,7 @@ function CaseStudyImage({ src, caption, alt, mobileDetail = false }: { src: stri
           <button
             type="button"
             onClick={() => setOpen(true)}
-            className="sm:hidden self-center text-xs font-medium text-[#577A00] underline underline-offset-4 hover:text-[var(--color-text)] transition-colors duration-200"
+            className="sm:hidden self-center text-xs font-medium text-[var(--casestudy-eyebrow-color)] underline underline-offset-4 hover:text-[var(--color-text)] transition-colors duration-200"
           >
             Inspect full-size visual
           </button>
@@ -898,7 +898,7 @@ function CaseStudyVideo({ src, caption, poster, mobileDetail = false, controls =
           <button
             type="button"
             onClick={() => setOpen(true)}
-            className="sm:hidden self-center text-xs font-medium text-[#577A00] underline underline-offset-4 hover:text-[var(--color-text)] transition-colors duration-200"
+            className="sm:hidden self-center text-xs font-medium text-[var(--casestudy-eyebrow-color)] underline underline-offset-4 hover:text-[var(--color-text)] transition-colors duration-200"
           >
             Inspect video full-screen
           </button>
