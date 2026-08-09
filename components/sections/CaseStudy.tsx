@@ -1700,7 +1700,7 @@ export default function CaseStudy({ project, content }: Props) {
               </div>
               <Link
                 href="/system"
-                className="inline-flex items-center gap-2 bg-[var(--color-text)] text-[var(--color-warm-bg)] text-sm font-medium px-5 py-3 rounded-full hover:bg-[var(--color-accent)] transition-colors duration-200 min-h-[44px]"
+                className="inline-flex min-h-[44px] items-center gap-2 rounded-full border border-[var(--color-text)] bg-[var(--color-text)] px-5 py-3 text-sm font-medium text-[var(--color-warm-bg)] transition-colors duration-200 hover:border-[var(--casestudy-numeral-color)] hover:bg-[var(--casestudy-numeral-color)]"
               >
                 View the Token Atlas
                 <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true">
@@ -1729,7 +1729,7 @@ export default function CaseStudy({ project, content }: Props) {
             href={`/work/${adjacentProject.slug}`}
             whileHover={{ scale: 1.02 }}
             transition={{ duration: 0.15, ease: "easeOut" }}
-            className="inline-flex items-center gap-2 bg-[var(--color-text)] text-[var(--color-warm-bg)] text-sm font-medium px-5 py-3 rounded-full hover:bg-[var(--color-accent)] transition-colors duration-200 min-h-[44px]"
+            className="inline-flex min-h-[44px] items-center gap-2 rounded-full border border-[var(--color-text)] bg-[var(--color-text)] px-5 py-3 text-sm font-medium text-[var(--color-warm-bg)] transition-colors duration-200 hover:border-[var(--casestudy-numeral-color)] hover:bg-[var(--casestudy-numeral-color)]"
           >
             View case study
             <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true">

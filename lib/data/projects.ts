@@ -51,6 +51,7 @@ export const projects: Project[] = [
     impact: "4 WCAG failures found & fixed",
     tags: ["Design Systems", "Accessibility", "AI-Native Workflow", "Component Architecture"],
     featured: true,
+    hidden: true,
     coverColor: "#F5E8DC",
     thumbnail: createElement(DesignSystemThumbnail),
     heroMetadata: [
