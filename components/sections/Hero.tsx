@@ -36,8 +36,8 @@ const heroCopyVariants = {
   visible: {
     opacity: 1,
     transition: {
-      staggerChildren: 0.06,
-      delayChildren: 0.1,
+      staggerChildren: 0.18,
+      delayChildren: 0.18,
     },
   },
 };
@@ -61,7 +61,7 @@ const heroCardsVariants = {
     y: 0,
     transition: {
       duration: 0.6,
-      delay: 0.22,
+      delay: 0.54,
       ease: [0.16, 1, 0.3, 1] as [number, number, number, number],
     },
   },
