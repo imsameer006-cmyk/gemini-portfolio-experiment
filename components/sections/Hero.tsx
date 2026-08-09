@@ -18,6 +18,7 @@ type ClarityThreadVisualProps = {
 // these known values, not a live measurement: a live read would capture whatever
 // floating/scrolled geometry Nav happens to be in at read time, not its resting one.
 const NAV_RESTING_BOTTOM_PX = 48; // 46px inner nav height (Nav.tsx `h-[46px]`) + 2px header border
+const EASE_IN_OUT_SOFT = [0.4, 0, 0.2, 1] as [number, number, number, number];
 
 const heroArtVariants = {
   hidden: { opacity: 0 },
@@ -26,7 +27,7 @@ const heroArtVariants = {
     transition: {
       duration: 0.6,
       delay: 0,
-      ease: [0.16, 1, 0.3, 1] as [number, number, number, number],
+      ease: EASE_IN_OUT_SOFT,
     },
   },
 };
@@ -49,7 +50,7 @@ const heroCopyItemVariants = {
     y: 0,
     transition: {
       duration: 0.6,
-      ease: [0.16, 1, 0.3, 1] as [number, number, number, number],
+      ease: EASE_IN_OUT_SOFT,
     },
   },
 };
@@ -62,7 +63,7 @@ const heroCardsVariants = {
     transition: {
       duration: 0.6,
       delay: 0.54,
-      ease: [0.16, 1, 0.3, 1] as [number, number, number, number],
+      ease: EASE_IN_OUT_SOFT,
     },
   },
 };
