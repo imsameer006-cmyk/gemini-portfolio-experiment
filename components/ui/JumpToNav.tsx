@@ -263,24 +263,58 @@ export default function JumpToNav({
       <div className="hidden lg:block">
         <AnimatePresence>
           {!disabled && isVisible && !isNearBottom && (
-            <div className="fixed left-8 z-40 top-[calc(50%+2rem)] -translate-y-1/2">
-              <motion.nav
-                aria-label="Jump to section"
-                initial={{ opacity: 0, x: -6 }}
-                animate={{ opacity: 1, x: 0 }}
-                exit={{ opacity: 0, x: -6, transition: { duration: 0.35, ease: "easeOut" as const } }}
+            <>
+              {/* Sidebar territory — subtle left-edge wash + a fine right-edge guide.
+                  Purely decorative/atmospheric: sits behind the nav, never intercepts clicks. */}
+              <motion.div
+                aria-hidden="true"
+                className="fixed inset-y-0 left-0 z-30 pointer-events-none"
+                style={{
+                  width: "260px",
+                  background: "linear-gradient(90deg, rgba(176,188,100,0.06), rgba(176,188,100,0.02), transparent)",
+                }}
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0, transition: { duration: 0.35, ease: "easeOut" as const } }}
                 transition={transition}
               >
-                <ul className="flex flex-col gap-4 w-[156px]" role="listbox" aria-label="Page sections">
-                {sections.map(({ label }) => {
+                <div
+                  className="absolute inset-y-0 right-0"
+                  style={{ width: "1px", background: "rgba(176,188,100,0.12)" }}
+                />
+              </motion.div>
+
+              <div className="fixed left-8 z-40 top-[calc(50%+2rem)] -translate-y-1/2">
+                <motion.nav
+                  aria-label="Jump to section"
+                  initial={{ opacity: 0, x: -6 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  exit={{ opacity: 0, x: -6, transition: { duration: 0.35, ease: "easeOut" as const } }}
+                  transition={transition}
+                >
+                  <ul className="relative flex flex-col gap-1 w-[156px]" role="listbox" aria-label="Page sections">
+                  {/* Continuous navigation rail — the structural spine; the active indicator sits on top of it */}
+                  <div
+                    aria-hidden="true"
+                    className="absolute top-0 bottom-0 left-[2px] -translate-x-1/2"
+                    style={{ width: "2px", background: "rgba(176,188,100,0.08)" }}
+                  />
+                  {sections.map(({ label }) => {
                   const isActive = toSectionId(label) === activeId;
                   const hasActiveMoment = moments.some(
                     (moment) => moment.parent === label && moment.anchorId === activeId
                   );
                   const isGroupActive = isActive || hasActiveMoment;
                   return (
-                    <li key={label} className="flex flex-col gap-1" role="presentation">
-                      <div className="flex items-center gap-2">
+                    <li key={label} className="relative flex flex-col gap-1 py-1.5" role="presentation">
+                      {isGroupActive && (
+                        <div
+                          aria-hidden="true"
+                          className="absolute top-0 bottom-0 left-0"
+                          style={{ width: "227px", background: "rgba(176,188,100,0.07)" }}
+                        />
+                      )}
+                      <div className="relative flex items-center gap-2">
                         <span
                           className={[
                             "w-[4px] h-3 rounded-full shrink-0",
@@ -314,7 +348,7 @@ export default function JumpToNav({
                         .map((moment) => {
                           const isMomentActive = moment.anchorId === activeId;
                           return (
-                            <div key={moment.anchorId} className="ml-3.5 flex items-center gap-2">
+                            <div key={moment.anchorId} className="relative ml-3.5 flex items-center gap-2">
                               <span
                                 className={[
                                   "w-[4px] h-3 rounded-full shrink-0",
@@ -350,9 +384,10 @@ export default function JumpToNav({
                     </li>
                   );
                 })}
-                </ul>
-              </motion.nav>
-            </div>
+                  </ul>
+                </motion.nav>
+              </div>
+            </>
           )}
         </AnimatePresence>
       </div>
