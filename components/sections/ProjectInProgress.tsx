@@ -7,6 +7,33 @@ import type { Project } from "@/lib/types";
 
 const EASE = [0.16, 1, 0.3, 1] as const;
 
+function MetadataValue({ label, value }: { label: string; value: string }) {
+  const userPills = label.toLowerCase() === "users"
+    ? value.split(",").map((item) => item.trim()).filter(Boolean)
+    : [];
+
+  if (userPills.length > 1) {
+    return (
+      <span className="flex flex-wrap gap-1.5 pt-0.5">
+        {userPills.map((item) => (
+          <span
+            key={item}
+            className="rounded-full border border-[#D9EBE1]/30 bg-[#E8E3D5]/[0.06] px-2.5 py-1 text-[12.5px] font-medium leading-none text-[#D9EBE1]/75"
+          >
+            {item}
+          </span>
+        ))}
+      </span>
+    );
+  }
+
+  return (
+    <span className="text-[15px] font-normal text-[#E8E3D5]/85 leading-snug">
+      {value}
+    </span>
+  );
+}
+
 export function InProgressHero({ project }: { project: Project }) {
   const reduceMotion = useReducedMotion();
   const metadata = project.heroMetadata ?? [];
@@ -75,9 +102,7 @@ export function InProgressHero({ project }: { project: Project }) {
                     <span className="text-[10px] font-medium uppercase tracking-widest text-[#D9EBE1]/40">
                       {label}
                     </span>
-                    <span className="text-[15px] font-normal text-[#E8E3D5]/85 leading-snug">
-                      {value}
-                    </span>
+                    <MetadataValue label={label} value={value} />
                   </div>
                 ))}
               </div>
@@ -116,18 +141,18 @@ export function InProgressHero({ project }: { project: Project }) {
                     transition={{ duration: 0.45, delay: 1.1, ease: EASE }}
                   >
                     <motion.span
-                      className="block h-2.5 w-2.5 rounded-full border border-[#C07B50]/75 bg-[#F9F8F5] shadow-[0_0_0_1px_rgba(192,123,80,0.08)]"
+                      className="block h-2.5 w-2.5 rounded-full border border-[var(--casestudy-highlight-color)] bg-[#F9F8F5] shadow-[0_0_0_1px_rgba(182,255,0,0.08)]"
                       animate={{
                         boxShadow: [
-                          "0 0 0 1px rgba(192,123,80,0.18), 0 0 0 0 rgba(192,123,80,0.18)",
-                          "0 0 0 1px rgba(192,123,80,0.22), 0 0 0 8px rgba(192,123,80,0.12)",
-                          "0 0 0 1px rgba(192,123,80,0.16), 0 0 0 15px rgba(192,123,80,0)",
+                          "0 0 0 1px rgba(182,255,0,0.18), 0 0 0 0 rgba(182,255,0,0.18)",
+                          "0 0 0 1px rgba(182,255,0,0.22), 0 0 0 8px rgba(182,255,0,0.12)",
+                          "0 0 0 1px rgba(182,255,0,0.16), 0 0 0 15px rgba(182,255,0,0)",
                         ],
                         scale: [1, 1.12, 1],
                       }}
                       transition={{ duration: 2.2, repeat: Infinity, ease: "easeOut" }}
                     />
-                    <span className="text-[10px] font-semibold uppercase tracking-[0.16em] text-[#C07B50]/85">
+                    <span className="text-[10px] font-semibold uppercase tracking-[0.16em] text-[var(--casestudy-highlight-color)]">
                       Explore the Collabspace
                     </span>
                   </motion.div>

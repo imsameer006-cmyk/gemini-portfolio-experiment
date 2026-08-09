@@ -38,6 +38,33 @@ const COLLABSPACE_STORY_MOMENTS: StoryMoment[] = [
 const MOMENT_HIGHLIGHT_CLASS =
   "scroll-mt-24 rounded-[3px] bg-[var(--casestudy-highlight-color)]/35 px-[3px] py-[1px] [box-decoration-break:clone] [-webkit-box-decoration-break:clone]";
 
+function HeroMetadataValue({ label, value }: { label: string; value: string }) {
+  const userPills = label.toLowerCase() === "users"
+    ? value.split(",").map((item) => item.trim()).filter(Boolean)
+    : [];
+
+  if (userPills.length > 1) {
+    return (
+      <span className="flex flex-wrap gap-1.5 pt-0.5">
+        {userPills.map((item) => (
+          <span
+            key={item}
+            className="rounded-full border border-[#D9EBE1]/30 bg-[#E8E3D5]/[0.06] px-2.5 py-1 text-[12.5px] font-medium leading-none text-[#D9EBE1]/75"
+          >
+            {item}
+          </span>
+        ))}
+      </span>
+    );
+  }
+
+  return (
+    <span className="text-[15px] font-normal text-[#E8E3D5]/85 leading-snug">
+      {value}
+    </span>
+  );
+}
+
 const MOMENT_HIGHLIGHTS: { id: string; fragments: string[] }[] = [
   {
     id: "moment-misread",
@@ -219,7 +246,7 @@ function BulletList({ items }: { items: string[] }) {
     <ul className="space-y-2">
       {items.map((item, i) => (
         <li key={i} className="flex gap-3 text-base text-[var(--color-text-body)] leading-relaxed">
-          <span className="mt-2 w-1 h-1 rounded-full bg-[var(--color-accent)] shrink-0" />
+          <span className="mt-2 w-1 h-1 rounded-full bg-[var(--casestudy-numeral-color)] shrink-0" />
           {item}
         </li>
       ))}
@@ -374,14 +401,14 @@ function RoleList({ items }: { items: { abbr: string; fullName: string; descript
                   style={{
                     display: "inline-block",
                     position: "relative",
-                    background:   active ? "#F5EAE0" : "#FBF5EF",
-                    border:       `1px solid ${active ? "#577A00" : "#EDD9C8"}`,
-                    borderRadius: "4px",
-                    padding:      "3px 8px",
+                    background:   active ? "rgba(109,153,0,0.12)" : "rgba(109,153,0,0.06)",
+                    border:       `1px solid ${active ? "var(--casestudy-numeral-color)" : "rgba(109,153,0,0.28)"}`,
+                    borderRadius: "9999px",
+                    padding:      "4px 10px",
                     fontSize:     "10px",
                     fontWeight:   700,
                     letterSpacing:"0.08em",
-                    color:        "#577A00",
+                    color:        "var(--casestudy-numeral-color)",
                     cursor:       canInteract ? "default" : undefined,
                     transition:   canInteract
                       ? "background 150ms ease, border-color 150ms ease, color 150ms ease"
@@ -520,7 +547,7 @@ function Stages({ items }: { items: string[] }) {
   }, []);
 
   return (
-    <div ref={containerRef} className="relative border border-[var(--color-border)] rounded-xl overflow-hidden bg-[var(--color-surface-tinted)]">
+    <div ref={containerRef} className="relative border border-[var(--color-border)] rounded-xl overflow-hidden bg-[rgba(109,153,0,0.04)]">
 
       {/* Single-pass shimmer overlay — remounted on each scroll-in */}
       {animKey > 0 && (
@@ -536,11 +563,11 @@ function Stages({ items }: { items: string[] }) {
         <div className="flex items-center gap-1 flex-nowrap py-3">
           {items.map((stage, i) => (
             <div key={i} className="flex items-center gap-1 shrink-0">
-              <span className="text-[11px] font-medium bg-white border border-[var(--color-border)] text-[var(--color-text)] px-2 py-1 rounded-full whitespace-nowrap">
+              <span className="text-[11px] font-medium bg-white border border-[rgba(109,153,0,0.22)] text-[var(--color-text)] px-2.5 py-1 rounded-full whitespace-nowrap">
                 {stage}
               </span>
               {i < items.length - 1 && (
-                <span className="text-[var(--color-accent)] text-xs shrink-0 select-none" aria-hidden="true">→</span>
+                <span className="text-[var(--casestudy-numeral-color)]/60 text-xs shrink-0 select-none" aria-hidden="true">→</span>
               )}
             </div>
           ))}
@@ -552,12 +579,12 @@ function Stages({ items }: { items: string[] }) {
         <div className="flex flex-col gap-2">
           {items.map((stage, i) => (
             <div key={i} className="flex flex-col gap-2">
-              <span className="text-[11px] font-medium bg-white border border-[var(--color-border)] text-[var(--color-text)] px-3 py-1.5 rounded-full text-center">
+              <span className="text-[11px] font-medium bg-white border border-[rgba(109,153,0,0.22)] text-[var(--color-text)] px-3 py-1.5 rounded-full text-center">
                 {stage}
               </span>
               {i < items.length - 1 && (
                 <div className="flex justify-center" aria-hidden="true">
-                  <span className="text-[var(--color-accent)] text-xs select-none">↓</span>
+                  <span className="text-[var(--casestudy-numeral-color)]/60 text-xs select-none">↓</span>
                 </div>
               )}
             </div>
@@ -597,7 +624,7 @@ function Decisions({
               <ul className="space-y-1.5 mt-2">
                 {decision.bullets.map((b, j) => (
                   <li key={j} className="flex gap-2.5 text-sm text-[var(--color-text-body)] leading-relaxed">
-                    <span className="mt-2 w-1 h-1 rounded-full bg-[var(--color-accent)] shrink-0" />
+                    <span className="mt-2 w-1 h-1 rounded-full bg-[var(--casestudy-numeral-color)] shrink-0" />
                     {b}
                   </li>
                 ))}
@@ -1551,9 +1578,7 @@ export default function CaseStudy({ project, content }: Props) {
                       <span className="text-[10px] font-medium uppercase tracking-widest text-[#D9EBE1]/40">
                         {label}
                       </span>
-                      <span className="text-[15px] font-normal text-[#E8E3D5]/85 leading-snug">
-                        {value}
-                      </span>
+                      <HeroMetadataValue label={label} value={value} />
                     </div>
                   ))}
                 </motion.div>
@@ -1618,9 +1643,7 @@ export default function CaseStudy({ project, content }: Props) {
                       <span className="text-[10px] font-medium uppercase tracking-widest text-[#D9EBE1]/40">
                         {label}
                       </span>
-                      <span className="text-[15px] font-normal text-[#E8E3D5]/85 leading-snug">
-                        {value}
-                      </span>
+                      <HeroMetadataValue label={label} value={value} />
                     </div>
                   ))}
                 </motion.div>

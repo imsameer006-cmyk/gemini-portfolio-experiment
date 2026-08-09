@@ -158,39 +158,46 @@ export default function Nav() {
     return () => window.removeEventListener("keydown", onKeyDown);
   }, [mobileOpen]);
 
-  // Track active section via IntersectionObserver on homepage
+  // Track active section on homepage by the section closest to the nav reading line.
   useEffect(() => {
     if (isWorkPage) return;
 
     const sectionIds = links.map((l) => l.href.slice(1));
-    const intersecting = new Set<string>();
+    let frame = 0;
 
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            intersecting.add(entry.target.id);
-          } else {
-            intersecting.delete(entry.target.id);
-          }
-        });
-        for (const id of sectionIds) {
-          if (intersecting.has(id)) {
-            setActiveSection(`#${id}`);
-            return;
-          }
+    const readActiveSection = () => {
+      frame = 0;
+      const headerBottom = headerRef.current?.getBoundingClientRect().bottom ?? 56;
+      const activationY = headerBottom + 24;
+      let current: string | null = null;
+
+      sectionIds.forEach((id) => {
+        const el = document.getElementById(id);
+        if (!el) return;
+
+        if (el.getBoundingClientRect().top <= activationY) {
+          current = `#${id}`;
         }
-        setActiveSection(null);
-      },
-      { rootMargin: "-64px 0px -50% 0px", threshold: 0 },
-    );
+      });
 
-    sectionIds.forEach((id) => {
-      const el = document.getElementById(id);
-      if (el) observer.observe(el);
-    });
+      const nearPageEnd = window.innerHeight + window.scrollY >= document.documentElement.scrollHeight - 2;
+      setActiveSection(nearPageEnd ? "#contact" : current);
+    };
 
-    return () => observer.disconnect();
+    const requestRead = () => {
+      if (frame) return;
+      frame = window.requestAnimationFrame(readActiveSection);
+    };
+
+    readActiveSection();
+    window.addEventListener("scroll", requestRead, { passive: true });
+    window.addEventListener("resize", requestRead);
+
+    return () => {
+      if (frame) window.cancelAnimationFrame(frame);
+      window.removeEventListener("scroll", requestRead);
+      window.removeEventListener("resize", requestRead);
+    };
   }, [isWorkPage]);
 
   const isActive = (href: string) => {

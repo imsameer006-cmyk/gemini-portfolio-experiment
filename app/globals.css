@@ -107,7 +107,7 @@
   /* Light-surface nav tokens realigned from process-blue/slate to the site's forest/sage palette */
   --nav-glass-light-background:       rgba(7,26,14,.75);
   --nav-glass-light-border:           rgba(176,188,100,.25);
-  --nav-glass-light-shadow:           0 4px 20px rgba(1,31,75,.05);
+  --nav-glass-light-shadow:           inset 0 1px 0 rgba(255,255,255,.14), inset 0 -1px 0 rgba(5,18,9,.12), 0 8px 24px rgba(0,0,0,.14);
   --nav-glass-light-logo-color:       #B6FF00;
   --nav-glass-light-link-color:       #B0BC64;
   --nav-glass-light-link-active-color: #B6FF00;
@@ -119,7 +119,7 @@
 
   --nav-glass-dark-background:        rgba(6,30,16,.45);
   --nav-glass-dark-border:            rgba(255,255,255,.14);
-  --nav-glass-dark-shadow:            0 10px 28px rgba(0,0,0,.22);
+  --nav-glass-dark-shadow:            inset 0 1px 0 rgba(255,255,255,.16), inset 0 -1px 0 rgba(0,0,0,.18), 0 12px 30px rgba(0,0,0,.26);
   --nav-glass-dark-logo-color:        var(--philosophy-ice-50);
   --nav-glass-dark-link-color:        rgba(255,255,255,.72);
   --nav-glass-dark-link-hover-color:  #FFFFFF;
