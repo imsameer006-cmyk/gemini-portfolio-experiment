@@ -45,7 +45,7 @@ export function InProgressHero({ project }: { project: Project }) {
             transition={{ duration: reduceMotion ? 0 : 0.55, ease: EASE }}
             className="mb-8"
           >
-            <p className="mb-[28px] text-[12px] font-[525] uppercase tracking-widest text-[#B6FF00]">
+            <p className="mb-[8px] text-[12px] font-[525] uppercase tracking-widest text-[#B6FF00]">
               {project.category}
             </p>
             <h1

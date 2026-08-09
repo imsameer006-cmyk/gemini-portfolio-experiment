@@ -478,7 +478,7 @@ export function GeminiProjectHero({
             transition={{ duration: reduceMotion ? 0 : 0.55, ease: EASE }}
             className="mb-8"
           >
-            <div className="mb-[28px] w-fit">
+            <div className="mb-[8px] w-fit">
               <p className="text-[12px] font-[525] uppercase tracking-widest text-[#B6FF00]">
                 {category}
               </p>
