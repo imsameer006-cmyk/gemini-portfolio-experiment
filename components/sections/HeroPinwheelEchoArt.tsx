@@ -1,6 +1,6 @@
 "use client";
 
-import { useId, useLayoutEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useId, useLayoutEffect, useMemo, useRef, useState } from "react";
 
 // Hand-authored solid mark (see user-provided Frame 17.svg). Verified star-shaped
 // around its own centroid — every ray from the center crosses the boundary exactly
@@ -99,7 +99,16 @@ const UNIT_SCALE = PINNED_TARGET_DIAMETER / NATIVE_BBOX_MAX;
 const PINNED_CENTER_X_FRACTION = 0.18379;
 const MOBILE_MOTIF_SCALE_MULTIPLIER = 1.2;
 const MOBILE_BREAKPOINT_PX = 768;
-const DESKTOP_SHIMMER_BREAKPOINT_PX = 1200;
+const SHIMMER_BREAKPOINT_PX = 0;
+// Per-ring stagger for the shimmer sweep, so the pulse visibly travels
+// outward ring-by-ring rather than firing all at once. Triggered via a
+// mount-time state flip (see shimmerActive below), not a CSS animation-delay
+// counted from element mount — that was tried first, but this SVG's
+// mask/measurement setup means the CSS animation's real start (confirmed via
+// getAnimations()[0].startTime) doesn't line up with true element mount, so
+// a live attribute flip is used instead, exactly like the sweep's original
+// hover trigger, just fired on mount rather than pointer events.
+const RING_SHIMMER_STEP_MS = 23;
 const MOBILE_VERTICAL_OFFSET_PX = 80;
 // Nudged down from the old fraction (0.20255) to compensate: this shape's
 // centroid sits higher relative to its own bounding box than the old symmetric
@@ -358,7 +367,30 @@ function useElementBounds<T extends HTMLElement>() {
 export default function HeroPinwheelEchoArt({ centerYOverridePx = null }: HeroPinwheelEchoArtProps) {
   const uid = useId().replace(/:/g, "");
   const [containerRef, bounds, hasMeasured] = useElementBounds<HTMLDivElement>();
-  const [isMotifHovered, setIsMotifHovered] = useState(false);
+  const [shimmerActive, setShimmerActive] = useState(false);
+  const svgReady = hasMeasured && centerYOverridePx !== null;
+
+  // Flips the shimmer rings' data-active attribute one frame after the SVG
+  // first paints, exactly mirroring the sweep's original hover trigger (an
+  // attribute added after the elements already exist) instead of declaring
+  // an animation-delay counted from mount — that was tried first, but this
+  // SVG's mask/measurement setup means a CSS animation-delay's real start
+  // (confirmed via getAnimations()[0].startTime) lands ~400-650ms later than
+  // the delay value alone would suggest. A genuine post-mount attribute flip
+  // does not have that drift.
+  useEffect(() => {
+    if (!svgReady) return;
+
+    let secondFrame = 0;
+    const firstFrame = requestAnimationFrame(() => {
+      secondFrame = requestAnimationFrame(() => setShimmerActive(true));
+    });
+
+    return () => {
+      cancelAnimationFrame(firstFrame);
+      cancelAnimationFrame(secondFrame);
+    };
+  }, [svgReady]);
 
   // Native bounding box of the solid mark, used to size the grain overlay rect
   // (clipped to the mark's own shape below) so the filter's noise fills it edge
@@ -399,7 +431,7 @@ export default function HeroPinwheelEchoArt({ centerYOverridePx = null }: HeroPi
     return { unitScale, centerX, centerY };
   }, [bounds, centerYOverridePx]);
 
-  const shouldRenderRingShimmer = bounds.width >= DESKTOP_SHIMMER_BREAKPOINT_PX;
+  const shouldRenderRingShimmer = bounds.width >= SHIMMER_BREAKPOINT_PX;
 
   const spatialMaskGeometry = useMemo(
     () => ({
@@ -490,7 +522,7 @@ export default function HeroPinwheelEchoArt({ centerYOverridePx = null }: HeroPi
           page-load, not as a shape resizing itself. The ref-bearing div above
           still always renders, so the measurement in useElementBounds can
           actually happen. */}
-      {hasMeasured && centerYOverridePx !== null && (
+      {svgReady && (
       <svg
         viewBox={`0 0 ${bounds.width} ${bounds.height}`}
         width="100%"
@@ -523,7 +555,6 @@ export default function HeroPinwheelEchoArt({ centerYOverridePx = null }: HeroPi
             @media (prefers-reduced-motion: reduce) {
               .hero-ring-shimmer[data-active="true"] {
                 animation: none;
-                opacity: 0.45;
               }
             }
           `}</style>
@@ -699,7 +730,7 @@ export default function HeroPinwheelEchoArt({ centerYOverridePx = null }: HeroPi
                 <path
                   key={`pinwheel-shimmer-${keyPrefix}-${index}`}
                   className="hero-ring-shimmer"
-                  data-active={isMotifHovered ? "true" : "false"}
+                  data-active={shimmerActive ? "true" : "false"}
                   d={d}
                   fill="none"
                   stroke={`url(#${uid}-ringShimmerGradient)`}
@@ -707,20 +738,14 @@ export default function HeroPinwheelEchoArt({ centerYOverridePx = null }: HeroPi
                   strokeWidth={CONTOUR_STROKE_WIDTH * 1.65}
                   vectorEffect="non-scaling-stroke"
                   transform={baseTransform}
-                  style={{ animationDelay: `${index * 23}ms` }}
+                  style={{ animationDelay: `${index * RING_SHIMMER_STEP_MS}ms` }}
                 />
               ))}
             </g>
           )}
         </g>
 
-        <g
-          clipPath={`url(#${uid}-solidClip)`}
-          transform={baseTransform}
-          onPointerEnter={() => setIsMotifHovered(true)}
-          onPointerLeave={() => setIsMotifHovered(false)}
-          style={{ cursor: "pointer", pointerEvents: "auto" }}
-        >
+        <g clipPath={`url(#${uid}-solidClip)`} transform={baseTransform}>
           <path d={SOLID_PATH} fill="#243427" stroke="#243427" />
           <rect
             x={nativeBBox.minX}
