@@ -2,7 +2,8 @@ const { chromium } = require('playwright');
 const path = require('path');
 const fs = require('fs');
 
-const HTML_PATH = path.join(__dirname, '..', 'public', 'screens', 'context-governance.html');
+const BASE_URL = process.env.CAPTURE_BASE_URL || 'http://localhost:3001';
+const PAGE_URL = `${BASE_URL}/screens/context-governance.html`;
 const OUT_PATH  = path.join(__dirname, '..', 'public', 'case-studies', 'gemini', 'context-governance.png');
 
 // Master frame = 1550px wide. Body has 40px padding each side.
@@ -28,10 +29,9 @@ const VIEWPORT = { width: 1700, height: 1020 };
     deviceScaleFactor: 2, // retina — 2× pixel density for crisp output
   });
 
-  const fileUrl = 'file:///' + HTML_PATH.replace(/\\/g, '/');
-  console.log('Loading:', fileUrl);
+  console.log('Loading:', PAGE_URL);
 
-  await page.goto(fileUrl, { waitUntil: 'networkidle', timeout: 30000 });
+  await page.goto(PAGE_URL, { waitUntil: 'networkidle', timeout: 30000 });
 
   // Wait for fonts + SVG to settle
   await page.waitForFunction(() => document.fonts.ready, { timeout: 10000 }).catch(() => {});
