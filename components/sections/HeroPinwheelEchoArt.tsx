@@ -109,6 +109,7 @@ const SHIMMER_BREAKPOINT_PX = 0;
 // a live attribute flip is used instead, exactly like the sweep's original
 // hover trigger, just fired on mount rather than pointer events.
 const RING_SHIMMER_STEP_MS = 23;
+const MOBILE_RING_SHIMMER_STEP_MS = 34;
 const MOBILE_VERTICAL_OFFSET_PX = 80;
 // Nudged down from the old fraction (0.20255) to compensate: this shape's
 // centroid sits higher relative to its own bounding box than the old symmetric
@@ -431,6 +432,7 @@ export default function HeroPinwheelEchoArt({ centerYOverridePx = null }: HeroPi
     return { unitScale, centerX, centerY };
   }, [bounds, centerYOverridePx]);
 
+  const isMobileShimmer = bounds.width < MOBILE_BREAKPOINT_PX;
   const shouldRenderRingShimmer = bounds.width >= SHIMMER_BREAKPOINT_PX;
 
   const spatialMaskGeometry = useMemo(
@@ -537,7 +539,7 @@ export default function HeroPinwheelEchoArt({ centerYOverridePx = null }: HeroPi
             }
 
             .hero-ring-shimmer[data-active="true"] {
-              animation: hero-ring-shimmer-sweep 546ms cubic-bezier(0.16, 1, 0.3, 1) both;
+              animation: hero-ring-shimmer-sweep var(--hero-ring-shimmer-duration, 546ms) var(--hero-ring-shimmer-ease, cubic-bezier(0.16, 1, 0.3, 1)) both;
             }
 
             @keyframes hero-ring-shimmer-sweep {
@@ -545,10 +547,18 @@ export default function HeroPinwheelEchoArt({ centerYOverridePx = null }: HeroPi
                 opacity: 0;
               }
               34% {
-                opacity: 0.78;
+                opacity: var(--hero-ring-shimmer-peak-opacity, 0.78);
               }
               100% {
                 opacity: 0;
+              }
+            }
+
+            @media (max-width: 767px) {
+              .hero-ring-shimmer[data-active="true"] {
+                --hero-ring-shimmer-duration: 720ms;
+                --hero-ring-shimmer-ease: cubic-bezier(0.4, 0, 0.2, 1);
+                --hero-ring-shimmer-peak-opacity: 0.46;
               }
             }
 
@@ -738,7 +748,7 @@ export default function HeroPinwheelEchoArt({ centerYOverridePx = null }: HeroPi
                   strokeWidth={CONTOUR_STROKE_WIDTH * 1.65}
                   vectorEffect="non-scaling-stroke"
                   transform={baseTransform}
-                  style={{ animationDelay: `${index * RING_SHIMMER_STEP_MS}ms` }}
+                  style={{ animationDelay: `${index * (isMobileShimmer ? MOBILE_RING_SHIMMER_STEP_MS : RING_SHIMMER_STEP_MS)}ms` }}
                 />
               ))}
             </g>
