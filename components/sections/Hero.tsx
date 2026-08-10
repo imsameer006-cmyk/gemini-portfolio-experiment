@@ -43,6 +43,18 @@ const heroCopyVariants = {
   },
 };
 
+const mobileHeroCopyVariants = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: {
+      duration: 1.05,
+      delay: 0.18,
+      ease: EASE_IN_OUT_SOFT,
+    },
+  },
+};
+
 const heroCopyItemVariants = {
   hidden: { opacity: 0, y: 6 },
   visible: {
@@ -56,12 +68,12 @@ const heroCopyItemVariants = {
 };
 
 const mobileHeroCopyItemVariants = {
-  hidden: { opacity: 0, y: 0 },
+  hidden: { opacity: 1, y: 0 },
   visible: {
     opacity: 1,
     y: 0,
     transition: {
-      duration: 0.72,
+      duration: 0,
       ease: EASE_IN_OUT_SOFT,
     },
   },
@@ -1028,7 +1040,7 @@ export default function Hero() {
     };
   }, []);
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     const mediaQuery = window.matchMedia("(max-width: 767px)");
     const update = () => setIsMobileHeroViewport(mediaQuery.matches);
 
@@ -1181,6 +1193,7 @@ export default function Hero() {
     };
   }, []);
 
+  const copyContainerVariants = isMobileHeroViewport ? mobileHeroCopyVariants : heroCopyVariants;
   const copyItemVariants = isMobileHeroViewport ? mobileHeroCopyItemVariants : heroCopyItemVariants;
 
   return (
@@ -1234,13 +1247,13 @@ export default function Hero() {
           ref={copyColumnRef}
           initial={shouldReduceMotion ? false : "hidden"}
           animate={shouldReduceMotion ? undefined : "visible"}
-          variants={heroCopyVariants}
+          variants={copyContainerVariants}
           className="hero-copy-column pointer-events-auto flex min-w-0 flex-col items-start text-left md:col-span-9 md:translate-y-[var(--hero-copy-offset)]"
         >
           <motion.h1
             ref={headingRef}
             variants={copyItemVariants}
-            className="mt-0 mb-[15px] w-fit min-w-0 max-w-full font-display text-[clamp(3rem,6.5vw,5.5rem)] font-black leading-[1.05] text-[var(--hero-heading-color)]"
+            className="hero-copy-motion-item mt-0 mb-[15px] w-fit min-w-0 max-w-full font-display text-[clamp(3rem,6.5vw,5.5rem)] font-black leading-[1.05] text-[var(--hero-heading-color)]"
           >
             Hi, I discover patterns, & connect the dots.
           </motion.h1>
@@ -1249,7 +1262,7 @@ export default function Hero() {
             ref={copyParagraphRef}
             variants={copyItemVariants}
             className={[
-              "min-w-0 max-w-full text-[1.0625rem] leading-relaxed text-[var(--hero-body-color)] md:text-lg",
+              "hero-copy-motion-item min-w-0 max-w-full text-[1.0625rem] leading-relaxed text-[var(--hero-body-color)] md:text-lg",
               isHeroParagraphExpanded ? "" : "line-clamp-2 md:line-clamp-none",
             ].join(" ")}
           >
@@ -1258,7 +1271,7 @@ export default function Hero() {
           <motion.button
             type="button"
             variants={copyItemVariants}
-            className="mt-3 font-mono text-xs font-semibold uppercase tracking-[0.18em] text-[#B6FF00] underline decoration-[#B6FF00]/35 underline-offset-4 transition-colors duration-200 hover:text-[#E8E3D5] md:hidden"
+            className="hero-copy-motion-item mt-3 font-mono text-xs font-semibold uppercase tracking-[0.18em] text-[#B6FF00] underline decoration-[#B6FF00]/35 underline-offset-4 transition-colors duration-200 hover:text-[#E8E3D5] md:hidden"
             aria-expanded={isHeroParagraphExpanded}
             onClick={() => setIsHeroParagraphExpanded((isExpanded) => !isExpanded)}
           >
@@ -1269,6 +1282,11 @@ export default function Hero() {
       <style>{`
         .hero-copy-column {
           max-width: min(760px, 100%, var(--hero-copy-max-width, 760px));
+        }
+        @media (max-width: 767px) {
+          .hero-copy-motion-item {
+            transform: none !important;
+          }
         }
       `}</style>
     </section>

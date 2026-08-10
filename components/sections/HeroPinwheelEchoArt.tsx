@@ -109,7 +109,7 @@ const SHIMMER_BREAKPOINT_PX = 0;
 // a live attribute flip is used instead, exactly like the sweep's original
 // hover trigger, just fired on mount rather than pointer events.
 const RING_SHIMMER_STEP_MS = 23;
-const MOBILE_RING_SHIMMER_STEP_MS = 48;
+const MOBILE_RING_SHIMMER_STEP_MS = 70;
 const MOBILE_VERTICAL_OFFSET_PX = 80;
 // Nudged down from the old fraction (0.20255) to compensate: this shape's
 // centroid sits higher relative to its own bounding box than the old symmetric
@@ -556,9 +556,9 @@ export default function HeroPinwheelEchoArt({ centerYOverridePx = null }: HeroPi
 
             @media (max-width: 767px) {
               .hero-ring-shimmer[data-active="true"] {
-                --hero-ring-shimmer-duration: 1200ms;
+                --hero-ring-shimmer-duration: 1800ms;
                 --hero-ring-shimmer-ease: cubic-bezier(0.4, 0, 0.2, 1);
-                --hero-ring-shimmer-peak-opacity: 0.28;
+                --hero-ring-shimmer-peak-opacity: 0.18;
               }
             }
 
